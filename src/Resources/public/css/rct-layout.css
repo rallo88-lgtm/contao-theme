@@ -562,6 +562,8 @@ body {
 #right {
   will-change: transform;
   background: transparent !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
 #left::before,
