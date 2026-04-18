@@ -2296,7 +2296,7 @@
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.04em;
-  color: var(--rct-text-muted, #8892a0);
+  color: var(--rct-chart-text-color, var(--rct-text-muted, #8892a0));
   text-transform: uppercase;
   white-space: nowrap;
   overflow: hidden;
@@ -2308,7 +2308,7 @@
   font-size: 0.8rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--chart-color);  /* erbt auch per-bar --chart-color via inline style */
+  color: var(--rct-chart-text-color, var(--chart-color));
   opacity: 0.9;
 }
 
