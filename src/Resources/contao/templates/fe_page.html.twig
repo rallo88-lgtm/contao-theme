@@ -48,16 +48,16 @@
         {% if header %}
           <header id="header" role="banner">
             <a href="/" class="rct-header-logo-link" aria-label="{{ page.rootTitle | default('RCT') }}">
-              {{ include('@!_rct_logo_head.html.twig',   { aria_label: page.rootTitle|default('RCT') }) }}
-              {{ include('@!_rct_logo_mobile.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
+              {{ include('@Contao/_rct_logo_head.html.twig',   { aria_label: page.rootTitle|default('RCT') }) }}
+              {{ include('@Contao/_rct_logo_mobile.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
             </a>
             <div class="rct-header-brand">
               {{ header|raw }}
             </div>
             {% block header_nav %}
             <div class="rct-header-nav">
-              {{ include('@!_rct_ctrl_language.html.twig') }}
-              {{ include('@!rct_theme_switcher.html.twig') }}
+              {{ include('@Contao/_rct_ctrl_language.html.twig') }}
+              {{ include('@Contao/rct_theme_switcher.html.twig') }}
             </div>
             {% endblock %}
           </header>
@@ -85,7 +85,7 @@
           <div class="inside sitenavigation">{{ left|raw }}</div>
           <div class="rct-sidebar-logo">
             <a href="/" class="rct-logo-link" aria-label="{{ page.rootTitle | default('RCT') }} – Startseite">
-              {{ include('@!_rct_logo.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
+              {{ include('@Contao/_rct_logo.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
             </a>
           </div>
           <div class="rct-sidebar-footer">
@@ -120,7 +120,7 @@
           <div class="inside sitenavigation">{{ right|raw }}</div>
           <div class="rct-sidebar-logo">
             <a href="/" class="rct-logo-link" aria-label="{{ page.rootTitle | default('RCT') }} – Startseite">
-              {{ include('@!_rct_logo.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
+              {{ include('@Contao/_rct_logo.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
             </a>
           </div>
           <div class="rct-sidebar-footer">

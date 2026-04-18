@@ -3,7 +3,7 @@
   Variante mit festem Layout (topnav) und festem Theme.
   Theme und Layout werden nicht aus localStorage geladen.
 #}
-{% extends "@!fe_page.html.twig" %}
+{% extends "@Contao/fe_page.html.twig" %}
 
 {% block head %}
   {{ parent() }}
@@ -43,8 +43,8 @@
 {% block header_nav %}
 <div class="rct-header-nav">
   <div class="header-controls">
-    {{ include('@!_rct_ctrl_nav_toggle.html.twig') }}
-    {{ include('@!_rct_ctrl_language.html.twig') }}
+    {{ include('@Contao/_rct_ctrl_nav_toggle.html.twig') }}
+    {{ include('@Contao/_rct_ctrl_language.html.twig') }}
     <button id="rct-right-toggle" class="header-icon-btn hide-mobile" title="Info-Panel">
       <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>

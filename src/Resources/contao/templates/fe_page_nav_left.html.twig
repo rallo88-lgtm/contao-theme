@@ -3,7 +3,7 @@
   Variante mit festem Theme (sparta2) und festem Layout (sidebar).
   Kein localStorage-Override möglich.
 #}
-{% extends "@!fe_page.html.twig" %}
+{% extends "@Contao/fe_page.html.twig" %}
 
 {% block head_init %}
 {{ parent() }}
@@ -34,9 +34,9 @@
 {% block header_nav %}
 <div class="rct-header-nav">
   <div class="header-controls">
-    {{ include('@!_rct_ctrl_nav_toggle.html.twig') }}
-    {{ include('@!_rct_ctrl_language.html.twig') }}
-    {{ include('@!_rct_ctrl_right_toggle.html.twig') }}
+    {{ include('@Contao/_rct_ctrl_nav_toggle.html.twig') }}
+    {{ include('@Contao/_rct_ctrl_language.html.twig') }}
+    {{ include('@Contao/_rct_ctrl_right_toggle.html.twig') }}
   </div>
 </div>
 {% endblock %}
