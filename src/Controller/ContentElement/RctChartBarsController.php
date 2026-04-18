@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Controller\ContentElement;
+namespace Rallo\ContaoTheme\Controller\ContentElement;
 
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
-use Contao\Template;
+use Contao\CoreBundle\Twig\FragmentTemplate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 #[AsContentElement(type: 'rct_chart_bars', category: 'rct')]
 class RctChartBarsController extends AbstractContentElementController
 {
-    protected function getResponse(Template $template, ContentModel $model, Request $request): Response
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $raw   = (string) $model->rct_chart_bars_data;
         $lines = array_filter(array_map('trim', explode("\n", $raw)));

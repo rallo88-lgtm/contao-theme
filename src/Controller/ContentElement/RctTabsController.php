@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller\ContentElement;
+namespace Rallo\ContaoTheme\Controller\ContentElement;
 
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
-use Contao\Template;
+use Contao\CoreBundle\Twig\FragmentTemplate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +23,7 @@ class RctTabsController extends AbstractContentElementController
         'red'       => '#ef4444',
     ];
 
-    protected function getResponse(Template $template, ContentModel $model, Request $request): Response
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $colorKey = $model->rct_tabs_color ?: 'accent';
         $colorCss = self::COLOR_MAP[$colorKey] ?? self::COLOR_MAP['accent'];

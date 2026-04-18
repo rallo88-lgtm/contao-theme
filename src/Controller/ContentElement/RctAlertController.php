@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller\ContentElement;
+namespace Rallo\ContaoTheme\Controller\ContentElement;
 
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
-use Contao\Template;
+use Contao\CoreBundle\Twig\FragmentTemplate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +19,7 @@ class RctAlertController extends AbstractContentElementController
         'error'   => ['label' => 'ERR',   'color' => '#ef4444'],
     ];
 
-    protected function getResponse(Template $template, ContentModel $model, Request $request): Response
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $type   = $model->rct_alert_type ?: 'info';
         $config = self::TYPE_CONFIG[$type] ?? self::TYPE_CONFIG['info'];

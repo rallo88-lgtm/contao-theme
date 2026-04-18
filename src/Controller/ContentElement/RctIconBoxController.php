@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller\ContentElement;
+namespace Rallo\ContaoTheme\Controller\ContentElement;
 
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\PageModel;
-use Contao\Template;
+use Contao\CoreBundle\Twig\FragmentTemplate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,7 +24,7 @@ class RctIconBoxController extends AbstractContentElementController
         'red'       => '#ef4444',
     ];
 
-    protected function getResponse(Template $template, ContentModel $model, Request $request): Response
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $colorKey = $model->rct_icon_box_color ?: 'accent';
         $colorCss = self::COLOR_MAP[$colorKey] ?? self::COLOR_MAP['accent'];
