@@ -1,5 +1,5 @@
 {
-    "name": "rallo88/contao-theme",
+    "name": "rallo88-lgtm/contao-theme",
     "description": "RCT — Rallo's Contao Theme. A modern dark-mode design system with WebGL effects, custom content elements, and multi-layout support for Contao 5.",
     "type": "contao-bundle",
     "license": "proprietary",
