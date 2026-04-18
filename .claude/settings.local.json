@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git tag *)",
+      "Bash(git push *)",
+      "Bash(mkdir -p src/templates/content_element)",
+      "Bash(mv templates/content_element/* src/templates/content_element/)",
+      "Bash(mv templates/*.html.twig src/templates/)",
+      "Bash(rmdir templates/content_element)",
+      "Bash(rmdir templates *)",
+      "Bash(git add *)",
+      "Bash(git restore *)",
+      "Bash(git commit -m ' *)",
+      "Bash(ssh *)",
+      "Bash(mkdir -p src/Resources/contao/templates/content_element)",
+      "Bash(mv src/templates/content_element/* src/Resources/contao/templates/content_element/)",
+      "Bash(mv src/templates/*.html.twig src/Resources/contao/templates/)",
+      "Bash(rmdir src/templates/content_element)",
+      "Bash(rmdir src/templates)"
+    ]
+  }
+}
