@@ -3,7 +3,7 @@
   Variante mit festem Layout (sidebar-right).
   Theme und Layout werden nicht aus localStorage geladen.
 #}
-{% extends "fe_page.html.twig" %}
+{% extends "@!fe_page.html.twig" %}
 
 {% block head %}
   {{ parent() }}
@@ -48,7 +48,7 @@
         <line x1="3" y1="18" x2="21" y2="18"></line>
       </svg>
     </button>
-    {{ include('_rct_ctrl_language.html.twig') }}
+    {{ include('@!_rct_ctrl_language.html.twig') }}
   </div>
 </div>
 {% endblock %}
