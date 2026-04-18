@@ -8,48 +8,8 @@
 {% block head %}
   {% block head_init %}
   {# Font preloads — LCP: nur die 2 kritischen Weights vorab laden #}
-  <link rel="preload" href="/files/themes/rct/fonts/space-grotesk-v22-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/files/themes/rct/fonts/dm-mono-v16-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-
-  {# Klaro CSS — render-blocking nötig damit kein Flash vor Consent-Banner #}
-  <link rel="stylesheet" href="/files/themes/rct/css/klaro.min.css">
-
-  {# Klaro Config inline (1.6KB) — spart HTTP-Request, muss vor klaro.min.js stehen #}
-  <script>
-  var klaroConfig = {
-    version: 1,
-    elementID: 'klaro',
-    storageMethod: 'cookie',
-    cookieName: 'rct_klaro',
-    cookieExpiresAfterDays: 365,
-    privacyPolicy: '/datenschutz',
-    default: false,
-    mustConsent: false,
-    acceptAll: true,
-    hideDeclineAll: false,
-    lang: 'de',
-    translations: {
-      de: {
-        privacyPolicyUrl: '/datenschutz',
-        consentNotice: { description: 'Diese Website lädt externe Inhalte (Karten, Videos). Bitte stimme zu, um sie anzuzeigen. {purposes}' },
-        consentModal: { title: 'Datenschutzeinstellungen', description: 'Hier kannst du einstellen, welche externen Dienste geladen werden dürfen.' },
-        acceptAll: 'Alle akzeptieren',
-        declineAll: 'Alle ablehnen',
-        acceptSelected: 'Auswahl speichern',
-        purposes: { maps: 'Karten', media: 'Videos & Medien' },
-        openstreetmap: { title: 'OpenStreetMap', description: 'Interaktive Karte via OpenStreetMap/Leaflet. Beim Laden werden Kartenkacheln vom OSM-Server abgerufen (IP-Übertragung).' },
-        youtube: { title: 'YouTube', description: 'Video-Einbettung via YouTube (Google LLC). Beim Abspielen können Cookies gesetzt und Daten an Google übertragen werden.' },
-      },
-    },
-    services: [
-      { name: 'openstreetmap', title: 'OpenStreetMap', purposes: ['maps'], required: false, default: false },
-      { name: 'youtube', title: 'YouTube', purposes: ['media'], required: false, default: false },
-    ],
-  };
-  </script>
-
-  {# klaro.min.js deferred — 236KB NICHT mehr render-blocking! #}
-  <script data-config="klaroConfig" src="/files/themes/rct/js/klaro.min.js" defer></script>
+  <link rel="preload" href="/bundles/rct/fonts/space-grotesk-v22-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/bundles/rct/fonts/dm-mono-v16-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
 
   {# FOUC-Guard: sofort, inline, kein defer — muss vor CSS laufen #}
   <script>
