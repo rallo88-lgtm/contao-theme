@@ -4516,3 +4516,26 @@ a.rct-gallery-link {
   pointer-events: none;
 }
 
+
+
+/* ============================================================
+   RCT Article Background
+   ============================================================ */
+[class*="rct-article-bg-"] {
+  padding: 1.5rem;
+  border-radius: var(--rct-radius-lg);
+  overflow: hidden;
+  position: relative;
+}
+.rct-article-bg-dark {
+  background: rgba(23, 23, 23, var(--rct-article-alpha, 1));
+  color: var(--rct-shell-text);
+}
+.rct-article-bg-white {
+  background: rgba(255, 255, 255, var(--rct-article-alpha, 1));
+  color: #1a1a1a;
+}
+.rct-article-bg-accent {
+  background: rgba(39, 196, 244, var(--rct-article-alpha, 1));
+  color: #0a0a0a;
+}
