@@ -1,6 +1,6 @@
 <?php
 
-namespace Rallo\ContaoTheme\EventListener;
+namespace App\EventListener;
 
 use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;

@@ -1,0 +1,15 @@
+{% extends '@Contao/content_element/youtube.html.twig' %}
+
+{#
+  Klaro-Integration: iframe src → data-src, data-name="youtube"
+  Klaro aktiviert den iframe sobald Consent für "youtube" erteilt wurde.
+#}
+{% block iframe %}
+    {% set iframe_attributes = attrs({width, height, allowfullscreen: true, referrerpolicy: 'strict-origin-when-cross-origin'})
+        .set('data-name', 'youtube')
+        .set('data-src', source.url)
+        .setIfExists('title', title|default)
+        .mergeWith(iframe_attributes|default)
+    %}
+    <iframe{{ iframe_attributes }}></iframe>
+{% endblock %}
