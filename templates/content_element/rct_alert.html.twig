@@ -1,0 +1,28 @@
+{#
+  RCT – rct_alert.html.twig
+  Terminal-style alert / status readout.
+  alertType: info | warning | success | error
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-alert rct-alert--{{ alertType }} style-{{ alertStyle }}{{ cssClass ? ' ' ~ cssClass }}" style="--alert-color: {{ colorCss }};" role="alert" aria-live="polite"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+  <div class="rct-alert-signal" aria-hidden="true"></div>
+  <div class="rct-alert-body">
+    <span class="rct-alert-label" aria-hidden="true">[ {{ typeLabel }} ]</span>
+    {% if alertTitle %}
+      <strong class="rct-alert-title">{{ alertTitle }}</strong>
+    {% endif %}
+    {% if alertText %}
+      <p class="rct-alert-text">{{ alertText|raw }}</p>
+    {% endif %}
+  </div>
+  {% if dismissible %}
+    <button class="rct-alert-dismiss" aria-label="Schließen" type="button">
+      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  {% endif %}
+</div>
+{% endblock %}

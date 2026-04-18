@@ -1,0 +1,17 @@
+{#
+  RCT – mod_newslist_timeline.html.twig
+  Renders a news list as an animated vertical timeline.
+  Pair with article template: news_short_timeline
+#}
+{% extends '@Contao/block_unsearchable.html.twig' %}
+
+{% block content %}
+  {% if not articles %}
+    <p class="empty">{{ empty }}</p>
+  {% else %}
+    <div class="rct-timeline variant-alternate show-line rct-news-timeline style-dark">
+      {{ articles|join|raw }}
+    </div>
+    {{ pagination|default|raw }}
+  {% endif %}
+{% endblock %}

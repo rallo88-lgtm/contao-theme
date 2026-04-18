@@ -1,0 +1,1357 @@
+/* ============================================================
+   RCT – Rallos Contao Toolbox
+   Theme Stylesheet v1.0.0
+   Design: Clinical Architect / Tech Inspector Aesthetic
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. FONTS
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');   
+   
+   ------------------------------------------------------------ */
+/* space-grotesk-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/space-grotesk-v22-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* space-grotesk-500 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../fonts/space-grotesk-v22-latin-500.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* space-grotesk-600 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/space-grotesk-v22-latin-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* space-grotesk-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/space-grotesk-v22-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* dm-mono-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'DM Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/dm-mono-v16-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* dm-mono-italic - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'DM Mono';
+  font-style: italic;
+  font-weight: 400;
+  src: url('../fonts/dm-mono-v16-latin-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* dm-mono-500 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'DM Mono';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../fonts/dm-mono-v16-latin-500.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* dm-mono-500italic - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'DM Mono';
+  font-style: italic;
+  font-weight: 500;
+  src: url('../fonts/dm-mono-v16-latin-500italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+
+
+/* ------------------------------------------------------------
+   2. CSS CUSTOM PROPERTIES
+   ------------------------------------------------------------ */
+:root {
+  /* Brand Colors */
+  --rct-primary:              #4a6700;
+  --rct-primary-light:        #8aba16;
+  --rct-primary-dim:          #a5d737;
+  --rct-primary-fixed:        #c0f452;
+  --rct-primary-container:    rgba(138,186,22,0.12);
+
+  --rct-secondary:            #704f98;
+  --rct-secondary-light:      #d4aeff;
+  --rct-secondary-container:  rgba(112,79,152,0.12);
+
+  --rct-error:                #ba1a1a;
+  --rct-error-container:      #ffdad6;
+
+  /* Surface */
+  --rct-bg:                   #fbf9f8;
+  --rct-surface:              #ffffff;
+  --rct-surface-low:          #f6f3f2;
+  --rct-surface-mid:          #f0eded;
+  --rct-surface-high:         #eae8e7;
+  --rct-surface-highest:      #e4e2e1;
+  --rct-surface-dim:          #dcd9d9;
+
+  /* Text */
+  --rct-text:                 #1b1c1c;
+  --rct-text-muted:           #434936;
+  --rct-text-faint:           #747a64;
+  --rct-outline:              #c3c9b1;
+
+  /* Dark Shell */
+  --rct-shell-bg:             #171717;
+  --rct-shell-border:         rgba(255,255,255,0.08);
+  --rct-shell-text:           #ffffff;
+  --rct-shell-muted:          #737373;
+  --rct-shell-hover:          rgba(255,255,255,0.06);
+
+  /* Typography */
+  --rct-font-headline:        'Space Grotesk', sans-serif;
+  --rct-font-body:            'Space Grotesk', sans-serif;
+  --rct-font-mono:            'DM Mono', monospace;
+
+  /* Spacing */
+  --rct-radius:               0.125rem;
+  --rct-radius-lg:            0.25rem;
+  --rct-radius-xl:            0.5rem;
+
+  /* Layout */
+  --rct-sidebar-width:        260px;
+  --rct-header-height:        64px;
+  --rct-footer-height:        50px;
+  --rct-max-width:            1280px;
+
+  /* Shadow */
+  --rct-shadow:               0 20px 40px rgba(27,28,28,0.06);
+  --rct-shadow-sm:            0 4px 12px rgba(27,28,28,0.05);
+  
+  --rct-accent: #27c4f4; /* Dein Standard-Blau */
+
+  --rct-transition-speed: 0.4s;  
+
+  /* Standard: Blue Night */
+  --rct-primary: #2951c7;
+  --rct-primary-light: #27c4f4;
+  --rct-bg-dots: rgba(255, 255, 255, 0.45);
+  
+  --grad-1: #27c4f4;
+  --grad-2: #2951c7;
+  --grad-3: #1d2db2;
+  --grad-4: #14054a;
+}
+[data-theme="lime"] {
+  --rct-primary: #4d8a12;
+  --rct-primary-light: #8aba16;
+  --rct-bg-dots: rgba(138, 186, 22, 0.5); /* Dein Grün mit Transparenz */
+
+  --grad-1: #8aba16;
+  --grad-2: #4d8a12;
+  --grad-3: #add633;
+  --grad-4: #164a1a;
+}
+
+[data-theme="purple"] {
+  --rct-primary: #4c1d95;
+  --rct-primary-light: #a855f7;
+  --rct-bg-dots: rgba(216, 180, 254, 0.5);
+
+  --grad-1: #2d1b4e;
+  --grad-2: #1c192e;
+  --grad-3: #4c1d95;
+  --grad-4: #1e1b4b;
+}
+
+
+/* --- BLITZSCHUTZ --- */
+html.rct-sidebar-initial-closed #left {
+  transform: translateX(-280px) !important; /* Breite deiner Sidebar */
+  transition: none !important; 
+}
+
+html.rct-sidebar-initial-closed #main,
+html.rct-sidebar-initial-closed #header,
+html.rct-sidebar-initial-closed #footer {
+  margin-left: 0 !important;
+  width: 100% !important;
+  transition: none !important;
+}
+
+
+
+/* ------------------------------------------------------------
+   5. PAGE LAYOUT
+   ------------------------------------------------------------ */
+
+/* Wrapper with sidebar */
+body.rct-layout-sidebar #wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Full-width without sidebar */
+body.rct-layout-full #wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+#header, #footer {
+  width: 100%;  
+  /* Optional: Ein bisschen Atmen für den Inhalt */
+  padding: 2rem;
+  box-sizing: border-box;
+}
+#mainContainer {
+  display: flex;
+
+  overflow-x: hidden;
+  position: relative;
+}
+/* ------------------------------------------------------------
+   7. DARK SHELL – SIDEBAR (#left)
+   ------------------------------------------------------------ */
+#left {
+  position: fixed;
+  z-index: 1000;
+  top: var(--rct-header-height);
+  left: 0;
+  bottom: 0;
+  margin-top: 1px;
+  width: var(--rct-sidebar-width);
+  height: calc(100vh - var(--rct-header-height) - var(--rct-footer-height) - 1px);
+  /* background: #1a1a1a; Dein Sidebar-Design */
+  background: var(--rct-shell-bg);
+  border-right: 1px solid var(--rct-shell-border);
+  padding: 20px 0;
+  overflow-y: auto;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ------------------------------------------------------------
+ 6. MAIN CONTENT AREA (#main)
+   ------------------------------------------------------------ */
+#main {
+  flex: 1;
+  height: calc(100vh - var(--rct-header-height) - var(--rct-footer-height) );
+  min-width: 0;
+  background-color: #0e0e18;
+  padding: 40px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: margin-left var(--rct-transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.rct-sidebar-open #main  {
+  width: calc(100% - var(--rct-sidebar-width));
+    transition: width 0.4s ease;
+}
+
+
+.rct-content-inner {
+  position: relative;
+  z-index: 10; /* Sicher über den Canvas-Layern */
+  width: 100%;
+  flex-grow: 1;
+}
+
+
+/* --- DESKTOP LOGIK (> 1024px) --- */
+@media (min-width: 1025px) {
+  /* Startzustand Desktop: Sichtbar & Platz nehmend */
+  #left {
+    transform: translateX(0);
+  }
+  #main {
+    margin-left: var(--rct-sidebar-width);
+  }
+
+  /* Zustand Geschlossen (via Button) */
+  body.rct-sidebar-closed #left {
+    transform: translateX(calc(var(--rct-sidebar-width) * -1));
+  }
+  body.rct-sidebar-closed #main {
+    margin-left: 0;
+  }
+}
+
+/* --- MOBILE LOGIK (< 1024px) --- */
+@media (max-width: 1024px) {
+  /* Startzustand Mobile: Aus dem Bild geschoben */
+  #left {
+    transform: translateX(calc(var(--rct-sidebar-width) * -1));
+  }
+  #main {
+    margin-left: 0 !important;
+  }
+
+  /* Zustand Offen (via Button) */
+  body.rct-sidebar-open #left {
+    transform: translateX(0);
+  }
+
+  /* Scrim/Overlay */
+  body.rct-sidebar-open::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 900;
+    animation: fadeIn 0.4s ease;
+  }
+}
+
+/* --- MOBILE LOGIK (< 1024px) --- */
+@media (max-width: 1024px) {
+  /* Das Overlay liegt auf dem Body, wenn die Sidebar offen ist */
+  body.rct-sidebar-open::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dein gewünschter Abdunklungs-Grad */
+    z-index: 900; /* Muss unter der Sidebar (#left), aber über dem Content liegen */
+    cursor: pointer;
+  }
+
+  #left {
+    z-index: 1000; /* Sidebar muss über dem Overlay liegen */
+  }
+}
+
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Verhindert Animation beim Laden */
+.no-transition * {
+  transition: none !important;
+}
+
+
+
+
+/* Wenn aktiv (durch JS Klasse am Body oder Sidebar) 
+.rct-sidebar-open #left {
+    transform: translateX(0);
+}*/
+
+/* Animation für den Button selbst (Hamburger zu X) */
+#rct-nav-toggle.is-active .line-mid { opacity: 0; }
+#rct-nav-toggle.is-active .line-top { transform: translateY(6px) rotate(45deg); transform-origin: center; }
+#rct-nav-toggle.is-active .line-bot { transform: translateY(-6px) rotate(-45deg); transform-origin: center; }
+
+.header-icon-btn svg line {
+    transition: all 0.4s ease;
+}
+
+.separator {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 5px;
+}
+
+
+
+/* Sidebar brand */
+#left .rct-brand {
+  padding: 0 1.5rem 2.5rem;
+}
+
+#left .rct-brand h1,
+#left .rct-brand .rct-site-title {
+  color: var(--rct-shell-text);
+  font-family: var(--rct-font-headline);
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+}
+
+#left .rct-brand .rct-version {
+  font-family: var(--rct-font-headline);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--rct-shell-muted);
+  margin-top: 0.25rem;
+}
+
+/* Sidebar navigation */
+#left nav,
+#left .mod_navigation {
+  flex: 1;
+  padding: 0 1rem;
+}
+
+#left nav ul,
+#left .mod_navigation ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+#left nav ul li a,
+#left .mod_navigation ul li a {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  font-family: var(--rct-font-headline);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 2.880px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--rct-shell-muted);
+  border-left: 4px solid transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+#left nav ul li a:hover,
+#left .mod_navigation ul li a:hover {
+  background: var(--rct-shell-hover);
+  color: var(--rct-shell-text);
+}
+
+#left nav ul li.active strong.active,
+#left nav ul li.active > a,
+#left nav ul li.trail > a,
+#left .mod_navigation ul li.active > a,
+#left .mod_navigation ul li.trail > a {
+  color: var(--rct-primary-light);
+  border-left-color: var(--rct-primary-light);
+  background: rgba(255,255,255,0.04);
+}
+
+
+#headerTitle, #headerTitle h2, nav.mod_breadcrumb, nav.mod_breadcrumb ul li {
+  float: left;
+  margin-left: 5px;
+  color: var(--rct-primary-light);
+}
+nav.mod_breadcrumb ul li a {
+  color: var(--rct-primary-light);
+}
+
+
+/* Sidebar footer */
+#left .rct-sidebar-footer {
+  padding: 1.5rem 1rem 0;
+  border-top: 1px solid var(--rct-shell-border);
+  margin-top: auto;
+}
+
+#left .rct-sidebar-footer a {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-family: var(--rct-font-headline);
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--rct-shell-muted);
+  transition: color 0.15s ease;
+}
+
+#left .rct-sidebar-footer a:hover {
+  color: var(--rct-primary-light);
+}
+
+/* ------------------------------------------------------------
+   7. DARK SHELL – TOP HEADER (#header)
+   ------------------------------------------------------------ */
+#header {
+  height: var(--rct-header-height);
+  background: var(--rct-shell-bg);
+  border-bottom: 1px solid var(--rct-shell-border);
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+}
+
+#header .rct-header-brand {
+  font-family: var(--rct-font-headline);
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--rct-shell-text);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+#header .rct-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Top-level navigation in header (if no sidebar) */
+#header .mod_navigation ul {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+}
+
+#header .mod_navigation ul li a {
+  font-family: var(--rct-font-headline);
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--rct-shell-muted);
+  padding: 0.4rem 0.75rem;
+  transition: color 0.15s ease;
+}
+
+#header .mod_navigation ul li a:hover,
+#header .mod_navigation ul li.active > a {
+  color: var(--rct-primary-light) !important;
+}
+
+/* --- 2. Die korrekte Struktur sicherstellen --- */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Abstand zwischen Icon und Switcher */
+    /* Falls der Header selbst Flexbox nutzt, brauchst du kein float: right */
+}
+
+/* --- 3. Optional: Den Button im Vollbild optisch hervorheben --- */
+/* Wenn der Browser im Vollbildmodus ist, können wir den Button
+   etwas anders stylen, damit er auf dem Canvas besser wirkt */
+
+
+.header-icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--rct-accent);
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.header-icon-btn:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+
+:fullscreen .header-icon-btn {
+    color: #fff; /* Im Vollbild immer Weiß, falls das Theme-Grün schlecht lesbar ist */
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+:fullscreen .header-icon-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Grundzustand */
+.header-icon-btn .icon-min {
+    display: none; /* Verkleinern-Icon standardmäßig weg */
+}
+
+/* Wenn Vollbild aktiv ist (.is-active wird per JS gesetzt) */
+.header-icon-btn.is-active .icon-max {
+    display: none;
+}
+
+.header-icon-btn.is-active .icon-min {
+    display: block;
+    animation: zoomIn 0.4s ease; /* Kleiner visueller "Plop"-Effekt */
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Hover-Effekt verfeinern */
+.header-icon-btn:hover svg {
+    filter: drop-shadow(0 0 5px var(--rct-accent));
+}
+
+
+/* CONTENT Innen */
+
+.rct-content-inner {
+  max-width: var(--rct-max-width);
+  margin: 0 auto;
+}
+
+
+
+/* ------------------------------------------------------------
+   15. DARK SHELL – FOOTER (#footer)
+   ------------------------------------------------------------ */
+#footer {
+  background: var(--rct-shell-bg);
+  border-top: 1px solid var(--rct-shell-border);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  position: fixed;
+  Bottom: 0;
+  z-index: 10;
+}
+
+#footer p,
+#footer .rct-footer-copy {
+  font-family: var(--rct-font-body);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--rct-shell-muted);
+}
+
+#footer nav ul,
+#footer .rct-footer-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+#footer nav ul li a,
+#footer .rct-footer-links a {
+  font-family: var(--rct-font-body);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--rct-shell-muted);
+  transition: color 0.15s ease;
+}
+
+#footer nav ul li a:hover,
+#footer .rct-footer-links a:hover {
+  color: var(--rct-primary-light);
+}
+
+
+
+.mod_search .formbody button[type="submit"]:hover {
+  background: var(--rct-primary-light);
+}
+
+/* ------------------------------------------------------------
+   18. UTILITY CLASSES
+   ------------------------------------------------------------ */
+.rct-divider {
+  height: 1px;
+  background: var(--rct-outline);
+  margin: 2rem 0;
+  opacity: 0.3;
+}
+
+.rct-tag {
+  display: inline-flex;
+  align-items: center;
+  background: var(--rct-surface-high);
+  font-family: var(--rct-font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--rct-text-muted);
+  padding: 0.2rem 0.6rem;
+}
+
+.rct-dot {
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+}
+.rct-dot-primary   { background: var(--rct-primary); }
+.rct-dot-secondary { background: var(--rct-secondary); }
+.rct-dot-error     { background: var(--rct-error); }
+
+/* Skip nav */
+.rct-skip-nav {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.rct-skip-nav:focus {
+  position: static;
+  width: auto;
+  height: auto;
+}
+
+
+
+
+
+/* --- Link-Farben Logik --- */
+[data-theme="default"] {
+  --rct-accent: #8aba16;
+}
+[data-theme="lime"] {
+  --rct-accent: #8aba16;
+}
+
+[data-theme="purple"] {
+  --rct-accent: #704f98;
+}
+/* Standard (Blau) */
+#main a, 
+#footer a {
+  color: #27c4f4;
+  transition: color 0.6s ease; /* Sanfter Übergang beim Theme-Wechsel */
+}
+
+
+#footer a:hover {
+  color: #fff; /* Puristischer Hover-Effekt */
+}
+
+/* Lime Theme */
+[data-theme="lime"] #main a, 
+[data-theme="lime"] #footer a {
+  color: #8aba16;
+}
+
+/* Purple Theme */
+[data-theme="purple"] #main a, 
+[data-theme="purple"] #footer a {
+  color: #704f98;
+}
+
+/* Alle Überschriften */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--rct-accent) !important;
+}
+
+/* Die Border-Variable */
+.rct-border, hr, .rct-theme-switcher {
+  border-color: var(--rct-accent);
+}
+
+/* Textmarkierung passend zum Theme */
+::selection {
+  background-color: var(--rct-accent)!important;
+  color: #fff;
+}
+
+/* Für Firefox */
+::-moz-selection {
+  background-color: var(--rct-accent)!important;
+  color: #fff;
+}
+
+
+
+
+
+
+
+
+/* 1. Grundzustand: Button verstecken
+#rct-nav-toggle {
+    display: none;
+}
+ */
+/* ------------------------------------------------------------
+   19. RESPONSIVE
+   ------------------------------------------------------------ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+
+
+
+
+	  .rct-page-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+	  }
+
+	  .rct-page-header h1,
+	  .rct-page-title {
+		font-size: 1.75rem;
+	  }
+
+ 
+
+    /* 3. Den Header im Container evtl. ausblenden oder anpassen */
+    #container header#header {
+        position: sticky;
+        top: 0;
+        z-index: 90;
+        height: 60px;
+        width: 100%;
+        background: var(--rct-shell-bg);
+    }
+  
+	/* 3. Die Sidebar muss absolut/fest positioniert sein */
+	aside#leftXXX {
+		display: block !important; /* Sicherstellen, dass sie nicht auf 'none' steht */
+		position: fixed !important;
+		top: 0 !important;
+		left: 0 !important;
+		width: 280px !important;
+		height: 100vh !important;
+		z-index: 2000 !important; /* Über den Inhalt legen */    
+		/* Startposition: Links aus dem Bildschirm geschoben */
+		transform: translateX(-100%) !important;
+		transition: transform 0.3s ease-in-out !important;    
+		/* Ein Schatten hilft, sie vom Content abzuheben */
+		box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+	}
+
+	/* 4. Die Klasse .open muss sie reinholen
+	aside#left.open {
+		transform: translateX(0) !important;
+	} */
+
+	body.rct-sidebar-openXXX::after {
+		content: "";
+		position: fixed;
+		top: 0; left: 0;
+		width: 100vw; height: 100vh;
+		background: rgba(0,0,0,0.4); /* Dunkelt den Rest ab */
+		z-index: 999; /* Direkt unter der Sidebar (1000) */
+		backdrop-filter: blur(2px); /* Schicker Unschärfe-Effekt (Material 3) */
+	}
+
+  /*
+	.rct-mobile-nav a.active,
+	.rct-mobile-nav a:hover {
+    color: var(--rct-primary-light);
+  }
+  */
+
+} /* < 1024 px  Ende */
+
+
+
+/* Mobile */
+@media (max-width: 767px) {
+  #header {
+    padding: 0 1rem;
+  }
+.mod_breadcrumb {
+  display:none;
+}
+  #footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  #footer nav ul,
+  #footer .rct-footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .mod_article {
+    padding: 20px;
+  }
+
+  .rct-bento {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+
+
+/* Der Button-Container */
+#rct-nav-toggle svg {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Die drei Striche (rects) im SVG */
+#rct-nav-toggle svg rect {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.2s ease;
+  transform-origin: center; /* Wichtig für die Drehung in der Mitte */
+}
+
+/* --- Zustand: OFFEN (X-Form) --- */
+
+/* 1. Oberer Strich: Nach unten schieben und 45 Grad drehen */
+body.rct-sidebar-open #rct-nav-toggle svg rect:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+/* 2. Mittlerer Strich: Einfach ausblenden */
+body.rct-sidebar-open #rct-nav-toggle svg rect:nth-child(2) {
+  opacity: 0;
+}
+
+/* 3. Unterer Strich: Nach oben schieben und -45 Grad drehen */
+body.rct-sidebar-open #rct-nav-toggle svg rect:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+#left a, .rct-nav-toggle {
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent; /* Verhindert den blauen Standard-Flash auf Android */
+}
+
+/* Diese Regel greift SOFORT beim ersten Paint 
+.rct-sidebar-initial-closed #left {
+  transform: translateX(calc(var(--rct-sidebar-width) * -1)) !important;
+}
+
+.rct-sidebar-initial-closed #main {
+  margin-left: 0 !important;
+}
+*/
+
+
+/* Die Welle selbst */
+.rct-ripple {
+  position: absolute;
+  background: rgba(var(--rct-primary-rgb, 74, 103, 0), 0.15); /* Deine Theme-Farbe, leicht transparent */
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+
+
+
+/* ------------------------------------------------------------------
+   BACKGROUND ANIMATION (AURORA & DOTS)
+------------------------------------------------------------------ */
+/* RCT – Stitch-Design CSS v2.1.0 - OPTIK-FIX */
+
+/* 1. Hauptcontainer - Absolut dunkel! */
+/* RCT – Stitch-Design CSS v1.1.0
+
+
+/* Der DOTS-Canvas- */
+#rct-dots-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  display: block;
+  z-index: 1; /* Sicherstellen, dass er hinter dem Content bleibt */
+	/* Dots liegen über der Aurora */
+  z-index: 2;
+}
+
+/* Inhalts-Layer (Z-Index 10: Sicher über den Canvas) */
+.rct-content-inner {
+  position: relative;
+  z-index: 10;
+}
+
+/* WICHTIG: Die Artikel-Boxen - Transparenz für den Glow-Effekt */
+.mod_article {
+  margin: 2rem auto;
+  max-width: 1200px;
+  padding: 3rem;
+  border-radius: 12px;
+  
+  /* Das ist der wichtigste Teil für die Optik: 
+     rgba(255, 255, 255, 0.93) ist ein durchscheinendes Weiß. */
+  background: rgba(255, 255, 255, 0.93);
+  color: #1a1a1a;
+  
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  
+  /* Der "Milchglas"-Effekt (sehr edel, wie bei Apple/iOS) */
+  backdrop-filter: blur(8px); 
+}
+
+
+
+
+
+
+/* Dots liegen über der Aurora */
+#rct-dots-canvas {
+  z-index: 2;
+}
+
+/* ------------------------------------------------------------------
+   CONTENT LAYER (Über den Animationen)
+------------------------------------------------------------------ */
+
+
+
+/* Deine Artikel-Boxen */
+.mod_article {
+  margin: 10px auto;
+  max-width: 1200px;
+  padding: 20px;
+  border-radius: 12px;
+  
+  /* WICHTIG: Damit man die Animation sieht, 
+     darf das Weiß nicht 100% deckend sein. */
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a1a1a;
+  
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px); /* Edler Glas-Effekt */
+}
+
+
+
+/* ------------------------------------------------------------------
+   RIPPLE EFFECT STYLES
+------------------------------------------------------------------ */
+.rct-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0);
+  pointer-events: none;
+}
+
+
+
+
+#gradient-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Hinter dem Content */
+  display: block;
+
+  /* Sanfter Einfade-Effekt */
+  opacity: 0; 
+
+transition: opacity 2.0s ease-in-out !important;
+  /* Maske für freien Bereich in der Mitte */
+  mask-image: radial-gradient(circle at center, transparent 20%, black 80%);
+  -webkit-mask-image: radial-gradient(circle at center, transparent 20%, black 80%);
+
+  /* DIE BRÜCKE ZUM SKRIPT: 
+     Hier dürfen keine 'inherit' stehen. Wir nutzen die --grad Variablen,
+     die sich ändern, wenn du das data-theme am body wechselst. */
+  --gradient-color-1: var(--grad-1, #27c4f4);
+  --gradient-color-2: var(--grad-2, #2951c7);
+  --gradient-color-3: var(--grad-3, #1d2db2);
+  --gradient-color-4: var(--grad-4, #14054a);
+}
+
+#gradient-canvas.is-visible {
+  opacity: 0.8 !important; /* Sichtbarkeit nach dem Laden */
+}
+
+/* Definition der Farben für den Wechsler */
+:root {
+  --grad-1: #27c4f4; --grad-2: #2951c7; --grad-3: #1d2db2; --grad-4: #14054a;
+  --rct-bg-dots: rgba(255, 255, 255, 0.45);
+}
+
+[data-theme="default"] {
+  --grad-1: #27c4f4; --grad-2: #2951c7; --grad-3: #1d2db2; --grad-4: #14054a;
+  --rct-bg-dots: rgba(255, 255, 255, 0.45);
+    --rct-primary-light: #8aba16;
+}
+
+[data-theme="lime"] {
+  --grad-1: #8aba16; --grad-2: #4d8a12; --grad-3: #add633; --grad-4: #164a1a;
+  --rct-bg-dots: rgba(138, 186, 22, 0.5);
+  --rct-primary-light: #8aba16;
+}
+
+[data-theme="purple"] {
+  --grad-1: #2d1b4e; --grad-2: #1c192e; --grad-3: #4c1d95; --grad-4: #1e1b4b;
+  --rct-bg-dots: rgba(216, 180, 254, 0.5);
+  --rct-primary-light: #a855f7;
+}
+
+
+
+
+#gradient-canvas.is-visible {
+  opacity: 1;
+}
+
+/* Beispiel: Deine UI-Elemente nutzen nun die Variablen */
+.btn-primary, .active-nav { 
+  background-color: var(--rct-primary) !important; 
+  color: #fff;
+}
+.text-highlight { 
+  color: var(--rct-primary-light); 
+}
+
+
+
+/* Container */
+.rct-theme-switcher {
+  position: relative;
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+}
+
+/* Der Button im Header */
+.theme-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 6px 12px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 140px;
+}
+
+.theme-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.chevron {
+  margin-left: auto;
+  transition: transform 0.3s ease;
+}
+
+/* Wenn offen: Pfeil drehen */
+.rct-theme-switcher.is-open .chevron {
+  transform: rotate(180deg);
+}
+
+/* Das Dropdown-Menü */
+.current-theme-dot.default { background: #27c4f4; }
+.current-theme-dot.lime    { background: #8aba16; }
+.current-theme-dot.purple  { background: #704f98; }
+
+.theme-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  min-width: 200px;
+  z-index: 1100;
+  
+  /* Animation-Initialzustand */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dropdown anzeigen */
+.rct-theme-switcher.is-open .theme-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Liste der Optionen */
+.theme-list {
+  list-style: none;
+  padding: 6px 0;
+  margin: 0;
+}
+
+.theme-opt-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.theme-opt-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+/* Die farbigen Punkte */
+.current-theme-dot, .opt-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.current-theme-dot { background: #27c4f4; } /* Standard */
+.opt-dot.default { background: #27c4f4; }
+.opt-dot.lime { background: #8aba16; }
+.opt-dot.purple { background: #704f98; }
+
+/* Footer mit Checkbox */
+.theme-footer {
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.save-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #666;
+  cursor: pointer;
+}
+
+.save-toggle input {
+  cursor: pointer;
+}
+
+
+
+/* --- Fancy Sidebar Close Button (SVG) --- */
+
+.rct-sidebar-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--rct-accent); /* Deine Akzentfarbe */
+  cursor: pointer;
+  padding: 8px;
+  line-height: 0; /* Verhindert vertikales Springen */
+  border-radius: 4px;
+  
+  /* Positionierung rechtsbündig in #left */
+  position: absolute;
+  right: 0px; /* Abstand vom rechten Rand */
+  
+  top: calc(((100vh - var(--rct-header-height) - var(--rct-footer-height) - 1px) / 2 ) - 34px);
+  
+  
+  z-index: 1010; /* Über dem Inhalt der Sidebar */
+  
+  transition: all 0.4s ease;
+}
+
+/* Hover-Effekt: Hintergrund & Farbe */
+.rct-sidebar-close-btn:hover {
+  background: rgba(255, 255, 255, 0.05); /* Dezenter BG-Hover */
+  color: #fff; /* Wird weiß */
+}
+
+/* Das SVG-Icon selbst */
+.rct-icon-shove {
+  width: 20px;  /* Perfekte Größe für 260px Sidebar */
+  height: 30px;
+  transition: transform 0.4s ease;
+}
+
+/* Fancy Hover-Animation: Pulsieren nach links */
+.rct-sidebar-close-btn:hover .rct-icon-shove {
+  animation: shoveLeft 1s ease-in-out infinite;
+}
+
+/* Die beiden Pfeile im SVG (für feinere Kontrolle) */
+.rct-icon-shove path {
+  transition: stroke-width 0.2s ease;
+}
+
+.rct-sidebar-close-btn:hover .arrow-1 {
+  stroke-width: 2.5px; /* Erste Pfeil wird etwas dicker */
+}
+
+/* Animation Definition */
+@keyframes shoveLeft {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(-4px); } /* Schiebt 4px nach links */
+  100% { transform: translateX(0); }
+}
+
+/* Mobile Optimierung */
+@media (max-width: 1024px) {
+  .rct-sidebar-close-btn {
+    top: 15px; /* Auf Mobile noch etwas höher */
+    right: 8px;
+  }
+}
+
+/* 1. INITIALER GUARD (Gegen das Blitzen) */
+/* Diese Regel greift am <html>, noch bevor der Body geladen ist */
+html.rct-sidebar-initial-closed #left {
+    transform: translateX(-260px) !important;
+    transition: none !important;
+}
+html.rct-sidebar-initial-closed #main {
+    margin-left: 0 !important;
+    transition: none !important;
+}
+
+/* 2. DESKTOP LAYOUT */
+@media (min-width: 1025px) {
+    /* Standard-Zustand: Sidebar ist OFFEN */
+    /* WICHTIG: Hier KEIN !important nutzen, sonst blockierst du dich selbst! */
+    #left {
+        transform: translateX(0);
+        transition: transform 0.3s ease-in-out;
+    }
+    #main {
+        margin-left: 260px; /* Deine Sidebar-Breite */
+        transition: margin-left 0.3s ease-in-out;
+    }
+
+    /* GESCHLOSSENER ZUSTAND (JS-Klasse) */
+    /* Diese Regel gewinnt, weil sie spezifischer ist als nur '#left' */
+    body.rct-sidebar-closed #left {
+        transform: translateX(-260px) !important;
+    }
+    body.rct-sidebar-closed #main {
+        margin-left: 0 !important;
+    }
+}

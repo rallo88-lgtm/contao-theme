@@ -1,0 +1,57 @@
+{# templates/rct_language_switcher.html.twig
+   Dezenter Sprachumschalter – passend zum Theme-/Layout-Switcher
+   Sprachen und URLs werden hier direkt gepflegt.
+#}
+{% set currentLang = (app.request.locale|default('de'))|slice(0,2)|upper %}
+
+{% set languages = [
+  { code: 'DE', label: 'Deutsch',  url: '/' },
+  { code: 'EN', label: 'English',  url: '/en/home' },
+] %}
+
+<div class="rct-lang-switcher" id="langSwitcher">
+  <button class="lang-trigger" aria-haspopup="listbox" aria-expanded="false">
+    <span class="lang-flag">{{ currentLang }}</span>
+    <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none">
+      <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <div class="lang-dropdown">
+    <ul class="lang-list" role="listbox">
+      {% for lang in languages %}
+      <li role="option" aria-selected="{{ lang.code == currentLang ? 'true' : 'false' }}">
+        <a href="{{ lang.url }}"
+           class="lang-opt-btn{% if lang.code == currentLang %} is-active{% endif %}"
+           hreflang="{{ lang.code|lower }}"
+           {% if lang.code == currentLang %}aria-current="true"{% endif %}>
+          <span class="lang-code">{{ lang.code }}</span>
+          <span class="lang-label">{{ lang.label }}</span>
+          {% if lang.code == currentLang %}
+          <svg class="lang-check" width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          {% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<script>
+(function() {
+  var sw = document.getElementById('langSwitcher');
+  if (!sw) return;
+  var btn = sw.querySelector('.lang-trigger');
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    sw.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', sw.classList.contains('is-open') ? 'true' : 'false');
+  });
+  document.addEventListener('click', function() {
+    sw.classList.remove('is-open');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+  sw.addEventListener('click', function(e) { e.stopPropagation(); });
+})();
+</script>

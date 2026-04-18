@@ -1,0 +1,15 @@
+<div class="rct-parallax{{ video ? ' rct-parallax--video' : (image ? ' rct-parallax--image' : '') }}{{ minHeight ? ' rct-parallax--' ~ minHeight|replace({'vh': 'vh', 'px': 'px'}) : '' }}{{ cssClass ? ' ' ~ cssClass }}"
+     {% if image and not video %}style="background-image: url('{{ image }}')"{% endif %}{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+
+  {%- if video %}
+  <video class="rct-parallax-video" autoplay muted loop playsinline
+         {% if image %}poster="{{ image }}"{% endif %}>
+    <source src="{{ video }}" type="video/mp4">
+  </video>
+  {%- endif %}
+
+  {%- if overlay %}
+  <div class="rct-parallax-overlay rct-parallax-overlay--{{ overlay }}"></div>
+  {%- endif %}
+
+  <div class="rct-parallax-inner">

@@ -1,0 +1,55 @@
+{#
+  RCT – fe_page_nav_top.html.twig
+  Variante mit festem Layout (topnav) und festem Theme.
+  Theme und Layout werden nicht aus localStorage geladen.
+#}
+{% extends "fe_page.html.twig" %}
+
+{% block head %}
+  {{ parent() }}
+  <style>
+    @media (min-width: 1025px) {
+      #rct-nav-toggle { display: none !important; }
+    }
+    @media (max-width: 1024px) {
+      #rct-right-toggle { display: flex !important; }
+      #right { display: block !important; }
+    }
+  </style>
+{% endblock %}
+
+{% block right_sidebar %}
+<aside id="right" aria-label="Info-Panel">
+  <button id="rct-menu-right-toggle" class="rct-sidebar-close-btn right" title="Schließen">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+      <path class="arrow-1" d="M6 6L12 12L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path class="arrow-2" d="M12 6L18 12L12 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </button>
+  <div class="inside">{{ right|raw }}</div>
+</aside>
+{% endblock %}
+
+{% block head_init %}
+<script>
+  (function() {
+    document.documentElement.setAttribute('data-fixed', '1');
+    document.documentElement.setAttribute('data-theme', 'sparta');
+    document.documentElement.setAttribute('data-layout', 'topnav');
+  })();
+</script>
+{% endblock %}
+
+{% block header_nav %}
+<div class="rct-header-nav">
+  <div class="header-controls">
+    {{ include('_rct_ctrl_nav_toggle.html.twig') }}
+    {{ include('_rct_ctrl_language.html.twig') }}
+    <button id="rct-right-toggle" class="header-icon-btn hide-mobile" title="Info-Panel">
+      <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+    </button>
+  </div>
+</div>
+{% endblock %}

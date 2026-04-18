@@ -1,0 +1,17 @@
+{#
+  RCT – mod_newslist_timeline_light.html.twig
+  News list as animated timeline — Editorial / Print Journal style (light).
+  Pair with article template: news_short_timeline
+#}
+{% extends '@Contao/block_unsearchable.html.twig' %}
+
+{% block content %}
+  {% if not articles %}
+    <p class="empty">{{ empty }}</p>
+  {% else %}
+    <div class="rct-timeline variant-alternate show-line rct-news-timeline style-light">
+      {{ articles|join|raw }}
+    </div>
+    {{ pagination|default|raw }}
+  {% endif %}
+{% endblock %}

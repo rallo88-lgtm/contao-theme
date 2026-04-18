@@ -1,0 +1,29 @@
+{#
+  RCT – rct_icon_box.html.twig
+  Feature-Box: Icon + Headline + Text + optionaler Link.
+  align: centered | left
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-icon-box align-{{ align }} style-{{ boxStyle }}{{ cssClass ? ' ' ~ cssClass }}" style="--icon-color: {{ colorCss }};"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+  {% if icon %}
+    <div class="rct-icon-box-icon" aria-hidden="true">{{ icon }}</div>
+  {% endif %}
+  {% if headline %}
+    <h3 class="rct-icon-box-headline">{{ headline }}</h3>
+  {% endif %}
+  {% if text %}
+    <p class="rct-icon-box-text">{{ text|raw }}</p>
+  {% endif %}
+  {% if linkUrl %}
+    <a href="{{ linkUrl }}"
+       class="rct-btn rct-btn--ghost"
+       target="{{ linkTarget }}"
+       {% if linkTarget == '_blank' %}rel="noopener noreferrer"{% endif %}>
+      {{ linkLabel }}
+    </a>
+  {% endif %}
+  <div class="rct-icon-box-glow" aria-hidden="true"></div>
+</div>
+{% endblock %}

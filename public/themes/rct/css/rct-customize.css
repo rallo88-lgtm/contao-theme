@@ -1,0 +1,173 @@
+/* ============================================================
+   RCT – rct-customize.css
+   Patch v3: Sidebar als Overlay, Content wächst/schrumpft
+   ohne Compositing-Blitzer
+
+   Strategie:
+   - Sidebars sind reine Overlays (fixed, kein Layout-Einfluss)
+   - #mainContainer bekommt padding-left/right statt margin
+   - padding animiert auf der CPU, kein GPU-Layer-Rebuild
+   - backdrop-filter auf .mod_article entfernt (Blitz-Ursache)
+   ============================================================ */
+
+
+body.mbj-reader .mod_article p {
+  padding-bottom: 10px;
+}
+
+body.mbj-reader .mod_article p em {
+  font-size: 14px;
+  line-height: 18px;
+}
+
+/* ============================================================
+   Theme: Honey Moon – Canvas-Hintergrundbild honeycombs.jpg
+   ============================================================ */
+
+[data-theme="honey-moon"] #gradient-canvas {
+  background-image: url('../img/theme-bg-honey-moon.webp') !important;
+  background-size: cover;
+  background-position: center top;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+[data-theme="toxic-green"] #gradient-canvas {
+  background-image: url('../img/theme-bg-toxic-green.webp') !important;
+  background-size: cover;
+  background-position: center top;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+
+/* ============================================================
+   Theme: Sparta II – Vollständig helles Layout (schwarz auf weiss)
+   ============================================================ */
+
+/* Hintergründe: Shell, Container, Canvas */
+[data-theme="sparta2"] #left::before,
+[data-theme="sparta2"] #right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #ffffff !important;
+  opacity: 1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+[data-theme="sparta2"] #mainContainer {
+  background-color: #ffffff !important;
+}
+
+[data-theme="sparta2"] #header,
+[data-theme="sparta2"] #navbar,
+[data-theme="sparta2"] .rct-navbar-bg {
+  background: #ffffff !important;
+  border-bottom-color: rgba(0, 0, 0, 0.10) !important;
+}
+
+/* Navigation: alle Bereiche (Sidebar L/R, Header, Navbar) */
+[data-theme="sparta2"] nav ul li a,
+[data-theme="sparta2"] .mod_navigation ul li a {
+  color: #666666 !important;
+  text-shadow: none !important;
+}
+
+[data-theme="sparta2"] nav ul li a:hover,
+[data-theme="sparta2"] nav ul li.active > a,
+[data-theme="sparta2"] nav ul li.trail > a,
+[data-theme="sparta2"] .mod_navigation ul li a:hover,
+[data-theme="sparta2"] .mod_navigation ul li.active > a,
+[data-theme="sparta2"] .mod_navigation ul li.trail > a {
+  color: #1a1a1a !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  text-shadow: none !important;
+}
+
+/* Navbar Level 1: aktive Linie + Dropdown-BGs */
+[data-theme="sparta2"] #navbar .mod_navigation ul.level_1 > li > a:hover,
+[data-theme="sparta2"] #navbar .mod_navigation ul.level_1 > li.trail > a,
+[data-theme="sparta2"] #navbar .mod_navigation ul.level_1 > li.active > a {
+  border-bottom-color: #1a1a1a !important;
+}
+
+[data-theme="sparta2"] #navbar .mod_navigation ul.level_1 > li > a::after {
+  background: #1a1a1a !important;
+}
+
+[data-theme="sparta2"] #navbar .mod_navigation ul.level_2,
+[data-theme="sparta2"] #navbar .mod_navigation ul.level_3,
+[data-theme="sparta2"] #navbar .mod_navigation ul.level_4 {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.10) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Theme- & Layout-Switcher */
+[data-theme="sparta2"] .theme-trigger,
+[data-theme="sparta2"] .layout-trigger {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+  color: #1a1a1a !important;
+}
+
+[data-theme="sparta2"] .theme-trigger:hover,
+[data-theme="sparta2"] .layout-trigger:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(0, 0, 0, 0.25) !important;
+}
+
+[data-theme="sparta2"] .theme-dropdown,
+[data-theme="sparta2"] .layout-dropdown {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme="sparta2"] .theme-opt-btn,
+[data-theme="sparta2"] .layout-opt-btn {
+  color: #666666 !important;
+}
+
+[data-theme="sparta2"] .theme-opt-btn:hover,
+[data-theme="sparta2"] .layout-opt-btn:hover,
+[data-theme="sparta2"] .layout-opt-btn.is-active {
+  color: #1a1a1a !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="sparta2"] .current-theme-name,
+[data-theme="sparta2"] .current-layout-name {
+  color: #1a1a1a !important;
+}
+
+/* Breadcrumb & Headerbereich */
+[data-theme="sparta2"] nav.mod_breadcrumb,
+[data-theme="sparta2"] nav.mod_breadcrumb ul li,
+[data-theme="sparta2"] nav.mod_breadcrumb ul li a,
+[data-theme="sparta2"] #headerTitle,
+[data-theme="sparta2"] #headerTitle h2 {
+  color: #666666 !important;
+}
+
+
+/* ============================================================
+   Erweiterung-overwrites
+   ============================================================ */
+
+.mod_c4g_maps .c4g-sideboard {
+  background-color: var(--rct-shell-bg);
+  color: var(--rct-primary-light);
+}
+
+.mod_c4g_maps .c4g-starboard-headline {
+  color: var(--rct-primary-light) !important;
+}
+
+.mod_c4g_maps .ol-control button {
+  color: var(--rct-primary-light);
+  background-color: var(--rct-shell-bg);
+  background-image: none;
+}

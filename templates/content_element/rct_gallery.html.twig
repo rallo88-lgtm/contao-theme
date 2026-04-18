@@ -1,0 +1,174 @@
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-gallery layout-{{ layout }} cols-{{ cols }}{{ cssClass ? ' ' ~ cssClass }}"
+     id="{{ galleryId }}{{ htmlId ? '-' ~ htmlId : '' }}"
+     data-layout="{{ layout }}"
+     data-cols="{{ cols }}">
+
+  {# ── Filter-Buttons ── #}
+  {% if showFilter %}
+  <div class="rct-gallery-filters" role="tablist" aria-label="Galerie-Filter">
+    <button class="rct-gallery-filter-btn is-active" data-filter="*" type="button">Alle</button>
+    {% for cat in categories %}
+    <button class="rct-gallery-filter-btn" data-filter=".cat-{{ cat.slug }}" type="button">{{ cat.name }}</button>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {# ── Grid ── #}
+  <div class="rct-gallery-grid" data-gallery-grid="{{ galleryId }}">
+
+    {# Masonry-Sizer #}
+    {% if layout == 'masonry' %}
+    <div class="rct-gallery-sizer"></div>
+    {% endif %}
+
+    {% for image in images %}
+    <div class="rct-gallery-item{% if image.category %} cat-{{ image.category }}{% endif %}">
+      <a href="{{ image.path }}" class="rct-gallery-link rct-gallery-open"
+         data-src="{{ image.path }}"
+         data-alt="{{ image.alt }}">
+        <img src="{{ image.path }}" alt="{{ image.alt }}" loading="lazy" class="rct-gallery-img">
+        <span class="rct-gallery-overlay" aria-hidden="true"></span>
+      </a>
+    </div>
+    {% else %}
+    <p class="rct-gallery-empty">Keine Bilder im gewählten Ordner.</p>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+  {% add 'imagesloaded_js' to body %}
+    <script src="/files/themes/rct/js/imagesloaded.pkgd.min.js"></script>
+  {% endadd %}
+  {% add 'isotope_js' to body %}
+    <script src="/files/themes/rct/js/isotope.pkgd.min.js"></script>
+  {% endadd %}
+  <script>
+  (function () {
+    var galleryId = {{ galleryId|json_encode|raw }};
+    var wrap      = document.getElementById(galleryId{% if htmlId %} + '-' + {{ htmlId|json_encode|raw }}{% endif %});
+    var gridEl    = wrap ? wrap.querySelector('[data-gallery-grid]') : null;
+    if (!gridEl) return;
+
+    /* ── Overlay-Lightbox ── */
+    function getOverlay() {
+      var ov = document.getElementById('globalOverlay');
+      if (ov) return ov;
+      // Overlay nicht im Template vorhanden → selbst anlegen
+      ov = document.createElement('div');
+      ov.id        = 'globalOverlay';
+      ov.className = 'rct-overlay';
+      ov.setAttribute('aria-hidden', 'true');
+      ov.innerHTML = '<div class="rct-overlay-close-btn">&times;</div><div class="rct-overlay-content"></div>';
+      document.body.appendChild(ov);
+      // Schließen-Logik
+      ov.addEventListener('click', function (e) {
+        if (e.target.classList.contains('rct-overlay-close-btn') || e.target === ov) {
+          ov.classList.remove('is-active', 'rct-gallery-mode');
+          setTimeout(function () { ov.querySelector('.rct-overlay-content').innerHTML = ''; }, 300);
+        }
+      });
+      return ov;
+    }
+
+    function getVisibleImages() {
+      return Array.from(wrap.querySelectorAll('.rct-gallery-item:not(.is-hidden) .rct-gallery-open'));
+    }
+
+    function showImage(links, idx) {
+      var overlay        = getOverlay();
+      var overlayContent = overlay.querySelector('.rct-overlay-content');
+      if (!overlayContent) return;
+
+      var link  = links[idx];
+      var src   = link.dataset.src;
+      var alt   = link.dataset.alt || '';
+      var total = links.length;
+
+      overlay.dataset.galleryId  = galleryId;
+      overlay.dataset.galleryIdx = idx;
+
+      overlayContent.innerHTML =
+        '<div class="rct-gallery-lb">' +
+          (total > 1 ? '<button class="rct-gallery-lb-prev" aria-label="Vorheriges Bild">&#8592;</button>' : '') +
+          '<div class="rct-gallery-lb-img-wrap"><img src="' + src + '" alt="' + alt + '" class="rct-gallery-lb-img"></div>' +
+          (total > 1 ? '<button class="rct-gallery-lb-next" aria-label="N&auml;chstes Bild">&#8594;</button>' : '') +
+          '<p class="rct-gallery-lb-counter">' + (idx + 1) + ' / ' + total + '</p>' +
+        '</div>';
+
+      overlay.classList.add('is-active', 'rct-gallery-mode');
+
+      overlayContent.querySelector('.rct-gallery-lb-prev') &&
+        overlayContent.querySelector('.rct-gallery-lb-prev').addEventListener('click', function (e) { e.stopPropagation(); navigate(-1); });
+      overlayContent.querySelector('.rct-gallery-lb-next') &&
+        overlayContent.querySelector('.rct-gallery-lb-next').addEventListener('click', function (e) { e.stopPropagation(); navigate(1); });
+    }
+
+    function navigate(dir) {
+      var overlay = getOverlay();
+      if (!overlay.classList.contains('is-active') || overlay.dataset.galleryId !== galleryId) return;
+      var links = getVisibleImages();
+      var idx   = parseInt(overlay.dataset.galleryIdx || '0', 10);
+      showImage(links, (idx + dir + links.length) % links.length);
+    }
+
+    /* Klick auf Galerie-Bilder abfangen */
+    gridEl.addEventListener('click', function (e) {
+      var link = e.target.closest('.rct-gallery-open');
+      if (!link) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var links = getVisibleImages();
+      var idx   = links.indexOf(link);
+      showImage(links, idx >= 0 ? idx : 0);
+    });
+
+    /* Tastatur-Navigation */
+    document.addEventListener('keydown', function (e) {
+      var overlay = document.getElementById('globalOverlay');
+      if (!overlay || !overlay.classList.contains('is-active')) return;
+      if (overlay.dataset.galleryId !== galleryId) return;
+      if (e.key === 'ArrowRight') navigate(1);
+      if (e.key === 'ArrowLeft')  navigate(-1);
+      if (e.key === 'Escape')     { overlay.classList.remove('is-active', 'rct-gallery-mode'); }
+    });
+
+    /* Gallery-Mode-Klasse beim Schließen entfernen */
+    document.addEventListener('click', function (e) {
+      var overlay = document.getElementById('globalOverlay');
+      if (!overlay) return;
+      var isClose = e.target.classList.contains('rct-overlay-close-btn') || e.target === overlay;
+      if (isClose) overlay.classList.remove('rct-gallery-mode');
+    });
+
+    /* ── Isotope — erst wenn alle Libs geladen ── */
+    window.addEventListener('load', function () {
+      if (typeof imagesLoaded !== 'function' || typeof Isotope !== 'function') return;
+      var layout = {{ layout|json_encode|raw }};
+      var isoOptions = {
+        itemSelector: '.rct-gallery-item',
+        percentPosition: true,
+        layoutMode: layout === 'fitrows' ? 'fitRows' : 'masonry',
+      };
+      if (layout === 'masonry') {
+        isoOptions.masonry = { columnWidth: '.rct-gallery-sizer' };
+      }
+      imagesLoaded(gridEl, function () {
+        var iso = new Isotope(gridEl, isoOptions);
+        wrap.querySelectorAll('.rct-gallery-filter-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            wrap.querySelectorAll('.rct-gallery-filter-btn').forEach(function (b) { b.classList.remove('is-active'); });
+            btn.classList.add('is-active');
+            iso.arrange({ filter: btn.dataset.filter });
+          });
+        });
+      });
+    });
+  })();
+  </script>
+{% endblock %}

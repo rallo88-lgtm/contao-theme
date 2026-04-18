@@ -1,0 +1,27 @@
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-accordion style-{{ accordionStyle }}" style="--acc-color: {{ colorCss }};" data-rct-accordion>
+
+  {% for item in items %}
+  <div class="rct-accordion-item{% if item.open %} is-open{% endif %}">
+
+    <button class="rct-accordion-trigger"
+            aria-expanded="{{ item.open ? 'true' : 'false' }}"
+            aria-controls="rct-acc-panel-{{ item.index }}">
+      <span class="rct-accordion-title">{{ item.title }}</span>
+      <span class="rct-accordion-icon" aria-hidden="true"></span>
+    </button>
+
+    <div class="rct-accordion-panel"
+         id="rct-acc-panel-{{ item.index }}"
+         role="region"
+         {% if not item.open %}hidden{% endif %}>
+      <div class="rct-accordion-body">{{ item.body|raw }}</div>
+    </div>
+
+  </div>
+  {% endfor %}
+
+</div>
+{% endblock %}

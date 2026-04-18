@@ -1,0 +1,190 @@
+{#
+  RCT – Rallos Contao Toolbox
+  Template: fe_page.html.twig
+  Contao: 5.7+
+#}
+{% extends "@Contao/fe_page.html.twig" %}
+
+{% block head %}
+  {% block head_init %}
+  {# Font preloads — LCP: nur die 2 kritischen Weights vorab laden #}
+  <link rel="preload" href="/files/themes/rct/fonts/space-grotesk-v22-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/files/themes/rct/fonts/dm-mono-v16-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+
+  {# Klaro CSS — render-blocking nötig damit kein Flash vor Consent-Banner #}
+  <link rel="stylesheet" href="/files/themes/rct/css/klaro.min.css">
+
+  {# Klaro Config inline (1.6KB) — spart HTTP-Request, muss vor klaro.min.js stehen #}
+  <script>
+  var klaroConfig = {
+    version: 1,
+    elementID: 'klaro',
+    storageMethod: 'cookie',
+    cookieName: 'rct_klaro',
+    cookieExpiresAfterDays: 365,
+    privacyPolicy: '/datenschutz',
+    default: false,
+    mustConsent: false,
+    acceptAll: true,
+    hideDeclineAll: false,
+    lang: 'de',
+    translations: {
+      de: {
+        privacyPolicyUrl: '/datenschutz',
+        consentNotice: { description: 'Diese Website lädt externe Inhalte (Karten, Videos). Bitte stimme zu, um sie anzuzeigen. {purposes}' },
+        consentModal: { title: 'Datenschutzeinstellungen', description: 'Hier kannst du einstellen, welche externen Dienste geladen werden dürfen.' },
+        acceptAll: 'Alle akzeptieren',
+        declineAll: 'Alle ablehnen',
+        acceptSelected: 'Auswahl speichern',
+        purposes: { maps: 'Karten', media: 'Videos & Medien' },
+        openstreetmap: { title: 'OpenStreetMap', description: 'Interaktive Karte via OpenStreetMap/Leaflet. Beim Laden werden Kartenkacheln vom OSM-Server abgerufen (IP-Übertragung).' },
+        youtube: { title: 'YouTube', description: 'Video-Einbettung via YouTube (Google LLC). Beim Abspielen können Cookies gesetzt und Daten an Google übertragen werden.' },
+      },
+    },
+    services: [
+      { name: 'openstreetmap', title: 'OpenStreetMap', purposes: ['maps'], required: false, default: false },
+      { name: 'youtube', title: 'YouTube', purposes: ['media'], required: false, default: false },
+    ],
+  };
+  </script>
+
+  {# klaro.min.js deferred — 236KB NICHT mehr render-blocking! #}
+  <script data-config="klaroConfig" src="/files/themes/rct/js/klaro.min.js" defer></script>
+
+  {# FOUC-Guard: sofort, inline, kein defer — muss vor CSS laufen #}
+  <script>
+    (function() {
+      if (window.innerWidth > 1024 && localStorage.getItem('rct-sidebar-state') === 'closed') {
+        document.documentElement.classList.add('rct-sidebar-initial-closed');
+      }
+      var t = localStorage.getItem('user-theme');
+      if (t && t !== 'default') {
+        document.documentElement.setAttribute('data-theme', t);
+      }
+      var l = localStorage.getItem('rct-layout');
+      if (window.innerWidth > 1024
+          && l !== 'topnav'
+          && localStorage.getItem('rct-sidebar-right-state') === 'open') {
+        document.documentElement.classList.add('rct-right-initial-open');
+      }
+      if (l && l !== 'sidebar') {
+        document.documentElement.setAttribute('data-layout', l);
+      }
+    })();
+  </script>
+  {% endblock %}
+  {{ parent() }}
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="theme-color" content="#4a6700">
+{% endblock %}
+
+{% block body %}
+  {% block wrapper %}
+  <div id="wrapper">
+      <canvas id="gradient-canvas"></canvas>
+      <canvas id="rct-dots-canvas"></canvas>
+
+      {% block header %}
+        {% if header %}
+          <header id="header" role="banner">
+            <a href="/" class="rct-header-logo-link" aria-label="{{ page.rootTitle | default('RCT') }}">
+              {{ include('_rct_logo_head.html.twig',   { aria_label: page.rootTitle|default('RCT') }) }}
+              {{ include('_rct_logo_mobile.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
+            </a>
+            <div class="rct-header-brand">
+              {{ header|raw }}
+            </div>
+            {% block header_nav %}
+            <div class="rct-header-nav">
+              {{ include('_rct_ctrl_language.html.twig') }}
+              {{ include('rct_theme_switcher.html.twig') }}
+            </div>
+            {% endblock %}
+          </header>
+        {% endif %}
+      {% endblock %}
+
+      <nav id="navbar" class="rct-navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="rct-navbar-menu">
+          {{ left|raw }}
+        </div>
+      </nav>
+
+      <div id="mainContainer">
+
+        {% block left_sidebar %}
+        <aside id="left" aria-label="Hauptnavigation">
+          {% block left_sidebar_close %}
+          <button class="rct-sidebar-close-btn js-close-sidebar" aria-label="Menü schließen">
+            <svg class="rct-icon-shove" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="arrow-1" d="M18 6L12 12L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path class="arrow-2" d="M12 6L6 12L12 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          {% endblock %}
+          <div class="inside sitenavigation">{{ left|raw }}</div>
+          <div class="rct-sidebar-logo">
+            <a href="/" class="rct-logo-link" aria-label="{{ page.rootTitle | default('RCT') }} – Startseite">
+              {{ include('_rct_logo.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
+            </a>
+          </div>
+          <div class="rct-sidebar-footer">
+            <a href="/datenschutz">Datenschutz</a>
+            <a href="/impressum">Impressum</a>
+          </div>
+        </aside>
+        {% endblock %}
+
+        {# --------------------------------------------------------
+           MAIN + FOOTER im Flow
+        -------------------------------------------------------- #}
+        <main id="main" role="main">
+          <div class="rct-content-inner">
+            {{ main|raw }}
+          </div>
+
+          {# Footer scrollt mit dem Content – 3-4 Boxen, klassisch #}
+          <footer id="footer" role="contentinfo">
+            {{ footer|raw }}
+          </footer>
+        </main>
+
+        {% block right_sidebar %}
+        <aside id="right" aria-label="Nebennavigation">
+          <button id="rct-menu-right-toggle" class="rct-sidebar-close-btn right" title="Layer-Management">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+              <path class="arrow-1" d="M6 6L12 12L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path class="arrow-2" d="M12 6L18 12L12 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          <div class="inside sitenavigation">{{ right|raw }}</div>
+          <div class="rct-sidebar-logo">
+            <a href="/" class="rct-logo-link" aria-label="{{ page.rootTitle | default('RCT') }} – Startseite">
+              {{ include('_rct_logo.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
+            </a>
+          </div>
+          <div class="rct-sidebar-footer">
+            <a href="/datenschutz">Datenschutz</a>
+            <a href="/impressum">Impressum</a>
+          </div>
+        </aside>
+        {% endblock %}
+
+      </div>{# /#mainContainer #}
+
+      {# --------------------------------------------------------
+         BOTTOM – fix am Boden, immer sichtbar
+      -------------------------------------------------------- #}
+      <div id="bottom">
+        <div class="rct-bottom-copy">&copy; {{ "now"|date("Y") }} RCT — Powered by <a href="https://contao.org" target="_blank" rel="noopener">Contao</a></div>
+      </div>
+
+  </div>{# /#wrapper #}
+  {% endblock %}{# wrapper #}
+  
+{# Das Overlay lebt außerhalb aller Layout-Container #}
+  <div id="globalOverlay" class="rct-overlay" aria-hidden="true">
+    <div class="rct-overlay-close-btn">&times;</div><div class="rct-overlay-content">{# Hier landet der Content via JS #}</div>
+  </div>
+  
+{% endblock %}

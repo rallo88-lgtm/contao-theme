@@ -1,0 +1,42 @@
+{#
+  RCT – rct_stat_box.html.twig
+  Animated KPI / stat card.
+  numValue: number to count up to
+  decimals: decimal places
+  prefix:   e.g. ">" or "ca."
+  unit:     e.g. "%" or "€" or "Mitglieder"
+  label:    main label below the number
+  subLabel: optional second line
+  icon:     emoji or short text shown above the number
+  colorCss: CSS color value
+  size:     sm | md | lg
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-stat-box size-{{ size }}"
+     style="--stat-color: {{ colorCss }};"
+     data-stat-value="{{ numValue }}"
+     data-stat-decimals="{{ decimals }}">
+
+  {% if icon %}
+    <div class="rct-stat-icon" aria-hidden="true">{{ icon }}</div>
+  {% endif %}
+
+  <div class="rct-stat-number" aria-label="{{ prefix }}{{ numValue }}{{ unit }}">
+    {% if prefix %}<span class="rct-stat-prefix">{{ prefix }}</span>{% endif %}
+    <span class="rct-stat-counter">0</span>
+    {% if unit %}<span class="rct-stat-unit">{{ unit }}</span>{% endif %}
+  </div>
+
+  {% if label %}
+    <div class="rct-stat-label">{{ label }}</div>
+  {% endif %}
+
+  {% if subLabel %}
+    <div class="rct-stat-sublabel">{{ subLabel }}</div>
+  {% endif %}
+
+  <div class="rct-stat-glow" aria-hidden="true"></div>
+</div>
+{% endblock %}

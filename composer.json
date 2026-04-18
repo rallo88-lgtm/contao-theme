@@ -1,0 +1,29 @@
+{
+    "name": "rallo88/contao-theme",
+    "description": "RCT — Rallo's Contao Theme. A modern dark-mode design system with WebGL effects, custom content elements, and multi-layout support for Contao 5.",
+    "type": "contao-bundle",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Ralph Engels",
+            "email": "rallo88@googlemail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "contao/core-bundle": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rallo\\ContaoTheme\\": "src/"
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "Rallo\\ContaoTheme\\ContaoManager\\Plugin"
+    },
+    "config": {
+        "allow-plugins": {
+            "contao/manager-plugin": true
+        }
+    }
+}

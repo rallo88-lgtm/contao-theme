@@ -1,0 +1,44 @@
+{#
+  RCT – rct_tabs.html.twig
+  Terminal IDE–style tab panels.
+  Data format: first line = tab title, rest = content, blocks separated by ---
+  Emoji/icon prefix supported: "🚀 Tab Title"
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+{% if tabs %}
+<div class="rct-tabs style-{{ tabsStyle }}{{ cssClass ? ' ' ~ cssClass }}"{% if colorCss %} style="--tab-color: {{ colorCss }};"{% endif %}{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+
+  <div class="rct-tabs-nav" role="tablist">
+    {% for tab in tabs %}
+      <button
+        class="rct-tabs-btn{% if loop.first %} is-active{% endif %}"
+        role="tab"
+        aria-selected="{{ loop.first ? 'true' : 'false' }}"
+        aria-controls="rct-tab-panel-{{ _context.id ?? loop.index }}-{{ loop.index }}"
+        id="rct-tab-btn-{{ _context.id ?? loop.index }}-{{ loop.index }}"
+        type="button"
+      >
+        <span class="rct-tab-num">{{ '%02d'|format(loop.index) }}</span>{{ tab.title }}
+      </button>
+    {% endfor %}
+  </div>
+
+  <div class="rct-tabs-body">
+    {% for tab in tabs %}
+      <div
+        class="rct-tabs-panel{% if loop.first %} is-active{% endif %}"
+        role="tabpanel"
+        id="rct-tab-panel-{{ _context.id ?? loop.index }}-{{ loop.index }}"
+        aria-labelledby="rct-tab-btn-{{ _context.id ?? loop.index }}-{{ loop.index }}"
+        {% if not loop.first %}hidden{% endif %}
+      >
+        {{ tab.content|raw }}
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endif %}
+{% endblock %}

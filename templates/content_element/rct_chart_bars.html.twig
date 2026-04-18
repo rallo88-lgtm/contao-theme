@@ -1,0 +1,29 @@
+{#
+  RCT – rct_chart_bars.html.twig
+  Animated bar chart content element.
+  orientation: vertical | horizontal
+  color: accent | primary | mixed
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-chart-bars orientation-{{ orientation }} color-{{ color }}{{ cssClass ? ' ' ~ cssClass }}"
+     data-orientation="{{ orientation }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}
+     aria-label="Balkendiagramm">
+  {% for bar in bars %}
+    <div class="rct-chart-bar"
+         style="--bar-target: {{ bar.value }}%; --bar-delay: {{ bar.delay }}s;{% if bar.colorCss %} --chart-color: {{ bar.colorCss }};{% endif %}"
+         role="listitem">
+      <div class="rct-chart-bar-track" aria-hidden="true">
+        <div class="rct-chart-bar-fill"></div>
+      </div>
+      <div class="rct-chart-bar-meta">
+        <span class="rct-chart-bar-label">{{ bar.label }}</span>
+        {% if showValues %}
+          <span class="rct-chart-bar-value" data-target="{{ bar.value }}">0</span>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

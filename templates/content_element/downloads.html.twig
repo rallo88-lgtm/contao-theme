@@ -1,0 +1,28 @@
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% set attributes = attrs()
+    .addClass('rct-downloads-list')
+    .mergeWith(attributes|default)
+%}
+
+{% block content %}
+    {% if downloads %}
+        <ul class="rct-downloads-list">
+            {% for dl in downloads %}
+                {% set ext = dl.file.extension(true)|upper %}
+                {% set name = dl.file.extraMetadata.localized.default.title|default(dl.file.name) %}
+                <li class="ext-{{ dl.file.extension(true) }}">
+                    <a href="{{ dl.href }}" class="rct-download-link" title="{{ name }}"{% if dl.file.mimeType('') %} type="{{ dl.file.mimeType('') }}"{% endif %}>
+                        <span class="rct-download-icon">↓</span>
+                        <span class="rct-download-info">
+                            <span class="rct-download-name">{{ name }}</span>
+                            <span class="rct-download-meta">
+                                <span class="rct-download-badge">{{ ext }}</span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

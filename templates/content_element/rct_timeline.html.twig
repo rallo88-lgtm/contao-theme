@@ -1,0 +1,41 @@
+{#
+  RCT – rct_timeline.html.twig
+  Vertical animated timeline.
+  variant:  alternate (left/right) | single (always left)
+  showLine: bool – vertical connector line
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-timeline variant-{{ variant }}{% if showLine %} show-line{% endif %} style-{{ timelineStyle }}">
+
+  {% for item in items %}
+    <div class="rct-timeline-item side-{{ item.side }}"
+         style="--tl-color: {{ item.colorCss }};"
+         data-tl-index="{{ item.index }}">
+
+      {# Connector dot on the line #}
+      <div class="rct-timeline-dot" aria-hidden="true">
+        {% if item.icon %}
+          <span class="rct-timeline-dot-icon">{{ item.icon }}</span>
+        {% endif %}
+      </div>
+
+      {# Card #}
+      <div class="rct-timeline-card">
+        {% if item.date %}
+          <div class="rct-timeline-date">{{ item.date }}</div>
+        {% endif %}
+        {% if item.title %}
+          <h3 class="rct-timeline-title">{{ item.title }}</h3>
+        {% endif %}
+        {% if item.body %}
+          <div class="rct-timeline-body">{{ item.body|raw }}</div>
+        {% endif %}
+      </div>
+
+    </div>
+  {% endfor %}
+
+</div>
+{% endblock %}

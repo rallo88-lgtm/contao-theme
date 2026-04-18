@@ -1,0 +1,14 @@
+<?php
+
+// Legends
+$GLOBALS['TL_LANG']['tl_content']['grid_legend'] = 'RCT Grid Settings';
+
+// Fields
+$GLOBALS['TL_LANG']['tl_content']['rct_columns'] = ['Columns', 'Number of grid columns'];
+$GLOBALS['TL_LANG']['tl_content']['rct_gap']     = ['Gap', 'Gap between grid items'];
+$GLOBALS['TL_LANG']['tl_content']['rct_align']   = ['Alignment', 'Vertical alignment of grid items'];
+
+// Element type labels
+$GLOBALS['TL_LANG']['CTE']['rct']            = 'RCT Elements';
+$GLOBALS['TL_LANG']['CTE']['rct_grid_start'] = ['RCT Grid (Start)', 'Opens a multi-column grid container'];
+$GLOBALS['TL_LANG']['CTE']['rct_grid_end']   = ['RCT Grid (End)', 'Closes the grid container'];

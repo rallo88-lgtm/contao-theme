@@ -1,0 +1,52 @@
+{% if address %}
+<div class="rct-map-wrap{{ cssClass ? ' ' ~ cssClass }}" style="height:{{ height }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+  <div id="{{ mapId }}" class="rct-map-canvas rct-map-placeholder">
+    <p class="rct-map-consent-hint">
+      Zum Laden der Karte bitte in den <button onclick="klaro.show()">Datenschutzeinstellungen</button> OpenStreetMap aktivieren.
+    </p>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<script type="text/plain" data-type="text/javascript" data-name="openstreetmap"
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+<script type="text/plain" data-type="text/javascript" data-name="openstreetmap">
+(function() {
+  var mapId   = {{ mapId|json_encode|raw }};
+  var address = {{ address|json_encode|raw }};
+  var zoom    = {{ zoom|json_encode|raw }};
+  var marker  = {{ marker|json_encode|raw }};
+
+  function initMap(lat, lng) {
+    var el = document.getElementById(mapId);
+    el.classList.remove('rct-map-placeholder');
+    var map = L.map(mapId, { scrollWheelZoom: false }).setView([lat, lng], parseInt(zoom));
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '\u00a9 <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende',
+      maxZoom: 19
+    }).addTo(map);
+
+    var m = L.marker([lat, lng]).addTo(map);
+    if (marker) {
+      m.bindPopup(marker).openPopup();
+    }
+  }
+
+  var nominatimUrl = 'https://nominatim.openstreetmap.org/search?' + new URLSearchParams({ q: address, format: 'json', limit: '1' });
+  fetch(nominatimUrl, { headers: { 'Accept-Language': 'de' } })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data && data[0]) {
+      initMap(parseFloat(data[0].lat), parseFloat(data[0].lon));
+    } else {
+      document.getElementById(mapId).innerHTML = '<p class="rct-map-error">Adresse nicht gefunden: ' + address + '</p>';
+    }
+  })
+  .catch(function() {
+    document.getElementById(mapId).innerHTML = '<p class="rct-map-error">Karte konnte nicht geladen werden.</p>';
+  });
+})();
+</script>
+{% endif %}

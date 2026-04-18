@@ -1,0 +1,36 @@
+{#
+  RCT – news_short_timeline.html.twig
+  Single news article rendered as a timeline item.
+  Left/right alternation handled via CSS :nth-child on .rct-news-timeline.
+  Select this as article template in the news archive settings.
+#}
+<div class="rct-timeline-item side-auto arc_{{ archive.id }}{{ class }}">
+
+  <div class="rct-timeline-dot" aria-hidden="true"></div>
+
+  <div class="rct-timeline-card">
+    <div class="rct-timeline-date">
+      <time datetime="{{ datetime }}">{{ date }}</time>
+      {% if author %}<span class="rct-tl-author"> · {{ author }}</span>{% endif %}
+    </div>
+
+    <h2 class="rct-timeline-title">
+      {{- linkHeadline|sanitize_html('contao') -}}
+    </h2>
+
+    {% if teaser is defined and teaser %}
+      <div class="rct-timeline-body">
+        {{- teaser|sanitize_html('contao')|csp_inline_styles|insert_tag_raw -}}
+      </div>
+    {% endif %}
+
+    {% if hasText.invoke() or hasTeaser %}
+      <p class="rct-timeline-more">{{ more|default|sanitize_html('contao') }}</p>
+    {% endif %}
+  </div>
+
+</div>
+
+{% if not hasReader %}
+  {% do add_schema_org(getSchemaOrgData.invoke()) %}
+{% endif %}
