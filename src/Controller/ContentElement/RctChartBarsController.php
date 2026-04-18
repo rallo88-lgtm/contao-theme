@@ -63,10 +63,18 @@ class RctChartBarsController extends AbstractContentElementController
             $i++;
         }
 
+        $raw = trim((string) $model->rct_content_color);
+        if ($raw !== '') {
+            $textColor = str_starts_with($raw, 'var(') ? $raw : '#' . ltrim($raw, '#');
+        } else {
+            $textColor = '';
+        }
+
         $template->bars        = $bars;
         $template->orientation = $model->rct_chart_orientation ?: 'vertical';
         $template->color       = $model->rct_chart_color       ?: 'accent';
         $template->showValues  = (bool) $model->rct_chart_show_values;
+        $template->textColor   = $textColor;
         $cssId                 = \Contao\StringUtil::deserialize($model->cssID, true);
         $template->htmlId      = trim($cssId[0] ?? '', '"\'');
         $template->cssClass    = $cssId[1] ?? '';

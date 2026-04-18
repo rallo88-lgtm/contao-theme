@@ -9,6 +9,7 @@
 {% block content %}
 <div class="rct-chart-bars orientation-{{ orientation }} color-{{ color }}{{ cssClass ? ' ' ~ cssClass }}"
      data-orientation="{{ orientation }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}
+     {% if textColor %}style="color: {{ textColor }}"{% endif %}
      aria-label="Balkendiagramm">
   {% for bar in bars %}
     <div class="rct-chart-bar"

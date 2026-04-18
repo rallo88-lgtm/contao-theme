@@ -570,7 +570,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_timeline_style'] = [
 // ============================================================
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_chart_bars'] =
-    '{type_legend},type;{chart_legend},rct_chart_bars_data,rct_chart_orientation,rct_chart_color,rct_chart_show_values;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{chart_legend},rct_chart_bars_data,rct_chart_orientation,rct_chart_color,rct_chart_show_values,rct_content_color;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_chart_bars_data'] = [
     'label'     => ['Balken-Daten', 'Eine Zeile pro Balken: Label|Wert (0–100). Zeilen mit # werden ignoriert.'],
