@@ -9,7 +9,7 @@ use Contao\CoreBundle\Twig\FragmentTemplate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsContentElement(type: 'rct_alert', category: 'rct')]
+#[AsContentElement(type: 'rct_alert', category: 'rct', template: 'content_element/rct_alert')]
 class RctAlertController extends AbstractContentElementController
 {
     private const TYPE_CONFIG = [

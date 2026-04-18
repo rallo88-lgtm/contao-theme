@@ -9,7 +9,7 @@ use Contao\CoreBundle\Twig\FragmentTemplate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsContentElement(type: 'rct_tabs', category: 'rct')]
+#[AsContentElement(type: 'rct_tabs', category: 'rct', template: 'content_element/rct_tabs')]
 class RctTabsController extends AbstractContentElementController
 {
     private const COLOR_MAP = [

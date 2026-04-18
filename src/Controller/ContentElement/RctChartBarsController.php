@@ -9,7 +9,7 @@ use Contao\CoreBundle\Twig\FragmentTemplate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsContentElement(type: 'rct_chart_bars', category: 'rct')]
+#[AsContentElement(type: 'rct_chart_bars', category: 'rct', template: 'content_element/rct_chart_bars')]
 class RctChartBarsController extends AbstractContentElementController
 {
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response

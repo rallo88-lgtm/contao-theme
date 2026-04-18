@@ -9,7 +9,7 @@ use Contao\CoreBundle\Twig\FragmentTemplate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsContentElement(type: 'rct_stat_box', category: 'rct')]
+#[AsContentElement(type: 'rct_stat_box', category: 'rct', template: 'content_element/rct_stat_box')]
 class RctStatBoxController extends AbstractContentElementController
 {
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response

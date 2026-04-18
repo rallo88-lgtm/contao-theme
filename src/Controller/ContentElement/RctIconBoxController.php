@@ -10,7 +10,7 @@ use Contao\CoreBundle\Twig\FragmentTemplate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsContentElement(type: 'rct_icon_box', category: 'rct')]
+#[AsContentElement(type: 'rct_icon_box', category: 'rct', template: 'content_element/rct_icon_box')]
 class RctIconBoxController extends AbstractContentElementController
 {
     private const COLOR_MAP = [
