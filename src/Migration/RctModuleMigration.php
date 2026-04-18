@@ -122,24 +122,33 @@ class RctModuleMigration extends AbstractMigration
             'numberOfItems' => 0, 'queryType' => 'and', 'searchType' => 'simple', 'minKeywordLength' => 4,
         ]);
 
+        $this->db->insert('tl_module', [
+            'pid' => $themeId, 'tstamp' => $now,
+            'name' => 'RCT Sidebar Footer', 'type' => 'html',
+            'headline' => $headline(), 'cssID' => $cssId('', 'rct-sidebar-footer'),
+            'html' => '<a href="/datenschutz">Datenschutz</a><a href="/impressum">Impressum</a>',
+            'numberOfItems' => 3, 'queryType' => 'and', 'searchType' => 'simple', 'minKeywordLength' => 4,
+        ]);
+        $sidebarFooterId = (int) $this->db->lastInsertId();
+
         // --- Layouts mit Modul-Zuweisungen aktualisieren ---
 
         $mod = fn(int $id, string $col) => ['mod' => (string) $id, 'col' => $col, 'enable' => '1'];
 
         $common = [
-            $mod($seitentitelId, 'header'),
-            $mod($breadcrumbId,  'header'),
-            $mod(0,              'main'),
-            $mod($loginId,       'footer'),
-            $mod($bottomId,      'footer'),
-            $mod($headerNavId,   'navbar'),
+            $mod($seitentitelId,    'header'),
+            $mod($breadcrumbId,     'header'),
+            $mod(0,                 'main'),
+            $mod($loginId,          'footer'),
+            $mod($bottomId,         'footer'),
+            $mod($headerNavId,      'navbar'),
         ];
 
         $layoutModules = [
-            'fe_page'           => [$common[0], $common[1], $mod($navId, 'left'), $mod($navId, 'right'), $common[2], $common[3], $common[4], $common[5]],
-            'fe_page_nav_left'  => [$common[0], $common[1], $mod($navId, 'left'), $mod(0, 'right'),       $common[2], $common[3], $common[4], $common[5]],
-            'fe_page_nav_right' => [$common[0], $common[1], $mod(0, 'left'),       $mod($navId, 'right'), $common[2], $common[3], $common[4], $common[5]],
-            'fe_page_nav_top'   => [$common[0], $common[1], $mod(0, 'left'),       $mod($navId, 'left'),  $common[2], $common[3], $common[4], $common[5]],
+            'fe_page'           => [$common[0], $common[1], $mod($navId, 'left'), $mod($sidebarFooterId, 'left'), $mod($navId, 'right'), $mod($sidebarFooterId, 'right'), $common[2], $common[3], $common[4], $common[5]],
+            'fe_page_nav_left'  => [$common[0], $common[1], $mod($navId, 'left'), $mod($sidebarFooterId, 'left'), $mod(0, 'right'),                                       $common[2], $common[3], $common[4], $common[5]],
+            'fe_page_nav_right' => [$common[0], $common[1], $mod(0, 'left'),                                      $mod($navId, 'right'), $mod($sidebarFooterId, 'right'), $common[2], $common[3], $common[4], $common[5]],
+            'fe_page_nav_top'   => [$common[0], $common[1], $mod(0, 'left'),                                      $mod($navId, 'left'),  $mod($sidebarFooterId, 'left'),  $common[2], $common[3], $common[4], $common[5]],
         ];
 
         foreach ($layoutModules as $template => $modules) {
@@ -150,6 +159,6 @@ class RctModuleMigration extends AbstractMigration
             );
         }
 
-        return $this->createResult(true, '9 RCT-Module angelegt und Layouts aktualisiert.');
+        return $this->createResult(true, '10 RCT-Module angelegt und Layouts aktualisiert.');
     }
 }
