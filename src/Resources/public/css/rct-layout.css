@@ -1293,11 +1293,13 @@ position: sticky;
   right: 0px;
 }
 
-/* Navigation — Höhe wird per JS gesetzt (feste Höhe = kein Logo-Springen) */
+/* Navigation — wächst auf verfügbare #left-Höhe, Flex-Spalte für margin-top: auto des Footers */
 #left .inside.sitenavigation,
 #right .inside.sitenavigation {
-  flex-shrink: 0;
-  overflow: visible;   /* Submenus dürfen visuell überlaufen */
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;    /* Submenus innerhalb der Sidebar-Höhe halten */
   position: relative;
   z-index: 2;          /* Submenus überlagern Logo-Bereich */
 }
@@ -1312,16 +1314,6 @@ position: sticky;
   z-index: 1;
 }
 
-/* Mess-Klasse: alle Submenus gleichzeitig unsichtbar aufklappen zum Messen */
-#left .inside.sitenavigation.rct-measuring .submenu > ul,
-#right .inside.sitenavigation.rct-measuring .submenu > ul {
-  display: block !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-  height: auto !important;
-  overflow: visible !important;
-  opacity: 0 !important;
-}
 
 #left nav, #right nav,
 #left .mod_navigation {
@@ -1484,6 +1476,7 @@ nav ul li a,
 #left .rct-sidebar-footer {
   padding: 1.5rem 1rem 0;
   border-top: 1px solid var(--rct-shell-border);
+  margin-top: auto;
 }
 #left .rct-sidebar-footer a {
   display: flex;

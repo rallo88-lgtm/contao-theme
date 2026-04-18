@@ -1170,45 +1170,9 @@ window.applyLayout = function (layout) {
   })();
 
 
-  /* ------------------------------------------------------------------
-     SIDEBAR NAV-HÖHE RESERVIEREN
-     Klappt alle Submenus unsichtbar auf, misst scrollHeight,
-     setzt FESTE height auf .inside.sitenavigation.
-     Submenus können danach overflow:visible nach unten wachsen —
-     Logo sitzt fest darunter, springt nie.
-  ------------------------------------------------------------------ */
-  (function initSidebarNavReserve() {
-
-    function measureMaxNavHeight(nav) {
-      // Alle Submenus über CSS-Klasse unsichtbar aufklappen
-      nav.classList.add('rct-measuring');
-      // Reflow erzwingen
-      var h = nav.scrollHeight;
-      nav.classList.remove('rct-measuring');
-      return h;
-    }
-
-    function reserveNavHeight() {
-      ['#left', '#right'].forEach(function(sel) {
-        var sidebar = document.querySelector(sel);
-        if (!sidebar) return;
-        var nav = sidebar.querySelector('.inside.sitenavigation');
-        if (!nav) return;
-
-        // Höhe zurücksetzen für saubere Messung
-        nav.style.height = '';
-        var h = measureMaxNavHeight(nav);
-        if (h > 0) nav.style.height = h + 'px';
-      });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', reserveNavHeight);
-    } else {
-      reserveNavHeight();
-    }
-    document.addEventListener('rct:page-ready', reserveNavHeight);
-  })();
+  /* Sidebar nav-height reservation removed — .inside.sitenavigation is now
+     flex: 1 (fills #left), submenus stay within the sidebar. Logo can't jump
+     because #left has a fixed CSS height. */
 
 
 })();
