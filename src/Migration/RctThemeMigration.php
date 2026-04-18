@@ -55,23 +55,10 @@ class RctThemeMigration extends AbstractMigration
         ];
 
         foreach ($layouts as [$name, $template]) {
-            $this->db->insert('tl_layout', [
-                'pid'            => $themeId,
-                'tstamp'         => $now,
-                'name'           => $name,
-                'template'       => $template,
-                'rows'           => '3rw',
-                'headerHeight'   => $emptySize,
-                'footerHeight'   => $emptySize,
-                'cols'           => '3cl',
-                'widthLeft'      => $emptySize,
-                'widthRight'     => $emptySize,
-                'sections'       => $defaultSections,
-                'modules'        => $defaultModules,
-                'viewport'       => $viewport,
-                'combineScripts' => '1',
-                'minifyMarkup'   => '1',
-            ]);
+            $this->db->executeStatement(
+                'INSERT INTO tl_layout (pid, tstamp, name, template, `rows`, headerHeight, footerHeight, `cols`, widthLeft, widthRight, sections, modules, viewport, combineScripts, minifyMarkup) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [$themeId, $now, $name, $template, '3rw', $emptySize, $emptySize, '3cl', $emptySize, $emptySize, $defaultSections, $defaultModules, $viewport, 1, 1],
+            );
         }
 
         return $this->createResult(true, 'RCT Theme mit 4 Layouts wurde angelegt.');
