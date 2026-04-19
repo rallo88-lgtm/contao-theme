@@ -21,7 +21,7 @@ class RctLogoController extends AbstractFrontendModuleController
 
         if ($model->rct_logo_image) {
             $file = FilesModel::findByUuid($model->rct_logo_image);
-            if ($file !== null && is_file(\TL_ROOT . '/' . $file->path)) {
+            if ($file !== null) {
                 $template->logoImage = $file->path;
             }
         }
