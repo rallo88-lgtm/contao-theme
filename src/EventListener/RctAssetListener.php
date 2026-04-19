@@ -65,17 +65,6 @@ class RctAssetListener
         $css .= "  --rct-radius-xl: calc(" . $this->escape($config['rct_radius']) . " * 4);\n";
         $css .= "}\n";
 
-        // Only override theme-specific vars when no other theme is active
-        $css .= ":root:not([data-theme]), :root[data-theme=\"default\"] {\n";
-        $css .= "  --rct-accent: " . $this->escape($config['rct_color_accent']) . ";\n";
-        $css .= "  --rct-primary: " . $this->escape($config['rct_color_primary']) . ";\n";
-        $css .= "  --rct-primary-light: " . $this->escape($config['rct_color_primary_light']) . ";\n";
-        $css .= "  --grad-1: " . $this->escape($config['rct_grad1']) . ";\n";
-        $css .= "  --grad-2: " . $this->escape($config['rct_grad2']) . ";\n";
-        $css .= "  --grad-3: " . $this->escape($config['rct_grad3']) . ";\n";
-        $css .= "  --grad-4: " . $this->escape($config['rct_grad4']) . ";\n";
-        $css .= "}\n";
-
         $GLOBALS['TL_HEAD'][] = '<style id="rct-theme-config">' . $css . '</style>';
     }
 
