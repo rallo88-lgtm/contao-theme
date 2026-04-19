@@ -1,5 +1,8 @@
 <?php
 
+$GLOBALS['TL_DCA']['tl_module']['palettes']['rct_login_toggle'] =
+    '{title_legend},name,headline,type;{expert_legend:hide},cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_search_toggle'] =
     '{title_legend},name,headline,type;{expert_legend:hide},cssID';
 
