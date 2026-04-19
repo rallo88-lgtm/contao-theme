@@ -656,9 +656,9 @@ body.rct-layout-full #wrapper {
 #header_right .inside .block {
   margin: 0;
 }
-#header_right .inside .mod_rct_language_switcher,
-#header_right .inside .mod_rct_theme_switcher,
-#header_right .inside .mod_rct_layout_switcher {
+#header_right .inside .rct-lang-switcher,
+#header_right .inside .rct-theme-switcher,
+#header_right .inside .rct-layout-switcher {
   margin-left: 0.75rem;
 }
 
