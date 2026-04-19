@@ -631,6 +631,18 @@ body.rct-layout-full #wrapper {
   box-sizing: border-box;
 }
 
+/* Header Links Section — Module floaten als Flex-Row */
+#header_logo {
+  display: contents;
+}
+#header_logo .inside {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+}
+
 /* Header Logo */
 .rct-header-logo-link {
   display: flex;
