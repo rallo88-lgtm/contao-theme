@@ -2761,6 +2761,7 @@
 }
 
 .rct-timeline-title {
+  font-family: var(--rct-font-body);
   font-size: 1rem;
   font-weight: 700;
   color: var(--rct-text, #1b1c1c);

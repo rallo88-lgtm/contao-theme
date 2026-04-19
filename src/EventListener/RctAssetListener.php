@@ -56,7 +56,6 @@ class RctAssetListener
         $css .= "  --rct-font-body: '" . $this->escape($config['rct_font_body']) . "', sans-serif;\n";
         $css .= "  --rct-font-headline: '" . $this->escape($config['rct_font_body']) . "', sans-serif;\n";
         $css .= "  --rct-font-mono: '" . $this->escape($config['rct_font_mono']) . "', monospace;\n";
-        $css .= "  --rct-accent: " . $this->escape($config['rct_color_accent']) . ";\n";
         $css .= "  --rct-sidebar-width: " . $this->escape($config['rct_sidebar_width']) . ";\n";
         $css .= "  --rct-sidebar-left-width: " . $this->escape($config['rct_sidebar_width']) . ";\n";
         $css .= "  --rct-sidebar-right-width: " . $this->escape($config['rct_sidebar_width']) . ";\n";
@@ -66,8 +65,9 @@ class RctAssetListener
         $css .= "  --rct-radius-xl: calc(" . $this->escape($config['rct_radius']) . " * 4);\n";
         $css .= "}\n";
 
-        // Only override default theme vars when no other theme is active
+        // Only override theme-specific vars when no other theme is active
         $css .= ":root:not([data-theme]), :root[data-theme=\"default\"] {\n";
+        $css .= "  --rct-accent: " . $this->escape($config['rct_color_accent']) . ";\n";
         $css .= "  --rct-primary: " . $this->escape($config['rct_color_primary']) . ";\n";
         $css .= "  --rct-primary-light: " . $this->escape($config['rct_color_primary_light']) . ";\n";
         $css .= "  --grad-1: " . $this->escape($config['rct_grad1']) . ";\n";
