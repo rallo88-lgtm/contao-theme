@@ -715,12 +715,6 @@ body.rct-layout-full #wrapper {
   display: none;
 }
 
-#header .rct-header-nav {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
 /* Navigation im Header (wenn keine Sidebar vorhanden) */
 #header .mod_navigation ul {
   display: flex;
@@ -751,13 +745,6 @@ body.rct-layout-full #wrapper {
 nav.mod_breadcrumb ul {
   white-space: nowrap;
   overflow: hidden;
-}
-
-/* Header-Controls (Buttons: Fullscreen, etc.) */
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 .header-icon-btn {
@@ -2203,12 +2190,6 @@ body.rct-right-open #right {
     height: 24px !important;
     width: auto;
     margin-right: 10px;
-  }
-  .header-controls {
-    gap: 0px;
-  }
-  #header .rct-header-nav {
-    gap: 0rem;
   }
   #header_right .inside {
     gap: 0;

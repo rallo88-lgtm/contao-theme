@@ -16,7 +16,21 @@
       "Bash(mv src/templates/content_element/* src/Resources/contao/templates/content_element/)",
       "Bash(mv src/templates/*.html.twig src/Resources/contao/templates/)",
       "Bash(rmdir src/templates/content_element)",
-      "Bash(rmdir src/templates)"
+      "Bash(rmdir src/templates)",
+      "Bash(scp *)",
+      "Bash(cp D:/kunden/dvmb/MBJ-Contao5.7/src/Resources/contao/dca/tl_article.php D:/kunden/rct-bundle/src/Resources/contao/dca/tl_article.php)",
+      "Bash(cp D:/kunden/dvmb/MBJ-Contao5.7/src/Resources/contao/languages/de/tl_article.php D:/kunden/rct-bundle/src/Resources/contao/languages/de/tl_article.php)",
+      "Bash(xargs grep *)",
+      "Bash(perl -pi -e 's/namespace App\\\\\\\\\\\\\\\\Controller\\\\\\\\\\\\\\\\ContentElement;/namespace Rallo\\\\\\\\\\\\\\\\ContaoTheme\\\\\\\\\\\\\\\\Controller\\\\\\\\\\\\\\\\ContentElement;/' src/Controller/ContentElement/*.php)",
+      "Bash(perl -pi -e \"s/#\\\\[AsContentElement\\\\\\(type: 'rct_alert', category: 'rct'\\\\\\)\\\\]/#[AsContentElement\\(type: 'rct_alert', category: 'rct', template: 'content_element\\\\/rct_alert'\\)]/\" src/Controller/ContentElement/RctAlertController.php)",
+      "Bash(perl -pi -e \"s/#\\\\[AsContentElement\\\\\\(type: 'rct_chart_bars', category: 'rct'\\\\\\)\\\\]/#[AsContentElement\\(type: 'rct_chart_bars', category: 'rct', template: 'content_element\\\\/rct_chart_bars'\\)]/\" src/Controller/ContentElement/RctChartBarsController.php)",
+      "Bash(perl -pi -e \"s/#\\\\[AsContentElement\\\\\\(type: 'rct_cta', category: 'rct'\\\\\\)\\\\]/#[AsContentElement\\(type: 'rct_cta', category: 'rct', template: 'content_element\\\\/rct_cta'\\)]/\" src/Controller/ContentElement/RctCtaController.php)",
+      "Bash(perl -pi -e \"s/#\\\\[AsContentElement\\\\\\(type: 'rct_icon_box', category: 'rct'\\\\\\)\\\\]/#[AsContentElement\\(type: 'rct_icon_box', category: 'rct', template: 'content_element\\\\/rct_icon_box'\\)]/\" src/Controller/ContentElement/RctIconBoxController.php)",
+      "Bash(perl -pi -e \"s/#\\\\[AsContentElement\\\\\\(type: 'rct_stat_box', category: 'rct'\\\\\\)\\\\]/#[AsContentElement\\(type: 'rct_stat_box', category: 'rct', template: 'content_element\\\\/rct_stat_box'\\)]/\" src/Controller/ContentElement/RctStatBoxController.php)",
+      "Bash(grep -rn \"^namespace App\\\\\\\\\\\\\\\\\" src/ --include=\"*.php\")",
+      "Bash(php -r \"echo serialize\\(['', 'rct-sidebar-footer']\\);\")",
+      "Bash(git revert *)",
+      "Bash(git commit *)"
     ]
   }
 }
