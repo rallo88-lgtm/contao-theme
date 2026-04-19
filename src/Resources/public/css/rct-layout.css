@@ -656,6 +656,15 @@ body.rct-layout-full #wrapper {
   .rct-logo-mobile { display: block; }
 }
 
+/* Sidebar-Logo Modul: Desktop/Mobile-Bild */
+.rct-logo-img-mobile { display: none; }
+
+@media (max-width: 1024px) {
+  .rct-logo-img-desktop { display: none; }
+  .rct-logo-img-mobile  { display: block; }
+  .rct-logo-hide-mobile { display: none; }
+}
+
 
 #header .rct-header-brand {
   flex: 1;
@@ -2066,9 +2075,9 @@ body.rct-right-open #right {
   #left  { transform: translateX(calc(var(--rct-sidebar-left-width) * -1)); }
   #right { transform: translateX(var(--rct-sidebar-right-width)); }
 
-  /* Logo im Sidebar-Menü auf Mobile ausblenden */
+  /* Logo im Sidebar-Menü auf Mobile sichtbar */
   #left .rct-sidebar-logo,
-  #right .rct-sidebar-logo { display: none; }
+  #right .rct-sidebar-logo { display: block; }
 
   /* Main: kein seitlicher Abstand */
   #main {

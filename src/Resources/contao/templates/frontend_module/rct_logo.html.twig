@@ -1,5 +1,8 @@
-<a href="{{ logoUrl }}" class="rct-logo-link" aria-label="{{ altText }}">
-  {% if logoImage %}
+<a href="{{ logoUrl }}" class="rct-logo-link{% if hideMobile %} rct-logo-hide-mobile{% endif %}" aria-label="{{ altText }}">
+  {% if logoImageMobile %}
+    <img src="{{ logoImage }}" alt="{{ altText }}" loading="lazy" class="rct-logo-custom rct-logo-img-desktop" style="width:100%;height:auto;display:block">
+    <img src="{{ logoImageMobile }}" alt="{{ altText }}" loading="lazy" class="rct-logo-custom rct-logo-img-mobile" style="width:100%;height:auto;display:block">
+  {% elseif logoImage %}
     <img src="{{ logoImage }}" alt="{{ altText }}" loading="lazy" class="rct-logo-custom" style="width:100%;height:auto;display:block">
   {% else %}
     {{ include('@Contao/_rct_logo.html.twig', { aria_label: altText }) }}
