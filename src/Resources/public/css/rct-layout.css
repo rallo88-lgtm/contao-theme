@@ -643,6 +643,17 @@ body.rct-layout-full #wrapper {
   min-width: 0;
 }
 
+/* Header Rechts Section — Controls rechtsbündig */
+#header_right {
+  display: contents;
+}
+#header_right .inside {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: auto;
+}
+
 /* Header Logo */
 .rct-header-logo-link {
   display: flex;
@@ -2189,6 +2200,9 @@ body.rct-right-open #right {
     gap: 0px;
   }
   #header .rct-header-nav {
+    gap: 0rem;
+  }
+  #header_right .inside {
     gap: 0rem;
   }
   .rct-header-icon {

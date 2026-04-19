@@ -1,5 +1,11 @@
 <?php
 
+$GLOBALS['TL_DCA']['tl_module']['palettes']['rct_language_switcher'] =
+    '{title_legend},name,headline,type;{expert_legend:hide},cssID';
+
+$GLOBALS['TL_DCA']['tl_module']['palettes']['rct_header_controls'] =
+    '{title_legend},name,headline,type;{expert_legend:hide},cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_logo'] =
     '{title_legend},name,headline,type;{logo_legend},rct_logo_style,rct_logo_image,rct_logo_image_mobile,rct_logo_url,rct_logo_alt,rct_logo_hide_mobile;{expert_legend:hide},cssID';
 
