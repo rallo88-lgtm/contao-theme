@@ -25,7 +25,16 @@ class RctMenuListener
 
         $category = $factory->createItem('rct_theme')
             ->setLabel('RCT Theme')
-            ->setAttribute('class', 'navigation rct-theme-area');
+            ->setUri('/contao?mtg=rct_theme')
+            ->setLinkAttribute('class', 'group-rct_theme')
+            ->setLinkAttribute('data-action', 'contao--toggle-navigation#toggle:prevent')
+            ->setLinkAttribute('data-contao--toggle-navigation-category-param', 'rct_theme')
+            ->setLinkAttribute('aria-controls', 'rct_theme')
+            ->setLinkAttribute('aria-expanded', 'true')
+            ->setLinkAttribute('data-turbo-prefetch', 'false')
+            ->setLinkAttribute('data-contao--tooltips-target', 'tooltip')
+            ->setLinkAttribute('title', 'Bereich schließen')
+            ->setChildrenAttribute('id', 'rct_theme');
 
         $category->addChild('rct_config', [
             'route'  => 'rct_config',
