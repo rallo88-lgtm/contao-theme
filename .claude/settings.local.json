@@ -30,7 +30,10 @@
       "Bash(grep -rn \"^namespace App\\\\\\\\\\\\\\\\\" src/ --include=\"*.php\")",
       "Bash(php -r \"echo serialize\\(['', 'rct-sidebar-footer']\\);\")",
       "Bash(git revert *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(git rm *)",
+      "Bash(git -C \"D:/kunden/rct-bundle\" tag --sort=-version:refname)",
+      "Bash(git -C \"D:/kunden/rct-bundle\" log --oneline -8)"
     ]
   }
 }
