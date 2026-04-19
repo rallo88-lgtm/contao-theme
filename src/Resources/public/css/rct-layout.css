@@ -650,8 +650,11 @@ body.rct-layout-full #wrapper {
 #header_right .inside {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 4px;
   margin-left: auto;
+}
+#header_right .inside .block {
+  margin: 0;
 }
 
 /* Header Logo */
@@ -2203,7 +2206,7 @@ body.rct-right-open #right {
     gap: 0rem;
   }
   #header_right .inside {
-    gap: 0rem;
+    gap: 0;
   }
   .rct-header-icon {
     padding: 0px;
