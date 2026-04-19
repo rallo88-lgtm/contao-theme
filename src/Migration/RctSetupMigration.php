@@ -181,7 +181,7 @@ class RctSetupMigration extends AbstractMigration
     private function insertLayout(int $pid, int $now, string $name, string $cols, array $modules, string $sections): void
     {
         $this->db->executeStatement(
-            "INSERT INTO tl_layout (pid, tstamp, name, rows, cols, template, viewport, sections, modules) VALUES (?, ?, ?, '3rw', ?, 'fe_page', 'width=device-width,initial-scale=1.0,shrink-to-fit=no', ?, ?)",
+            "INSERT INTO tl_layout (pid, tstamp, name, `rows`, cols, template, viewport, sections, modules) VALUES (?, ?, ?, '3rw', ?, 'fe_page', 'width=device-width,initial-scale=1.0,shrink-to-fit=no', ?, ?)",
             [$pid, $now, $name, $cols, $sections, serialize($modules)]
         );
     }
