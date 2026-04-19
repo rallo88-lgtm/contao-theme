@@ -45,23 +45,18 @@
       <canvas id="rct-dots-canvas"></canvas>
 
       {% block header %}
-        {% if header %}
-          <header id="header" role="banner">
-            <a href="/" class="rct-header-logo-link" aria-label="{{ page.rootTitle | default('RCT') }}">
-              {{ include('@Contao/_rct_logo_head.html.twig',   { aria_label: page.rootTitle|default('RCT') }) }}
-              {{ include('@Contao/_rct_logo_mobile.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
-            </a>
-            <div class="rct-header-brand">
-              {{ header|raw }}
-            </div>
-            {% block header_nav %}
-            <div class="rct-header-nav">
-              {{ include('@Contao/_rct_ctrl_language.html.twig') }}
-              {{ include('@Contao/rct_theme_switcher.html.twig') }}
-            </div>
-            {% endblock %}
-          </header>
-        {% endif %}
+        <header id="header" role="banner">
+          <a href="/" class="rct-header-logo-link" aria-label="{{ page.rootTitle | default('RCT') }}">
+            {{ include('@Contao/_rct_logo_head.html.twig',   { aria_label: page.rootTitle|default('RCT') }) }}
+            {{ include('@Contao/_rct_logo_mobile.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
+          </a>
+          {% block header_nav %}
+          <div class="rct-header-nav">
+            {{ include('@Contao/_rct_ctrl_language.html.twig') }}
+            {{ include('@Contao/rct_theme_switcher.html.twig') }}
+          </div>
+          {% endblock %}
+        </header>
       {% endblock %}
 
       <nav id="navbar" class="rct-navbar" role="navigation" aria-label="Hauptnavigation">
