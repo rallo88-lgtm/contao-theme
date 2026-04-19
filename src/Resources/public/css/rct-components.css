@@ -1093,7 +1093,7 @@
   position: absolute;
   left: 0;
   top: 0.05em;
-  font-family: 'DM Mono', 'Courier New', monospace;
+  font-family: var(--rct-font-mono);
   font-size: 1.05rem;
   font-weight: 400;
   color: var(--rct-accent, #2951c7);
@@ -1267,7 +1267,7 @@
   color: rgba(255, 255, 255, 0.75);
   border-top: 1px solid rgba(39, 196, 244, 0.12);
   border-radius: 0;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -1281,7 +1281,7 @@
 .content-accordion.style-dark .handorgel__header__button::before {
   content: '[' counter(acc-item, decimal-leading-zero) ']';
   color: var(--rct-accent, #27c4f4);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   flex-shrink: 0;
@@ -3244,7 +3244,7 @@
 
 /* Type label — monospace terminal style */
 .rct-alert-label {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -3397,7 +3397,7 @@
 
 /* Sequential number badge */
 .rct-tab-num {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.65rem;
   font-weight: 700;
   color: var(--tab-color);
@@ -3596,7 +3596,7 @@
 
 /* Date: log-timestamp style */
 .rct-news-timeline.style-dark .rct-timeline-date {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.1em;
   color: var(--rct-accent, #27c4f4);
@@ -3626,7 +3626,7 @@
 
 /* "Weiterlesen" → "ACCESS FILE →" */
 .rct-news-timeline.style-dark .rct-timeline-more a {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -3792,7 +3792,7 @@
 }
 
 .rct-timeline.style-dark .rct-timeline-date {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -3805,7 +3805,7 @@
 .rct-timeline.style-dark .rct-timeline-date::after  { content: ' ]'; }
 
 .rct-timeline.style-dark .rct-timeline-title {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   color: var(--rct-shell-text, #fff);
   font-size: 1.05rem;
   font-weight: 700;
@@ -3816,7 +3816,7 @@
 
 .rct-timeline.style-dark .rct-timeline-body,
 .rct-timeline.style-dark .rct-timeline-body p {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.82rem;
   line-height: 1.65;
   color: rgba(255, 255, 255, 0.65);
@@ -3953,14 +3953,14 @@
 }
 
 .rct-people-box.style-dark .rct-people-name {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   color: var(--rct-shell-text, #fff);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .rct-people-box.style-dark .rct-people-role {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.7rem;
   color: var(--rct-accent, #27c4f4);
   letter-spacing: 0.14em;
@@ -3972,7 +3972,7 @@
 .rct-people-box.style-dark .rct-people-bio {
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.82rem;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   line-height: 1.65;
 }
 
@@ -3982,7 +3982,7 @@
 
 .rct-people-box.style-dark .rct-people-contact {
   color: rgba(255, 255, 255, 0.7);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.75rem;
 }
 
@@ -4088,7 +4088,7 @@
 .content-download.style-dark .download-element::before,
 .content-downloads.style-dark .download-element::before {
   content: var(--ext-label, 'FILE');
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -4103,7 +4103,7 @@
 /* Link */
 .content-download.style-dark .download-element a,
 .content-downloads.style-dark .download-element a {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.82rem;
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.75);
@@ -4203,7 +4203,7 @@
 .content-download.style-light .download-element::before,
 .content-downloads.style-light .download-element::before {
   content: var(--ext-label, 'FILE');
-  font-family: ui-monospace, 'Courier New', monospace;
+  font-family: var(--rct-font-mono);
   font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.08em;
