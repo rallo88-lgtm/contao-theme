@@ -1484,6 +1484,7 @@ nav ul li a,
 #left .rct-sidebar-footer {
   padding: 1.5rem 1rem 0;
   border-top: 1px solid var(--rct-shell-border);
+  margin-top: auto;
 }
 #left .rct-sidebar-footer a {
   display: flex;
@@ -1624,6 +1625,8 @@ nav ul li a,
   padding: 1.25rem 1.25rem 1rem;
   border-top: 1px solid var(--rct-shell-border);
   background-color: rgba(0,0,0,0.2);
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 #left .rct-sidebar-logo .rct-logo-link,
