@@ -3,10 +3,12 @@
 #}
 {% set currentLang = (app.request.locale|default('de'))|slice(0,2)|upper %}
 
+{% if languages is not defined or languages is empty %}
 {% set languages = [
   { code: 'DE', label: 'Deutsch', url: '/' },
   { code: 'EN', label: 'English', url: '/en/home' },
 ] %}
+{% endif %}
 
 <div class="rct-lang-switcher" id="langSwitcher">
   <button class="lang-trigger" aria-haspopup="listbox" aria-expanded="false">
