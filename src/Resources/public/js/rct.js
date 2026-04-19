@@ -593,12 +593,8 @@
 
     const isFixed = document.documentElement.hasAttribute('data-fixed');
     const savedTheme = localStorage.getItem('user-theme');
-    if (!isFixed && savedTheme) {
-      applyTheme(savedTheme, false);
-    } else if (!isFixed && gradCanvas && typeof Gradient !== 'undefined' && isWebGLSupported()) {
-      window.gradient = new Gradient();
-      window.gradient.initGradient('#gradient-canvas');
-      setTimeout(() => gradCanvas.classList.add('is-visible'), 300);
+    if (!isFixed) {
+      applyTheme(savedTheme || 'default', false);
     }
 
     if (switcher) {
