@@ -1,3 +1,19 @@
+{% if logoStyle == 'header' %}
+
+<a href="{{ logoUrl }}" class="rct-header-logo-link{% if hideMobile %} rct-logo-hide-mobile{% endif %}" aria-label="{{ altText }}">
+  {% if logoImage %}
+    <img src="{{ logoImage }}" alt="{{ altText }}" loading="lazy" class="rct-logo-head{% if logoImageMobile %} rct-logo-img-desktop{% endif %}" style="height:auto;display:block">
+    {% if logoImageMobile %}
+      <img src="{{ logoImageMobile }}" alt="{{ altText }}" loading="lazy" class="rct-logo-img-mobile" style="height:auto;display:block">
+    {% endif %}
+  {% else %}
+    {{ include('@Contao/_rct_logo_head.html.twig',   { aria_label: altText }) }}
+    {{ include('@Contao/_rct_logo_mobile.html.twig', { aria_label: altText }) }}
+  {% endif %}
+</a>
+
+{% else %}
+
 <a href="{{ logoUrl }}" class="rct-logo-link{% if hideMobile %} rct-logo-hide-mobile{% endif %}" aria-label="{{ altText }}">
   {% if logoImageMobile %}
     <img src="{{ logoImage }}" alt="{{ altText }}" loading="lazy" class="rct-logo-custom rct-logo-img-desktop" style="width:100%;height:auto;display:block">
@@ -8,3 +24,5 @@
     {{ include('@Contao/_rct_logo.html.twig', { aria_label: altText }) }}
   {% endif %}
 </a>
+
+{% endif %}

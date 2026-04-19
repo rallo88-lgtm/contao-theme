@@ -1,7 +1,15 @@
 <?php
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_logo'] =
-    '{title_legend},name,headline,type;{logo_legend},rct_logo_image,rct_logo_image_mobile,rct_logo_url,rct_logo_alt,rct_logo_hide_mobile;{expert_legend:hide},cssID';
+    '{title_legend},name,headline,type;{logo_legend},rct_logo_style,rct_logo_image,rct_logo_image_mobile,rct_logo_url,rct_logo_alt,rct_logo_hide_mobile;{expert_legend:hide},cssID';
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_style'] = [
+    'label'     => ['Position / Stil', 'Sidebar: Logo in linker oder rechter Sidebar. Header: Logo im Seitenheader.'],
+    'inputType' => 'select',
+    'options'   => ['sidebar' => 'Sidebar', 'header' => 'Header'],
+    'eval'      => ['tl_class' => 'w50 clr'],
+    'sql'       => "varchar(16) NOT NULL default 'sidebar'",
+];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_image'] = [
     'label'     => ['Logo-Bild', 'Eigenes Bild hochladen. Leer lassen für das Standard-RCT-SVG-Logo.'],
@@ -32,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_alt'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_hide_mobile'] = [
-    'label'     => ['Auf Mobile ausblenden', 'Logo im Sidebar-Menü auf kleinen Bildschirmen nicht anzeigen.'],
+    'label'     => ['Auf Mobile ausblenden', 'Logo auf kleinen Bildschirmen nicht anzeigen.'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'clr m12'],
     'sql'       => "char(1) NOT NULL default ''",

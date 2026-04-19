@@ -15,10 +15,11 @@ class RctLogoController extends AbstractFrontendModuleController
 {
     protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
     {
-        $template->logoUrl        = $model->rct_logo_url ?: '/';
-        $template->altText        = $model->rct_logo_alt ?: (string) $model->name;
-        $template->hideMobile     = (bool) $model->rct_logo_hide_mobile;
-        $template->logoImage      = null;
+        $template->logoUrl         = $model->rct_logo_url ?: '/';
+        $template->altText         = $model->rct_logo_alt ?: (string) $model->name;
+        $template->hideMobile      = (bool) $model->rct_logo_hide_mobile;
+        $template->logoStyle       = $model->rct_logo_style ?: 'sidebar';
+        $template->logoImage       = null;
         $template->logoImageMobile = null;
 
         if ($model->rct_logo_image) {
