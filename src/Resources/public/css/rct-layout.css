@@ -632,10 +632,10 @@ body.rct-layout-full #wrapper {
 }
 
 /* Header Links Section — Module floaten als Flex-Row */
-#header_logo {
+#header_left {
   display: contents;
 }
-#header_logo .inside {
+#header_left .inside {
   display: flex;
   align-items: center;
   gap: 0.75rem;
