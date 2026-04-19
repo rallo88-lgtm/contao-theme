@@ -662,7 +662,8 @@ body.rct-layout-full #wrapper {
 @media (max-width: 1024px) {
   .rct-logo-img-desktop { display: none; }
   .rct-logo-img-mobile  { display: block; }
-  .rct-sidebar-logo:has(.rct-logo-hide-mobile) { display: none; }
+  #left .rct-sidebar-logo:has(.rct-logo-hide-mobile),
+  #right .rct-sidebar-logo:has(.rct-logo-hide-mobile) { display: none; }
 }
 
 
