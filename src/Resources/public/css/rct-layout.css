@@ -1731,6 +1731,11 @@ nav ul li a,
   animation-delay: 0.12s;
 }
 
+.rct-sidebar-logo .rcts1 { fill: var(--rct-accent, #27C3F3); }
+.rct-sidebar-logo .rcts2 { fill: var(--rct-primary, #2950C7); }
+.rct-sidebar-logo .rcts3 { fill: var(--rct-primary, #2951C7); }
+.rct-sidebar-logo .rcts4 { fill: var(--rct-accent, #27C4F4); }
+.rct-sidebar-logo .rcts0 { fill: var(--rct-logo-muted, #C8CDD0); }
 
 
 
