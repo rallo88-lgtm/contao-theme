@@ -84,10 +84,7 @@
           {% endblock %}
           <div class="inside sitenavigation">{{ left|raw }}</div>
           <div class="rct-sidebar-logo">{{ contao_section('left_logo') }}</div>
-          <div class="rct-sidebar-footer">
-            <a href="/datenschutz">Datenschutz</a>
-            <a href="/impressum">Impressum</a>
-          </div>
+          <div class="rct-sidebar-footer">{{ contao_section('left_bottom') }}</div>
         </aside>
         {% endblock %}
 
@@ -115,10 +112,7 @@
           </button>
           <div class="inside sitenavigation">{{ right|raw }}</div>
           <div class="rct-sidebar-logo">{{ contao_section('right_logo') }}</div>
-          <div class="rct-sidebar-footer">
-            <a href="/datenschutz">Datenschutz</a>
-            <a href="/impressum">Impressum</a>
-          </div>
+          <div class="rct-sidebar-footer">{{ contao_section('right_bottom') }}</div>
         </aside>
         {% endblock %}
 
