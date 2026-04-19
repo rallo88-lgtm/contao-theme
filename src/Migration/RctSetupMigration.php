@@ -21,6 +21,11 @@ class RctSetupMigration extends AbstractMigration
         if (!in_array('tl_module', $tables) || !in_array('tl_layout', $tables)) {
             return false;
         }
+        // Wait until schema migration has added RCT columns
+        $columns = array_keys($this->db->createSchemaManager()->listTableColumns('tl_module'));
+        if (!in_array('rct_logo_style', $columns)) {
+            return false;
+        }
         return (int) $this->db->fetchOne("SELECT COUNT(*) FROM tl_module WHERE type = 'rct_nav_toggle'") === 0;
     }
 
