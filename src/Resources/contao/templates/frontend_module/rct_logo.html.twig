@@ -1,0 +1,7 @@
+<a href="{{ logoUrl }}" class="rct-logo-link" aria-label="{{ altText }}">
+  {% if logoImage %}
+    <img src="{{ logoImage }}" alt="{{ altText }}" loading="lazy" class="rct-logo-custom" style="width:100%;height:auto;display:block">
+  {% else %}
+    {{ include('@Contao/_rct_logo.html.twig', { aria_label: altText }) }}
+  {% endif %}
+</a>

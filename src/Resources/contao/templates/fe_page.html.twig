@@ -83,11 +83,7 @@
           </button>
           {% endblock %}
           <div class="inside sitenavigation">{{ left|raw }}</div>
-          <div class="rct-sidebar-logo">
-            <a href="/" class="rct-logo-link" aria-label="{{ page.rootTitle | default('RCT') }} – Startseite">
-              {{ include('@Contao/_rct_logo.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
-            </a>
-          </div>
+          <div class="rct-sidebar-logo">{{ left_logo|default('')|raw }}</div>
           <div class="rct-sidebar-footer">
             <a href="/datenschutz">Datenschutz</a>
             <a href="/impressum">Impressum</a>
@@ -118,11 +114,7 @@
             </svg>
           </button>
           <div class="inside sitenavigation">{{ right|raw }}</div>
-          <div class="rct-sidebar-logo">
-            <a href="/" class="rct-logo-link" aria-label="{{ page.rootTitle | default('RCT') }} – Startseite">
-              {{ include('@Contao/_rct_logo.html.twig', { aria_label: page.rootTitle|default('RCT') }) }}
-            </a>
-          </div>
+          <div class="rct-sidebar-logo">{{ right_logo|default('')|raw }}</div>
           <div class="rct-sidebar-footer">
             <a href="/datenschutz">Datenschutz</a>
             <a href="/impressum">Impressum</a>
