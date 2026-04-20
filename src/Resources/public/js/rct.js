@@ -415,17 +415,20 @@
 
       if (nameDisplay) {
         const labels = {
-          default:      'Standard',
-          lime:         'Lime Tech',
-          purple:       'Deep Purple',
-          'dark-cherry': 'Dark Cherry',
-          'honey-moon':  'Honey Moon',
-          'candy-chaos': 'Candy Chaos',
-          'sparta':      'Sparta',
-          'sparta2':     'Sparta II',
-          'toxic-green':     'Toxic Green',
-          'neon-grid':       'Neon Grid',
-          'magnetic-field':  'Magnetic Field',
+          default:             'Standard',
+          lime:                'Lime Tech',
+          purple:              'Deep Purple',
+          'dark-cherry-bloom': 'Baccara Rose',
+          'dark-cherry':       'Dark Cherry',
+          'honey-moon':        'Honey Moon',
+          'candy-chaos':       'Candy Chaos',
+          'sparta':            'Sparta',
+          'sparta2':           'Sparta II',
+          'toxic-green':       'Toxic Green',
+          'claudy-sky':        'Claudy Sky',
+          'glass-tank':        'Glass Tank',
+          'neon-grid':         'Neon Grid',
+          'magnetic-field':    'Magnetic Field',
         };
         nameDisplay.textContent = labels[theme] || 'Standard';
       }
