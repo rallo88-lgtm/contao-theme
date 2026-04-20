@@ -12,5 +12,5 @@ $GLOBALS['TL_LANG']['tl_content']['rct_align']   = ['Alignment', 'Vertical align
 $GLOBALS['TL_LANG']['CTE']['rct']            = 'RCT Elements';
 $GLOBALS['TL_LANG']['CTE']['rct_grid_start'] = ['RCT Grid (Start)', 'Opens a multi-column grid container'];
 $GLOBALS['TL_LANG']['CTE']['rct_grid_end']       = ['RCT Grid (End)', 'Closes the grid container'];
-$GLOBALS['TL_LANG']['CTE']['rct_accordeon']      = ['RCT Accordion', 'Collapsible content blocks in RCT style'];
+$GLOBALS['TL_LANG']['CTE']['rct_accordion']      = ['RCT Accordion', 'Collapsible content blocks in RCT style'];
 $GLOBALS['TL_LANG']['CTE']['rct_pricing_table']  = ['RCT Pricing Table', 'Column-based pricing overview with features and CTA button'];

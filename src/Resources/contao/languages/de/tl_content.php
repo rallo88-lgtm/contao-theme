@@ -139,7 +139,7 @@ $GLOBALS['TL_LANG']['tl_content']['rct_tabs_color']  = ['Akzentfarbe', 'Farbe de
 $GLOBALS['TL_LANG']['tl_content']['rct_tabs_style']  = ['Stil', 'Dunkel (Standard) oder Hell'];
 
 // Akkordeon
-$GLOBALS['TL_LANG']['CTE']['rct_accordeon']              = ['RCT Akkordeon', 'Aufklappbare Inhaltsblöcke im RCT-Stil'];
+$GLOBALS['TL_LANG']['CTE']['rct_accordion']              = ['RCT Akkordeon', 'Aufklappbare Inhaltsblöcke im RCT-Stil'];
 $GLOBALS['TL_LANG']['tl_content']['accordion_legend']    = 'Akkordeon-Einstellungen';
 $GLOBALS['TL_LANG']['tl_content']['rct_accordion_style'] = ['Stil', 'Dunkel (Classified Archive) oder Hell (Editorial)'];
 
