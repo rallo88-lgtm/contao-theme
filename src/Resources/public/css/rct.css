@@ -728,28 +728,14 @@ nav.mod_breadcrumb ul li a {
 [data-theme="purple"] {
   --rct-accent: #704f98;
 }
-/* Standard (Blau) */
-#main a, 
+#main a,
 #footer a {
-  color: #27c4f4;
-  transition: color 0.6s ease; /* Sanfter Übergang beim Theme-Wechsel */
+  color: var(--rct-accent, #27c4f4);
+  transition: color 0.6s ease;
 }
-
 
 #footer a:hover {
-  color: #fff; /* Puristischer Hover-Effekt */
-}
-
-/* Lime Theme */
-[data-theme="lime"] #main a, 
-[data-theme="lime"] #footer a {
-  color: #8aba16;
-}
-
-/* Purple Theme */
-[data-theme="purple"] #main a, 
-[data-theme="purple"] #footer a {
-  color: #704f98;
+  color: #fff;
 }
 
 /* Alle Überschriften */
