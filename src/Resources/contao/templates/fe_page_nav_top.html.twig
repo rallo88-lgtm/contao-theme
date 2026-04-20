@@ -1,7 +1,6 @@
 {#
   RCT – fe_page_nav_top.html.twig
-  Variante mit festem Layout (topnav) und festem Theme.
-  Theme und Layout werden nicht aus localStorage geladen.
+  Variante mit festem Layout (topnav). Theme kommt aus localStorage.
 #}
 {% extends "@Contao/fe_page.html.twig" %}
 
@@ -31,10 +30,10 @@
 {% endblock %}
 
 {% block head_init %}
+{{ parent() }}
 <script>
   (function() {
     document.documentElement.setAttribute('data-fixed', '1');
-    document.documentElement.setAttribute('data-theme', 'sparta');
     document.documentElement.setAttribute('data-layout', 'topnav');
   })();
 </script>

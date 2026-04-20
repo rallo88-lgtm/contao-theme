@@ -1,7 +1,6 @@
 {#
   RCT – fe_page_nav_left.html.twig
-  Variante mit festem Theme (sparta2) und festem Layout (sidebar).
-  Kein localStorage-Override möglich.
+  Variante mit festem Layout (sidebar). Theme kommt aus localStorage.
 #}
 {% extends "@Contao/fe_page.html.twig" %}
 
@@ -10,7 +9,6 @@
 <script>
   (function() {
     document.documentElement.setAttribute('data-fixed', '1');
-    document.documentElement.setAttribute('data-theme', 'sparta2');
     document.documentElement.setAttribute('data-layout', 'sidebar');
     if (window.innerWidth > 1024 && localStorage.getItem('rct-sidebar-state') === 'closed') {
       document.documentElement.classList.add('rct-sidebar-initial-closed');

@@ -593,9 +593,7 @@
 
     const isFixed = document.documentElement.hasAttribute('data-fixed');
     const savedTheme = localStorage.getItem('user-theme');
-    if (!isFixed) {
-      applyTheme(savedTheme || 'default', false);
-    }
+    applyTheme(savedTheme || 'default', false);
 
     if (switcher) {
       const themeTrigger = switcher.querySelector('.theme-trigger');

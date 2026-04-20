@@ -1,7 +1,6 @@
 {#
   RCT – fe_page_nav_right.html.twig
-  Variante mit festem Layout (sidebar-right).
-  Theme und Layout werden nicht aus localStorage geladen.
+  Variante mit festem Layout (sidebar-right). Theme kommt aus localStorage.
 #}
 {% extends "@Contao/fe_page.html.twig" %}
 
@@ -20,7 +19,6 @@
 <script>
   (function() {
     document.documentElement.setAttribute('data-fixed', '1');
-    document.documentElement.setAttribute('data-theme', 'sparta2');
     document.documentElement.setAttribute('data-layout', 'sidebar-right');
     if (window.innerWidth > 1024 && localStorage.getItem('rct-sidebar-state') === 'closed') {
       document.documentElement.classList.add('rct-sidebar-initial-closed');
