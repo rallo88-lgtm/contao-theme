@@ -14,7 +14,7 @@ class RctPricingTableController extends AbstractContentElementController
 {
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
-        $raw     = (string) $model->rct_pricing_data;
+        $raw     = html_entity_decode((string) $model->rct_pricing_data, ENT_QUOTES, 'UTF-8');
         $blocks  = preg_split('/\n\s*---\s*\n/', trim($raw));
         $plans   = [];
 
