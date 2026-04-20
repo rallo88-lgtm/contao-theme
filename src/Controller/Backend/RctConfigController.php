@@ -11,6 +11,23 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/contao/rct-config', name: 'rct_config', defaults: ['_scope' => 'backend', '_token_check' => true])]
 class RctConfigController extends AbstractBackendController
 {
+    public const ALL_THEMES = [
+        'default'         => 'Light Blue',
+        'lime'            => 'Lime Tech',
+        'purple'          => 'Deep Purple',
+        'dark-cherry-bloom' => 'Baccara Rose',
+        'dark-cherry'     => 'Dark Cherry',
+        'honey-moon'      => 'Honey Moon',
+        'candy-chaos'     => 'Candy Chaos',
+        'sparta'          => 'Sparta',
+        'sparta2'         => 'Sparta II',
+        'toxic-green'     => 'Toxic Green',
+        'claudy-sky'      => 'Claudy Sky',
+        'glass-tank'      => 'Glass Tank',
+        'neon-grid'       => 'Neon Grid',
+        'magnetic-field'  => 'Magnetic Field',
+    ];
+
     private const DEFAULTS = [
         'rct_font_body'          => 'Space Grotesk',
         'rct_font_mono'          => 'DM Mono',
@@ -24,6 +41,7 @@ class RctConfigController extends AbstractBackendController
         'rct_sidebar_width'      => '260px',
         'rct_header_height'      => '64px',
         'rct_radius'             => '0.125rem',
+        'rct_allowed_themes'     => '',
     ];
 
     public function __construct(private readonly Connection $db) {}
@@ -41,11 +59,12 @@ class RctConfigController extends AbstractBackendController
         $fonts  = $this->scanFonts($request);
 
         return $this->render('@Rct/backend/rct_config.html.twig', [
-            'headline' => 'RCT Theme-Einstellungen',
-            'config'   => $config,
-            'fonts'    => $fonts,
-            'saved'    => $saved,
-            'defaults' => self::DEFAULTS,
+            'headline'   => 'RCT Theme-Einstellungen',
+            'config'     => $config,
+            'fonts'      => $fonts,
+            'saved'      => $saved,
+            'defaults'   => self::DEFAULTS,
+            'all_themes' => self::ALL_THEMES,
         ]);
     }
 
@@ -64,6 +83,9 @@ class RctConfigController extends AbstractBackendController
         $data   = ['tstamp' => time()];
 
         foreach ($fields as $field) {
+            if ($field === 'rct_allowed_themes') {
+                continue;
+            }
             $val = $request->request->get($field, '');
             // Validate hex colors
             if (str_starts_with($field, 'rct_color_') || str_starts_with($field, 'rct_grad')) {
@@ -75,6 +97,11 @@ class RctConfigController extends AbstractBackendController
             }
             $data[$field] = $val;
         }
+
+        // Validate allowed themes checkboxes — at least one must remain
+        $submitted = $request->request->all('rct_allowed_themes') ?? [];
+        $valid     = array_values(array_intersect($submitted, array_keys(self::ALL_THEMES)));
+        $data['rct_allowed_themes'] = !empty($valid) ? implode(',', $valid) : '';
 
         $exists = $this->db->fetchOne("SELECT id FROM tl_rct_config LIMIT 1");
         if ($exists) {

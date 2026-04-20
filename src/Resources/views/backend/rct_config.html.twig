@@ -130,6 +130,24 @@
 
   </div>{# /.rct-config-outer #}
 
+  {# ── Verfügbare Themes ─────────────────────────────────── #}
+  {% set activeThemes = config.rct_allowed_themes ? config.rct_allowed_themes|split(',') : all_themes|keys %}
+  <div class="rct-config-section" style="margin-bottom: 24px;">
+    <h2>Verfügbare Themes</h2>
+    <div style="padding: 12px 16px 4px;">
+      <p style="font-size: 12px; color: #888; margin: 0 0 12px;">Legt fest welche Themes im FE-Theme-Switcher auswählbar sind. Ist nur ein Theme aktiv, wird es als festes Theme erzwungen — kein Switcher nötig.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px 16px; padding-bottom: 12px;">
+        {% for key, label in all_themes %}
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; padding: 4px 0;">
+          <input type="checkbox" name="rct_allowed_themes[]" value="{{ key }}"
+            {{ key in activeThemes ? 'checked' }}>
+          {{ label }}
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
     <div class="rct-save-bar">
       <button type="submit" class="tl_submit">Einstellungen speichern</button>
       <button type="button" class="rct-reset-btn" id="rct-reset-btn">Auf Standardwerte zurücksetzen</button>

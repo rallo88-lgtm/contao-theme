@@ -20,5 +20,6 @@ $GLOBALS['TL_DCA']['tl_rct_config'] = [
         'rct_sidebar_width'      => ['sql' => "varchar(10) NOT NULL default '260px'"],
         'rct_header_height'      => ['sql' => "varchar(10) NOT NULL default '64px'"],
         'rct_radius'             => ['sql' => "varchar(10) NOT NULL default '0.125rem'"],
+        'rct_allowed_themes'     => ['sql' => "varchar(500) NOT NULL default ''"],
     ],
 ];

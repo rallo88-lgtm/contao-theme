@@ -77,6 +77,34 @@ class RctAssetListener
         $css .= "}\n";
 
         $GLOBALS['TL_HEAD'][] = '<style id="rct-theme-config">' . $css . '</style>';
+
+        $this->injectAllowedThemes($config);
+    }
+
+    private function injectAllowedThemes(array $config): void
+    {
+        $raw = $config['rct_allowed_themes'] ?? '';
+        if ($raw === '') {
+            return;
+        }
+
+        $all     = array_keys(\Rallo\ContaoTheme\Controller\Backend\RctConfigController::ALL_THEMES);
+        $allowed = array_values(array_intersect(explode(',', $raw), $all));
+
+        if (empty($allowed) || count($allowed) === count($all)) {
+            return;
+        }
+
+        $json = json_encode($allowed, JSON_UNESCAPED_UNICODE);
+        $script  = '<script id="rct-allowed-themes">';
+        $script .= 'window.rctAllowedThemes=' . $json . ';';
+        // FOUC-Fix: erzwinge das Theme sofort wenn nur eines erlaubt ist
+        $script .= 'if(window.rctAllowedThemes.length===1){';
+        $script .= 'document.documentElement.setAttribute(\'data-theme\',window.rctAllowedThemes[0]);';
+        $script .= '}';
+        $script .= '</script>';
+
+        $GLOBALS['TL_HEAD'][] = $script;
     }
 
     private function buildFontFaceDeclarations(array $config): string

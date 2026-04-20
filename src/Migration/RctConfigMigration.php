@@ -38,6 +38,7 @@ class RctConfigMigration extends AbstractMigration
                 rct_sidebar_width varchar(10) NOT NULL DEFAULT '260px',
                 rct_header_height varchar(10) NOT NULL DEFAULT '64px',
                 rct_radius varchar(10) NOT NULL DEFAULT '0.125rem',
+                rct_allowed_themes varchar(500) NOT NULL DEFAULT '',
                 PRIMARY KEY (id)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
         ");

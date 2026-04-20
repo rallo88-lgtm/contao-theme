@@ -591,52 +591,69 @@
        8. THEME INITIALISIERUNG & SWITCHER-EVENTS
     ------------------------------------------------------------------ */
 
-    const isFixed = document.documentElement.hasAttribute('data-fixed');
-    const savedTheme = localStorage.getItem('user-theme');
-    applyTheme(savedTheme || 'default', false);
+    const isFixed      = document.documentElement.hasAttribute('data-fixed');
+    const allowedThemes = (window.rctAllowedThemes && window.rctAllowedThemes.length) ? window.rctAllowedThemes : null;
+    const savedTheme   = localStorage.getItem('user-theme');
 
-    if (switcher) {
-      const themeTrigger = switcher.querySelector('.theme-trigger');
-      const themeOptions = switcher.querySelectorAll('.theme-opt-btn');
-      const saveCheck    = document.getElementById('save-theme-pref');
+    if (allowedThemes && allowedThemes.length === 1) {
+      applyTheme(allowedThemes[0], false);
+      if (switcher) switcher.style.display = 'none';
+    } else {
+      const validTheme = (allowedThemes && savedTheme && !allowedThemes.includes(savedTheme))
+        ? allowedThemes[0]
+        : (savedTheme || 'default');
+      applyTheme(validTheme, false);
 
-      if (saveCheck) {
-        const isPersistent = localStorage.getItem('theme-persistence');
-        saveCheck.checked = (isPersistent === 'true' || isPersistent === null);
-      }
+      if (switcher) {
+        if (allowedThemes) {
+          switcher.querySelectorAll('.theme-opt-btn').forEach(btn => {
+            if (!allowedThemes.includes(btn.getAttribute('data-set-theme') || '')) {
+              btn.closest('li').remove();
+            }
+          });
+        }
 
-      if (themeTrigger) {
-        themeTrigger.addEventListener('click', (e) => {
-          e.stopPropagation();
-          switcher.classList.toggle('is-open');
-          // Layout-Switcher schließen
-          if (layoutSwitcher) layoutSwitcher.classList.remove('is-open');
-        });
-      }
+        const themeTrigger = switcher.querySelector('.theme-trigger');
+        const themeOptions = switcher.querySelectorAll('.theme-opt-btn');
+        const saveCheck    = document.getElementById('save-theme-pref');
 
-      themeOptions.forEach(btn => {
-        btn.addEventListener('click', function (e) {
-          e.stopPropagation();
-          const newTheme     = this.getAttribute('data-set-theme') || 'default';
-          const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
+        if (saveCheck) {
+          const isPersistent = localStorage.getItem('theme-persistence');
+          saveCheck.checked = (isPersistent === 'true' || isPersistent === null);
+        }
 
-          if (newTheme === currentTheme) {
+        if (themeTrigger) {
+          themeTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            switcher.classList.toggle('is-open');
+            if (layoutSwitcher) layoutSwitcher.classList.remove('is-open');
+          });
+        }
+
+        themeOptions.forEach(btn => {
+          btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const newTheme     = this.getAttribute('data-set-theme') || 'default';
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
+
+            if (newTheme === currentTheme) {
+              switcher.classList.remove('is-open');
+              return;
+            }
+
+            applyTheme(newTheme, true);
+
+            if (saveCheck && saveCheck.checked) {
+              localStorage.setItem('user-theme', newTheme);
+              localStorage.setItem('theme-persistence', 'true');
+            } else {
+              localStorage.removeItem('user-theme');
+              localStorage.setItem('theme-persistence', 'false');
+            }
             switcher.classList.remove('is-open');
-            return;
-          }
-
-          applyTheme(newTheme, true);
-
-          if (saveCheck && saveCheck.checked) {
-            localStorage.setItem('user-theme', newTheme);
-            localStorage.setItem('theme-persistence', 'true');
-          } else {
-            localStorage.removeItem('user-theme');
-            localStorage.setItem('theme-persistence', 'false');
-          }
-          switcher.classList.remove('is-open');
+          });
         });
-      });
+      }
     }
 
 
