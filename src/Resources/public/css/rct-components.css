@@ -4577,15 +4577,15 @@ a.rct-gallery-link {
 .rct-pricing.style-dark .rct-pricing-plan.is-highlight .rct-pricing-header {
   background: linear-gradient(135deg, color-mix(in srgb, var(--rct-accent) 15%, transparent), transparent);
 }
-.rct-pricing.style-dark .rct-pricing-name { color: var(--rct-text-muted, #aaa); }
-.rct-pricing.style-dark .rct-pricing-amount { color: var(--rct-text, #f0f0f0); }
-.rct-pricing.style-dark .rct-pricing-period { color: var(--rct-text-muted, #888); }
-.rct-pricing.style-dark .rct-pricing-feature { color: var(--rct-text, #e8e8e8); border-bottom-color: var(--rct-border, rgba(255,255,255,0.05)); }
+.rct-pricing.style-dark .rct-pricing-name { color: #aaa; }
+.rct-pricing.style-dark .rct-pricing-amount { color: #f0f0f0; }
+.rct-pricing.style-dark .rct-pricing-period { color: #888; }
+.rct-pricing.style-dark .rct-pricing-feature { color: #e8e8e8; border-bottom-color: rgba(255,255,255,0.05); }
 .rct-pricing.style-dark .rct-pricing-feature.type-yes .rct-pricing-icon { color: var(--rct-accent); }
 .rct-pricing.style-dark .rct-pricing-feature.type-no { opacity: 0.4; }
-.rct-pricing.style-dark .rct-pricing-feature.type-no .rct-pricing-icon { color: var(--rct-text-muted); }
-.rct-pricing.style-dark .rct-pricing-footer { background: var(--rct-shell-bg, #0d0d0d); border-top: 1px solid var(--rct-border, rgba(255,255,255,0.08)); }
-.rct-pricing.style-dark .rct-pricing-btn { background: var(--rct-shell-surface, #1a1a1a); color: var(--rct-text, #f0f0f0); border: 1px solid var(--rct-border, rgba(255,255,255,0.12)); }
+.rct-pricing.style-dark .rct-pricing-feature.type-no .rct-pricing-icon { color: #aaa; }
+.rct-pricing.style-dark .rct-pricing-footer { background: #0d0d0d; border-top: 1px solid rgba(255,255,255,0.08); }
+.rct-pricing.style-dark .rct-pricing-btn { background: #1a1a1a; color: #f0f0f0; border: 1px solid rgba(255,255,255,0.12); }
 .rct-pricing.style-dark .rct-pricing-btn.btn-highlight { background: var(--rct-accent); color: #fff; border-color: var(--rct-accent); }
 .rct-pricing.style-dark .rct-pricing-btn:hover { opacity: 0.85; }
 
