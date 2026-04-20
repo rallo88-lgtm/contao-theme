@@ -138,9 +138,16 @@ $GLOBALS['TL_LANG']['tl_content']['rct_tabs_data']   = ['Tab-Inhalte', 'Erste Ze
 $GLOBALS['TL_LANG']['tl_content']['rct_tabs_color']  = ['Akzentfarbe', 'Farbe der aktiven Tab-Linie'];
 $GLOBALS['TL_LANG']['tl_content']['rct_tabs_style']  = ['Stil', 'Dunkel (Standard) oder Hell'];
 
-// Akkordeon-Stil (natives Contao-Akkordeon)
+// Akkordeon
+$GLOBALS['TL_LANG']['CTE']['rct_accordeon']              = ['RCT Akkordeon', 'Aufklappbare Inhaltsblöcke im RCT-Stil'];
 $GLOBALS['TL_LANG']['tl_content']['accordion_legend']    = 'Akkordeon-Einstellungen';
 $GLOBALS['TL_LANG']['tl_content']['rct_accordion_style'] = ['Stil', 'Dunkel (Classified Archive) oder Hell (Editorial)'];
+
+// Pricing Table
+$GLOBALS['TL_LANG']['CTE']['rct_pricing_table']           = ['RCT Preistabelle', 'Spaltenbasierte Preisübersicht mit Features und CTA-Button'];
+$GLOBALS['TL_LANG']['tl_content']['pricing_legend']       = 'Preistabelle';
+$GLOBALS['TL_LANG']['tl_content']['rct_pricing_data']     = ['Pläne', "Blöcke mit '---' trennen. Zeile 1: Name|Preis|Zeitraum|highlight. Features: + inklusive, - nicht dabei. Letzter Eintrag > Button-Text|URL"];
+$GLOBALS['TL_LANG']['tl_content']['rct_pricing_style']    = ['Stil', 'Dunkel (Standard) oder Hell'];
 
 // Download-Stil
 $GLOBALS['TL_LANG']['tl_content']['rct_download_style']  = ['Stil', 'Dunkel (Terminal) oder Hell (Standard) — leer = Contao-Default'];
