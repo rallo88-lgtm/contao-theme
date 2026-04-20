@@ -109,19 +109,22 @@ class RctAssetListener
 
     private function buildFontFaceDeclarations(array $config): string
     {
-        $fontsDir = $this->projectDir . '/public/bundles/rct/fonts';
-        if (!is_dir($fontsDir)) {
-            $fontsDir = \dirname(__DIR__, 2) . '/Resources/public/fonts';
-        }
-        if (!is_dir($fontsDir)) {
-            return '';
+        $bundleDir = $this->projectDir . '/public/bundles/rct/fonts';
+        if (!is_dir($bundleDir)) {
+            $bundleDir = \dirname(__DIR__, 2) . '/Resources/public/fonts';
         }
 
         $customFamilies = [];
-        foreach (glob($fontsDir . '/*.{woff2,woff,ttf,otf}', GLOB_BRACE) as $file) {
-            $family = $this->extractFamilyName(basename($file));
-            if ($family && !in_array($family, self::BUILT_IN_FONTS)) {
-                $customFamilies[$family][] = basename($file);
+
+        foreach ([$bundleDir, $this->projectDir . '/files/rct-fonts'] as $dir) {
+            if (!is_dir($dir)) {
+                continue;
+            }
+            foreach (glob($dir . '/*.{woff2,woff,ttf,otf}', GLOB_BRACE) as $file) {
+                $family = $this->extractFamilyName(basename($file));
+                if ($family && !in_array($family, self::BUILT_IN_FONTS)) {
+                    $customFamilies[$family][] = ['file' => basename($file), 'dir' => $dir];
+                }
             }
         }
 
@@ -133,15 +136,22 @@ class RctAssetListener
         $usedFamilies = [$config['rct_font_body'], $config['rct_font_mono']];
         $css = '';
 
-        foreach ($customFamilies as $family => $files) {
+        $userFontsDir = $this->projectDir . '/files/rct-fonts';
+
+        foreach ($customFamilies as $family => $entries) {
             if (!in_array($family, $usedFamilies)) {
                 continue;
             }
-            foreach ($files as $filename) {
+            foreach ($entries as $entry) {
+                $filename = $entry['file'];
+                $isUser   = $entry['dir'] === $userFontsDir;
+                $url      = $isUser
+                    ? '/files/rct-fonts/' . rawurlencode($filename)
+                    : '/bundles/rct/fonts/' . rawurlencode($filename);
                 $weight = $this->detectWeight($filename);
                 $style  = stripos($filename, 'italic') !== false ? 'italic' : 'normal';
                 $format = $this->detectFormat($filename);
-                $css   .= "@font-face { font-family: '" . $this->escape($family) . "'; font-weight: {$weight}; font-style: {$style}; font-display: swap; src: url('/bundles/rct/fonts/" . rawurlencode($filename) . "') format('{$format}'); }\n";
+                $css   .= "@font-face { font-family: '" . $this->escape($family) . "'; font-weight: {$weight}; font-style: {$style}; font-display: swap; src: url('" . $url . "') format('{$format}'); }\n";
             }
         }
 

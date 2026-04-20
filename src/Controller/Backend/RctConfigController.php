@@ -114,16 +114,20 @@ class RctConfigController extends AbstractBackendController
     private function scanFonts(Request $request): array
     {
         $projectDir = $this->getParameter('kernel.project_dir');
-        $fontsDir   = $projectDir . '/public/bundles/rct/fonts';
+        $bundleDir  = $projectDir . '/public/bundles/rct/fonts';
 
         // Fallback to bundle source during development
-        if (!is_dir($fontsDir)) {
-            $fontsDir = \dirname(__DIR__, 3) . '/Resources/public/fonts';
+        if (!is_dir($bundleDir)) {
+            $bundleDir = \dirname(__DIR__, 3) . '/Resources/public/fonts';
         }
 
         $families = [];
-        if (is_dir($fontsDir)) {
-            foreach (glob($fontsDir . '/*.{woff2,woff,ttf,otf}', GLOB_BRACE) as $file) {
+
+        foreach ([$bundleDir, $projectDir . '/files/rct-fonts'] as $dir) {
+            if (!is_dir($dir)) {
+                continue;
+            }
+            foreach (glob($dir . '/*.{woff2,woff,ttf,otf}', GLOB_BRACE) as $file) {
                 $family = $this->extractFamilyName(basename($file));
                 if ($family) {
                     $families[$family][] = basename($file);
