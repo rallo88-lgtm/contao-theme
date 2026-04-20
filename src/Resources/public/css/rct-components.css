@@ -4563,19 +4563,19 @@ a.rct-gallery-link {
 
 /* Dark style */
 .rct-pricing.style-dark .rct-pricing-plan {
-  background: var(--rct-shell-bg, #0d0d0d);
-  border: 1px solid var(--rct-border, rgba(255,255,255,0.08));
+  background: #0d0d0d;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 .rct-pricing.style-dark .rct-pricing-plan.is-highlight {
   border-color: var(--rct-accent);
   box-shadow: 0 0 0 1px var(--rct-accent), 0 8px 32px rgba(0,0,0,0.4);
 }
 .rct-pricing.style-dark .rct-pricing-header {
-  background: var(--rct-shell-surface, #171717);
-  border-bottom: 1px solid var(--rct-border, rgba(255,255,255,0.08));
+  background: #171717;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 .rct-pricing.style-dark .rct-pricing-plan.is-highlight .rct-pricing-header {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--rct-accent) 15%, transparent), transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--rct-accent) 15%, #171717), #171717);
 }
 .rct-pricing.style-dark .rct-pricing-name { color: #aaa; }
 .rct-pricing.style-dark .rct-pricing-amount { color: #f0f0f0; }
