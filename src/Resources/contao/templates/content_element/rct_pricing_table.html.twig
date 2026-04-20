@@ -1,0 +1,35 @@
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-pricing style-{{ style }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+  {% for plan in plans %}
+  <div class="rct-pricing-plan{% if plan.highlight %} is-highlight{% endif %}">
+    <div class="rct-pricing-header">
+      <div class="rct-pricing-name">{{ plan.name }}</div>
+      <div class="rct-pricing-price">
+        <span class="rct-pricing-amount">{{ plan.price }}</span>
+        {% if plan.period %}<span class="rct-pricing-period">{{ plan.period }}</span>{% endif %}
+      </div>
+    </div>
+    <ul class="rct-pricing-features">
+      {% for feature in plan.features %}
+      <li class="rct-pricing-feature type-{{ feature.type }}">
+        {% if feature.type == 'yes' %}<span class="rct-pricing-icon">✓</span>
+        {% elseif feature.type == 'no' %}<span class="rct-pricing-icon">✗</span>
+        {% else %}<span class="rct-pricing-icon"> </span>{% endif %}
+        {{ feature.text }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% if plan.btn %}
+    <div class="rct-pricing-footer">
+      <a href="{{ plan.btn.url }}" class="rct-pricing-btn{% if plan.highlight %} btn-highlight{% endif %}"
+         target="{{ plan.btn.target }}"{% if plan.btn.target == '_blank' %} rel="noopener"{% endif %}>
+        {{ plan.btn.label }}
+      </a>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

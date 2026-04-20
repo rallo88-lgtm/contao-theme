@@ -4540,3 +4540,94 @@ a.rct-gallery-link {
   background: rgba(39, 196, 244, var(--rct-article-alpha, 1));
   color: #0a0a0a;
 }
+
+/* ============================================================
+   RCT Pricing Table
+   ============================================================ */
+.rct-pricing {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+.rct-pricing-plan {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--rct-radius-lg);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.rct-pricing-plan:hover {
+  transform: translateY(-3px);
+}
+
+/* Dark style */
+.rct-pricing.style-dark .rct-pricing-plan {
+  background: var(--rct-shell-bg, #0d0d0d);
+  border: 1px solid var(--rct-border, rgba(255,255,255,0.08));
+}
+.rct-pricing.style-dark .rct-pricing-plan.is-highlight {
+  border-color: var(--rct-accent);
+  box-shadow: 0 0 0 1px var(--rct-accent), 0 8px 32px rgba(0,0,0,0.4);
+}
+.rct-pricing.style-dark .rct-pricing-header {
+  background: var(--rct-shell-surface, #171717);
+  border-bottom: 1px solid var(--rct-border, rgba(255,255,255,0.08));
+}
+.rct-pricing.style-dark .rct-pricing-plan.is-highlight .rct-pricing-header {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--rct-accent) 15%, transparent), transparent);
+}
+.rct-pricing.style-dark .rct-pricing-name { color: var(--rct-text-muted, #aaa); }
+.rct-pricing.style-dark .rct-pricing-amount { color: var(--rct-text, #f0f0f0); }
+.rct-pricing.style-dark .rct-pricing-period { color: var(--rct-text-muted, #888); }
+.rct-pricing.style-dark .rct-pricing-feature { color: var(--rct-text-muted, #bbb); border-bottom-color: var(--rct-border, rgba(255,255,255,0.05)); }
+.rct-pricing.style-dark .rct-pricing-feature.type-yes .rct-pricing-icon { color: var(--rct-accent); }
+.rct-pricing.style-dark .rct-pricing-feature.type-no { opacity: 0.4; }
+.rct-pricing.style-dark .rct-pricing-feature.type-no .rct-pricing-icon { color: var(--rct-text-muted); }
+.rct-pricing.style-dark .rct-pricing-footer { background: var(--rct-shell-bg, #0d0d0d); border-top: 1px solid var(--rct-border, rgba(255,255,255,0.08)); }
+.rct-pricing.style-dark .rct-pricing-btn { background: var(--rct-shell-surface, #1a1a1a); color: var(--rct-text, #f0f0f0); border: 1px solid var(--rct-border, rgba(255,255,255,0.12)); }
+.rct-pricing.style-dark .rct-pricing-btn.btn-highlight { background: var(--rct-accent); color: #000; border-color: var(--rct-accent); }
+.rct-pricing.style-dark .rct-pricing-btn:hover { opacity: 0.85; }
+
+/* Light style */
+.rct-pricing.style-light .rct-pricing-plan {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.rct-pricing.style-light .rct-pricing-plan.is-highlight {
+  border-color: var(--rct-accent);
+  box-shadow: 0 0 0 2px var(--rct-accent), 0 8px 24px rgba(0,0,0,0.1);
+}
+.rct-pricing.style-light .rct-pricing-header { background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+.rct-pricing.style-light .rct-pricing-plan.is-highlight .rct-pricing-header {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--rct-accent) 10%, white), white);
+}
+.rct-pricing.style-light .rct-pricing-name { color: #6b7280; }
+.rct-pricing.style-light .rct-pricing-amount { color: #111827; }
+.rct-pricing.style-light .rct-pricing-period { color: #9ca3af; }
+.rct-pricing.style-light .rct-pricing-feature { color: #374151; border-bottom-color: #f3f4f6; }
+.rct-pricing.style-light .rct-pricing-feature.type-yes .rct-pricing-icon { color: var(--rct-accent); }
+.rct-pricing.style-light .rct-pricing-feature.type-no { opacity: 0.45; }
+.rct-pricing.style-light .rct-pricing-footer { background: #f9fafb; border-top: 1px solid #e5e7eb; }
+.rct-pricing.style-light .rct-pricing-btn { background: #f3f4f6; color: #111827; border: 1px solid #d1d5db; }
+.rct-pricing.style-light .rct-pricing-btn.btn-highlight { background: var(--rct-accent); color: #000; border-color: var(--rct-accent); }
+.rct-pricing.style-light .rct-pricing-btn:hover { opacity: 0.85; }
+
+/* Shared layout */
+.rct-pricing-header { padding: 24px; }
+.rct-pricing-name { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+.rct-pricing-amount { display: block; font-size: 2.5rem; font-weight: 800; line-height: 1; }
+.rct-pricing-period { display: block; font-size: 0.8rem; margin-top: 4px; }
+.rct-pricing-features { list-style: none; margin: 0; padding: 0; flex: 1; }
+.rct-pricing-feature { display: flex; align-items: baseline; gap: 10px; padding: 10px 24px; font-size: 0.875rem; border-bottom: 1px solid transparent; }
+.rct-pricing-icon { flex-shrink: 0; width: 16px; font-size: 0.8rem; font-weight: 700; }
+.rct-pricing-footer { padding: 20px 24px; }
+.rct-pricing-btn {
+  display: block; width: 100%; padding: 10px 20px;
+  text-align: center; text-decoration: none;
+  font-size: 0.875rem; font-weight: 600;
+  border-radius: var(--rct-radius);
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
