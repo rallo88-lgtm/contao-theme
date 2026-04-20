@@ -487,9 +487,9 @@ h1, h2, h3, h4, h5, h6 {
 ::-moz-selection { background-color: var(--rct-accent) !important; color: #fff; }
 
 /* Links in #main und #bottom (alle drei Themes) */
-#main a, 
-#bottom a { 
-    color: var(--theme-link-color, #007bff); /* Die zweite Farbe ist der Fallback */
+#main a,
+#bottom a {
+    color: var(--rct-accent, #27c4f4);
 }
 #bottom a:hover {
   color: #fff;
