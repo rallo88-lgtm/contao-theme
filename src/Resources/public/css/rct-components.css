@@ -4587,7 +4587,7 @@ a.rct-gallery-link {
 .rct-pricing.style-dark .rct-pricing-footer { background: #0d0d0d; border-top: 1px solid rgba(255,255,255,0.08); }
 .rct-pricing.style-dark .rct-pricing-btn { background: #1a1a1a; color: #f0f0f0; border: 1px solid rgba(255,255,255,0.12); }
 .rct-pricing.style-dark .rct-pricing-btn.btn-highlight { background: var(--rct-accent); color: #fff; border-color: var(--rct-accent); }
-[data-theme="sparta"] .rct-pricing.style-dark .rct-pricing-btn.btn-highlight { background: #cccccc; color: #000; border-color: #cccccc; }
+html[data-theme="sparta"] .rct-pricing.style-dark .rct-pricing-btn.btn-highlight { background: #cccccc !important; color: #000 !important; border-color: #cccccc !important; }
 .rct-pricing.style-dark .rct-pricing-btn:hover { opacity: 0.85; }
 
 /* Light style */
