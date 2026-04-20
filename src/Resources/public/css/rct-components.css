@@ -4587,6 +4587,7 @@ a.rct-gallery-link {
 .rct-pricing.style-dark .rct-pricing-footer { background: #0d0d0d; border-top: 1px solid rgba(255,255,255,0.08); }
 .rct-pricing.style-dark .rct-pricing-btn { background: #1a1a1a; color: #f0f0f0; border: 1px solid rgba(255,255,255,0.12); }
 .rct-pricing.style-dark .rct-pricing-btn.btn-highlight { background: var(--rct-accent); color: #fff !important; border-color: var(--rct-accent); }
+html[data-theme="sparta"] .rct-pricing.style-dark .rct-pricing-btn { background: #2a2a2a !important; border-color: rgba(255,255,255,0.2) !important; }
 html[data-theme="sparta"] .rct-pricing.style-dark .rct-pricing-btn.btn-highlight { background: #cccccc !important; color: #000 !important; border-color: #cccccc !important; }
 .rct-pricing.style-dark .rct-pricing-btn:hover { opacity: 0.85; }
 
@@ -4613,6 +4614,7 @@ html[data-theme="sparta"] .rct-pricing.style-dark .rct-pricing-btn.btn-highlight
 .rct-pricing.style-light .rct-pricing-footer { background: #f9fafb; border-top: 1px solid #e5e7eb; }
 .rct-pricing.style-light .rct-pricing-btn { background: #f3f4f6; color: #111827; border: 1px solid #d1d5db; }
 .rct-pricing.style-light .rct-pricing-btn.btn-highlight { background: var(--rct-accent); color: #fff !important; border-color: var(--rct-accent); }
+html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn { background: #2a2a2a !important; color: #f0f0f0 !important; border-color: rgba(255,255,255,0.2) !important; }
 html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highlight { background: #cccccc !important; color: #000 !important; border-color: #cccccc !important; }
 .rct-pricing.style-light .rct-pricing-btn:hover { opacity: 0.85; }
 
