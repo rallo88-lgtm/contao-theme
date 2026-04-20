@@ -4585,7 +4585,7 @@ a.rct-gallery-link {
 .rct-pricing.style-dark .rct-pricing-feature.type-no { opacity: 0.4; }
 .rct-pricing.style-dark .rct-pricing-feature.type-no .rct-pricing-icon { color: #aaa; }
 .rct-pricing.style-dark .rct-pricing-footer { background: #0d0d0d; border-top: 1px solid rgba(255,255,255,0.08); }
-.rct-pricing.style-dark .rct-pricing-btn { background: #1a1a1a; color: #f0f0f0; border: 1px solid rgba(255,255,255,0.12); }
+.rct-pricing.style-dark .rct-pricing-btn { background: #1a1a1a; color: #f0f0f0 !important; border: 1px solid rgba(255,255,255,0.12); }
 .rct-pricing.style-dark .rct-pricing-btn.btn-highlight { background: var(--rct-accent); color: #fff !important; border-color: var(--rct-accent); }
 html[data-theme="sparta"] .rct-pricing.style-dark .rct-pricing-btn { background: #2a2a2a !important; border-color: rgba(255,255,255,0.2) !important; }
 html[data-theme="sparta"] .rct-pricing.style-dark .rct-pricing-btn.btn-highlight { background: #cccccc !important; color: #000 !important; border-color: #cccccc !important; }
