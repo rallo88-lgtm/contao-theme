@@ -110,8 +110,8 @@ class RctAssetListener
 
     private function injectCanvasConfig(array $config): void
     {
-        $canvas = ($config['rct_canvas_enabled'] ?? '1') !== '0' ? 'true' : 'false';
-        $dots   = ($config['rct_dots_enabled']   ?? '1') !== '0' ? 'true' : 'false';
+        $canvas = (int)($config['rct_canvas_enabled'] ?? 1) !== 0 ? 'true' : 'false';
+        $dots   = (int)($config['rct_dots_enabled']   ?? 1) !== 0 ? 'true' : 'false';
         $speed  = number_format(max(0.1, min(5.0, (float)($config['rct_aurora_speed'] ?? '1.0'))), 1, '.', '');
 
         $GLOBALS['TL_HEAD'][] = '<script id="rct-canvas-flags">'
