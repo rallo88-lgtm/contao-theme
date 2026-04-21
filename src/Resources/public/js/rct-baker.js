@@ -14,22 +14,23 @@
   // ── Lamp positions (fractions of source image w/h) ───────────
   // Measured from the baker-street.webp original
   const LAMPS = [
-    { fx: 0.226, fy: 0.442, ph: 0.00, sz: 1.00 },  // left, tall
-    { fx: 0.457, fy: 0.518, ph: 2.14, sz: 0.62 },  // centre-left
-    { fx: 0.539, fy: 0.554, ph: 4.31, sz: 0.42 },  // centre, far
-    { fx: 0.592, fy: 0.567, ph: 1.73, sz: 0.28 },  // furthest
+    { fx: 0.190, fy: 0.410, ph: 0.00, sz: 1.00 },  // left, tall, closest
+    { fx: 0.680, fy: 0.418, ph: 3.07, sz: 0.88 },  // right, tall, foreground
+    { fx: 0.430, fy: 0.488, ph: 2.14, sz: 0.52 },  // centre-left, mid
+    { fx: 0.545, fy: 0.552, ph: 4.31, sz: 0.35 },  // centre, far
+    { fx: 0.600, fy: 0.568, ph: 1.73, sz: 0.22 },  // furthest
   ];
 
   // ── Fog layer descriptors ─────────────────────────────────────
-  const FOG_N = 14;
+  const FOG_N = 18;
   const fogs = Array.from({ length: FOG_N }, () => ({
     x:  Math.random(),
-    y:  0.10 + Math.random() * 0.78,
-    rx: 0.22 + Math.random() * 0.38,
-    ry: 0.05 + Math.random() * 0.18,
+    y:  0.45 + Math.random() * 0.45,   // street level and below
+    rx: 0.28 + Math.random() * 0.48,
+    ry: 0.06 + Math.random() * 0.22,
     ph: Math.random() * Math.PI * 2,
-    sp: (0.00020 + Math.random() * 0.00055) * (Math.random() < 0.5 ? 1 : -1),
-    al: 0.030 + Math.random() * 0.065,
+    sp: (0.00015 + Math.random() * 0.00040) * (Math.random() < 0.5 ? 1 : -1),
+    al: 0.10 + Math.random() * 0.18,   // much higher alpha → thick
   }));
 
   // ── Background image ──────────────────────────────────────────
@@ -101,9 +102,9 @@
       ctx.translate(cx, cy);
       ctx.scale(1, ry / rx);                          // circle → ellipse
       const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
-      g.addColorStop(0,    `rgba(24, 20, 14, ${a})`); // warm-dark centre
-      g.addColorStop(0.55, `rgba(14, 12,  8, ${a * 0.35})`);
-      g.addColorStop(1,    'rgba(0, 0, 0, 0)');
+      g.addColorStop(0,    `rgba(235, 228, 210, ${a})`);         // warm white centre
+      g.addColorStop(0.55, `rgba(215, 205, 180, ${a * 0.55})`);  // soft cream mid
+      g.addColorStop(1,    'rgba(200, 190, 160, 0)');
       ctx.fillStyle = g;
       ctx.beginPath();
       ctx.arc(0, 0, rx, 0, Math.PI * 2);
