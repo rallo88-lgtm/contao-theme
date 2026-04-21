@@ -320,10 +320,9 @@
        5. DOTS-ANIMATION
     ------------------------------------------------------------------ */
 
-    const wrapper        = document.getElementById('wrapper');
-    const rctCanvasEnabled = !wrapper || wrapper.dataset.rctCanvas !== '0';
-    const rctDotsEnabled   = !wrapper || wrapper.dataset.rctDots   !== '0';
-    const rctAuroraSpeed   = parseFloat(wrapper?.dataset.rctAuroraSpeed || '1.0') || 1.0;
+    const rctCanvasEnabled = window.rctCanvasEnabled !== false;
+    const rctDotsEnabled   = window.rctDotsEnabled   !== false;
+    const rctAuroraSpeed   = typeof window.rctAuroraSpeed === 'number' ? window.rctAuroraSpeed : 1.0;
 
     const dotsCanvas = document.getElementById('rct-dots-canvas');
     const main       = document.getElementById('main');

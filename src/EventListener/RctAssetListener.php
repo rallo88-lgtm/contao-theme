@@ -79,6 +79,7 @@ class RctAssetListener
         $GLOBALS['TL_HEAD'][] = '<style id="rct-theme-config">' . $css . '</style>';
 
         $this->injectAllowedThemes($config);
+        $this->injectCanvasConfig($config);
     }
 
     private function injectAllowedThemes(array $config): void
@@ -105,6 +106,19 @@ class RctAssetListener
         $script .= '</script>';
 
         $GLOBALS['TL_HEAD'][] = $script;
+    }
+
+    private function injectCanvasConfig(array $config): void
+    {
+        $canvas = ($config['rct_canvas_enabled'] ?? '1') !== '0' ? 'true' : 'false';
+        $dots   = ($config['rct_dots_enabled']   ?? '1') !== '0' ? 'true' : 'false';
+        $speed  = number_format(max(0.1, min(5.0, (float)($config['rct_aurora_speed'] ?? '1.0'))), 1, '.', '');
+
+        $GLOBALS['TL_HEAD'][] = '<script id="rct-canvas-flags">'
+            . 'window.rctCanvasEnabled=' . $canvas . ';'
+            . 'window.rctDotsEnabled='   . $dots   . ';'
+            . 'window.rctAuroraSpeed='   . $speed  . ';'
+            . '</script>';
     }
 
     private function buildFontFaceDeclarations(array $config): string
