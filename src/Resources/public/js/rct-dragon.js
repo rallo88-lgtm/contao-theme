@@ -16,8 +16,8 @@
   const SH    = 58;    // scale total height (incl. hidden overlap)
   const VSTEP = 27;    // vertical row step — controls visible height
   const HSTEP = 40;    // horizontal step (= SW, no horizontal gap)
-  const HR    = 170;   // hover radius (px)
-  const LMAX  = 0.65;  // max lift
+  const HR    = 260;   // hover radius (px)
+  const LMAX  = 1.4;   // max lift
   const BA    = 1.5;   // breathing amplitude px
   const BS    = 0.44;  // breathing speed rad/s
 
@@ -44,22 +44,22 @@
     const lift    = s.lift;
     const breathe = Math.sin(t * BS + s.phase) * BA;
     const shimmer = 0.5 + 0.5 * Math.sin(t * 0.55 + s.phase * 0.8);
-    const bright  = shimmer * 10 + lift * 26;
+    const bright  = shimmer * 10 + lift * 45;
 
     ctx.save();
     ctx.translate(s.cx, s.cy + breathe);
 
     // Lift: float upward + subtle foreshortening
     if (lift > 0.004) {
-      ctx.translate(0, -lift * SH * 0.20);
-      ctx.scale(1 + lift * 0.08, 1 - lift * 0.10);
+      ctx.translate(0, -lift * SH * 0.42);
+      ctx.scale(1 + lift * 0.18, 1 - lift * 0.22);
     }
 
     // Drop shadow for lifted scales
     if (lift > 0.03) {
-      ctx.shadowColor   = 'rgba(0, 0, 0, 0.65)';
-      ctx.shadowBlur    = lift * 20;
-      ctx.shadowOffsetY = lift * 8;
+      ctx.shadowColor   = 'rgba(0, 0, 0, 0.8)';
+      ctx.shadowBlur    = lift * 32;
+      ctx.shadowOffsetY = lift * 14;
     }
 
     // ① Gold base fill
@@ -96,16 +96,16 @@
     // ④ Iridescent inner edge — only when lifting
     if (lift > 0.05) {
       const hue = (165 + s.hu * 5 + t * 44) % 360;
-      const a   = Math.min(1.0, lift * 1.6);
+      const a   = Math.min(1.0, lift * 1.0);
       const ig  = ctx.createLinearGradient(-SW * 0.5, 0, SW * 0.5, 0);
       ig.addColorStop(0,    `hsla(${hue},            100%, 68%, 0)`);
       ig.addColorStop(0.2,  `hsla(${hue},            100%, 80%, ${a})`);
       ig.addColorStop(0.5,  `hsla(${(hue + 115) % 360}, 100%, 88%, ${a})`);
       ig.addColorStop(0.8,  `hsla(${(hue + 225) % 360}, 100%, 80%, ${a})`);
       ig.addColorStop(1,    `hsla(${(hue + 335) % 360}, 100%, 68%, 0)`);
-      scaleShape(SW - 4, SH - 5);
+      scaleShape(SW - 3, SH - 4);
       ctx.strokeStyle = ig;
-      ctx.lineWidth   = 7;
+      ctx.lineWidth   = 10;
       ctx.stroke();
     }
 
@@ -145,7 +145,7 @@
       const dy  = (s.cy + VSTEP * 0.5) - my;
       const d   = Math.sqrt(dx * dx + dy * dy);
       const tgt = d < HR ? LMAX * Math.pow(1 - d / HR, 1.8) : 0;
-      s.lift   += (tgt - s.lift) * 0.10;
+      s.lift   += (tgt - s.lift) * 0.18;
       drawScale(s, t);
     }
 
