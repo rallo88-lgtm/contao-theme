@@ -12,25 +12,25 @@
   const ctx = canvas.getContext('2d');
 
   // ── Lamp positions as CANVAS fractions (fx = x/W, fy = y/H) ──
-  // Calibrated from live browser output at 1536×740 viewport
+  // Calibrated from live browser output
   const LAMPS = [
-    { fx: 0.449, fy: 0.328, ph: 0.00, sz: 1.00 },  // left foreground
-    { fx: 0.625, fy: 0.318, ph: 3.07, sz: 0.88 },  // right foreground
-    { fx: 0.505, fy: 0.399, ph: 2.14, sz: 0.52 },  // centre-left, mid
-    { fx: 0.547, fy: 0.439, ph: 4.31, sz: 0.28 },  // centre, far
-    { fx: 0.592, fy: 0.426, ph: 1.73, sz: 0.22 },  // centre-right, far
+    { fx: 0.449, fy: 0.368, ph: 0.00, sz: 1.00 },  // left foreground
+    { fx: 0.625, fy: 0.358, ph: 3.07, sz: 0.88 },  // right foreground
+    { fx: 0.505, fy: 0.441, ph: 2.14, sz: 0.52 },  // centre-left, mid
+    { fx: 0.547, fy: 0.480, ph: 4.31, sz: 0.28 },  // centre, far
+    { fx: 0.592, fy: 0.468, ph: 1.73, sz: 0.22 },  // centre-right, far
   ];
 
   // ── Fog layer descriptors ─────────────────────────────────────
-  const FOG_N = 22;
+  const FOG_N = 16;
   const fogs = Array.from({ length: FOG_N }, () => ({
     x:  Math.random(),
-    y:  0.38 + Math.random() * 0.55,   // from mid-frame down to street
-    rx: 0.30 + Math.random() * 0.55,
-    ry: 0.06 + Math.random() * 0.24,
+    y:  0.40 + Math.random() * 0.52,
+    rx: 0.28 + Math.random() * 0.50,
+    ry: 0.05 + Math.random() * 0.20,
     ph: Math.random() * Math.PI * 2,
-    sp: (0.00010 + Math.random() * 0.00028) * (Math.random() < 0.5 ? 1 : -1),
-    al: 0.22 + Math.random() * 0.28,
+    sp: (0.00010 + Math.random() * 0.00025) * (Math.random() < 0.5 ? 1 : -1),
+    al: 0.07 + Math.random() * 0.08,   // much thinner — subtle atmosphere
   }));
 
   // ── Background image ──────────────────────────────────────────
@@ -123,9 +123,9 @@
       ctx.translate(cx, cy);
       ctx.scale(1, ry / rx);
       const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
-      g.addColorStop(0,    `rgba(255, 255, 255, ${a})`);
-      g.addColorStop(0.55, `rgba(255, 255, 255, ${a * 0.45})`);
-      g.addColorStop(1,    'rgba(255, 255, 255, 0)');
+      g.addColorStop(0,    `rgba(210, 218, 228, ${a})`);
+      g.addColorStop(0.55, `rgba(210, 218, 228, ${a * 0.45})`);
+      g.addColorStop(1,    'rgba(210, 218, 228, 0)');
       ctx.fillStyle = g;
       ctx.beginPath();
       ctx.arc(0, 0, rx, 0, Math.PI * 2);
