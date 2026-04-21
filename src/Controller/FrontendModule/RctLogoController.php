@@ -21,6 +21,7 @@ class RctLogoController extends AbstractFrontendModuleController
         $template->logoStyle       = $model->rct_logo_style ?: 'sidebar';
         $template->logoImage       = null;
         $template->logoImageMobile = null;
+        $template->rct_visibility  = (string) $model->rct_visibility;
 
         if ($model->rct_logo_image) {
             $file = FilesModel::findByUuid($model->rct_logo_image);

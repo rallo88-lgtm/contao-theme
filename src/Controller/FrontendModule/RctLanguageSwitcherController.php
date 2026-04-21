@@ -21,7 +21,8 @@ class RctLanguageSwitcherController extends AbstractFrontendModuleController
                 $languages[] = ['code' => strtoupper($parts[0]), 'label' => $parts[1], 'url' => $parts[2]];
             }
         }
-        $template->languages = $languages ?: [];
+        $template->languages      = $languages ?: [];
+        $template->rct_visibility = (string) $model->rct_visibility;
 
         return $template->getResponse();
     }

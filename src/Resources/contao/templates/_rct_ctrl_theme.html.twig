@@ -1,4 +1,4 @@
-<div class="rct-theme-switcher" id="themeSwitcher">
+<div class="rct-theme-switcher" id="themeSwitcher"{% if vis is defined and vis and vis != 'both' %} data-rct-visibility="{{ vis }}"{% endif %}>
     <button class="theme-trigger">
         <span class="current-theme-dot"></span>
         <span class="current-theme-name">Standard</span>

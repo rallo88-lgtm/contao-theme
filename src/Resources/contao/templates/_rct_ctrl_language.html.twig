@@ -10,7 +10,7 @@
 ] %}
 {% endif %}
 
-<div class="rct-lang-switcher" id="langSwitcher">
+<div class="rct-lang-switcher" id="langSwitcher"{% if vis is defined and vis and vis != 'both' %} data-rct-visibility="{{ vis }}"{% endif %}>
   <button class="lang-trigger" aria-haspopup="listbox" aria-expanded="false">
     <span class="lang-flag">{{ currentLang }}</span>
     <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none">

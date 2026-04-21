@@ -1,4 +1,4 @@
-<button id="rct-fullscreen-toggle" class="header-icon-btn" title="Vollbild umschalten">
+<button id="rct-fullscreen-toggle" class="header-icon-btn" title="Vollbild umschalten"{% if vis is defined and vis and vis != 'both' %} data-rct-visibility="{{ vis }}"{% endif %}>
     <svg class="fs-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <g class="icon-max">
             <path d="M15 3h6v6M9 21H3v-6M21 15v6h-6M3 9V3h6" stroke-linecap="round" stroke-linejoin="round"/>

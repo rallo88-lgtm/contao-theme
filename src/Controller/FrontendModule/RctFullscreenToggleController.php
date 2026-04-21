@@ -14,6 +14,8 @@ class RctFullscreenToggleController extends AbstractFrontendModuleController
 {
     protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
     {
+        $template->rct_visibility = (string) $model->rct_visibility;
+
         return $template->getResponse();
     }
 }

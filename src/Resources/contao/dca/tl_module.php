@@ -1,28 +1,28 @@
 <?php
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_theme_switcher'] =
-    '{title_legend},name,headline,type;{expert_legend:hide},cssID';
+    '{title_legend},name,headline,type;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_layout_switcher'] =
-    '{title_legend},name,headline,type;{expert_legend:hide},cssID';
+    '{title_legend},name,headline,type;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_right_toggle'] =
-    '{title_legend},name,headline,type;{expert_legend:hide},cssID';
+    '{title_legend},name,headline,type;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_login_toggle'] =
-    '{title_legend},name,headline,type;{expert_legend:hide},cssID';
+    '{title_legend},name,headline,type;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_search_toggle'] =
-    '{title_legend},name,headline,type;{expert_legend:hide},cssID';
+    '{title_legend},name,headline,type;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_nav_toggle'] =
-    '{title_legend},name,headline,type;{expert_legend:hide},cssID';
+    '{title_legend},name,headline,type;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_fullscreen_toggle'] =
-    '{title_legend},name,headline,type;{expert_legend:hide},cssID';
+    '{title_legend},name,headline,type;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_language_switcher'] =
-    '{title_legend},name,headline,type;{languages_legend},rct_languages;{expert_legend:hide},cssID';
+    '{title_legend},name,headline,type;{languages_legend},rct_languages;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_languages'] = [
     'label'     => ['Sprachen', "Eine Zeile pro Sprache: CODE|Bezeichnung|/url\nBeispiel: DE|Deutsch|/"],
@@ -32,7 +32,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['rct_languages'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_logo'] =
-    '{title_legend},name,headline,type;{logo_legend},rct_logo_style,rct_logo_image,rct_logo_image_mobile,rct_logo_url,rct_logo_alt,rct_logo_hide_mobile;{expert_legend:hide},cssID';
+    '{title_legend},name,headline,type;{logo_legend},rct_logo_style,rct_logo_image,rct_logo_image_mobile,rct_logo_url,rct_logo_alt,rct_logo_hide_mobile;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_style'] = [
     'label'     => ['Position / Stil', 'Sidebar: Logo in linker oder rechter Sidebar. Header: Logo im Seitenheader.'],
@@ -75,4 +75,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_hide_mobile'] = [
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'clr m12'],
     'sql'       => "char(1) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_visibility'] = [
+    'label'     => ['Sichtbarkeit', 'Legt fest, ob das Modul auf Desktop, Mobile oder beiden angezeigt wird.'],
+    'inputType' => 'select',
+    'options'   => ['' => 'Beide', 'desktop' => 'Nur Desktop (≥769px)', 'mobile' => 'Nur Mobile (≤768px)'],
+    'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
+    'sql'       => "varchar(10) NOT NULL default ''",
 ];

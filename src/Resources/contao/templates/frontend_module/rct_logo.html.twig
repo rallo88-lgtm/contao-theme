@@ -1,6 +1,6 @@
 {% if logoStyle == 'header' %}
 
-<a href="{{ logoUrl }}" class="rct-header-logo-link{% if hideMobile %} rct-logo-hide-mobile{% endif %}" aria-label="{{ altText }}">
+<a href="{{ logoUrl }}" class="rct-header-logo-link{% if hideMobile %} rct-logo-hide-mobile{% endif %}" aria-label="{{ altText }}"{% if rct_visibility is defined and rct_visibility and rct_visibility != 'both' %} data-rct-visibility="{{ rct_visibility }}"{% endif %}>
   {% if logoImage %}
     <img src="{{ logoImage }}" alt="{{ altText }}" loading="lazy" class="rct-logo-head{% if logoImageMobile %} rct-logo-img-desktop{% endif %}" style="height:auto;display:block">
     {% if logoImageMobile %}
@@ -14,7 +14,7 @@
 
 {% else %}
 
-<a href="{{ logoUrl }}" class="rct-logo-link{% if hideMobile %} rct-logo-hide-mobile{% endif %}" aria-label="{{ altText }}">
+<a href="{{ logoUrl }}" class="rct-logo-link{% if hideMobile %} rct-logo-hide-mobile{% endif %}" aria-label="{{ altText }}"{% if rct_visibility is defined and rct_visibility and rct_visibility != 'both' %} data-rct-visibility="{{ rct_visibility }}"{% endif %}>
   {% if logoImageMobile %}
     <img src="{{ logoImage }}" alt="{{ altText }}" loading="lazy" class="rct-logo-custom rct-logo-img-desktop" style="width:100%;height:auto;display:block">
     <img src="{{ logoImageMobile }}" alt="{{ altText }}" loading="lazy" class="rct-logo-custom rct-logo-img-mobile" style="width:100%;height:auto;display:block">

@@ -1,4 +1,4 @@
-<div class="rct-layout-switcher" id="layoutSwitcher">
+<div class="rct-layout-switcher" id="layoutSwitcher"{% if vis is defined and vis and vis != 'both' %} data-rct-visibility="{{ vis }}"{% endif %}>
     <button class="theme-trigger layout-trigger">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="7" height="18"/>

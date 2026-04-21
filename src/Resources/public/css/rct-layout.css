@@ -2026,6 +2026,14 @@ body.rct-right-open #right {
 [data-theme="dragon"] #gradient-canvas,
 [data-theme="dragon"] #rct-dots-canvas  { display: none; }
 
+/* Module visibility control */
+@media (max-width: 768px) {
+  [data-rct-visibility="desktop"] { display: none !important; }
+}
+@media (min-width: 769px) {
+  [data-rct-visibility="mobile"]  { display: none !important; }
+}
+
 
 /* ------------------------------------------------------------
    11. RESPONSIVE
