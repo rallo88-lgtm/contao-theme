@@ -9,3 +9,6 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Resources/'
             - '../src/RctBundle.php'
+
+    Rallo\ContaoTheme\DCA\RctFontOptionsCallback:
+        public: true
