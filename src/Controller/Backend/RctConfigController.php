@@ -42,6 +42,9 @@ class RctConfigController extends AbstractBackendController
         'rct_header_height'      => '64px',
         'rct_radius'             => '0.125rem',
         'rct_allowed_themes'     => '',
+        'rct_canvas_enabled'     => '1',
+        'rct_dots_enabled'       => '1',
+        'rct_aurora_speed'       => '1.0',
     ];
 
     public function __construct(private readonly Connection $db) {}
@@ -84,6 +87,17 @@ class RctConfigController extends AbstractBackendController
 
         foreach ($fields as $field) {
             if ($field === 'rct_allowed_themes') {
+                continue;
+            }
+            // Checkbox fields
+            if (in_array($field, ['rct_canvas_enabled', 'rct_dots_enabled'])) {
+                $data[$field] = $request->request->has($field) ? '1' : '0';
+                continue;
+            }
+            // Float speed field
+            if ($field === 'rct_aurora_speed') {
+                $raw = (float)($request->request->get($field) ?? '1.0');
+                $data[$field] = number_format(max(0.1, min(5.0, $raw)), 1, '.', '');
                 continue;
             }
             $val = $request->request->get($field, '');

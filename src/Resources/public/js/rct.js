@@ -320,6 +320,11 @@
        5. DOTS-ANIMATION
     ------------------------------------------------------------------ */
 
+    const wrapper        = document.getElementById('wrapper');
+    const rctCanvasEnabled = !wrapper || wrapper.dataset.rctCanvas !== '0';
+    const rctDotsEnabled   = !wrapper || wrapper.dataset.rctDots   !== '0';
+    const rctAuroraSpeed   = parseFloat(wrapper?.dataset.rctAuroraSpeed || '1.0') || 1.0;
+
     const dotsCanvas = document.getElementById('rct-dots-canvas');
     const main       = document.getElementById('main');
     const dotsState  = {
@@ -328,7 +333,7 @@
       dotColor: 'rgba(255, 255, 255, 0.45)'
     };
 
-    if (dotsCanvas && main) {
+    if (rctDotsEnabled && dotsCanvas && main) {
       const dctx = dotsCanvas.getContext('2d');
 
       function resizeDots() {
@@ -395,7 +400,7 @@
     const gradCanvas = document.querySelector('#gradient-canvas');
 
     window.applyTheme = function (theme, withFade) {
-      if (!gradCanvas) return;
+      if (!gradCanvas || !rctCanvasEnabled) return;
 
       // 1. Attribute setzen
       if (theme === 'default' || !theme) {
@@ -494,7 +499,7 @@
           window.gradient.freqX     = p.vertexShader_freqX     ?? 14e-5;
           window.gradient.freqY     = p.vertexShader_freqY     ?? 29e-5;
           window.gradient.freqDelta = p.vertexShader_freqDelta ?? 1e-5;
-          window.gradient.timeSpeed = (p.vertexShader_timeSpeed ?? 1.0) * SPEED_SCALE.vertex * 1000;
+          window.gradient.timeSpeed = (p.vertexShader_timeSpeed ?? 1.0) * SPEED_SCALE.vertex * 1000 * rctAuroraSpeed;
           window.gradient.bgColor   = parseColor(p.vertexShader_bgColor || '#0F0F14');
           // Fragment Shader
           window.gradient.lineMode  = p.shaderMode             ?? 0;
