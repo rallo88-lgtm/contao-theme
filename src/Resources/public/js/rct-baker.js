@@ -12,25 +12,25 @@
   const ctx = canvas.getContext('2d');
 
   // ── Lamp positions (fractions of source image w/h) ───────────
-  // Measured from the baker-street.webp original
+  // Remeasured from annotated baker-street.webp (1539×720)
   const LAMPS = [
-    { fx: 0.190, fy: 0.410, ph: 0.00, sz: 1.00 },  // left, tall, closest
-    { fx: 0.680, fy: 0.418, ph: 3.07, sz: 0.88 },  // right, tall, foreground
-    { fx: 0.430, fy: 0.488, ph: 2.14, sz: 0.52 },  // centre-left, mid
-    { fx: 0.545, fy: 0.552, ph: 4.31, sz: 0.35 },  // centre, far
-    { fx: 0.600, fy: 0.568, ph: 1.73, sz: 0.22 },  // furthest
+    { fx: 0.416, fy: 0.385, ph: 0.00, sz: 1.00 },  // left foreground lamp
+    { fx: 0.588, fy: 0.375, ph: 3.07, sz: 0.88 },  // right foreground lamp
+    { fx: 0.484, fy: 0.493, ph: 2.14, sz: 0.52 },  // centre-left, mid distance
+    { fx: 0.507, fy: 0.542, ph: 4.31, sz: 0.28 },  // centre, further
+    { fx: 0.572, fy: 0.521, ph: 1.73, sz: 0.22 },  // centre-right, far
   ];
 
   // ── Fog layer descriptors ─────────────────────────────────────
-  const FOG_N = 18;
+  const FOG_N = 20;
   const fogs = Array.from({ length: FOG_N }, () => ({
     x:  Math.random(),
-    y:  0.45 + Math.random() * 0.45,   // street level and below
-    rx: 0.28 + Math.random() * 0.48,
-    ry: 0.06 + Math.random() * 0.22,
+    y:  0.42 + Math.random() * 0.50,   // from mid-frame down to street
+    rx: 0.30 + Math.random() * 0.50,
+    ry: 0.07 + Math.random() * 0.25,
     ph: Math.random() * Math.PI * 2,
-    sp: (0.00015 + Math.random() * 0.00040) * (Math.random() < 0.5 ? 1 : -1),
-    al: 0.10 + Math.random() * 0.18,   // much higher alpha → thick
+    sp: (0.00012 + Math.random() * 0.00030) * (Math.random() < 0.5 ? 1 : -1),
+    al: 0.20 + Math.random() * 0.25,   // thick pure-white fog
   }));
 
   // ── Background image ──────────────────────────────────────────
@@ -66,12 +66,12 @@
     };
   }
 
-  // ── Flicker: three overlapping sinusoids → natural flame feel ─
+  // ── Flicker: slow overlapping sinusoids → gentle gas lamp feel ─
   function flicker(t, lamp) {
-    return 0.72
-      + 0.16 * Math.sin(t *  7.3  + lamp.ph)
-      + 0.08 * Math.sin(t * 17.11 + lamp.ph * 1.41)
-      + 0.04 * Math.sin(t * 31.97 + lamp.ph * 0.63);
+    return 0.78
+      + 0.12 * Math.sin(t *  1.8  + lamp.ph)
+      + 0.06 * Math.sin(t *  4.3  + lamp.ph * 1.41)
+      + 0.04 * Math.sin(t *  9.1  + lamp.ph * 0.63);
   }
 
   // ── Render ────────────────────────────────────────────────────
@@ -102,9 +102,9 @@
       ctx.translate(cx, cy);
       ctx.scale(1, ry / rx);                          // circle → ellipse
       const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
-      g.addColorStop(0,    `rgba(235, 228, 210, ${a})`);         // warm white centre
-      g.addColorStop(0.55, `rgba(215, 205, 180, ${a * 0.55})`);  // soft cream mid
-      g.addColorStop(1,    'rgba(200, 190, 160, 0)');
+      g.addColorStop(0,    `rgba(255, 255, 255, ${a})`);
+      g.addColorStop(0.55, `rgba(255, 255, 255, ${a * 0.50})`);
+      g.addColorStop(1,    'rgba(255, 255, 255, 0)');
       ctx.fillStyle = g;
       ctx.beginPath();
       ctx.arc(0, 0, rx, 0, Math.PI * 2);
