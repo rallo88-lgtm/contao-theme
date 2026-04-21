@@ -1,6 +1,7 @@
 <?php
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Rallo\ContaoTheme\DCA\RctFontOptionsCallback;
 
 // Stil-Feld + Experteneinstellungen zur nativen Contao-Akkordeon-Palette hinzufügen
 PaletteManipulator::create()
@@ -38,9 +39,18 @@ PaletteManipulator::create()
     ->applyToPalette('text', 'tl_content');
 
 PaletteManipulator::create()
-    ->addField('rct_content_color', 'hl', PaletteManipulator::POSITION_AFTER)
+    ->addField('rct_hl_font', 'hl', PaletteManipulator::POSITION_AFTER)
+    ->addField('rct_content_color', 'rct_hl_font', PaletteManipulator::POSITION_AFTER)
     ->removeField('customTpl')
     ->applyToPalette('headline', 'tl_content');
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hl_font'] = [
+    'label'            => ['Schriftart', 'Abweichender Font für diese Überschrift. Leer = globaler Standard-Font.'],
+    'inputType'        => 'select',
+    'options_callback' => [RctFontOptionsCallback::class, 'getHeadlineFonts'],
+    'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => false],
+    'sql'              => "varchar(128) NOT NULL default ''",
+];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_content_color'] = [
     'label'     => ['Textfarbe', 'Optionale Farbe für Text/Überschrift. Hex (#27c4f4) oder leer lassen.'],

@@ -1,0 +1,11 @@
+{% set fontStyle = (rct_hl_font is defined and rct_hl_font) ? "font-family:'" ~ rct_hl_font ~ "'" : null %}
+{% set wrapperAttributes = attrs(cssID)
+    .addClass(class)
+    .addStyle(style|default)
+    .addStyle(fontStyle)
+    .mergeWith(wrapperAttributes|default)
+%}
+
+<{{ hl }}{{ wrapperAttributes }}>
+    {{ headline|insert_tag_raw }}
+</{{ hl }}>
