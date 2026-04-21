@@ -2761,7 +2761,6 @@
 }
 
 .rct-timeline-title {
-  font-family: var(--rct-font-body);
   font-size: 1rem;
   font-weight: 700;
   color: var(--rct-text, #1b1c1c);
@@ -3597,7 +3596,7 @@
 
 /* Date: log-timestamp style */
 .rct-news-timeline.style-dark .rct-timeline-date {
-  font-family: var(--rct-font-mono);
+  font-family: 'Courier New', Courier, monospace;
   font-size: 0.7rem;
   letter-spacing: 0.1em;
   color: var(--rct-accent, #27c4f4);
@@ -3627,7 +3626,7 @@
 
 /* "Weiterlesen" → "ACCESS FILE →" */
 .rct-news-timeline.style-dark .rct-timeline-more a {
-  font-family: var(--rct-font-mono);
+  font-family: 'Courier New', Courier, monospace;
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -3747,15 +3746,13 @@
 /* ── DARK: Classified Archive ── */
 .rct-timeline.style-dark .rct-timeline-card {
   background: rgba(10, 10, 10, 0.85);
-  border: 1px solid color-mix(in srgb, var(--tl-color, #27c4f4) 20%, transparent);
-  border-top: 2px solid var(--tl-color, var(--rct-accent, #27c4f4));
-  border-radius: 0 0 6px 6px;
-  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+  border: 1px solid rgba(var(--tl-color, 39, 196, 244), 0.25);
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
   box-shadow:
-    0 0 20px rgba(39, 196, 244, 0.07),
+    0 0 20px rgba(var(--tl-color, 39, 196, 244), 0.07),
     inset 0 0 40px rgba(0, 0, 0, 0.4);
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 
 /* Scanlines overlay */
@@ -3765,7 +3762,8 @@
   inset: 0;
   background: repeating-linear-gradient(
     0deg,
-    transparent, transparent 3px,
+    transparent,
+    transparent 3px,
     rgba(0, 0, 0, 0.08) 3px,
     rgba(0, 0, 0, 0.08) 4px
   );
@@ -3773,19 +3771,15 @@
   z-index: 0;
 }
 
-/* Scan-line texture */
+/* Corner notch accent */
 .rct-timeline.style-dark .rct-timeline-card::after {
   content: '';
   position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent, transparent 3px,
-    color-mix(in srgb, var(--tl-color, #27c4f4) 2%, transparent) 3px,
-    color-mix(in srgb, var(--tl-color, #27c4f4) 2%, transparent) 4px
-  );
-  pointer-events: none;
-  border-radius: inherit;
+  top: 0; right: 0;
+  width: 12px; height: 12px;
+  background: var(--tl-color, var(--rct-accent, #27c4f4));
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  opacity: 0.7;
 }
 
 .rct-timeline.style-dark .rct-timeline-card > * { position: relative; z-index: 1; }
@@ -3798,7 +3792,7 @@
 }
 
 .rct-timeline.style-dark .rct-timeline-date {
-  font-family: var(--rct-font-mono);
+  font-family: 'Courier New', Courier, monospace;
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -3811,7 +3805,7 @@
 .rct-timeline.style-dark .rct-timeline-date::after  { content: ' ]'; }
 
 .rct-timeline.style-dark .rct-timeline-title {
-  font-family: var(--rct-font-mono);
+  font-family: 'Courier New', Courier, monospace;
   color: var(--rct-shell-text, #fff);
   font-size: 1.05rem;
   font-weight: 700;
@@ -3822,7 +3816,7 @@
 
 .rct-timeline.style-dark .rct-timeline-body,
 .rct-timeline.style-dark .rct-timeline-body p {
-  font-family: var(--rct-font-mono);
+  font-family: 'Courier New', Courier, monospace;
   font-size: 0.82rem;
   line-height: 1.65;
   color: rgba(255, 255, 255, 0.65);
