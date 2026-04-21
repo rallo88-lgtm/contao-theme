@@ -5,6 +5,8 @@
 (function () {
   'use strict';
 
+  document.addEventListener('DOMContentLoaded', function () {
+
   const canvas = document.getElementById('rct-dragon-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -159,6 +161,18 @@
 
   window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
   window.addEventListener('resize', resize);
+
+  // Hook into applyTheme so dragon activates/deactivates on theme switch
+  const _origApply = window.applyTheme;
+  window.applyTheme = function (theme, withFade) {
+    if (theme === 'dragon') {
+      resize();
+    }
+    if (_origApply) _origApply(theme, withFade);
+  };
+
   resize();
   requestAnimationFrame(frame);
+
+  }); // DOMContentLoaded
 })();
