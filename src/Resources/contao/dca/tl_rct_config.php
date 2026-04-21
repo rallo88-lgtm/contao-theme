@@ -21,5 +21,8 @@ $GLOBALS['TL_DCA']['tl_rct_config'] = [
         'rct_header_height'      => ['sql' => "varchar(10) NOT NULL default '64px'"],
         'rct_radius'             => ['sql' => "varchar(10) NOT NULL default '0.125rem'"],
         'rct_allowed_themes'     => ['sql' => "varchar(500) NOT NULL default ''"],
+        'rct_canvas_enabled'     => ['sql' => "char(1) NOT NULL default '1'"],
+        'rct_dots_enabled'       => ['sql' => "char(1) NOT NULL default '1'"],
+        'rct_aurora_speed'       => ['sql' => "varchar(5) NOT NULL default '1.0'"],
     ],
 ];
