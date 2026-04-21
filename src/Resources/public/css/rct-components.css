@@ -2694,7 +2694,6 @@
   min-width: 0; /* CSS-Grid-Fix: verhindert dass Content die 1fr-Spalte aufbläst */
   background: var(--rct-surface, rgba(255,255,255,0.04));
   border: 1px solid color-mix(in srgb, var(--tl-color) 22%, transparent);
-  border-radius: var(--rct-radius-xl, 0.5rem);
   padding: 1.1rem 1.25rem;
   position: relative;
 
