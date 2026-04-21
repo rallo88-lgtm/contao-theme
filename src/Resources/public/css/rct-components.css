@@ -3560,7 +3560,8 @@
   background: color-mix(in srgb, var(--rct-accent, #27c4f4) 4%, #0d1117);
   border: 1px solid color-mix(in srgb, var(--rct-accent, #27c4f4) 20%, transparent);
   border-top: 2px solid var(--rct-accent, #27c4f4);
-  border-radius: 0 0 var(--rct-radius-xl, 0.5rem) var(--rct-radius-xl, 0.5rem);
+  border-radius: 0 0 6px 6px;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
   position: relative;
   overflow: visible;
 }
@@ -3747,7 +3748,7 @@
 .rct-timeline.style-dark .rct-timeline-card {
   background: rgba(10, 10, 10, 0.85);
   border: 1px solid rgba(var(--tl-color, 39, 196, 244), 0.25);
-  border-radius: var(--rct-radius-xl, 0.5rem);
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
   box-shadow:
     0 0 20px rgba(var(--tl-color, 39, 196, 244), 0.07),
     inset 0 0 40px rgba(0, 0, 0, 0.4);
