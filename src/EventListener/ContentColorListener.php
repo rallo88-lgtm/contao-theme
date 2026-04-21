@@ -27,21 +27,30 @@ class ContentColorListener
         }
 
         $raw = trim((string) $model->rct_content_color);
-        if ($raw === '') {
-            return $buffer;
+        if ($raw !== '') {
+            if (str_starts_with($raw, 'var(')) {
+                $color = $raw;
+            } elseif (preg_match('/^#?[0-9a-fA-F]{3,8}$/', $raw)) {
+                $color = '#' . ltrim($raw, '#');
+            } else {
+                $color = '';
+            }
+
+            if ($color !== '') {
+                $buffer = $this->injectStyle($buffer, 'color: ' . $color);
+            }
         }
 
-        // Contao colorpicker speichert hex OHNE # (z.B. "27c4f4")
-        if (str_starts_with($raw, 'var(')) {
-            $color = $raw;
-        } elseif (preg_match('/^#?[0-9a-fA-F]{3,8}$/', $raw)) {
-            $color = '#' . ltrim($raw, '#');
-        } else {
-            return $buffer;
+        $font = trim((string) $model->rct_hl_font);
+        if ($font !== '' && $model->type === 'headline') {
+            $buffer = $this->injectStyle($buffer, "font-family:'" . str_replace("'", "\\'", $font) . "'");
         }
 
-        $styleDecl = 'color: ' . $color;
+        return $buffer;
+    }
 
+    private function injectStyle(string $buffer, string $styleDecl): string
+    {
         return preg_replace_callback(
             '/(<(?:div|h[1-6]|article|section)\b)([^>]*)(>)/i',
             static function (array $m) use ($styleDecl): string {
@@ -63,7 +72,7 @@ class ContentColorListener
             },
             $buffer,
             1
-        );
+        ) ?? $buffer;
     }
 
     private function injectDownloadStyle(ContentModel $model, string $buffer): string
