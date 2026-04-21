@@ -16,8 +16,8 @@
   const SH    = 58;    // scale total height (incl. hidden overlap)
   const VSTEP = 27;    // vertical row step — controls visible height
   const HSTEP = 40;    // horizontal step (= SW, no horizontal gap)
-  const HR    = 100;   // hover radius (px)
-  const LMAX  = 0.34;  // max lift
+  const HR    = 170;   // hover radius (px)
+  const LMAX  = 0.65;  // max lift
   const BA    = 1.5;   // breathing amplitude px
   const BS    = 0.44;  // breathing speed rad/s
 
@@ -96,16 +96,16 @@
     // ④ Iridescent inner edge — only when lifting
     if (lift > 0.05) {
       const hue = (165 + s.hu * 5 + t * 44) % 360;
-      const a   = Math.min(0.92, lift * 2.8);
+      const a   = Math.min(1.0, lift * 1.6);
       const ig  = ctx.createLinearGradient(-SW * 0.5, 0, SW * 0.5, 0);
       ig.addColorStop(0,    `hsla(${hue},            100%, 68%, 0)`);
-      ig.addColorStop(0.2,  `hsla(${hue},            100%, 75%, ${a})`);
-      ig.addColorStop(0.5,  `hsla(${(hue + 115) % 360}, 100%, 82%, ${a})`);
-      ig.addColorStop(0.8,  `hsla(${(hue + 225) % 360}, 100%, 75%, ${a})`);
+      ig.addColorStop(0.2,  `hsla(${hue},            100%, 80%, ${a})`);
+      ig.addColorStop(0.5,  `hsla(${(hue + 115) % 360}, 100%, 88%, ${a})`);
+      ig.addColorStop(0.8,  `hsla(${(hue + 225) % 360}, 100%, 80%, ${a})`);
       ig.addColorStop(1,    `hsla(${(hue + 335) % 360}, 100%, 68%, 0)`);
-      scaleShape(SW - 5, SH - 6);
+      scaleShape(SW - 4, SH - 5);
       ctx.strokeStyle = ig;
-      ctx.lineWidth   = 4.5;
+      ctx.lineWidth   = 7;
       ctx.stroke();
     }
 
