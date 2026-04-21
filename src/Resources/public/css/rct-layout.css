@@ -2026,6 +2026,32 @@ body.rct-right-open #right {
 [data-theme="dragon"] #gradient-canvas,
 [data-theme="dragon"] #rct-dots-canvas  { display: none; }
 
+/* Baker Street Canvas */
+#rct-baker-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  display: none;
+  z-index: 11;
+}
+[data-theme="baker-street"] #rct-baker-canvas { display: block; }
+[data-theme="baker-street"] #gradient-canvas,
+[data-theme="baker-street"] #rct-dots-canvas  { display: none; }
+
+/* Baker Street Theme */
+[data-theme="baker-street"] {
+  --rct-accent:              #c87828;
+  --rct-color-primary:       #7a3a14;
+  --rct-color-primary-light: #c87828;
+  --rct-grad1: #c87828;
+  --rct-grad2: #7a3a14;
+  --rct-grad3: #3d1a08;
+  --rct-grad4: #0d0905;
+}
+
 /* Module visibility control */
 @media (max-width: 768px) {
   [data-rct-visibility="desktop"] { display: none !important; }
