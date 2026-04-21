@@ -1,5 +1,11 @@
 <?php
 
+// Visibility legend for standard Contao modules
+$GLOBALS['TL_DCA']['tl_module']['palettes']['breadcrumb'] =
+    str_replace('{expert_legend:hide}', '{visibility_legend},rct_visibility;{expert_legend:hide}',
+        $GLOBALS['TL_DCA']['tl_module']['palettes']['breadcrumb'] ?? '{title_legend},name,headline,type;{visibility_legend},rct_visibility;{expert_legend:hide},cssID'
+    );
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_theme_switcher'] =
     '{title_legend},name,headline,type;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
