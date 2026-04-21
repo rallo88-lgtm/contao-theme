@@ -28,9 +28,9 @@ class RctTwigExtension extends AbstractExtension implements GlobalsInterface
 
         return [
             'rct_version'        => RctBundle::VERSION,
-            'rct_canvas_enabled' => $canvasEnabled ?: '1',
-            'rct_dots_enabled'   => $dotsEnabled   ?: '1',
-            'rct_aurora_speed'   => $auroraSpeed   ?: '1.0',
+            'rct_canvas_enabled' => $canvasEnabled,
+            'rct_dots_enabled'   => $dotsEnabled,
+            'rct_aurora_speed'   => $auroraSpeed !== '' ? $auroraSpeed : '1.0',
         ];
     }
 }
