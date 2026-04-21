@@ -11,26 +11,26 @@
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  // ── Lamp positions (fractions of source image w/h) ───────────
-  // Remeasured from annotated baker-street.webp (1539×720)
+  // ── Lamp positions as CANVAS fractions (fx = x/W, fy = y/H) ──
+  // Calibrated from live browser output at 1536×740 viewport
   const LAMPS = [
-    { fx: 0.416, fy: 0.385, ph: 0.00, sz: 1.00 },  // left foreground lamp
-    { fx: 0.588, fy: 0.375, ph: 3.07, sz: 0.88 },  // right foreground lamp
-    { fx: 0.484, fy: 0.493, ph: 2.14, sz: 0.52 },  // centre-left, mid distance
-    { fx: 0.507, fy: 0.542, ph: 4.31, sz: 0.28 },  // centre, further
-    { fx: 0.572, fy: 0.521, ph: 1.73, sz: 0.22 },  // centre-right, far
+    { fx: 0.449, fy: 0.328, ph: 0.00, sz: 1.00 },  // left foreground
+    { fx: 0.625, fy: 0.318, ph: 3.07, sz: 0.88 },  // right foreground
+    { fx: 0.505, fy: 0.399, ph: 2.14, sz: 0.52 },  // centre-left, mid
+    { fx: 0.547, fy: 0.439, ph: 4.31, sz: 0.28 },  // centre, far
+    { fx: 0.592, fy: 0.426, ph: 1.73, sz: 0.22 },  // centre-right, far
   ];
 
   // ── Fog layer descriptors ─────────────────────────────────────
-  const FOG_N = 20;
+  const FOG_N = 22;
   const fogs = Array.from({ length: FOG_N }, () => ({
     x:  Math.random(),
-    y:  0.42 + Math.random() * 0.50,   // from mid-frame down to street
-    rx: 0.30 + Math.random() * 0.50,
-    ry: 0.07 + Math.random() * 0.25,
+    y:  0.38 + Math.random() * 0.55,   // from mid-frame down to street
+    rx: 0.30 + Math.random() * 0.55,
+    ry: 0.06 + Math.random() * 0.24,
     ph: Math.random() * Math.PI * 2,
-    sp: (0.00012 + Math.random() * 0.00030) * (Math.random() < 0.5 ? 1 : -1),
-    al: 0.20 + Math.random() * 0.25,   // thick pure-white fog
+    sp: (0.00010 + Math.random() * 0.00028) * (Math.random() < 0.5 ? 1 : -1),
+    al: 0.22 + Math.random() * 0.28,
   }));
 
   // ── Background image ──────────────────────────────────────────
@@ -41,7 +41,7 @@
 
   let W = 0, H = 0;
 
-  // ── "cover" slice: which region of img fills the canvas ───────
+  // ── "cover" slice for background image ───────────────────────
   function coverSlice() {
     const iw = img.naturalWidth, ih = img.naturalHeight;
     const ia = iw / ih, ca = W / H;
@@ -56,22 +56,17 @@
     return { sx, sy, sw, sh };
   }
 
-  // Image-fraction → canvas pixel (accounting for cover crop)
+  // Lamp canvas position — direct canvas fractions, no cover mapping
   function lampXY(lamp) {
-    if (!imgLoaded) return { x: lamp.fx * W, y: lamp.fy * H };
-    const { sx, sy, sw, sh } = coverSlice();
-    return {
-      x: (lamp.fx * img.naturalWidth  - sx) / sw * W,
-      y: (lamp.fy * img.naturalHeight - sy) / sh * H,
-    };
+    return { x: lamp.fx * W, y: lamp.fy * H };
   }
 
   // ── Flicker: slow overlapping sinusoids → gentle gas lamp feel ─
   function flicker(t, lamp) {
-    return 0.78
-      + 0.12 * Math.sin(t *  1.8  + lamp.ph)
-      + 0.06 * Math.sin(t *  4.3  + lamp.ph * 1.41)
-      + 0.04 * Math.sin(t *  9.1  + lamp.ph * 0.63);
+    return 0.80
+      + 0.10 * Math.sin(t *  1.7  + lamp.ph)
+      + 0.06 * Math.sin(t *  4.1  + lamp.ph * 1.41)
+      + 0.04 * Math.sin(t *  8.7  + lamp.ph * 0.63);
   }
 
   // ── Render ────────────────────────────────────────────────────
@@ -89,30 +84,7 @@
       ctx.fillRect(0, 0, W, H);
     }
 
-    // 2 ─ Fog layers (source-over, very low alpha each)
-    ctx.globalCompositeOperation = 'source-over';
-    for (const fog of fogs) {
-      const cx = ((fog.x + t * fog.sp) % 1.4 - 0.2) * W;
-      const cy = fog.y * H;
-      const rx = fog.rx * W;
-      const ry = fog.ry * H;
-      const a  = fog.al * (0.55 + 0.45 * Math.sin(t * 0.38 + fog.ph));
-
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.scale(1, ry / rx);                          // circle → ellipse
-      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
-      g.addColorStop(0,    `rgba(255, 255, 255, ${a})`);
-      g.addColorStop(0.55, `rgba(255, 255, 255, ${a * 0.50})`);
-      g.addColorStop(1,    'rgba(255, 255, 255, 0)');
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.arc(0, 0, rx, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    // 3 ─ Lamp halos (screen blend → brightens without washing out)
+    // 2 ─ Lamp halos (screen blend → brightens without washing out)
     ctx.globalCompositeOperation = 'screen';
     for (const lamp of LAMPS) {
       const { x, y } = lampXY(lamp);
@@ -129,14 +101,37 @@
       ctx.fillRect(0, 0, W, H);
     }
 
-    // 4 ─ Vignette (source-over)
+    // 3 ─ Vignette
     ctx.globalCompositeOperation = 'source-over';
     const vig = ctx.createRadialGradient(W * 0.5, H * 0.48, H * 0.08,
                                          W * 0.5, H * 0.48, H * 0.92);
     vig.addColorStop(0, 'rgba(0,0,0,0)');
-    vig.addColorStop(1, 'rgba(0,0,0,0.68)');
+    vig.addColorStop(1, 'rgba(0,0,0,0.60)');
     ctx.fillStyle = vig;
     ctx.fillRect(0, 0, W, H);
+
+    // 4 ─ Fog layers AFTER vignette so white stays visible
+    ctx.globalCompositeOperation = 'source-over';
+    for (const fog of fogs) {
+      const cx = ((fog.x + t * fog.sp) % 1.4 - 0.2) * W;
+      const cy = fog.y * H;
+      const rx = fog.rx * W;
+      const ry = fog.ry * H;
+      const a  = fog.al * (0.55 + 0.45 * Math.sin(t * 0.35 + fog.ph));
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.scale(1, ry / rx);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
+      g.addColorStop(0,    `rgba(255, 255, 255, ${a})`);
+      g.addColorStop(0.55, `rgba(255, 255, 255, ${a * 0.45})`);
+      g.addColorStop(1,    'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(0, 0, rx, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
 
     requestAnimationFrame(frame);
   }
