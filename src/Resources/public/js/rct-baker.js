@@ -19,7 +19,7 @@
   const FOG_N = 22;
   const fogs = Array.from({ length: FOG_N }, () => ({
     x:  Math.random(),
-    y:  0.38 + Math.random() * 0.54,
+    y:  0.55 + Math.random() * 0.38,
     rx: 0.30 + Math.random() * 0.55,
     ry: 0.06 + Math.random() * 0.22,
     ph: Math.random() * Math.PI * 2,
