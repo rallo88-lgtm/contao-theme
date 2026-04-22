@@ -2011,35 +2011,11 @@ body.rct-right-open #right {
   z-index: 20;   /* Dots-Canvas – über Aurora */
 }
 
-/* Dragon-Scale Canvas */
-#rct-dragon-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  pointer-events: none;
-  display: none;   /* aktiviert via data-theme="dragon" oder JS */
-  z-index: 11;
+[data-theme="baker-street"] #gradient-canvas {
+  background-image: url('../img/baker-street.webp');
+  background-size: cover;
+  background-position: center;
 }
-[data-theme="dragon"] #rct-dragon-canvas { display: block; }
-[data-theme="dragon"] #gradient-canvas,
-[data-theme="dragon"] #rct-dots-canvas  { display: none; }
-
-/* Baker Street Canvas */
-#rct-baker-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  pointer-events: none;
-  display: none;
-  z-index: 11;
-}
-[data-theme="baker-street"] #rct-baker-canvas { display: block; }
-[data-theme="baker-street"] #gradient-canvas,
-[data-theme="baker-street"] #rct-dots-canvas  { display: none; }
 
 /* Baker Street Theme */
 [data-theme="baker-street"] {
