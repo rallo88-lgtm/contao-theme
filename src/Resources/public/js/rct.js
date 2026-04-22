@@ -401,6 +401,19 @@
     window.applyTheme = function (theme, withFade) {
       if (!gradCanvas || !rctCanvasEnabled) return;
 
+      // Pre-cleanup: wechsel zu No-GL-Theme (baker-street/sparta)
+      // GL beenden + Buffer leeren BEVOR data-theme gesetzt wird,
+      // damit display:none den Canvas-Reset nicht blockiert
+      const _toNoGL = theme === 'sparta' || theme === 'sparta2' || theme === 'baker-street';
+      if (_toNoGL) {
+        gradCanvas.classList.remove('is-visible');
+        if (window.gradient) {
+          window.gradient.pause();
+          gradCanvas.width = gradCanvas.width;  // löscht GL-Front-Buffer
+          window.gradient = null;
+        }
+      }
+
       // 1. Attribute setzen
       if (theme === 'default' || !theme) {
         document.documentElement.removeAttribute('data-theme');
@@ -558,8 +571,8 @@
       };
 
       // 5. Fade-Handling
-      // Kein Fade-out wenn kein GL läuft (baker-street/sparta als Quelle)
       if (withFade && window.gradient) {
+        // GL läuft — normal fade out, dann neue Animation
         const isFastOut = window.gradient.lineMode === 6;
         window.gradient.pause();
         gradCanvas.style.transition = isFastOut ? 'opacity 0.25s ease' : '';
@@ -569,6 +582,7 @@
           executeCanvasUpdate();
         }, isFastOut ? 350 : 1600);
       } else {
+        // Kein GL lief (baker-street/sparta) — Buffer wurde bereits in pre-cleanup geleert
         executeCanvasUpdate();
       }
     };
