@@ -4,15 +4,15 @@
 (function () {
   'use strict';
 
-  const FOG_N = 16;
+  const FOG_N = 22;
   const fogs = Array.from({ length: FOG_N }, () => ({
     x:  Math.random(),
-    y:  0.40 + Math.random() * 0.52,
-    rx: 0.28 + Math.random() * 0.50,
-    ry: 0.05 + Math.random() * 0.20,
+    y:  0.38 + Math.random() * 0.54,
+    rx: 0.30 + Math.random() * 0.55,
+    ry: 0.06 + Math.random() * 0.22,
     ph: Math.random() * Math.PI * 2,
-    sp: (0.00010 + Math.random() * 0.00025) * (Math.random() < 0.5 ? 1 : -1),
-    al: 0.07 + Math.random() * 0.08,
+    sp: (0.00035 + Math.random() * 0.00070) * (Math.random() < 0.5 ? 1 : -1),
+    al: 0.13 + Math.random() * 0.15,
   }));
 
   let rafId = null;
