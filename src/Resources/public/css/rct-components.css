@@ -164,8 +164,6 @@
 .opt-dot.neon-grid { background: linear-gradient(135deg, #ff2d78 0%, #1a0030 100%); }
 .current-theme-dot.magnetic-field,
 .opt-dot.magnetic-field { background: radial-gradient(circle, #27c4f4 30%, #03040a 100%); }
-.current-theme-dot.dragon,
-.opt-dot.dragon { background: radial-gradient(circle, #FFD060 20%, #B8860B 60%, #1c0e02 100%); }
 .current-theme-dot.baker-street,
 .opt-dot.baker-street { background: radial-gradient(circle at 40% 35%, #c87828 0%, #3d1a08 55%, #08060a 100%); }
 

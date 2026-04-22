@@ -248,6 +248,21 @@ const RCT_CANVAS_CONFIG = {
     mouseParallax:             true,
   },
 
+  'baker-street': {
+    bgImage:                   '../img/baker-street.webp',
+    vertexShader_amp:          0,
+    vertexShader_seed:         0,
+    vertexShader_freqX:        0,
+    vertexShader_freqY:        0,
+    vertexShader_freqDelta:    0,
+    vertexShader_timeSpeed:    0,
+    vertexShader_density:      [0.06, 0.16],
+    vertexShader_activeColors: [1, 1, 1, 1],
+    vertexShader_bgColor:      '#0a080c',
+    fragmentWithVertex:        false,
+    shaderMode:                0,
+  },
+
   'toxic-green': {
     vertexShader_amp:          0,
     vertexShader_seed:         0,
