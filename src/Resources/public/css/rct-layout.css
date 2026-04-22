@@ -2052,7 +2052,6 @@ body.rct-right-open #right {
   background-position: center !important;
   mask-image: none !important;
   -webkit-mask-image: none !important;
-  opacity: 1 !important;
 }
 
 /* Module visibility control */

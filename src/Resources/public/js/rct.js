@@ -456,14 +456,12 @@
 
       // 4. Kern-Logik für den Canvas-Update
       const executeCanvasUpdate = () => {
-        // Kein GL-Canvas für diese Themes — vorherigen Shader stoppen + Buffer leeren
+        // Kein GL-Canvas für diese Themes — Shader stopp, is-visible für Fade-in
         if (theme === 'sparta' || theme === 'sparta2' || theme === 'baker-street') {
-          if (window.gradient && window.gradient.pause) window.gradient.pause();
-          if (window.gradient && window.gradient.gl) {
-            window.gradient.gl.clearColor(0, 0, 0, 0);
-            window.gradient.gl.clear(window.gradient.gl.COLOR_BUFFER_BIT);
+          if (theme === 'baker-street') {
+            gradCanvas.style.backgroundImage = '';
+            setTimeout(() => gradCanvas.classList.add('is-visible'), 150);
           }
-          if (theme === 'baker-street') gradCanvas.style.backgroundImage = '';
           return;
         }
 
@@ -570,19 +568,6 @@
         // Immer sofort stoppen — verhindert Shader-Überlagerung beim Wechsel
         const isFastOut = window.gradient && window.gradient.lineMode === 6;
         if (window.gradient && window.gradient.pause) window.gradient.pause();
-        // GL-Buffer leeren: Canvas kurz per Inline-!important verstecken,
-        // GL clearen, dann Inline-Style entfernen → CSS übernimmt wieder
-        gradCanvas.style.setProperty('opacity', '0', 'important');
-        if (window.gradient && window.gradient.gl) {
-          const _gl = window.gradient.gl;
-          requestAnimationFrame(() => {
-            _gl.clearColor(0, 0, 0, 0);
-            _gl.clear(_gl.COLOR_BUFFER_BIT);
-            gradCanvas.style.removeProperty('opacity');
-          });
-        } else {
-          requestAnimationFrame(() => gradCanvas.style.removeProperty('opacity'));
-        }
         gradCanvas.style.transition = isFastOut ? 'opacity 0.25s ease' : '';
         gradCanvas.classList.remove('is-visible');
         setTimeout(() => {
