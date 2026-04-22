@@ -2023,6 +2023,7 @@ body.rct-right-open #right {
   z-index: 20;   /* Dots-Canvas – über Aurora */
 }
 [data-theme="baker-street"] #rct-dots-canvas { display: none; }
+[data-theme="baker-street"] #rct-effects-canvas { mix-blend-mode: screen; }
 
 /* Baker Street Theme */
 [data-theme="baker-street"] {
