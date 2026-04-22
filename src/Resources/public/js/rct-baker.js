@@ -70,7 +70,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    canvas = document.getElementById('rct-dots-canvas');
+    canvas = document.getElementById('rct-effects-canvas');
     if (!canvas) return;
     ctx = canvas.getContext('2d');
 
