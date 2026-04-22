@@ -4820,20 +4820,13 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 
 /* Visual panel */
 .rct-hero-visual {
+  position: relative;
   height: 100%;
   min-height: 420px;
   animation: rct-hero-in 1s 0.18s both cubic-bezier(.4,0,.2,1);
 }
-.rct-hero-img-wrap {
-  position: relative;
-  overflow: hidden;
-  height: 100%;
-  min-height: 420px;
-  /* Angeschrägte linke Kante — Echo des RCT-Logo-Winkels */
-  clip-path: polygon(7% 0%, 100% 0%, 100% 100%, 0% 100%);
-}
-/* Obere rechte Ecken-Dekoration */
-.rct-hero-img-wrap::after {
+/* Eselsohr oben rechts — sitzt auf dem Visual-Wrapper über dem geclippten Bild */
+.rct-hero-visual::after {
   content: '';
   position: absolute;
   top: 0;
@@ -4845,6 +4838,15 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   opacity: 0.75;
   z-index: 2;
   transition: background 0.4s;
+  pointer-events: none;
+}
+.rct-hero-img-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  min-height: 420px;
+  /* Linke Diagonale + Eselsohr oben rechts */
+  clip-path: polygon(7% 0%, calc(100% - 22px) 0%, 100% 22px, 100% 100%, 0% 100%);
 }
 .rct-hero-img-wrap img {
   width: 100%;

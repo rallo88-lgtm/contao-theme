@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 #[AsHook('getContentElement')]
 class ContentColorListener
 {
-    private const SUPPORTED_COLOR = ['text', 'headline'];
+    private const SUPPORTED_COLOR = ['text', 'headline', 'rct_hero'];
 
     private static array $injectedFonts = [];
 
@@ -33,8 +33,9 @@ class ContentColorListener
             return $buffer;
         }
 
+        // rct_hero: Farbe wird im Controller direkt auf <h1> gesetzt
         $raw = trim((string) $model->rct_content_color);
-        if ($raw !== '') {
+        if ($raw !== '' && $model->type !== 'rct_hero') {
             if (str_starts_with($raw, 'var(')) {
                 $color = $raw;
             } elseif (preg_match('/^#?[0-9a-fA-F]{3,8}$/', $raw)) {
@@ -49,8 +50,10 @@ class ContentColorListener
         }
 
         $font = trim((string) $model->rct_hl_font);
-        if ($font !== '' && $model->type === 'headline') {
-            $buffer = $this->injectStyle($buffer, "font-family:'" . str_replace("'", "\\'", $font) . "'");
+        if ($font !== '') {
+            if ($model->type !== 'rct_hero') {
+                $buffer = $this->injectStyle($buffer, "font-family:'" . str_replace("'", "\\'", $font) . "'");
+            }
             $this->ensureFontFace($font);
         }
 
