@@ -456,8 +456,8 @@
 
       // 4. Kern-Logik für den Canvas-Update
       const executeCanvasUpdate = () => {
-        // Sparta: kein Canvas, kein Gradient
-        if (theme === 'sparta' || theme === 'sparta2') return;
+        // Kein GL-Canvas für diese Themes
+        if (theme === 'sparta' || theme === 'sparta2' || theme === 'baker-street') return;
 
         if (typeof Gradient !== 'undefined' && isWebGLSupported()) {
 
