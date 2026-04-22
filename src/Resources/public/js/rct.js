@@ -456,8 +456,9 @@
 
       // 4. Kern-Logik für den Canvas-Update
       const executeCanvasUpdate = () => {
-        // Kein GL-Canvas für diese Themes
+        // Kein GL-Canvas für diese Themes — vorherigen Shader stoppen
         if (theme === 'sparta' || theme === 'sparta2' || theme === 'baker-street') {
+          if (window.gradient && window.gradient.pause) window.gradient.pause();
           if (theme === 'baker-street') gradCanvas.style.backgroundImage = '';
           return;
         }
