@@ -2012,9 +2012,9 @@ body.rct-right-open #right {
 }
 
 [data-theme="baker-street"] #gradient-canvas {
-  background-image: url('../img/baker-street.webp');
-  background-size: cover;
-  background-position: center;
+  background-image: url('../img/baker-street.webp') !important;
+  background-size: cover !important;
+  background-position: center !important;
 }
 
 /* Baker Street Theme */
