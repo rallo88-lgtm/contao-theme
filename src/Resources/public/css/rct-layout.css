@@ -487,7 +487,7 @@ h1, h2, h3, h4, h5, h6 {
 ::-moz-selection { background-color: var(--rct-accent) !important; color: #fff; }
 
 /* Links in #main und #bottom (alle drei Themes) */
-#main a,
+#main a:not(.rct-btn--primary),
 #bottom a {
     color: var(--rct-accent, #27c4f4);
 }

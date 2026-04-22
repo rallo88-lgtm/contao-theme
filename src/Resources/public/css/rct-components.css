@@ -4673,7 +4673,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   align-items: center;
   gap: 12px;
   font-family: var(--rct-font-mono);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.22em;
@@ -4778,7 +4778,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   width: 60%;
   height: 200px;
   background: radial-gradient(ellipse at center, var(--rct-accent) 0%, transparent 70%);
-  opacity: 0.04;
+  opacity: 0.125;
   pointer-events: none;
   transition: background 0.4s;
 }
@@ -4813,7 +4813,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   right: 0;
   top: 8%;
   bottom: 8%;
-  width: 1px;
+  width: 5px;
   background: linear-gradient(to bottom, transparent, var(--rct-accent), transparent);
   opacity: 0.18;
 }
