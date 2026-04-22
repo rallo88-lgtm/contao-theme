@@ -568,6 +568,12 @@
         // Immer sofort stoppen — verhindert Shader-Überlagerung beim Wechsel
         const isFastOut = window.gradient && window.gradient.lineMode === 6;
         if (window.gradient && window.gradient.pause) window.gradient.pause();
+        // Für statische Themes: Canvas-Reset erzwingt leeren Front-Buffer
+        // (rAF-basiertes gl.clear reicht nicht — browser zeigt letzten Front-Buffer)
+        if (theme === 'baker-street' || theme === 'sparta' || theme === 'sparta2') {
+          gradCanvas.width = gradCanvas.width;
+          window.gradient = null;
+        }
         gradCanvas.style.transition = isFastOut ? 'opacity 0.25s ease' : '';
         gradCanvas.classList.remove('is-visible');
         setTimeout(() => {
