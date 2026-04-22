@@ -62,33 +62,41 @@
     rafId = requestAnimationFrame(frame);
   }
 
-  function injectCanvas() {
-    if (document.getElementById('rct-sky-canvas')) return;
-    const c = document.createElement('canvas');
-    c.id = 'rct-sky-canvas';
+  function inject() {
     const gradCanvas = document.getElementById('gradient-canvas');
-    gradCanvas.parentNode.insertBefore(c, gradCanvas);
-    canvas = c;
-    ctx = c.getContext('2d');
+    if (!document.getElementById('rct-sky-canvas')) {
+      const c = document.createElement('canvas');
+      c.id = 'rct-sky-canvas';
+      gradCanvas.parentNode.insertBefore(c, gradCanvas);
+      canvas = c;
+      ctx = c.getContext('2d');
+    }
+    if (!document.getElementById('rct-baker-bg')) {
+      const bg = document.createElement('div');
+      bg.id = 'rct-baker-bg';
+      gradCanvas.parentNode.insertBefore(bg, gradCanvas);
+    }
   }
 
-  function removeCanvas() {
-    const c = document.getElementById('rct-sky-canvas');
-    if (c) c.remove();
+  function remove() {
+    ['rct-sky-canvas', 'rct-baker-bg'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    });
     canvas = null;
     ctx = null;
   }
 
   function start() {
     if (rafId) return;
-    injectCanvas();
+    inject();
     resize();
     rafId = requestAnimationFrame(frame);
   }
 
   function stop() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-    removeCanvas();
+    remove();
   }
 
   function check() {

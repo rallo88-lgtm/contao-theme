@@ -2022,7 +2022,6 @@ body.rct-right-open #right {
   display: block;
   z-index: 20;   /* Dots-Canvas – über Aurora */
 }
-[data-theme="baker-street"] #rct-dots-canvas { display: none; }
 [data-theme="baker-street"] #rct-effects-canvas { mix-blend-mode: screen; }
 
 /* Sky-Canvas — dynamisch injiziert für Baker Street */
@@ -2046,12 +2045,18 @@ body.rct-right-open #right {
   --rct-grad3: #3d1a08;
   --rct-grad4: #0d0905;
 }
-[data-theme="baker-street"] #gradient-canvas {
-  background-image: url('/bundles/rct/img/baker-street-alpha.webp') !important;
-  background-size: cover !important;
-  background-position: center !important;
-  mask-image: none !important;
-  -webkit-mask-image: none !important;
+[data-theme="baker-street"] #gradient-canvas,
+[data-theme="baker-street"] #rct-dots-canvas { display: none !important; }
+
+#rct-baker-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100vh;
+  z-index: 8;
+  background-image: url('/bundles/rct/img/baker-street-alpha.webp');
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
 }
 
 /* Module visibility control */

@@ -456,14 +456,8 @@
 
       // 4. Kern-Logik für den Canvas-Update
       const executeCanvasUpdate = () => {
-        // Kein GL-Canvas für diese Themes — Shader stopp, is-visible für Fade-in
-        if (theme === 'sparta' || theme === 'sparta2' || theme === 'baker-street') {
-          if (theme === 'baker-street') {
-            gradCanvas.style.backgroundImage = '';
-            setTimeout(() => gradCanvas.classList.add('is-visible'), 150);
-          }
-          return;
-        }
+        // Kein GL-Canvas für diese Themes
+        if (theme === 'sparta' || theme === 'sparta2' || theme === 'baker-street') return;
 
         if (typeof Gradient !== 'undefined' && isWebGLSupported()) {
 
