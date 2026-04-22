@@ -570,11 +570,18 @@
         // Immer sofort stoppen — verhindert Shader-Überlagerung beim Wechsel
         const isFastOut = window.gradient && window.gradient.lineMode === 6;
         if (window.gradient && window.gradient.pause) window.gradient.pause();
-        // Für statische Themes (baker-street, sparta): GL-Buffer sofort leeren,
-        // sonst bleibt der eingefrorene letzte Frame sichtbar (CSS opacity:1 !important)
+        // GL-Buffer leeren: Canvas kurz per Inline-!important verstecken,
+        // GL clearen, dann Inline-Style entfernen → CSS übernimmt wieder
+        gradCanvas.style.setProperty('opacity', '0', 'important');
         if (window.gradient && window.gradient.gl) {
-          window.gradient.gl.clearColor(0, 0, 0, 0);
-          window.gradient.gl.clear(window.gradient.gl.COLOR_BUFFER_BIT);
+          const _gl = window.gradient.gl;
+          requestAnimationFrame(() => {
+            _gl.clearColor(0, 0, 0, 0);
+            _gl.clear(_gl.COLOR_BUFFER_BIT);
+            gradCanvas.style.removeProperty('opacity');
+          });
+        } else {
+          requestAnimationFrame(() => gradCanvas.style.removeProperty('opacity'));
         }
         gradCanvas.style.transition = isFastOut ? 'opacity 0.25s ease' : '';
         gradCanvas.classList.remove('is-visible');
