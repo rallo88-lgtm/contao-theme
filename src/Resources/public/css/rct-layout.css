@@ -2020,13 +2020,15 @@ body.rct-right-open #right {
   --rct-grad2: #7a3a14;
   --rct-grad3: #3d1a08;
   --rct-grad4: #0d0905;
-  background-image: url('/bundles/rct/img/baker-street.webp');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
 }
-[data-theme="baker-street"] #gradient-canvas,
-[data-theme="baker-street"] #rct-dots-canvas { display: none !important; }
+[data-theme="baker-street"] #gradient-canvas {
+  background-image: url('/bundles/rct/img/baker-street.webp') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  opacity: 1 !important;
+}
 
 /* Module visibility control */
 @media (max-width: 768px) {
