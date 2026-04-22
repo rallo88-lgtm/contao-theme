@@ -22,15 +22,24 @@ class RctHeroController extends AbstractContentElementController
         $template->body     = $model->rct_hero_body ? nl2br(htmlspecialchars((string) $model->rct_hero_body, ENT_QUOTES, 'UTF-8')) : '';
         $template->layout   = $model->rct_hero_layout ?: 'centered';
 
-        // Bild
-        $template->imgSrc = '';
-        $template->imgAlt = htmlspecialchars((string) $model->rct_hero_image_alt, ENT_QUOTES, 'UTF-8');
+        // Bilder (multi-select, serialisiert)
+        $images = [];
+        $imgAlt = htmlspecialchars((string) $model->rct_hero_image_alt, ENT_QUOTES, 'UTF-8');
         if ($model->rct_hero_image) {
-            $file = FilesModel::findByUuid($model->rct_hero_image);
-            if ($file !== null) {
-                $template->imgSrc = '/' . $file->path;
+            $uuids = StringUtil::deserialize($model->rct_hero_image, true);
+            foreach ($uuids as $uuid) {
+                if (!$uuid) {
+                    continue;
+                }
+                $file = FilesModel::findByUuid($uuid);
+                if ($file !== null) {
+                    $images[] = '/' . $file->path;
+                }
             }
         }
+        $template->images     = $images;
+        $template->imgAlt     = $imgAlt;
+        $template->slideSpeed = (int) ($model->rct_hero_slide_speed ?: 5);
 
         // Button 1
         $btn1    = [];

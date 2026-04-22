@@ -173,6 +173,7 @@ $GLOBALS['TL_LANG']['tl_content']['rct_hero_btn2_page']   = ['Interne Seite', 'C
 $GLOBALS['TL_LANG']['tl_content']['rct_hero_btn2_url']    = ['Externe URL', 'Manuelle URL (ignoriert wenn Seite gewählt)'];
 $GLOBALS['TL_LANG']['tl_content']['rct_hero_btn2_style']  = ['Button 2 Stil', 'Optik des sekundären Buttons'];
 $GLOBALS['TL_LANG']['tl_content']['rct_hero_btn2_target'] = ['Neues Tab', 'Link in neuem Tab öffnen'];
-$GLOBALS['TL_LANG']['tl_content']['rct_hero_image']       = ['Bild', 'Bild für die rechte Spalte (Layout "Zweispaltig")'];
-$GLOBALS['TL_LANG']['tl_content']['rct_hero_image_alt']   = ['Alt-Text', 'Alternativtext für das Bild (Barrierefreiheit)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_image']        = ['Bilder', 'Ein oder mehrere Bilder für die rechte Spalte. Mehrere Bilder = automatischer Fade-Wechsel.'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_image_alt']   = ['Alt-Text', 'Alternativtext für das erste Bild (Barrierefreiheit)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_slide_speed'] = ['Wechsel-Intervall', 'Zeit zwischen Bildwechseln (nur bei mehreren Bildern)'];
 $GLOBALS['TL_LANG']['tl_content']['rct_hero_stats']       = ['Kennzahlen', "Bis zu 3 Werte, eine pro Zeile. Format: Wert|Beschriftung — z.B.: 18|Komponenten"];

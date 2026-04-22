@@ -50,10 +50,12 @@
 
     </div>
 
-    {% if layout == 'split' and imgSrc %}
+    {% if layout == 'split' and images|length > 0 %}
       <div class="rct-hero-visual">
-        <div class="rct-hero-img-wrap">
-          <img src="{{ imgSrc }}" alt="{{ imgAlt }}" loading="eager" decoding="async">
+        <div class="rct-hero-img-wrap"{% if images|length > 1 %} data-hero-slides data-speed="{{ slideSpeed }}"{% endif %}>
+          {% for img in images %}
+            <img src="{{ img }}" alt="{{ loop.first ? imgAlt : '' }}" loading="{{ loop.first ? 'eager' : 'lazy' }}" decoding="async"{% if loop.first %} class="is-active"{% endif %}>
+          {% endfor %}
         </div>
       </div>
     {% endif %}
@@ -63,4 +65,22 @@
   <div class="rct-hero-glow" aria-hidden="true"></div>
 
 </section>
+
+{% if images|length > 1 %}
+<script>
+(function() {
+  document.querySelectorAll('[data-hero-slides]').forEach(function(wrap) {
+    var imgs = wrap.querySelectorAll('img');
+    if (imgs.length < 2) return;
+    var speed = parseInt(wrap.dataset.speed || '5', 10) * 1000;
+    var current = 0;
+    setInterval(function() {
+      imgs[current].classList.remove('is-active');
+      current = (current + 1) % imgs.length;
+      imgs[current].classList.add('is-active');
+    }, speed);
+  });
+})();
+</script>
+{% endif %}
 {% endblock %}

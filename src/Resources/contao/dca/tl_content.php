@@ -826,7 +826,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_pricing_style'] = [
 // ============================================================
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_hero'] =
-    '{type_legend},type;{hero_legend},rct_hero_overline,rct_hero_headline,rct_hero_body,rct_hero_layout;{hero_btn1_legend},rct_hero_btn1_label,rct_hero_btn1_page,rct_hero_btn1_url,rct_hero_btn1_style,rct_hero_btn1_target;{hero_btn2_legend:hide},rct_hero_btn2_label,rct_hero_btn2_page,rct_hero_btn2_url,rct_hero_btn2_style,rct_hero_btn2_target;{hero_image_legend:hide},rct_hero_image,rct_hero_image_alt;{hero_stats_legend:hide},rct_hero_stats;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{hero_legend},rct_hero_overline,rct_hero_headline,rct_hl_font,rct_content_color,rct_hero_body,rct_hero_layout;{hero_btn1_legend},rct_hero_btn1_label,rct_hero_btn1_page,rct_hero_btn1_url,rct_hero_btn1_style,rct_hero_btn1_target;{hero_btn2_legend:hide},rct_hero_btn2_label,rct_hero_btn2_page,rct_hero_btn2_url,rct_hero_btn2_style,rct_hero_btn2_target;{hero_image_legend:hide},rct_hero_image,rct_hero_image_alt,rct_hero_slide_speed;{hero_stats_legend:hide},rct_hero_stats;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_overline'] = [
     'label'     => ['Overline', 'Kleiner Text über der Überschrift, z.B. "Contao 5 · Design System"'],
@@ -935,12 +935,24 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn2_target'] = [
     'sql'       => "char(1) NOT NULL default ''",
 ];
 
-// Bild (nur relevant bei Layout "split")
+// Bilder (nur relevant bei Layout "split")
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_image'] = [
-    'label'     => ['Bild', 'Bild für die rechte Spalte (nur bei Layout "Zweispaltig" sichtbar)'],
+    'label'     => ['Bilder', 'Ein oder mehrere Bilder für die rechte Spalte. Mehrere Bilder = automatischer Fade-Wechsel.'],
     'inputType' => 'fileTree',
-    'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif', 'fieldType' => 'radio', 'tl_class' => 'clr'],
+    'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif', 'fieldType' => 'checkbox', 'orderField' => 'rct_hero_image_order', 'tl_class' => 'clr'],
     'sql'       => "blob NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_image_order'] = [
+    'sql' => "blob NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_slide_speed'] = [
+    'label'     => ['Wechsel-Intervall', 'Zeit zwischen Bildwechseln (nur bei mehreren Bildern)'],
+    'inputType' => 'select',
+    'options'   => ['3' => '3 Sekunden', '5' => '5 Sekunden', '8' => '8 Sekunden', '10' => '10 Sekunden'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(4) NOT NULL default '5'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_image_alt'] = [
