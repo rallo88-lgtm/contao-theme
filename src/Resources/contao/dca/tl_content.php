@@ -939,7 +939,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn2_target'] = [
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_image'] = [
     'label'     => ['Bilder', 'Ein oder mehrere Bilder für die rechte Spalte. Mehrere Bilder = automatischer Fade-Wechsel.'],
     'inputType' => 'fileTree',
-    'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif', 'fieldType' => 'checkbox', 'orderField' => 'rct_hero_image_order', 'tl_class' => 'clr'],
+    'eval'      => ['multiple' => true, 'filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif', 'fieldType' => 'checkbox', 'orderField' => 'rct_hero_image_order', 'tl_class' => 'clr'],
     'sql'       => "blob NULL",
 ];
 
