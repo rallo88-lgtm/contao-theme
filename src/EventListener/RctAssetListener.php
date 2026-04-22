@@ -31,6 +31,7 @@ class RctAssetListener
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/vendor/isotope.pkgd.min.js||static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/klaro-config.js||static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/klaro.min.js||static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-baker-sky.js||static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-baker.js||static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-canvas-config.js||static';
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/gl-bg-animation.js||static';
