@@ -820,3 +820,140 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_pricing_style'] = [
     'eval'      => ['tl_class' => 'w50'],
     'sql'       => "varchar(8) NOT NULL default 'dark'",
 ];
+
+// ============================================================
+// RCT Hero
+// ============================================================
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_hero'] =
+    '{type_legend},type;{hero_legend},rct_hero_overline,rct_hero_headline,rct_hero_body,rct_hero_layout;{hero_btn1_legend},rct_hero_btn1_label,rct_hero_btn1_page,rct_hero_btn1_url,rct_hero_btn1_style,rct_hero_btn1_target;{hero_btn2_legend:hide},rct_hero_btn2_label,rct_hero_btn2_page,rct_hero_btn2_url,rct_hero_btn2_style,rct_hero_btn2_target;{hero_image_legend:hide},rct_hero_image,rct_hero_image_alt;{hero_stats_legend:hide},rct_hero_stats;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_overline'] = [
+    'label'     => ['Overline', 'Kleiner Text über der Überschrift, z.B. "Contao 5 · Design System"'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 128, 'tl_class' => 'w50'],
+    'sql'       => "varchar(128) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_headline'] = [
+    'label'     => ['Überschrift', 'Hauptüberschrift. Tipp: <em>Wort</em> umschließen → das Wort erscheint in der Akzentfarbe'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 512, 'tl_class' => 'clr long'],
+    'sql'       => "varchar(512) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_body'] = [
+    'label'     => ['Begleittext', 'Kurzer beschreibender Text unter der Überschrift (optional)'],
+    'inputType' => 'textarea',
+    'eval'      => ['style' => 'height:80px', 'tl_class' => 'clr'],
+    'sql'       => "text NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_layout'] = [
+    'label'     => ['Layout', 'Zentriert (kein Bild) oder zweispaltig mit Bild rechts'],
+    'inputType' => 'select',
+    'options'   => ['centered' => 'Zentriert', 'split' => 'Zweispaltig (Bild rechts)'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(12) NOT NULL default 'centered'",
+];
+
+// Button 1
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn1_label'] = [
+    'label'     => ['Button-Text', 'Beschriftung des primären Buttons'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 128, 'tl_class' => 'w50'],
+    'sql'       => "varchar(128) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn1_page'] = [
+    'label'      => ['Interne Seite', 'Contao-Seite als Ziel (hat Vorrang vor URL-Feld)'],
+    'inputType'  => 'pageTree',
+    'foreignKey' => 'tl_page.title',
+    'eval'       => ['fieldType' => 'radio', 'tl_class' => 'clr'],
+    'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
+    'sql'        => "int(10) unsigned NOT NULL default 0",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn1_url'] = [
+    'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn eine Seite gewählt ist)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'rgxp' => 'url', 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn1_style'] = [
+    'label'     => ['Button-Stil', 'Optik des primären Buttons'],
+    'inputType' => 'select',
+    'options'   => ['primary' => 'Gefüllt (Primary)', 'outline' => 'Outline', 'ghost' => 'Ghost'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(12) NOT NULL default 'primary'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn1_target'] = [
+    'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+    'sql'       => "char(1) NOT NULL default ''",
+];
+
+// Button 2
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn2_label'] = [
+    'label'     => ['Button 2 Text', 'Beschriftung des sekundären Buttons (optional)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 128, 'tl_class' => 'w50'],
+    'sql'       => "varchar(128) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn2_page'] = [
+    'label'      => ['Interne Seite', 'Contao-Seite als Ziel (hat Vorrang vor URL-Feld)'],
+    'inputType'  => 'pageTree',
+    'foreignKey' => 'tl_page.title',
+    'eval'       => ['fieldType' => 'radio', 'tl_class' => 'clr'],
+    'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
+    'sql'        => "int(10) unsigned NOT NULL default 0",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn2_url'] = [
+    'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn eine Seite gewählt ist)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'rgxp' => 'url', 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn2_style'] = [
+    'label'     => ['Button 2 Stil', 'Optik des sekundären Buttons'],
+    'inputType' => 'select',
+    'options'   => ['primary' => 'Gefüllt (Primary)', 'outline' => 'Outline', 'ghost' => 'Ghost'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(12) NOT NULL default 'outline'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_btn2_target'] = [
+    'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+    'sql'       => "char(1) NOT NULL default ''",
+];
+
+// Bild (nur relevant bei Layout "split")
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_image'] = [
+    'label'     => ['Bild', 'Bild für die rechte Spalte (nur bei Layout "Zweispaltig" sichtbar)'],
+    'inputType' => 'fileTree',
+    'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif', 'fieldType' => 'radio', 'tl_class' => 'clr'],
+    'sql'       => "blob NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_image_alt'] = [
+    'label'     => ['Alt-Text', 'Alternativtext für das Bild (Barrierefreiheit)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+// Stats
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_stats'] = [
+    'label'     => ['Kennzahlen', "Bis zu 3 Kennzahlen, eine pro Zeile.\nFormat: Wert|Beschriftung, z.B.: 18|Komponenten"],
+    'inputType' => 'textarea',
+    'eval'      => ['style' => 'height:80px; font-family:monospace', 'tl_class' => 'clr'],
+    'sql'       => "text NULL",
+];

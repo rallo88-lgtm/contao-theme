@@ -151,3 +151,28 @@ $GLOBALS['TL_LANG']['tl_content']['rct_pricing_style']    = ['Stil', 'Dunkel (St
 
 // Download-Stil
 $GLOBALS['TL_LANG']['tl_content']['rct_download_style']  = ['Stil', 'Dunkel (Terminal) oder Hell (Standard) — leer = Contao-Default'];
+
+// Hero
+$GLOBALS['TL_LANG']['CTE']['rct_hero']                    = ['RCT Hero', 'Große Einstiegs-Sektion mit Überschrift, Text, Buttons und optionalem Bild'];
+$GLOBALS['TL_LANG']['tl_content']['hero_legend']          = 'Inhalt';
+$GLOBALS['TL_LANG']['tl_content']['hero_btn1_legend']     = 'Button 1';
+$GLOBALS['TL_LANG']['tl_content']['hero_btn2_legend']     = 'Button 2 (optional)';
+$GLOBALS['TL_LANG']['tl_content']['hero_image_legend']    = 'Bild (für zweispaltiges Layout)';
+$GLOBALS['TL_LANG']['tl_content']['hero_stats_legend']    = 'Kennzahlen (optional)';
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_overline']    = ['Overline', 'Kleiner Text über der Überschrift, z.B. "Contao 5 · Design System"'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_headline']    = ['Überschrift', 'Tipp: <em>Wort</em> eintippen → das Wort erscheint in der Akzentfarbe'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_body']        = ['Begleittext', 'Kurzer Text unter der Überschrift (optional)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_layout']      = ['Layout', 'Zentriert oder zweispaltig mit Bild rechts'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_btn1_label']  = ['Button-Text', 'Beschriftung des primären Buttons'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_btn1_page']   = ['Interne Seite', 'Contao-Seite als Ziel (Vorrang vor URL)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_btn1_url']    = ['Externe URL', 'Manuelle URL (ignoriert wenn Seite gewählt)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_btn1_style']  = ['Button-Stil', 'Optik des primären Buttons'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_btn1_target'] = ['Neues Tab', 'Link in neuem Tab öffnen'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_btn2_label']  = ['Button 2 Text', 'Beschriftung des sekundären Buttons'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_btn2_page']   = ['Interne Seite', 'Contao-Seite als Ziel (Vorrang vor URL)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_btn2_url']    = ['Externe URL', 'Manuelle URL (ignoriert wenn Seite gewählt)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_btn2_style']  = ['Button 2 Stil', 'Optik des sekundären Buttons'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_btn2_target'] = ['Neues Tab', 'Link in neuem Tab öffnen'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_image']       = ['Bild', 'Bild für die rechte Spalte (Layout "Zweispaltig")'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_image_alt']   = ['Alt-Text', 'Alternativtext für das Bild (Barrierefreiheit)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_stats']       = ['Kennzahlen', "Bis zu 3 Werte, eine pro Zeile. Format: Wert|Beschriftung — z.B.: 18|Komponenten"];

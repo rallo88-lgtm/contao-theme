@@ -1,0 +1,66 @@
+{#
+  RCT – rct_hero.html.twig
+  Hero section element.
+  layout: centered | split
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<section class="rct-hero layout-{{ layout }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+
+  <div class="rct-hero-inner">
+
+    <div class="rct-hero-text">
+
+      {% if overline %}
+        <div class="rct-hero-overline">{{ overline }}</div>
+      {% endif %}
+
+      <h1 class="rct-hero-headline">{{ headline|raw }}</h1>
+
+      {% if body %}
+        <div class="rct-hero-body">{{ body|raw }}</div>
+      {% endif %}
+
+      {% if btn1 or btn2 %}
+        <div class="rct-hero-actions">
+          {% if btn1 %}
+            <a href="{{ btn1.url }}" class="rct-btn rct-btn--{{ btn1.style }}" target="{{ btn1.target }}"{% if btn1.target == '_blank' %} rel="noopener noreferrer"{% endif %}>
+              {{ btn1.label }}
+              <svg class="rct-hero-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          {% endif %}
+          {% if btn2 %}
+            <a href="{{ btn2.url }}" class="rct-btn rct-btn--{{ btn2.style }}" target="{{ btn2.target }}"{% if btn2.target == '_blank' %} rel="noopener noreferrer"{% endif %}>{{ btn2.label }}</a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if stats %}
+        <div class="rct-hero-stats">
+          {% for stat in stats %}
+            {% if not loop.first %}<div class="rct-hero-stat-sep" aria-hidden="true"></div>{% endif %}
+            <div class="rct-hero-stat">
+              <span class="rct-hero-stat-val">{{ stat.value }}</span>
+              <span class="rct-hero-stat-label">{{ stat.label }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+    </div>
+
+    {% if layout == 'split' and imgSrc %}
+      <div class="rct-hero-visual">
+        <div class="rct-hero-img-wrap">
+          <img src="{{ imgSrc }}" alt="{{ imgAlt }}" loading="eager" decoding="async">
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+
+  <div class="rct-hero-glow" aria-hidden="true"></div>
+
+</section>
+{% endblock %}

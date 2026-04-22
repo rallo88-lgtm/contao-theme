@@ -14,3 +14,4 @@ $GLOBALS['TL_LANG']['CTE']['rct_grid_start'] = ['RCT Grid (Start)', 'Opens a mul
 $GLOBALS['TL_LANG']['CTE']['rct_grid_end']       = ['RCT Grid (End)', 'Closes the grid container'];
 $GLOBALS['TL_LANG']['CTE']['rct_accordion']      = ['RCT Accordion', 'Collapsible content blocks in RCT style'];
 $GLOBALS['TL_LANG']['CTE']['rct_pricing_table']  = ['RCT Pricing Table', 'Column-based pricing overview with features and CTA button'];
+$GLOBALS['TL_LANG']['CTE']['rct_hero']           = ['RCT Hero', 'Large entry section with headline, text, buttons and optional image'];
