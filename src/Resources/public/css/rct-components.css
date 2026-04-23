@@ -4811,12 +4811,12 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 .rct-hero.layout-split .rct-hero-text::after {
   content: '';
   position: absolute;
-  right: 0;
-  top: 8%;
-  bottom: 8%;
+  right: 20px;
+  top: 5%;
+  bottom: 5%;
   width: 5px;
   background: linear-gradient(to bottom, transparent, var(--rct-accent), transparent);
-  opacity: 0.18;
+  opacity: 0.25;
 }
 
 /* Visual panel */
