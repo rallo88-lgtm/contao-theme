@@ -3932,11 +3932,17 @@
 .rct-people-box.style-dark::after {
   content: '';
   position: absolute;
-  top: 0; right: 0;
-  width: 14px; height: 14px;
-  background: var(--rct-accent, #27c4f4);
+  top: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--rct-accent);
   clip-path: polygon(0 0, 100% 0, 100% 100%);
-  opacity: 0.7;
+  opacity: 0.75;
+  z-index: 2;
+  transition: background 0.4s;
+  pointer-events: none;
+  transform: rotate(45deg);
 }
 
 .rct-people-box.style-dark > * { position: relative; z-index: 1; }
