@@ -15,7 +15,9 @@
     al:  0.20 + Math.random() * 0.25,
   }));
 
-  let rafId = null;
+  const FRAME_INTERVAL = 1000 / 30; // 30fps cap
+  let lastTs  = 0;
+  let rafId   = null;
   let W = 0, H = 0;
   let canvas = null, ctx = null;
 
@@ -26,6 +28,10 @@
   }
 
   function frame(ts) {
+    rafId = requestAnimationFrame(frame);
+    if (ts - lastTs < FRAME_INTERVAL) return;
+    lastTs = ts;
+
     const t = ts * 0.001;
     ctx.clearRect(0, 0, W, H);
 
@@ -58,8 +64,6 @@
       ctx.fill();
       ctx.restore();
     }
-
-    rafId = requestAnimationFrame(frame);
   }
 
   function inject() {
@@ -101,11 +105,12 @@
 
   function check() {
     const theme = document.documentElement.getAttribute('data-theme');
-    if (theme === 'baker-street') start(); else stop();
+    if (theme === 'baker-street' && !document.hidden) start(); else stop();
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', resize);
+    document.addEventListener('visibilitychange', check);
     check();
     new MutationObserver(check).observe(
       document.documentElement,

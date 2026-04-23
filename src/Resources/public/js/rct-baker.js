@@ -16,7 +16,7 @@
 
   const MOON = { fx: 0.611, fy: 0.322 };
 
-  const FOG_N = 22;
+  const FOG_N = 14;
   const fogs = Array.from({ length: FOG_N }, () => ({
     x:  Math.random(),
     y:  0.55 + Math.random() * 0.38,
@@ -34,7 +34,9 @@
       + 0.04 * Math.sin(t * 8.7  + lamp.ph * 0.63);
   }
 
-  let rafId = null;
+  const FRAME_INTERVAL = 1000 / 30; // 30fps cap
+  let lastTs  = 0;
+  let rafId   = null;
   let W = 0, H = 0;
   let canvas, ctx;
 
@@ -45,6 +47,10 @@
   }
 
   function frame(ts) {
+    rafId = requestAnimationFrame(frame);
+    if (ts - lastTs < FRAME_INTERVAL) return;
+    lastTs = ts;
+
     const t = ts * 0.001;
     ctx.clearRect(0, 0, W, H);
 
@@ -97,8 +103,6 @@
       ctx.fill();
       ctx.restore();
     }
-
-    rafId = requestAnimationFrame(frame);
   }
 
   function start() {
@@ -114,7 +118,7 @@
 
   function check() {
     const theme = document.documentElement.getAttribute('data-theme');
-    if (theme === 'baker-street') start(); else stop();
+    if (theme === 'baker-street' && !document.hidden) start(); else stop();
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -123,6 +127,7 @@
     ctx = canvas.getContext('2d');
 
     window.addEventListener('resize', resize);
+    document.addEventListener('visibilitychange', check);
     check();
 
     new MutationObserver(check).observe(
