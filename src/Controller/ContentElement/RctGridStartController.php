@@ -14,6 +14,10 @@ class RctGridStartController extends AbstractContentElementController
 {
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
+        if ($request->attributes->get('_scope') === 'backend') {
+            return new Response('');
+        }
+
         $template->columns   = $model->rct_columns ?: '3';
         $template->gap       = $model->rct_gap;
         $template->align     = $model->rct_align;

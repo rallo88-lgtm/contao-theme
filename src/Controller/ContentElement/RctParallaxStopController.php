@@ -14,6 +14,10 @@ class RctParallaxStopController extends AbstractContentElementController
 {
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
+        if ($request->attributes->get('_scope') === 'backend') {
+            return new Response('');
+        }
+
         return $template->getResponse();
     }
 }

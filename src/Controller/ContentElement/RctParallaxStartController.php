@@ -15,6 +15,10 @@ class RctParallaxStartController extends AbstractContentElementController
 {
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
+        if ($request->attributes->get('_scope') === 'backend') {
+            return new Response('');
+        }
+
         $template->overlay  = $model->rct_parallax_overlay ?: '';
         $template->minHeight = $model->rct_parallax_height ?: '';
 
