@@ -4830,16 +4830,17 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 .rct-hero-visual::after {
   content: '';
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 22px;
-  height: 22px;
+  top: 6px;
+  right: 6px;
+  width: 30px;
+  height: 32px;
   background: var(--rct-accent);
   clip-path: polygon(0 0, 100% 0, 100% 100%);
   opacity: 0.75;
   z-index: 2;
   transition: background 0.4s;
   pointer-events: none;
+  transform: rotate(45deg);
 }
 .rct-hero-img-wrap {
   position: relative;
