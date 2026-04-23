@@ -16,6 +16,7 @@ var klaroConfig = {
       privacyPolicyUrl: '/datenschutz',
       consentNotice: {
         description: 'Diese Website lädt externe Inhalte (Karten, Videos). Bitte stimme zu, um sie anzuzeigen. {purposes}',
+        learnMore: 'Auswahl anpassen',
       },
       consentModal: {
         title: 'Datenschutzeinstellungen',

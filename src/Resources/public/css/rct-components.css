@@ -2062,14 +2062,9 @@
   color: var(--rct-shell-text) !important;
   border-color: var(--rct-shell-muted) !important;
 }
-.klaro .cn-buttons {
-  display: flex !important;
-  gap: 0.5rem !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-}
+.klaro .cn-buttons { overflow: hidden !important; }
 .klaro .cn-ok {
-  background: var(--rct-accent) !important;
+  float: right !important;
   color: #000 !important;
   border: none !important;
   border-radius: var(--rct-radius-xl) !important;
@@ -2078,9 +2073,8 @@
   font-weight: 600 !important;
   padding: 0.55rem 1.1rem !important;
   cursor: pointer !important;
-  transition: background 0.2s ease !important;
 }
-.klaro .cn-ok:hover { background: var(--rct-primary-light) !important; }
+.klaro .cn-buttons .cn-decline { float: left !important; }
 
 /* Links im Modal */
 .klaro .cm-modal a,
