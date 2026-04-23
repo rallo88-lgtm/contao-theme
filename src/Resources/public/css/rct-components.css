@@ -4628,14 +4628,14 @@ a.rct-gallery-link {
   position: relative;
   overflow: visible;
   border-radius: 0;
-  clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%);
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
 }
 
 .rct-pricing-plan.is-highlight::after {
   content: '';
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 0px;
+  right: 4px;
   width: 30px;
   height: 32px;
   background: var(--rct-accent);
