@@ -3154,6 +3154,11 @@
   );
 }
 
+/* Clipped corners */
+.rct-icon-box.style-dark {
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+
 /* Corner notch accent */
 .rct-icon-box.style-dark::after {
   content: '';
