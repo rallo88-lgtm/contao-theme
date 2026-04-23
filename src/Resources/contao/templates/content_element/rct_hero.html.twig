@@ -19,7 +19,7 @@
       <h1 class="rct-hero-headline"{% if hlColor or hlFont %} style="{% if hlColor %}color:{{ hlColor }};{% endif %}{% if hlFont %}font-family:'{{ hlFont }}';{% endif %}"{% endif %}>{{ headline|raw }}</h1>
 
       {% if body %}
-        <div class="rct-hero-body">{{ body|raw }}</div>
+        <div class="rct-hero-body"{% if hlColor %} style="color:{{ hlColor }}"{% endif %}>{{ body|raw }}</div>
       {% endif %}
 
       {% if btn1 or btn2 %}
