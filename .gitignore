@@ -1,4 +1,5 @@
 vendor/
+!src/Resources/public/js/vendor/
 .DS_Store
 Thumbs.db
 *.log
