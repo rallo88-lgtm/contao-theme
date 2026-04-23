@@ -33,7 +33,20 @@
       "Bash(git commit *)",
       "Bash(git rm *)",
       "Bash(git -C \"D:/kunden/rct-bundle\" tag --sort=-version:refname)",
-      "Bash(git -C \"D:/kunden/rct-bundle\" log --oneline -8)"
+      "Bash(git -C \"D:/kunden/rct-bundle\" log --oneline -8)",
+      "Bash(awk -F: 'NR<=5{print}')",
+      "Read(//d/vaults/daBrain/**)",
+      "WebFetch(domain:mb.a-web-service.de)",
+      "WebFetch(domain:rct.a-web-service.de)",
+      "Bash(python3 *)",
+      "Bash(cp \"D:/kunden/dvmb/MBJ-Contao5.7/files/themes/rct/js/klaro.min.js\" \"D:/kunden/rct-bundle/src/Resources/public/js/klaro.min.js\")",
+      "Bash(cp \"D:/kunden/dvmb/MBJ-Contao5.7/files/themes/rct/js/klaro-config.js\" \"D:/kunden/rct-bundle/src/Resources/public/js/klaro-config.js\")",
+      "Bash(cp \"D:/kunden/dvmb/MBJ-Contao5.7/files/themes/rct/css/klaro.min.css\" \"D:/kunden/rct-bundle/src/Resources/public/css/klaro.min.css\")",
+      "WebFetch(domain:thumbs.dreamstime.com)",
+      "Bash(git reset *)",
+      "Bash(./deploy.sh)",
+      "Bash(git *)",
+      "Bash(grep -o 'cm-link,[^{]*{[^}]*}' \"D:\\\\kunden\\\\rct-bundle\\\\src\\\\Resources\\\\public\\\\css\\\\klaro.min.css\")"
     ]
   }
 }
