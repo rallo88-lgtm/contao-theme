@@ -6,7 +6,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class RctBundle extends Bundle
 {
-    public const VERSION = '1.2.1';
+    public const VERSION = '1.3.0';
 
     public function getPath(): string
     {
