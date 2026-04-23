@@ -3779,6 +3779,13 @@
   overflow: hidden;
 }
 
+/* Right-side cards: clip-path horizontal gespiegelt (oben-links + unten-rechts) */
+.rct-timeline.style-dark .rct-timeline-item.side-right .rct-timeline-card,
+.rct-timeline.style-dark.variant-single .rct-timeline-card,
+.rct-timeline.style-dark .rct-timeline-item.side-auto:nth-child(even) .rct-timeline-card {
+  clip-path: polygon(12px 0, 100% 0, 100% 100%, calc(100% - 12px) 100%, 0 calc(100% - 12px), 0 12px);
+}
+
 /* Scanlines overlay */
 .rct-timeline.style-dark .rct-timeline-card::before {
   content: '';
