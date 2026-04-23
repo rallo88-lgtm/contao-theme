@@ -3862,7 +3862,7 @@
 .rct-timeline.style-dark .rct-timeline-date::after  { content: ' ]'; }
 
 .rct-timeline.style-dark .rct-timeline-title {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Courier New', var(--rct-font-headline, monospace);
   color: var(--rct-shell-text, #fff);
   font-size: 1.05rem;
   font-weight: 700;
@@ -3930,7 +3930,6 @@
 .rct-timeline.style-light .rct-timeline-date::after { content: ''; }
 
 .rct-timeline.style-light .rct-timeline-title {
-  font-family: Georgia, 'Times New Roman', serif;
   color: #1b1c1c;
   font-size: 1.1rem;
   font-weight: 700;
