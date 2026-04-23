@@ -4917,7 +4917,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   height: 32px;
   background: var(--rct-accent);
   clip-path: polygon(0 0, 100% 0, 100% 100%);
-  opacity: 0.75;
+  opacity: 0.95;
   z-index: 2;
   transition: background 0.4s;
   pointer-events: none;
