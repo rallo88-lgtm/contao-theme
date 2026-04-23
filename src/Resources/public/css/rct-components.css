@@ -3620,7 +3620,7 @@
 
 /* Date: log-timestamp style */
 .rct-news-timeline.style-dark .rct-timeline-date {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Courier New', var(--rct-font-headline, monospace);
   font-size: 0.7rem;
   letter-spacing: 0.1em;
   color: var(--rct-accent, #27c4f4);
@@ -3650,7 +3650,7 @@
 
 /* "Weiterlesen" → "ACCESS FILE →" */
 .rct-news-timeline.style-dark .rct-timeline-more a {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Courier New', var(--rct-font-headline, monospace);
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -3719,7 +3719,6 @@
   font-variant: small-caps;
   letter-spacing: 0.08em;
   color: #888;
-  font-family: Georgia, 'Times New Roman', serif;
 }
 
 /* Title: editorial headline */
@@ -3849,7 +3848,7 @@
 }
 
 .rct-timeline.style-dark .rct-timeline-date {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Courier New', var(--rct-font-headline, monospace);
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -3873,7 +3872,7 @@
 
 .rct-timeline.style-dark .rct-timeline-body,
 .rct-timeline.style-dark .rct-timeline-body p {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Courier New', var(--rct-font-headline, monospace);
   font-size: 0.82rem;
   line-height: 1.65;
   color: rgba(255, 255, 255, 0.65);
@@ -3916,7 +3915,6 @@
 }
 
 .rct-timeline.style-light .rct-timeline-date {
-  font-family: Georgia, 'Times New Roman', serif;
   font-size: 0.78rem;
   font-style: italic;
   letter-spacing: 0.04em;
@@ -3940,7 +3938,6 @@
 
 .rct-timeline.style-light .rct-timeline-body,
 .rct-timeline.style-light .rct-timeline-body p {
-  font-family: Georgia, 'Times New Roman', serif;
   font-size: 0.9rem;
   line-height: 1.75;
   color: #3a3a3a;
