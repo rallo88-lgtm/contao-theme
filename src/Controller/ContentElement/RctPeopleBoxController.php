@@ -35,6 +35,9 @@ class RctPeopleBoxController extends AbstractContentElementController
 
         $template->boxStyle = $model->rct_people_box_style ?: 'light';
 
+        $size = StringUtil::deserialize($model->size, true);
+        $template->avatarSize = (isset($size[0]) && (int) $size[0] > 0) ? (int) $size[0] : null;
+
         return $template->getResponse();
     }
 }

@@ -1,10 +1,10 @@
 <div class="rct-people-box style-{{ boxStyle }}">
     {% if image %}
-        <div class="rct-people-avatar">
+        <div class="rct-people-avatar"{% if avatarSize %} style="--rct-avatar-size:{{ avatarSize }}px"{% endif %}>
             <img src="{{ image }}" alt="{{ name }}" loading="lazy">
         </div>
     {% else %}
-        <div class="rct-people-avatar rct-people-avatar--placeholder">
+        <div class="rct-people-avatar rct-people-avatar--placeholder"{% if avatarSize %} style="--rct-avatar-size:{{ avatarSize }}px"{% endif %}>
             <span>{{ name|first|upper }}</span>
         </div>
     {% endif %}

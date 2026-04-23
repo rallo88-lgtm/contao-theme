@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_content_color'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_people_box'] =
-    '{type_legend},type;{people_legend},rct_person_name,rct_person_role,rct_person_image,rct_person_bio,rct_people_box_style;{contact_legend:hide},rct_person_email,rct_person_phone,rct_person_link,rct_person_link_text;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{people_legend},rct_person_name,rct_person_role,rct_person_image,size,rct_person_bio,rct_people_box_style;{contact_legend:hide},rct_person_email,rct_person_phone,rct_person_link,rct_person_link_text;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_people_box_style'] = [
     'label'     => ['Stil', 'Hell (Standard) oder Dunkel (Shell-Look)'],

@@ -1590,8 +1590,8 @@
 
 /* Avatar */
 .rct-people-avatar {
-  width: 96px;
-  height: 96px;
+  width: var(--rct-avatar-size, 96px);
+  height: var(--rct-avatar-size, 96px);
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 1.25rem;
