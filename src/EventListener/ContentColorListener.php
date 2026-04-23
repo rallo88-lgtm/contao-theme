@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 class ContentColorListener
 {
     private const SUPPORTED_COLOR = ['text', 'headline', 'rct_hero'];
+    private const SUPPORTED_ALIGN = ['headline'];
 
     private static array $injectedFonts = [];
 
@@ -55,6 +56,13 @@ class ContentColorListener
                 $buffer = $this->injectStyle($buffer, "font-family:'" . str_replace("'", "\\'", $font) . "'");
             }
             $this->ensureFontFace($font);
+        }
+
+        if (\in_array($model->type, self::SUPPORTED_ALIGN, true)) {
+            $align = trim((string) $model->rct_text_align);
+            if (\in_array($align, ['left', 'center', 'right'], true)) {
+                $buffer = $this->injectStyle($buffer, 'text-align:' . $align);
+            }
         }
 
         return $buffer;

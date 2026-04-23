@@ -41,6 +41,7 @@ PaletteManipulator::create()
 PaletteManipulator::create()
     ->addField('rct_hl_font', 'hl', PaletteManipulator::POSITION_AFTER)
     ->addField('rct_content_color', 'rct_hl_font', PaletteManipulator::POSITION_AFTER)
+    ->addField('rct_text_align', 'rct_content_color', PaletteManipulator::POSITION_AFTER)
     ->removeField('customTpl')
     ->applyToPalette('headline', 'tl_content');
 
@@ -57,6 +58,14 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_content_color'] = [
     'inputType' => 'text',
     'eval'      => ['colorpicker' => true, 'isHexColor' => true, 'tl_class' => 'w50 wizard', 'maxlength' => 64],
     'sql'       => "varchar(64) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_text_align'] = [
+    'label'     => ['Ausrichtung', 'Textausrichtung der Überschrift'],
+    'inputType' => 'select',
+    'options'   => ['' => '– Standard –', 'left' => 'Links', 'center' => 'Zentriert', 'right' => 'Rechts'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(8) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_people_box'] =

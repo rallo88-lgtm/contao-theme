@@ -18,6 +18,7 @@ $GLOBALS['TL_LANG']['tl_content']['rct_person_link']      = ['Link (URL)', 'z.B.
 $GLOBALS['TL_LANG']['tl_content']['rct_person_link_text']   = ['Link-Text', 'Anzeigetext für den Link'];
 $GLOBALS['TL_LANG']['tl_content']['rct_people_box_style']  = ['Stil', 'Hell (Standard) oder Dunkel (Shell-Look)'];
 $GLOBALS['TL_LANG']['tl_content']['rct_content_color']     = ['Textfarbe', 'Hex-Farbe für Text/Überschrift, z.B. #27c4f4 — leer = Standard'];
+$GLOBALS['TL_LANG']['tl_content']['rct_text_align']        = ['Ausrichtung', 'Textausrichtung der Überschrift'];
 
 // Fields
 $GLOBALS['TL_LANG']['tl_content']['rct_columns'] = ['Spalten', 'Anzahl der Grid-Spalten'];
