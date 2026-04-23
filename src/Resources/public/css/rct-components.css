@@ -1902,9 +1902,13 @@
   font-size: 0.875rem !important;
 }
 .klaro .cn-body .cn-learn-more {
+  display: block !important;
+  flex-grow: 0 !important;
   color: var(--rct-accent) !important;
   text-decoration: none !important;
   font-size: 0.875rem !important;
+  margin-right: 0 !important;
+  vertical-align: unset !important;
 }
 .klaro .cn-body .cn-learn-more:hover { text-decoration: underline !important; }
 
