@@ -4623,6 +4623,30 @@ a.rct-gallery-link {
   transform: translateY(-3px);
 }
 
+/* Highlight: clip-path ersetzt overflow:hidden + border-radius */
+.rct-pricing-plan.is-highlight {
+  position: relative;
+  overflow: visible;
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%);
+}
+
+.rct-pricing-plan.is-highlight::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 30px;
+  height: 32px;
+  background: var(--rct-accent);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  opacity: 0.75;
+  z-index: 2;
+  transition: background 0.4s;
+  pointer-events: none;
+  transform: rotate(45deg);
+}
+
 /* Dark style */
 .rct-pricing.style-dark .rct-pricing-plan {
   background: #0d0d0d;
