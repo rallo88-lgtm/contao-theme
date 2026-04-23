@@ -3154,6 +3154,23 @@
   );
 }
 
+/* Corner notch accent */
+.rct-icon-box.style-dark::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--icon-color, var(--rct-accent));
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  opacity: 0.75;
+  z-index: 2;
+  transition: background 0.4s;
+  pointer-events: none;
+  transform: rotate(45deg);
+}
+
 
 /* ------------------------------------------------------------
    22. ALERT (.rct-alert)
