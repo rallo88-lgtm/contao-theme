@@ -3795,15 +3795,22 @@
   z-index: 0;
 }
 
-/* Corner notch accent */
-.rct-timeline.style-dark .rct-timeline-card::after {
+/* Corner notch accent — left cards: oben rechts */
+.rct-timeline.style-dark .rct-timeline-item.side-left .rct-timeline-card::after,
+.rct-timeline.style-dark .rct-timeline-item.side-auto:nth-child(odd) .rct-timeline-card::after {
   content: '';
   position: absolute;
-  top: 0; right: 0;
-  width: 12px; height: 12px;
-  background: var(--tl-color, var(--rct-accent, #27c4f4));
+  top: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--tl-color, var(--rct-accent));
   clip-path: polygon(0 0, 100% 0, 100% 100%);
-  opacity: 0.7;
+  opacity: 0.75;
+  z-index: 2;
+  transition: background 0.4s;
+  pointer-events: none;
+  transform: rotate(45deg);
 }
 
 .rct-timeline.style-dark .rct-timeline-card > * { position: relative; z-index: 1; }
