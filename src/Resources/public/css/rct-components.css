@@ -2918,7 +2918,6 @@
   .rct-timeline-item.side-left .rct-timeline-card::after {
     display: block;
     right: auto;
-    left: -7px;
     border: none;
     border-bottom: 1px solid color-mix(in srgb, var(--tl-color) 22%, transparent);
     border-left:  1px solid color-mix(in srgb, var(--tl-color) 22%, transparent);
@@ -4962,6 +4961,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   .rct-hero-visual,
   .rct-hero-img-wrap { min-height: 260px; }
   .rct-hero-img-wrap { margin-top: 40px; }
+  .rct-hero-visual::after { top: 46px; }
   .rct-hero-headline { font-size: clamp(34px, 9vw, 54px); }
   .rct-hero-body     { max-width: 100%; }
 }
