@@ -1717,6 +1717,8 @@
   position: relative;
   overflow: hidden;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .rct-parallax--200px { min-height: 200px; }
