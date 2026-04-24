@@ -4124,8 +4124,8 @@
   gap: 0.5rem;
 }
 
-/* Container pro Item: singular CE-Wrapper ODER plural LI */
-.content-download.style-dark,
+/* Container pro Item: singular <a> ODER plural LI */
+.content-download.style-dark .rct-download-link,
 .content-downloads.style-dark li {
   background-color: rgba(10, 14, 20, 0.88);
   background-image: repeating-linear-gradient(
@@ -4134,16 +4134,28 @@
     rgba(39, 196, 244, 0.015) 3px, rgba(39, 196, 244, 0.015) 4px
   );
   border: 1px solid rgba(39, 196, 244, 0.2);
+  border-left: 3px solid var(--ext-color, var(--rct-accent, #27c4f4));
+  border-radius: 0;
   clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
   position: relative;
   overflow: hidden;
   margin: 0;
   padding: 0;
   list-style: none;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Outer-Div bei singular: kein Box-Look, nur Passthrough */
+.content-download.style-dark {
+  background: none;
+  border: none;
+  clip-path: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* Corner-Nodge oben rechts */
-.content-download.style-dark::after,
+.content-download.style-dark .rct-download-link::after,
 .content-downloads.style-dark li::after {
   content: '';
   position: absolute;
@@ -4160,8 +4172,7 @@
   transition: background 0.4s;
 }
 
-/* Download-Element innen — transparent */
-.content-download.style-dark .download-element,
+/* Download-Element innen bei plural — transparent */
 .content-downloads.style-dark .download-element {
   display: flex;
   align-items: center;
@@ -4174,8 +4185,7 @@
   transition: background 0.2s, color 0.2s;
 }
 
-/* rct-download-link im dark Kontext: Surface-Background raus */
-.content-download.style-dark .rct-download-link,
+/* rct-download-link bei plural: Surface-Background raus (LI ist Container) */
 .content-downloads.style-dark .rct-download-link {
   background: transparent;
   border: none;
