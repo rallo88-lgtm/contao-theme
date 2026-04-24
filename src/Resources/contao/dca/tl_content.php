@@ -32,6 +32,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_download_style'] = [
     'sql'       => "varchar(8) NOT NULL default ''",
 ];
 
+// Schriftart + Textfarbe für Listen
+PaletteManipulator::create()
+    ->addField('rct_hl_font', 'listitems', PaletteManipulator::POSITION_AFTER)
+    ->addField('rct_content_color', 'rct_hl_font', PaletteManipulator::POSITION_AFTER)
+    ->applyToPalette('list', 'tl_content');
+
 // Textfarbe in Standard-Elementen (text + headline)
 PaletteManipulator::create()
     ->addField('rct_content_color', 'text', PaletteManipulator::POSITION_AFTER)

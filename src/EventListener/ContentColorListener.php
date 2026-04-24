@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 #[AsHook('getContentElement')]
 class ContentColorListener
 {
-    private const SUPPORTED_COLOR = ['text', 'headline', 'rct_hero'];
+    private const SUPPORTED_COLOR = ['text', 'headline', 'list', 'rct_hero'];
     private const SUPPORTED_ALIGN = ['headline'];
 
     private static array $injectedFonts = [];
