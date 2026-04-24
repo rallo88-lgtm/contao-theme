@@ -1006,7 +1006,6 @@
   margin-bottom: 0.45rem;
   padding-bottom: 0.45rem;
   line-height: 1.65;
-  color: var(--rct-text, #1a1a2e);
   list-style: none;
   border-bottom: 1px solid var(--rct-outline);
 }
@@ -1092,7 +1091,6 @@
   padding-bottom: 0.45rem;
   margin-bottom: 0.45rem;
   line-height: 1.65;
-  color: var(--rct-text, #1a1a2e);
   border-bottom: 1px solid var(--rct-outline);
 }
 .content-list ol li:last-child {
