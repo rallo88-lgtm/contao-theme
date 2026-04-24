@@ -3413,9 +3413,11 @@
   transform: translateY(0);
 }
 
-/* Mehr-Link — kommt beim Hover von unten rein, klebt am Boden */
+/* Mehr-Link — absolut am Boden positioniert, kommt beim Hover von unten rein */
 .rct-fun-box-more {
-  margin-top: auto;
+  position: absolute;
+  left: 1.75rem;
+  bottom: 40px;
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
@@ -3426,6 +3428,7 @@
   text-transform: uppercase;
   opacity: 0;
   transform: translateY(24px);
+  z-index: 3;
   transition: opacity 0.4s ease 0.2s, transform 0.45s ease 0.2s, gap 0.2s;
 }
 .rct-fun-box:hover .rct-fun-box-more {
