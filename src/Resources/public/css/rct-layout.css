@@ -791,7 +791,7 @@ nav.mod_breadcrumb ul {
 /* --- Breadcrumb (Tech Inspector Path) --- */
 
 .mod_breadcrumb {
-  margin-left: 32px;
+  margin-left: 5px;
   padding: 0;
   display: flex;
   align-items: center;
@@ -2137,7 +2137,6 @@ body.rct-right-open #right {
     height: 60px;
   }
 
-  nav.mod_breadcrumb,
   #header .rct-header-brand span {
     display: none;
   }
@@ -2209,6 +2208,8 @@ body.rct-right-open #right {
   .rct-page-header h1,
   .rct-page-title { font-size: 1.75rem; }
 }
+
+@media (max-width: 1250px) { .mod_breadcrumb { display: none !important; } }
 
 /* --- MOBILE (≤ 767px) --- */
 @media (max-width: 767px) {
