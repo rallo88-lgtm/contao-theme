@@ -72,20 +72,19 @@ class RctChartBarsController extends AbstractContentElementController
 
         $orientation = $model->rct_chart_orientation ?: 'vertical';
 
-        // Pie: ein Kreis mit Wedges, Werte teilen sich 100%
+        // Pie: ein Kreis mit Wedges, Wert = direkter Prozentwert (0-100)
         if ($orientation === 'pie') {
             $radius = 25;
             $circ = 2 * M_PI * $radius; // ≈ 157.08
-            $total = 0;
-            foreach ($bars as $b) { $total += $b['value']; }
             $cumulative = 0;
             foreach ($bars as &$b) {
-                $frac = $total > 0 ? ($b['value'] / $total) : 0;
+                $frac = min(1, $b['value'] / 100);
                 $segLen = $frac * $circ;
                 $b['pieSegLen']   = round($segLen, 3);
                 $b['pieSegGap']   = round($circ - $segLen, 3);
                 $b['pieRotation'] = round(-90 + ($cumulative / $circ) * 360, 3);
                 $cumulative      += $segLen;
+                if ($cumulative > $circ) $cumulative = $circ;
             }
             unset($b);
         }
