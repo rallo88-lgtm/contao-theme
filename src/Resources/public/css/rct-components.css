@@ -4140,9 +4140,16 @@
   position: relative;
   overflow: hidden;
   margin: 0;
-  padding: 0;
   list-style: none;
   color: rgba(255, 255, 255, 0.75);
+}
+
+/* Padding nur beim singular <a> (plural LI hat padding 0, das .download-element innen gibt padding) */
+.content-download.style-dark .rct-download-link {
+  padding: 1rem 1.25rem;
+}
+.content-downloads.style-dark li {
+  padding: 0;
 }
 
 /* Outer-Div bei singular: kein Box-Look, nur Passthrough */
