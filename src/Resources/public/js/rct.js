@@ -206,6 +206,22 @@
         }
       });
 
+      // Navbar-Hamburger (≤1024px): Tap auf Parent öffnet Submenu
+      const navbarSubmenus = document.querySelectorAll('#navbar .mod_navigation li.submenu');
+      navbarSubmenus.forEach(li => {
+        const trigger = li.querySelector(':scope > a, :scope > span');
+        if (trigger) {
+          trigger.addEventListener('click', function(e) {
+            if (!window.matchMedia('(max-width: 1024px)').matches) return;
+            const isNoNav = this.tagName === 'SPAN' || this.getAttribute('href') === '#' || (this.getAttribute('href') || '').includes('javascript:void(0)');
+            if (isNoNav || !li.classList.contains('is-open')) {
+              e.preventDefault();
+              li.classList.toggle('is-open');
+            }
+          });
+        }
+      });
+
       // AUTO-OPEN: Wenn eine Seite aktiv ist, klappen wir den Baum dorthin auf
       const trails = document.querySelectorAll('.mod_navigation li.trail, .mod_navigation li.active');
       trails.forEach(t => t.classList.add('is-open'));
