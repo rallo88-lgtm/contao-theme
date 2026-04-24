@@ -1522,6 +1522,13 @@
   padding-bottom: 40px;
 }
 
+/* Slide-Inhalt zentrieren, falls schmaler als der Slide */
+.swiper-wrapper .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ==========================================================================
    19. Downloads (Mehrfach)
    ========================================================================== */
