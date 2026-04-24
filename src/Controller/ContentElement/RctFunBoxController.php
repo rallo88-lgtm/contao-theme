@@ -44,6 +44,15 @@ class RctFunBoxController extends AbstractContentElementController
         $template->colorKey   = $model->rct_fb_color ?: 'accent';
         $template->colorCss   = self::COLOR_MAP[$template->colorKey] ?? self::COLOR_MAP['accent'];
 
+        // Textfarbe aus DCA (optional)
+        $raw = trim((string) $model->rct_content_color);
+        if ($raw !== '') {
+            $textColor = str_starts_with($raw, 'var(') ? $raw : '#' . ltrim($raw, '#');
+        } else {
+            $textColor = '';
+        }
+        $template->textColor = $textColor;
+
         $linkUrl = $this->resolveUrl((int) $model->rct_fb_link_page, (string) $model->rct_fb_link_url);
         $template->linkUrl    = $linkUrl;
         $template->linkLabel  = htmlspecialchars((string) ($model->rct_fb_link_label ?: 'Mehr erfahren'), ENT_QUOTES, 'UTF-8');

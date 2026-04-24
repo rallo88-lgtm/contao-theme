@@ -388,7 +388,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_link_target'] = [
 // RCT Fun-Box
 // ============================================================
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_fun_box'] =
-    '{type_legend},type;{content_legend},rct_fb_image,rct_fb_image_alt,rct_fb_icon,rct_fb_headline,rct_fb_text,rct_fb_color;{link_legend:hide},rct_fb_link_page,rct_fb_link_url,rct_fb_link_label,rct_fb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{content_legend},rct_fb_image,rct_fb_image_alt,rct_fb_icon,rct_fb_headline,rct_fb_text,rct_fb_color,rct_content_color;{link_legend:hide},rct_fb_link_page,rct_fb_link_url,rct_fb_link_label,rct_fb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_image'] = [
     'label'     => ['Hintergrundbild', 'Füllt die Karte als Hintergrund'],

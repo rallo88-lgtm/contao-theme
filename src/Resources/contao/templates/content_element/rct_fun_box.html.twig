@@ -7,7 +7,7 @@
 
 {% block content %}
 <article class="rct-fun-box color-{{ colorKey }}{% if linkUrl %} has-link{% endif %}{{ cssClass ? ' ' ~ cssClass }}"
-         style="--fb-color: {{ colorCss }};{% if imgSrc %} background-image: url('{{ imgSrc }}');{% endif %}"
+         style="--fb-color: {{ colorCss }};{% if textColor %} --fb-text: {{ textColor }};{% endif %}{% if imgSrc %} background-image: url('{{ imgSrc }}');{% endif %}"
          {% if htmlId %}id="{{ htmlId }}"{% endif %}
          {% if imgAlt %}aria-label="{{ imgAlt }}"{% endif %}>
   <div class="rct-fun-box-tint" aria-hidden="true"></div>
