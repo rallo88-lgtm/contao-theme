@@ -3370,12 +3370,14 @@
   padding: 40px 1.75rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;  /* Default: Icon+Headline unten */
+  justify-content: flex-end;  /* Default + Hover: Inhalt unten verankert */
   gap: 0.5rem;
   z-index: 3;
+  transition: padding-bottom 0.45s ease;
 }
+/* Hover: mehr padding-bottom, damit Text über dem More-Link bleibt */
 .rct-fun-box:hover .rct-fun-box-content {
-  justify-content: flex-start;  /* Hover: Icon+Headline springen nach oben */
+  padding-bottom: 100px;  /* 40px Button-Offset + ~20px Button + 40px Abstand */
 }
 
 .rct-fun-box-icon {
