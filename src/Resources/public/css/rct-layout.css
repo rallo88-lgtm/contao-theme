@@ -2211,6 +2211,11 @@ body.rct-right-open #right {
 
 @media (max-width: 1250px) { nav.mod_breadcrumb { display: none !important; } }
 
+@media (max-width: 1024px) {
+  #rct-scroll-top  { right: 20px !important; }
+  #rct-privacy-btn { right: 54px !important; }
+}
+
 /* --- MOBILE (≤ 767px) --- */
 @media (max-width: 767px) {
   #header { 
