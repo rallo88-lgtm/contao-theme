@@ -30,6 +30,11 @@ class ContentColorListener
             return $this->injectDownloadStyle($model, $buffer);
         }
 
+        // Slider: max-height als CSS-Variable
+        if ($model->type === 'sliderStart') {
+            return $this->injectSliderMaxHeight($model, $buffer);
+        }
+
         if (!\in_array($model->type, self::SUPPORTED_COLOR, true)) {
             return $buffer;
         }
@@ -184,6 +189,19 @@ class ContentColorListener
         }
         $insertAt = $pos + strlen($needle);
         return substr($buffer, 0, $insertAt) . ' ' . $class . substr($buffer, $insertAt);
+    }
+
+    private function injectSliderMaxHeight(ContentModel $model, string $buffer): string
+    {
+        $mh = trim((string) $model->rct_slider_max_height);
+        if ($mh === '') {
+            return $buffer;
+        }
+        // Nur einfache CSS-Werte erlauben: 400px, 50vh, 100%, 20rem
+        if (!preg_match('/^\d+(\.\d+)?(px|vh|vw|%|em|rem)?$/', $mh)) {
+            return $buffer;
+        }
+        return $this->injectStyle($buffer, '--rct-slide-max-height:' . $mh);
     }
 
     private function injectAccordionStyle(ContentModel $model, string $buffer): string

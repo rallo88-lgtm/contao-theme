@@ -1522,11 +1522,13 @@
   padding-bottom: 40px;
 }
 
-/* Slide-Inhalt zentrieren, falls schmaler als der Slide */
+/* Slide-Inhalt zentrieren, falls schmaler als der Slide; optional max-height */
 .swiper-wrapper .swiper-slide {
   display: flex;
   align-items: center;
   justify-content: center;
+  max-height: var(--rct-slide-max-height, none);
+  overflow: hidden;
 }
 
 /* ==========================================================================
