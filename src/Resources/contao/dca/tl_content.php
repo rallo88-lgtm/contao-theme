@@ -15,10 +15,14 @@ $GLOBALS['TL_DCA']['tl_content']['config']['onload_callback'][] = static functio
         ->applyToPalette('accordion', 'tl_content');
 };
 
-// Max-Height zur Slider-Palette hinzufügen
+// Max-Height zur Slider-Palette hinzufügen (sliderStart = Gruppen-Slider, swiper = standalone)
 PaletteManipulator::create()
     ->addField('rct_slider_max_height', 'sliderContinuous', PaletteManipulator::POSITION_AFTER)
     ->applyToPalette('sliderStart', 'tl_content');
+
+PaletteManipulator::create()
+    ->addField('rct_slider_max_height', 'sliderContinuous', PaletteManipulator::POSITION_AFTER)
+    ->applyToPalette('swiper', 'tl_content');
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_slider_max_height'] = [
     'label'     => ['Slide-Höhe', 'Max-Höhe der Slides (z.B. 400px, 50vh). Inhalt wird vertikal zentriert, Überstand abgeschnitten.'],

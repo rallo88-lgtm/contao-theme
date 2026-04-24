@@ -31,7 +31,7 @@ class ContentColorListener
         }
 
         // Slider: max-height als CSS-Variable
-        if ($model->type === 'sliderStart') {
+        if ($model->type === 'sliderStart' || $model->type === 'swiper') {
             return $this->injectSliderMaxHeight($model, $buffer);
         }
 
