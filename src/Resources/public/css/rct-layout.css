@@ -951,7 +951,6 @@ position: sticky;
 #navbar .mod_navigation ul {
   display: flex;
   flex-direction: row;
-  align-items: center;
   gap: 0.25rem;
   list-style: none;
 }
