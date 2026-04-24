@@ -1,0 +1,19 @@
+<?php
+
+namespace Rallo\ContaoTheme\DCA;
+
+use Contao\DataContainer;
+
+class IconPickerWizard
+{
+    public function generate(DataContainer $dc): string
+    {
+        $fieldId = 'ctrl_' . $dc->field;
+        $url     = '/contao/rct-icon-picker?field=' . rawurlencode($fieldId);
+
+        return sprintf(
+            ' <a href="%s" onclick="window.open(this.href,\'rct_icon_picker\',\'width=900,height=700,scrollbars=yes,resizable=yes\');return false;" title="Icon-Picker öffnen" style="margin-left:4px;padding:3px 10px;background:#27c4f4;color:#0a0a0a;border-radius:3px;text-decoration:none;font-size:0.75rem;font-weight:600;vertical-align:middle;">🎨 Picker</a>',
+            $url
+        );
+    }
+}

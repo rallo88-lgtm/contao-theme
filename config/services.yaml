@@ -12,3 +12,6 @@ services:
 
     Rallo\ContaoTheme\DCA\RctFontOptionsCallback:
         public: true
+
+    Rallo\ContaoTheme\DCA\IconPickerWizard:
+        public: true

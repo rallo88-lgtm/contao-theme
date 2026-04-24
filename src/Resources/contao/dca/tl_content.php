@@ -2,6 +2,7 @@
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Rallo\ContaoTheme\DCA\RctFontOptionsCallback;
+use Rallo\ContaoTheme\DCA\IconPickerWizard;
 
 // Stil-Feld + Experteneinstellungen zur nativen Contao-Akkordeon-Palette hinzufügen
 PaletteManipulator::create()
@@ -326,9 +327,10 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_image_alt'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_icon'] = [
-    'label'     => ['Icon / Emoji', 'Emoji (🚀 ⭐), Unicode-Symbol oder tabler:<slug> (z.B. tabler:rocket). Liste aller Slugs: /rct-icons'],
+    'label'     => ['Icon / Emoji', 'Emoji (🚀 ⭐), Unicode-Symbol oder tabler:<slug>. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
-    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
+    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
+    'wizard'    => [[IconPickerWizard::class, 'generate']],
     'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
@@ -405,9 +407,10 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_image_alt'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_icon'] = [
-    'label'     => ['Icon / Emoji', 'Emoji, Unicode-Symbol oder tabler:<slug> (z.B. tabler:rocket)'],
+    'label'     => ['Icon / Emoji', 'Emoji, Unicode-Symbol oder tabler:<slug>. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
-    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
+    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
+    'wizard'    => [[IconPickerWizard::class, 'generate']],
     'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
@@ -543,9 +546,10 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_sublabel'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_icon'] = [
-    'label'     => ['Icon / Emoji', 'Emoji (🏆 ✓), Unicode-Symbol oder tabler:<slug> (z.B. tabler:rocket). Liste aller Slugs: /rct-icons'],
+    'label'     => ['Icon / Emoji', 'Emoji (🏆 ✓), Unicode-Symbol oder tabler:<slug>. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
-    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
+    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
+    'wizard'    => [[IconPickerWizard::class, 'generate']],
     'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
@@ -596,9 +600,10 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_text'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_icon'] = [
-    'label'     => ['Icon / Emoji', 'Emoji (🚀), Unicode-Symbol oder tabler:<slug> (z.B. tabler:rocket). Liste aller Slugs: /rct-icons'],
+    'label'     => ['Icon / Emoji', 'Emoji (🚀), Unicode-Symbol oder tabler:<slug>. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
-    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
+    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
+    'wizard'    => [[IconPickerWizard::class, 'generate']],
     'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
@@ -841,9 +846,10 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_icon_box'] =
     '{type_legend},type;{icon_box_legend},rct_icon_box_icon,rct_icon_box_headline,rct_icon_box_text,rct_icon_box_color,rct_icon_box_align,rct_icon_box_style;{icon_box_link_legend:hide},rct_icon_box_link_page,rct_icon_box_link_url,rct_icon_box_link_label,rct_icon_box_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_icon_box_icon'] = [
-    'label'     => ['Icon / Emoji', 'Emoji (🚀 ⭐), Unicode-Symbol oder tabler:<slug> (z.B. tabler:rocket). Liste aller Slugs: /rct-icons'],
+    'label'     => ['Icon / Emoji', 'Emoji (🚀 ⭐), Unicode-Symbol oder tabler:<slug>. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
-    'eval'      => ['maxlength' => 32, 'tl_class' => 'w25'],
+    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
+    'wizard'    => [[IconPickerWizard::class, 'generate']],
     'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
