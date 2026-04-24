@@ -12,7 +12,7 @@ class IconPickerWizard
         $url     = '/contao/rct-icon-picker?field=' . rawurlencode($fieldId);
 
         return sprintf(
-            ' <a href="%s" onclick="window.open(this.href,\'rct_icon_picker\',\'width=900,height=700,scrollbars=yes,resizable=yes\');return false;" title="Icon-Picker öffnen" style="margin-left:4px;padding:3px 10px;background:#27c4f4;color:#0a0a0a;border-radius:3px;text-decoration:none;font-size:0.75rem;font-weight:600;vertical-align:middle;">🎨 Picker</a>',
+            ' <a href="%s" onclick="window.open(this.href,\'rct_icon_picker\',\'width=900,height=700,scrollbars=yes,resizable=yes\');return false;" title="Icon-Picker öffnen" style="position:absolute;right:5px;top:26px;padding:4px 10px;background:#27c4f4;color:#0a0a0a;border-radius:3px;text-decoration:none;font-size:0.72rem;font-weight:600;line-height:1;">🎨 Picker</a>',
             $url
         );
     }
