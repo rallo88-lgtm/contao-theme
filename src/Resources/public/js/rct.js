@@ -206,6 +206,22 @@
         }
       });
 
+      // Navbar-Dropdown: Desktop Hover (>1024px) via is-hover Klasse
+      document.querySelectorAll('#navbar .mod_navigation ul.level_1 > li.submenu').forEach(li => {
+        let t;
+        const open  = () => { clearTimeout(t); li.classList.add('is-hover'); };
+        const close = () => { t = setTimeout(() => li.classList.remove('is-hover'), 80); };
+        li.addEventListener('mouseenter', open);
+        li.addEventListener('mouseleave', close);
+      });
+      document.querySelectorAll('#navbar .mod_navigation ul.level_2 > li.submenu').forEach(li => {
+        let t;
+        const open  = () => { clearTimeout(t); li.classList.add('is-hover'); };
+        const close = () => { t = setTimeout(() => li.classList.remove('is-hover'), 80); };
+        li.addEventListener('mouseenter', open);
+        li.addEventListener('mouseleave', close);
+      });
+
       // Navbar-Hamburger (≤1024px): Tap auf Parent öffnet Submenu
       const navbarSubmenus = document.querySelectorAll('#navbar .mod_navigation li.submenu');
       navbarSubmenus.forEach(li => {

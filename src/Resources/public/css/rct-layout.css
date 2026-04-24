@@ -1027,7 +1027,8 @@ position: sticky;
   list-style: none;
 }
 
-#navbar .mod_navigation ul.level_1 > li:hover > ul.level_2 {
+#navbar .mod_navigation ul.level_1 > li:hover ul.level_2,
+#navbar .mod_navigation ul.level_1 > li.is-hover ul.level_2 {
   display: flex;
 }
 
@@ -1065,7 +1066,8 @@ position: sticky;
   position: relative;
 }
 
-#navbar .mod_navigation ul.level_2 > li:hover > ul.level_3 {
+#navbar .mod_navigation ul.level_2 > li:hover ul.level_3,
+#navbar .mod_navigation ul.level_2 > li.is-hover ul.level_3 {
   display: flex;
 }
 
@@ -1102,7 +1104,8 @@ position: sticky;
   list-style: none;
 }
 
-#navbar .mod_navigation ul.level_3 > li:hover > ul.level_4 {
+#navbar .mod_navigation ul.level_3 > li:hover ul.level_4,
+#navbar .mod_navigation ul.level_3 > li.is-hover ul.level_4 {
   display: flex;
 }
 
