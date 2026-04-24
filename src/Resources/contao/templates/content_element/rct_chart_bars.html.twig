@@ -1,7 +1,9 @@
 {#
   RCT – rct_chart_bars.html.twig
-  Animated bar/pie/donut chart content element.
+  Chart content element.
   orientation: vertical | horizontal | pie | donut
+    - pie:   eine Torte, Segmente teilen sich 100%
+    - donut: pro Datenzeile ein Donut-Ring (0-100% pro Wert)
   color: accent | primary | mixed | warn
 #}
 {% extends '@Contao/content_element/_base.html.twig' %}
@@ -10,20 +12,19 @@
 <div class="rct-chart-bars orientation-{{ orientation }} color-{{ color }}{{ cssClass ? ' ' ~ cssClass }}"
      data-orientation="{{ orientation }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}
      {% if textColor %}style="--rct-chart-text-color: {{ textColor }}"{% endif %}
-     aria-label="{% if orientation == 'pie' or orientation == 'donut' %}Tortendiagramm{% else %}Balkendiagramm{% endif %}">
+     aria-label="{% if orientation == 'pie' %}Tortendiagramm{% elseif orientation == 'donut' %}Donut-Diagramme{% else %}Balkendiagramm{% endif %}">
 
-  {% if orientation == 'pie' or orientation == 'donut' %}
+  {% if orientation == 'pie' %}
     <div class="rct-pie-wrap">
       <svg class="rct-pie-svg" viewBox="0 0 100 100" aria-hidden="true">
         {% for bar in bars %}
           <circle class="rct-pie-segment"
-                  cx="50" cy="50"
-                  r="{{ orientation == 'donut' ? 40 : 25 }}"
+                  cx="50" cy="50" r="25"
                   fill="none"
-                  stroke-width="{{ orientation == 'donut' ? 20 : 50 }}"
-                  pathLength="100"
-                  transform="rotate({{ -90 + bar.pieOffset * 3.6 }} 50 50)"
-                  style="--seg-length: {{ bar.pieNorm }}; --seg-delay: {{ bar.delay }}s;{% if bar.colorCss %} stroke: {{ bar.colorCss }};{% endif %}" />
+                  stroke-width="50"
+                  stroke-dasharray="{{ bar.pieSegLen }} {{ bar.pieSegGap }}"
+                  transform="rotate({{ bar.pieRotation }} 50 50)"
+                  {% if bar.colorCss %}style="stroke: {{ bar.colorCss }};"{% endif %} />
         {% endfor %}
       </svg>
     </div>
@@ -38,6 +39,25 @@
         </li>
       {% endfor %}
     </ul>
+
+  {% elseif orientation == 'donut' %}
+    {% for bar in bars %}
+      <div class="rct-donut-item" role="listitem" style="--bar-delay: {{ bar.delay }}s;{% if bar.colorCss %} --chart-color: {{ bar.colorCss }};{% endif %}">
+        <div class="rct-donut-ring">
+          <svg class="rct-donut-svg" viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="rct-donut-track" cx="50" cy="50" r="40" fill="none" stroke-width="10" />
+            <circle class="rct-donut-fill" cx="50" cy="50" r="40" fill="none" stroke-width="10"
+                    stroke-dasharray="0 9999"
+                    data-full-dasharray="{{ bar.pieSegLen }} {{ bar.pieSegGap }}"
+                    transform="rotate(-90 50 50)" />
+          </svg>
+          {% if showValues %}
+            <span class="rct-donut-value" data-target="{{ bar.value }}">0</span>
+          {% endif %}
+        </div>
+        <span class="rct-donut-label">{{ bar.label }}</span>
+      </div>
+    {% endfor %}
 
   {% else %}
     {% for bar in bars %}

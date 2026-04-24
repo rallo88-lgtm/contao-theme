@@ -1013,12 +1013,30 @@ window.applyLayout = function (layout) {
           }, delay * 1000);
         });
 
-        // Counter für Pie/Donut-Legende
+        // Counter für Pie-Legende
         chart.querySelectorAll('.rct-pie-legend-value').forEach(function(span, i) {
           var target = parseInt(span.getAttribute('data-target'), 10) || 0;
           setTimeout(function() {
             animateCounter(span, target, 900);
-          }, 150 + i * 100);
+          }, 300 + i * 100);
+        });
+
+        // Donut-Fills: dasharray aus data-full-dasharray Attribut setzen (triggert CSS-transition)
+        chart.querySelectorAll('.rct-donut-fill').forEach(function(circle) {
+          var full = circle.getAttribute('data-full-dasharray');
+          if (full) {
+            requestAnimationFrame(function() {
+              circle.setAttribute('stroke-dasharray', full);
+            });
+          }
+        });
+
+        // Counter für Donut-Mitte
+        chart.querySelectorAll('.rct-donut-value').forEach(function(span, i) {
+          var target = parseInt(span.getAttribute('data-target'), 10) || 0;
+          setTimeout(function() {
+            animateCounter(span, target, 1100);
+          }, 150 + i * 80);
         });
 
         observer.unobserve(chart);

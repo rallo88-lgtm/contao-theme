@@ -2350,9 +2350,8 @@
 .rct-chart-bars.color-mixed .rct-chart-bar:nth-child(6n+5) { --chart-color: var(--rct-primary-fixed, #c0f452); }
 .rct-chart-bars.color-mixed .rct-chart-bar:nth-child(6n+6) { --chart-color: #f59e0b; }
 
-/* ── Pie / Donut ── */
-.rct-chart-bars.orientation-pie,
-.rct-chart-bars.orientation-donut {
+/* ── Pie: eine Torte, Segmente teilen sich 100% ── */
+.rct-chart-bars.orientation-pie {
   flex-direction: row;
   align-items: center;
   gap: 2rem;
@@ -2363,7 +2362,14 @@
   width: 220px;
   height: 220px;
   flex-shrink: 0;
-  position: relative;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.6s, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rct-chart-bars.is-animated .rct-pie-wrap {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .rct-pie-svg {
@@ -2374,13 +2380,6 @@
 
 .rct-pie-segment {
   stroke: var(--chart-color);
-  stroke-dasharray: 0 100;
-  transition: stroke-dasharray 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  transition-delay: var(--seg-delay, 0s);
-}
-
-.rct-chart-bars.is-animated .rct-pie-segment {
-  stroke-dasharray: var(--seg-length) calc(100 - var(--seg-length));
 }
 
 .rct-pie-legend {
@@ -2411,16 +2410,12 @@
   flex-shrink: 0;
 }
 
-.rct-pie-legend-label {
-  flex: 1;
-}
-
+.rct-pie-legend-label { flex: 1; }
 .rct-pie-legend-value {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
-/* Mixed-Farben für Pie/Donut */
 .rct-chart-bars.color-mixed .rct-pie-segment:nth-child(6n+1) { stroke: var(--rct-accent); }
 .rct-chart-bars.color-mixed .rct-pie-segment:nth-child(6n+2) { stroke: var(--rct-primary-light); }
 .rct-chart-bars.color-mixed .rct-pie-segment:nth-child(6n+3) { stroke: var(--rct-primary-dim, #a5d737); }
@@ -2435,9 +2430,81 @@
 .rct-chart-bars.color-mixed .rct-pie-legend-item:nth-child(6n+5) .rct-pie-legend-swatch { background: var(--rct-primary-fixed, #c0f452); }
 .rct-chart-bars.color-mixed .rct-pie-legend-item:nth-child(6n+6) .rct-pie-legend-swatch { background: #f59e0b; }
 
+/* ── Donut: pro Datenzeile ein Ring (Grid) ── */
+.rct-chart-bars.orientation-donut {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+  padding: 0;
+}
+
+.rct-donut-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  color: var(--rct-chart-text-color, inherit);
+}
+
+.rct-donut-ring {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  max-width: 100%;
+}
+
+.rct-donut-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.rct-donut-track {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+
+.rct-donut-fill {
+  stroke: var(--chart-color);
+  transition: stroke-dasharray 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: var(--bar-delay, 0s);
+}
+
+.rct-donut-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--rct-font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--chart-color);
+}
+
+.rct-donut-value::after {
+  content: '%';
+  font-size: 0.65em;
+  margin-left: 0.1em;
+  opacity: 0.7;
+}
+
+.rct-donut-label {
+  font-family: var(--rct-font-mono);
+  font-size: 0.8125rem;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+.rct-chart-bars.color-mixed .rct-donut-item:nth-child(6n+1) { --chart-color: var(--rct-accent); }
+.rct-chart-bars.color-mixed .rct-donut-item:nth-child(6n+2) { --chart-color: var(--rct-primary-light); }
+.rct-chart-bars.color-mixed .rct-donut-item:nth-child(6n+3) { --chart-color: var(--rct-primary-dim, #a5d737); }
+.rct-chart-bars.color-mixed .rct-donut-item:nth-child(6n+4) { --chart-color: var(--rct-secondary-light, #d4aeff); }
+.rct-chart-bars.color-mixed .rct-donut-item:nth-child(6n+5) { --chart-color: var(--rct-primary-fixed, #c0f452); }
+.rct-chart-bars.color-mixed .rct-donut-item:nth-child(6n+6) { --chart-color: #f59e0b; }
+
 @media (max-width: 640px) {
-  .rct-chart-bars.orientation-pie,
-  .rct-chart-bars.orientation-donut {
+  .rct-chart-bars.orientation-pie {
     flex-direction: column;
     gap: 1rem;
   }

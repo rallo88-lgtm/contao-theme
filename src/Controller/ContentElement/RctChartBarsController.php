@@ -72,16 +72,33 @@ class RctChartBarsController extends AbstractContentElementController
 
         $orientation = $model->rct_chart_orientation ?: 'vertical';
 
-        // Für Pie/Donut: normalisierte Prozente + kumulative Offsets vorberechnen
-        if ($orientation === 'pie' || $orientation === 'donut') {
+        // Pie: ein Kreis mit Wedges, Werte teilen sich 100%
+        if ($orientation === 'pie') {
+            $radius = 25;
+            $circ = 2 * M_PI * $radius; // ≈ 157.08
             $total = 0;
             foreach ($bars as $b) { $total += $b['value']; }
             $cumulative = 0;
             foreach ($bars as &$b) {
-                $norm = $total > 0 ? ($b['value'] / $total) * 100 : 0;
-                $b['pieNorm']   = round($norm, 2);
-                $b['pieOffset'] = round($cumulative, 2);
-                $cumulative    += $norm;
+                $frac = $total > 0 ? ($b['value'] / $total) : 0;
+                $segLen = $frac * $circ;
+                $b['pieSegLen']   = round($segLen, 3);
+                $b['pieSegGap']   = round($circ - $segLen, 3);
+                $b['pieRotation'] = round(-90 + ($cumulative / $circ) * 360, 3);
+                $cumulative      += $segLen;
+            }
+            unset($b);
+        }
+
+        // Donut: eine Donut pro Reihe, jeder Wert als 0-100% Progress-Ring
+        if ($orientation === 'donut') {
+            $radius = 40;
+            $circ = 2 * M_PI * $radius; // ≈ 251.33
+            foreach ($bars as &$b) {
+                $frac = $b['value'] / 100;
+                $segLen = $frac * $circ;
+                $b['pieSegLen'] = round($segLen, 3);
+                $b['pieSegGap'] = round($circ - $segLen, 3);
             }
             unset($b);
         }
