@@ -1058,6 +1058,28 @@ window.applyLayout = function (layout) {
     document.addEventListener('rct:page-ready', observeCharts);
   })();
 
+  // ── Klaro-Öffner: jeder Link <a href="#klaro"> öffnet den Consent-Manager ──
+  (function initKlaroTrigger() {
+    function handler(e) {
+      if (!window.klaro) return;
+      e.preventDefault();
+      window.klaro.show();
+    }
+    function attach() {
+      document.querySelectorAll('a[href="#klaro"], [data-klaro-show], .js-klaro-show').forEach(function(el) {
+        if (el.dataset.rctKlaroBound) return;
+        el.dataset.rctKlaroBound = '1';
+        el.addEventListener('click', handler);
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', attach);
+    } else {
+      attach();
+    }
+    document.addEventListener('rct:page-ready', attach);
+  })();
+
   // ── Icon-Referenz: Klick kopiert tabler:<slug> in die Zwischenablage ──
   (function initIconReference() {
     function copyText(text) {
