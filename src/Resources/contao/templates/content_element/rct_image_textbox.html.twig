@@ -1,0 +1,25 @@
+{#
+  RCT – rct_image_textbox.html.twig
+  Bild + Headline + Text + Link.
+  Style: light | dark  (beide mit Clippath-Ecken + Corner-Nodge)
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-itb rct-itb--image style-{{ boxStyle }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+  {% if imgSrc %}
+    <figure class="rct-itb-media">
+      <img src="{{ imgSrc }}" alt="{{ imgAlt }}" loading="lazy">
+    </figure>
+  {% endif %}
+  <div class="rct-itb-body">
+    {% if headline %}<h3 class="rct-itb-headline">{{ headline }}</h3>{% endif %}
+    {% if text %}<p class="rct-itb-text">{{ text|raw }}</p>{% endif %}
+    {% if linkUrl %}
+      <a href="{{ linkUrl }}" class="rct-itb-link" target="{{ linkTarget }}"{% if linkTarget == '_blank' %} rel="noopener noreferrer"{% endif %}>
+        {{ linkLabel }} <span aria-hidden="true">→</span>
+      </a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

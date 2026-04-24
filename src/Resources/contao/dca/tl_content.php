@@ -301,6 +301,89 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_grid_col_end'] =
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_icon_reference'] =
     '{type_legend},type;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+// ============================================================
+// RCT Image-Textbox & Icon-Textbox
+// ============================================================
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_image_textbox'] =
+    '{type_legend},type;{content_legend},rct_itb_image,rct_itb_image_alt,rct_itb_headline,rct_itb_text,rct_itb_style;{link_legend:hide},rct_itb_link_page,rct_itb_link_url,rct_itb_link_label,rct_itb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_icon_textbox'] =
+    '{type_legend},type;{content_legend},rct_itb_icon,rct_itb_headline,rct_itb_text,rct_itb_style;{link_legend:hide},rct_itb_link_page,rct_itb_link_url,rct_itb_link_label,rct_itb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_image'] = [
+    'label'     => ['Bild', 'Bild oben in der Box'],
+    'inputType' => 'fileTree',
+    'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif,gif', 'fieldType' => 'radio', 'tl_class' => 'clr'],
+    'sql'       => "binary(16) NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_image_alt'] = [
+    'label'     => ['Alt-Text', 'Alternativtext für das Bild (Barrierefreiheit)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_icon'] = [
+    'label'     => ['Icon / Emoji', 'Emoji (🚀 ⭐), Unicode-Symbol oder tabler:<slug> (z.B. tabler:rocket). Liste aller Slugs: /rct-icons'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
+    'sql'       => "varchar(32) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_headline'] = [
+    'label'     => ['Überschrift', 'Titel der Box'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_text'] = [
+    'label'     => ['Text', 'Beschreibungstext'],
+    'inputType' => 'textarea',
+    'eval'      => ['style' => 'height:100px', 'tl_class' => 'clr'],
+    'sql'       => "text NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_style'] = [
+    'label'     => ['Stil', 'Hell oder dunkel'],
+    'inputType' => 'select',
+    'options'   => ['light' => 'Hell', 'dark' => 'Dunkel (Shell-Look)'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(8) NOT NULL default 'light'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_link_page'] = [
+    'label'      => ['Interne Seite', 'Contao-Seite als Ziel (Vorrang vor URL)'],
+    'inputType'  => 'pageTree',
+    'foreignKey' => 'tl_page.title',
+    'eval'       => ['fieldType' => 'radio', 'tl_class' => 'clr'],
+    'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
+    'sql'        => "int(10) unsigned NOT NULL default 0",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_link_url'] = [
+    'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_link_label'] = [
+    'label'     => ['Link-Text', 'Beschriftung des Links (Standard: „Mehr erfahren")'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
+    'sql'       => "varchar(64) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_link_target'] = [
+    'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+    'sql'       => "char(1) NOT NULL default ''",
+];
+
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_columns'] = [
     'label'     => ['Spalten', 'Anzahl der Spalten'],
     'inputType' => 'select',
