@@ -54,7 +54,9 @@ $GLOBALS['TL_LANG']['CTE']['rct_map']            = ['RCT Karte', 'OpenStreetMap-
 $GLOBALS['TL_LANG']['CTE']['rct_parallax_start'] = ['RCT Parallax (Start)', 'Öffnet einen Bereich mit Parallax- oder Video-Hintergrund'];
 $GLOBALS['TL_LANG']['CTE']['rct_parallax_stop']  = ['RCT Parallax (Ende)', 'Schließt den Parallax-Bereich'];
 $GLOBALS['TL_LANG']['CTE']['rct_grid_start']     = ['RCT Grid (Start)', 'Öffnet einen mehrspaltige Grid-Container'];
-$GLOBALS['TL_LANG']['CTE']['rct_grid_end']    = ['RCT Grid (Ende)', 'Schließt den Grid-Container'];
+$GLOBALS['TL_LANG']['CTE']['rct_grid_end']       = ['RCT Grid (Ende)', 'Schließt den Grid-Container'];
+$GLOBALS['TL_LANG']['CTE']['rct_grid_col_start'] = ['RCT Grid-Spalte (Start)', 'Öffnet eine Spalte innerhalb des Grid-Containers (für gestapelte Inhalte)'];
+$GLOBALS['TL_LANG']['CTE']['rct_grid_col_end']   = ['RCT Grid-Spalte (Ende)', 'Schließt die Grid-Spalte'];
 $GLOBALS['TL_LANG']['CTE']['rct_people_box']  = ['RCT Personen-Karte', 'Zeigt eine Person mit Foto, Rolle und Kontaktdaten'];
 $GLOBALS['TL_LANG']['CTE']['rct_chart_bars'] = ['RCT Balkendiagramm', 'Animiertes Säulen- oder Balkendiagramm mit Scroll-Trigger'];
 

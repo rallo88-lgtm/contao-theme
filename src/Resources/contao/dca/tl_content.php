@@ -292,6 +292,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_parallax_overlay'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_grid_start'] =
     '{type_legend},type;{grid_legend},rct_columns,rct_gap,rct_align;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_grid_col_start'] =
+    '{type_legend},type;{grid_legend},rct_gap,rct_align;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_grid_col_end'] =
+    '{type_legend},type;{invisible_legend:hide},invisible,start,stop';
+
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_columns'] = [
     'label'     => ['Spalten', 'Anzahl der Spalten'],
     'inputType' => 'select',

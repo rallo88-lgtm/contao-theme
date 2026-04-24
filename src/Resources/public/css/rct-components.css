@@ -877,6 +877,19 @@
 .rct-flex.rct-gap--sm { gap: 0.75rem; }
 .rct-flex.rct-gap--lg { gap: 2.5rem; }
 
+/* Grid-Spalten-Wrapper: gestapelte Inhalte in einer Grid-Zelle */
+.rct-grid-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+.rct-grid-col.rct-gap--sm { gap: 0.5rem; }
+.rct-grid-col.rct-gap--lg { gap: 1.75rem; }
+.rct-grid-col.rct-flex--align-start   { align-items: flex-start; }
+.rct-grid-col.rct-flex--align-center  { align-items: center; }
+.rct-grid-col.rct-flex--align-end     { align-items: flex-end; }
+
 /* Vertikale Ausrichtung */
 .rct-flex--align-start   { align-items: start; }
 .rct-flex--align-center  { align-items: center; }
