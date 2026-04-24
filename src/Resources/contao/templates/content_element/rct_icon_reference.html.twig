@@ -1,0 +1,26 @@
+{#
+  RCT – rct_icon_reference.html.twig
+  Zeigt alle gebündelten Tabler-Icons mit ihrem Slug.
+  Klick auf ein Icon kopiert den tabler:<slug> in die Zwischenablage.
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-icon-reference{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+  <p class="rct-icon-reference-hint">
+    Klick aufs Icon → <code>tabler:slug</code> wird in die Zwischenablage kopiert.
+    Nutze das in Icon-Feldern statt Emoji.
+  </p>
+  <div class="rct-icon-reference-grid">
+    {% for slug in icons %}
+      <button type="button"
+              class="rct-icon-reference-cell"
+              data-copy="tabler:{{ slug }}"
+              title="tabler:{{ slug }}">
+        <span class="rct-icon-reference-svg">{{ ('tabler:' ~ slug)|rct_icon }}</span>
+        <span class="rct-icon-reference-slug">{{ slug }}</span>
+      </button>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -20,7 +20,7 @@
      data-stat-decimals="{{ decimals }}">
 
   {% if icon %}
-    <div class="rct-stat-icon" aria-hidden="true">{{ icon }}</div>
+    <div class="rct-stat-icon" aria-hidden="true">{{ icon|rct_icon }}</div>
   {% endif %}
 
   <div class="rct-stat-number" aria-label="{{ prefix }}{{ numValue }}{{ unit }}">

@@ -3294,6 +3294,69 @@
   text-align: left;
 }
 
+/* Universelles Icon (Emoji oder Tabler-SVG) */
+.rct-icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+.rct-icon-tabler {
+  width: 1em;
+  height: 1em;
+  stroke-width: 1.75;
+}
+
+/* Icon-Referenz-Grid */
+.rct-icon-reference-hint {
+  font-family: var(--rct-font-mono);
+  font-size: 0.82rem;
+  opacity: 0.75;
+  margin-bottom: 1rem;
+}
+.rct-icon-reference-hint code {
+  background: rgba(39, 196, 244, 0.1);
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+}
+.rct-icon-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.5rem;
+}
+.rct-icon-reference-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.85rem 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+.rct-icon-reference-cell:hover {
+  background: rgba(39, 196, 244, 0.08);
+  border-color: var(--rct-accent);
+}
+.rct-icon-reference-cell.is-copied {
+  background: rgba(138, 186, 22, 0.15);
+  border-color: var(--rct-primary-dim, #a5d737);
+}
+.rct-icon-reference-svg {
+  font-size: 1.75rem;
+  color: var(--rct-accent);
+  line-height: 1;
+}
+.rct-icon-reference-slug {
+  font-family: var(--rct-font-mono);
+  font-size: 0.7rem;
+  opacity: 0.8;
+  word-break: break-all;
+  text-align: center;
+}
+
 /* Icon */
 .rct-icon-box-icon {
   font-size: 2.5rem;

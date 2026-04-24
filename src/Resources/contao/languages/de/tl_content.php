@@ -57,6 +57,7 @@ $GLOBALS['TL_LANG']['CTE']['rct_grid_start']     = ['RCT Grid (Start)', 'Öffnet
 $GLOBALS['TL_LANG']['CTE']['rct_grid_end']       = ['RCT Grid (Ende)', 'Schließt den Grid-Container'];
 $GLOBALS['TL_LANG']['CTE']['rct_grid_col_start'] = ['RCT Grid-Spalte (Start)', 'Öffnet eine Spalte innerhalb des Grid-Containers (für gestapelte Inhalte)'];
 $GLOBALS['TL_LANG']['CTE']['rct_grid_col_end']   = ['RCT Grid-Spalte (Ende)', 'Schließt die Grid-Spalte'];
+$GLOBALS['TL_LANG']['CTE']['rct_icon_reference'] = ['RCT Icon-Referenz', 'Zeigt alle gebündelten Tabler-Icons mit Slugs zum Kopieren'];
 $GLOBALS['TL_LANG']['CTE']['rct_people_box']  = ['RCT Personen-Karte', 'Zeigt eine Person mit Foto, Rolle und Kontaktdaten'];
 $GLOBALS['TL_LANG']['CTE']['rct_chart_bars'] = ['RCT Balkendiagramm', 'Animiertes Säulen- oder Balkendiagramm mit Scroll-Trigger'];
 

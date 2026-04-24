@@ -12,7 +12,7 @@
 
     {# ── Banner: icon+text left, buttons right ── #}
     <div class="rct-cta-body">
-      {% if icon %}<span class="rct-cta-icon" aria-hidden="true">{{ icon }}</span>{% endif %}
+      {% if icon %}<span class="rct-cta-icon" aria-hidden="true">{{ icon|rct_icon }}</span>{% endif %}
       <div class="rct-cta-text-wrap">
         {% if ctaHeadline %}<p class="rct-cta-headline">{{ ctaHeadline }}</p>{% endif %}
         {% if ctaText %}<p class="rct-cta-text">{{ ctaText|raw }}</p>{% endif %}
@@ -28,7 +28,7 @@
   {% else %}
 
     {# ── Centered & Card ── #}
-    {% if icon %}<div class="rct-cta-icon" aria-hidden="true">{{ icon }}</div>{% endif %}
+    {% if icon %}<div class="rct-cta-icon" aria-hidden="true">{{ icon|rct_icon }}</div>{% endif %}
     {% if ctaHeadline %}<h2 class="rct-cta-headline">{{ ctaHeadline }}</h2>{% endif %}
     {% if ctaText %}<p class="rct-cta-text">{{ ctaText|raw }}</p>{% endif %}
     {% if btn1 or btn2 %}

@@ -8,7 +8,7 @@
 {% block content %}
 <div class="rct-icon-box align-{{ align }} style-{{ boxStyle }}{{ cssClass ? ' ' ~ cssClass }}" style="--icon-color: {{ colorCss }};"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
   {% if icon %}
-    <div class="rct-icon-box-icon" aria-hidden="true">{{ icon }}</div>
+    <div class="rct-icon-box-icon" aria-hidden="true">{{ icon|rct_icon }}</div>
   {% endif %}
   {% if headline %}
     <h3 class="rct-icon-box-headline">{{ headline }}</h3>

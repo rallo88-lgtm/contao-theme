@@ -1058,6 +1058,20 @@ window.applyLayout = function (layout) {
     document.addEventListener('rct:page-ready', observeCharts);
   })();
 
+  // ── Icon-Referenz: Klick kopiert tabler:<slug> in die Zwischenablage ──
+  (function initIconReference() {
+    document.querySelectorAll('.rct-icon-reference-cell').forEach(function(cell) {
+      cell.addEventListener('click', function() {
+        var value = cell.getAttribute('data-copy') || '';
+        if (!value || !navigator.clipboard) return;
+        navigator.clipboard.writeText(value).then(function() {
+          cell.classList.add('is-copied');
+          setTimeout(function() { cell.classList.remove('is-copied'); }, 1200);
+        });
+      });
+    });
+  })();
+
   // ── Timeline: Intersection Observer — Items einzeln einblenden ──────────
   (function initTimeline() {
     if (!window.IntersectionObserver) return;
