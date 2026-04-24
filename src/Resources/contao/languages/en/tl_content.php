@@ -17,6 +17,7 @@ $GLOBALS['TL_LANG']['CTE']['rct_grid_col_end']   = ['RCT Grid Column (End)', 'Cl
 $GLOBALS['TL_LANG']['CTE']['rct_icon_reference'] = ['RCT Icon Reference', 'Shows all bundled Tabler icons with their slugs'];
 $GLOBALS['TL_LANG']['CTE']['rct_image_textbox']  = ['RCT Image-Textbox', 'Card with image, headline, text and link (light/dark)'];
 $GLOBALS['TL_LANG']['CTE']['rct_icon_textbox']   = ['RCT Icon-Textbox', 'Card with big icon, headline, text and link (light/dark)'];
+$GLOBALS['TL_LANG']['CTE']['rct_fun_box']        = ['RCT Fun-Box', 'Image card with hover reveal: text+link appear on colored gradient'];
 $GLOBALS['TL_LANG']['tl_content']['link_legend'] = 'Link';
 $GLOBALS['TL_LANG']['CTE']['rct_pricing_table']  = ['RCT Pricing Table', 'Column-based pricing overview with features and CTA button'];
 $GLOBALS['TL_LANG']['CTE']['rct_hero']           = ['RCT Hero', 'Large entry section with headline, text, buttons and optional image'];

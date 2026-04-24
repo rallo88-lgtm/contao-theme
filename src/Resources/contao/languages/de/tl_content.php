@@ -60,6 +60,7 @@ $GLOBALS['TL_LANG']['CTE']['rct_grid_col_end']   = ['RCT Grid-Spalte (Ende)', 'S
 $GLOBALS['TL_LANG']['CTE']['rct_icon_reference'] = ['RCT Icon-Referenz', 'Zeigt alle gebündelten Tabler-Icons mit Slugs zum Kopieren'];
 $GLOBALS['TL_LANG']['CTE']['rct_image_textbox']  = ['RCT Image-Textbox', 'Karte mit Bild, Überschrift, Text und Link (light/dark)'];
 $GLOBALS['TL_LANG']['CTE']['rct_icon_textbox']   = ['RCT Icon-Textbox', 'Karte mit großem Icon, Überschrift, Text und Link (light/dark)'];
+$GLOBALS['TL_LANG']['CTE']['rct_fun_box']        = ['RCT Fun-Box', 'Bild-Karte mit Hover-Reveal: Text+Link erscheinen auf Farbgradient'];
 $GLOBALS['TL_LANG']['tl_content']['link_legend'] = 'Link';
 $GLOBALS['TL_LANG']['CTE']['rct_people_box']  = ['RCT Personen-Karte', 'Zeigt eine Person mit Foto, Rolle und Kontaktdaten'];
 $GLOBALS['TL_LANG']['CTE']['rct_chart_bars'] = ['RCT Balkendiagramm', 'Animiertes Säulen- oder Balkendiagramm mit Scroll-Trigger'];

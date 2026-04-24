@@ -384,6 +384,94 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_link_target'] = [
     'sql'       => "char(1) NOT NULL default ''",
 ];
 
+// ============================================================
+// RCT Fun-Box
+// ============================================================
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_fun_box'] =
+    '{type_legend},type;{content_legend},rct_fb_image,rct_fb_image_alt,rct_fb_icon,rct_fb_headline,rct_fb_text,rct_fb_color;{link_legend:hide},rct_fb_link_page,rct_fb_link_url,rct_fb_link_label,rct_fb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_image'] = [
+    'label'     => ['Hintergrundbild', 'Füllt die Karte als Hintergrund'],
+    'inputType' => 'fileTree',
+    'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif,gif', 'fieldType' => 'radio', 'tl_class' => 'clr'],
+    'sql'       => "binary(16) NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_image_alt'] = [
+    'label'     => ['Alt-Text', 'Alternativtext für das Bild (Barrierefreiheit)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_icon'] = [
+    'label'     => ['Icon / Emoji', 'Emoji, Unicode-Symbol oder tabler:<slug> (z.B. tabler:rocket)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
+    'sql'       => "varchar(32) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_headline'] = [
+    'label'     => ['Überschrift', 'Immer sichtbar'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_text'] = [
+    'label'     => ['Text', 'Erscheint erst beim Hover'],
+    'inputType' => 'textarea',
+    'eval'      => ['style' => 'height:100px', 'tl_class' => 'clr'],
+    'sql'       => "text NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_color'] = [
+    'label'     => ['Hover-Farbe', 'Farbe des Gradient-Overlays beim Hover'],
+    'inputType' => 'select',
+    'options'   => [
+        'accent'    => 'Akzentfarbe (Standard)',
+        'primary'   => 'Primärfarbe',
+        'dim'       => 'Lime-Grün',
+        'fixed'     => 'Gelbgrün',
+        'secondary' => 'Lavendel',
+        'purple'    => 'Lila',
+        'orange'    => 'Orange',
+        'red'       => 'Rot',
+    ],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(12) NOT NULL default 'accent'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_link_page'] = [
+    'label'      => ['Interne Seite', 'Contao-Seite als Ziel (Vorrang vor URL)'],
+    'inputType'  => 'pageTree',
+    'foreignKey' => 'tl_page.title',
+    'eval'       => ['fieldType' => 'radio', 'tl_class' => 'clr'],
+    'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
+    'sql'        => "int(10) unsigned NOT NULL default 0",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_link_url'] = [
+    'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_link_label'] = [
+    'label'     => ['Link-Text', 'Text neben dem Pfeil (Standard: „Mehr erfahren")'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
+    'sql'       => "varchar(64) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_link_target'] = [
+    'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+    'sql'       => "char(1) NOT NULL default ''",
+];
+
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_columns'] = [
     'label'     => ['Spalten', 'Anzahl der Spalten'],
     'inputType' => 'select',

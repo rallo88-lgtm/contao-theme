@@ -1,0 +1,39 @@
+{#
+  RCT – rct_fun_box.html.twig
+  Fancy-Box mit Hover-Reveal: Bild + Icon + Headline (default),
+  Text + Link erscheinen beim Hover mit Theme-Color-Gradient.
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<article class="rct-fun-box color-{{ colorKey }}{% if linkUrl %} has-link{% endif %}{{ cssClass ? ' ' ~ cssClass }}"
+         style="--fb-color: {{ colorCss }};{% if imgSrc %} background-image: url('{{ imgSrc }}');{% endif %}"
+         {% if htmlId %}id="{{ htmlId }}"{% endif %}
+         {% if imgAlt %}aria-label="{{ imgAlt }}"{% endif %}>
+  <div class="rct-fun-box-tint" aria-hidden="true"></div>
+  <div class="rct-fun-box-shade" aria-hidden="true"></div>
+
+  <div class="rct-fun-box-content">
+    {% if icon %}
+      <div class="rct-fun-box-icon" aria-hidden="true">{{ icon|rct_icon }}</div>
+    {% endif %}
+    {% if headline %}
+      <h3 class="rct-fun-box-headline">{{ headline }}</h3>
+    {% endif %}
+    {% if text %}
+      <p class="rct-fun-box-text">{{ text|raw }}</p>
+    {% endif %}
+    {% if linkUrl %}
+      <span class="rct-fun-box-more">{{ linkLabel }} <span aria-hidden="true">→</span></span>
+    {% endif %}
+  </div>
+
+  {% if linkUrl %}
+    <a class="rct-fun-box-overlay-link"
+       href="{{ linkUrl }}"
+       target="{{ linkTarget }}"
+       {% if linkTarget == '_blank' %}rel="noopener noreferrer"{% endif %}
+       aria-label="{{ headline }}"></a>
+  {% endif %}
+</article>
+{% endblock %}

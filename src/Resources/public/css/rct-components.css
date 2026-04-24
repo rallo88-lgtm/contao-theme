@@ -3306,6 +3306,149 @@
 }
 
 /* ============================================================
+   RCT Fun-Box (Hover-Reveal mit Farbgradient)
+   ============================================================ */
+.rct-fun-box {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  min-height: 300px;
+  border-radius: var(--rct-radius-lg, 12px);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-color: #1a1a1a;
+  color: #fff;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s;
+  isolation: isolate;
+}
+
+.rct-fun-box.has-link {
+  cursor: pointer;
+}
+
+.rct-fun-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Permanenter Dunkel-Gradient unten für Lesbarkeit */
+.rct-fun-box-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.3) 45%,
+    transparent 75%);
+  z-index: 1;
+  transition: opacity 0.45s ease;
+}
+
+/* Farb-Tint-Overlay — erscheint beim Hover */
+.rct-fun-box-tint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--fb-color) 85%, transparent) 0%,
+    color-mix(in srgb, var(--fb-color) 55%, transparent) 100%);
+  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.45s ease;
+}
+.rct-fun-box:hover .rct-fun-box-tint {
+  opacity: 0.92;
+}
+.rct-fun-box:hover .rct-fun-box-shade {
+  opacity: 0.3;
+}
+
+/* Content */
+.rct-fun-box-content {
+  position: absolute;
+  inset: 0;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  z-index: 3;
+  transition: justify-content 0s linear 0.45s;
+}
+.rct-fun-box:hover .rct-fun-box-content {
+  justify-content: flex-start;
+  transition-delay: 0s;
+}
+
+.rct-fun-box-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+}
+
+.rct-fun-box-headline {
+  margin: 0;
+  font-family: var(--rct-font-headline);
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+
+/* Body-Text — hidden bis Hover */
+.rct-fun-box-text {
+  margin: 0;
+  font-size: 0.925rem;
+  line-height: 1.5;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease 0.1s, max-height 0.45s ease, transform 0.35s ease 0.1s;
+}
+.rct-fun-box:hover .rct-fun-box-text {
+  opacity: 1;
+  max-height: 260px;
+  transform: translateY(0);
+}
+
+/* Mehr-Link — hidden bis Hover, unten angeheftet */
+.rct-fun-box-more {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--rct-font-headline);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease 0.15s, transform 0.35s ease 0.15s, gap 0.2s;
+}
+.rct-fun-box:hover .rct-fun-box-more {
+  opacity: 1;
+  transform: translateY(0);
+}
+.rct-fun-box:hover .rct-fun-box-more {
+  gap: 0.7em;
+}
+
+/* Overlay-Link (macht die ganze Karte klickbar) */
+.rct-fun-box-overlay-link {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .rct-fun-box { aspect-ratio: 4 / 3; min-height: 260px; }
+  .rct-fun-box-headline { font-size: 1.2rem; }
+}
+
+/* ============================================================
    RCT Image-Textbox / Icon-Textbox
    ============================================================ */
 .rct-itb {
