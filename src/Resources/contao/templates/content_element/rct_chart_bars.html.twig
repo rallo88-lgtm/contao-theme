@@ -45,11 +45,16 @@
       <div class="rct-donut-item" role="listitem" style="--bar-delay: {{ bar.delay }}s;{% if bar.colorCss %} --chart-color: {{ bar.colorCss }};{% endif %}">
         <div class="rct-donut-ring">
           <svg class="rct-donut-svg" viewBox="0 0 100 100" aria-hidden="true">
-            <circle class="rct-donut-track" cx="50" cy="50" r="40" fill="none" stroke-width="10" />
+            <!-- Frame (äußere + innere Border-Outline) -->
+            <circle class="rct-donut-frame" cx="50" cy="50" r="45" fill="none" />
+            <circle class="rct-donut-frame" cx="50" cy="50" r="35" fill="none" />
+            <!-- Farbiger Fill (zählt hoch) -->
             <circle class="rct-donut-fill" cx="50" cy="50" r="40" fill="none" stroke-width="10"
                     stroke-dasharray="0 9999"
                     data-full-dasharray="{{ bar.pieSegLen }} {{ bar.pieSegGap }}"
                     transform="rotate(-90 50 50)" />
+            <!-- 12-Uhr-Marker -->
+            <line class="rct-donut-marker" x1="50" y1="3" x2="50" y2="17" />
           </svg>
           {% if showValues %}
             <span class="rct-donut-value" data-target="{{ bar.value }}">0</span>
