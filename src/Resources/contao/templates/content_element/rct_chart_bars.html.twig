@@ -26,6 +26,8 @@
                   transform="rotate({{ bar.pieRotation }} 50 50)"
                   {% if bar.colorCss %}style="stroke: {{ bar.colorCss }};"{% endif %} />
         {% endfor %}
+        <!-- Frame-Border um den ganzen Kreis -->
+        <circle class="rct-pie-frame" cx="50" cy="50" r="50" fill="none" />
       </svg>
     </div>
     <ul class="rct-pie-legend" role="list">
