@@ -70,8 +70,24 @@ class RctChartBarsController extends AbstractContentElementController
             $textColor = '';
         }
 
+        $orientation = $model->rct_chart_orientation ?: 'vertical';
+
+        // Für Pie/Donut: normalisierte Prozente + kumulative Offsets vorberechnen
+        if ($orientation === 'pie' || $orientation === 'donut') {
+            $total = 0;
+            foreach ($bars as $b) { $total += $b['value']; }
+            $cumulative = 0;
+            foreach ($bars as &$b) {
+                $norm = $total > 0 ? ($b['value'] / $total) * 100 : 0;
+                $b['pieNorm']   = round($norm, 2);
+                $b['pieOffset'] = round($cumulative, 2);
+                $cumulative    += $norm;
+            }
+            unset($b);
+        }
+
         $template->bars        = $bars;
-        $template->orientation = $model->rct_chart_orientation ?: 'vertical';
+        $template->orientation = $orientation;
         $template->color       = $model->rct_chart_color       ?: 'accent';
         $template->showValues  = (bool) $model->rct_chart_show_values;
         $template->textColor   = $textColor;

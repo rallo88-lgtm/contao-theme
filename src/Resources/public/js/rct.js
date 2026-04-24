@@ -1003,7 +1003,7 @@ window.applyLayout = function (layout) {
         var chart = entry.target;
         chart.classList.add('is-animated');
 
-        // Counter für alle sichtbaren Value-Spans
+        // Counter für alle sichtbaren Value-Spans (Balken)
         chart.querySelectorAll('.rct-chart-bar-value').forEach(function(span) {
           var target  = parseInt(span.getAttribute('data-target'), 10) || 0;
           var barEl   = span.closest('.rct-chart-bar');
@@ -1011,6 +1011,14 @@ window.applyLayout = function (layout) {
           setTimeout(function() {
             animateCounter(span, target, 850);
           }, delay * 1000);
+        });
+
+        // Counter für Pie/Donut-Legende
+        chart.querySelectorAll('.rct-pie-legend-value').forEach(function(span, i) {
+          var target = parseInt(span.getAttribute('data-target'), 10) || 0;
+          setTimeout(function() {
+            animateCounter(span, target, 900);
+          }, 150 + i * 100);
         });
 
         observer.unobserve(chart);

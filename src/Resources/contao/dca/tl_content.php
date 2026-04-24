@@ -621,9 +621,14 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_chart_bars_data'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_chart_orientation'] = [
-    'label'     => ['Ausrichtung', 'Vertikale oder horizontale Balken'],
+    'label'     => ['Diagramm-Typ', 'Darstellung der Daten'],
     'inputType' => 'select',
-    'options'   => ['vertical' => 'Vertikal (Säulendiagramm)', 'horizontal' => 'Horizontal (Balkendiagramm)'],
+    'options'   => [
+        'vertical'   => 'Vertikal (Säulendiagramm)',
+        'horizontal' => 'Horizontal (Balkendiagramm)',
+        'pie'        => 'Tortendiagramm',
+        'donut'      => 'Donut-Diagramm',
+    ],
     'eval'      => ['tl_class' => 'w50'],
     'sql'       => "varchar(12) NOT NULL default 'vertical'",
 ];
