@@ -191,9 +191,16 @@
 
         if (trigger) {
           trigger.addEventListener('click', function(e) {
-            if (this.tagName === 'SPAN' || this.getAttribute('href') === '#' || this.getAttribute('href').includes('javascript:void(0)')) {
+            const isNoNav = this.tagName === 'SPAN' || this.getAttribute('href') === '#' || (this.getAttribute('href') || '').includes('javascript:void(0)');
+            if (isNoNav) {
               e.preventDefault();
               li.classList.toggle('is-open');
+              return;
+            }
+            // Mobile: erster Tap öffnet Submenu, zweiter Tap navigiert
+            if (window.matchMedia('(max-width: 900px)').matches && !li.classList.contains('is-open')) {
+              e.preventDefault();
+              li.classList.add('is-open');
             }
           });
         }
