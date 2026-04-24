@@ -86,7 +86,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_hide_mobile'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_visibility'] = [
     'label'     => ['Sichtbarkeit', 'Legt fest, ob das Modul auf Desktop, Mobile oder beiden angezeigt wird.'],
     'inputType' => 'select',
-    'options'   => ['' => 'Beide', 'desktop' => 'Nur Desktop (≥769px)', 'mobile' => 'Nur Mobile (≤768px)'],
+    'options'   => ['' => 'Immer anzeigen', 'mobile' => 'Nur Mobile (≤768px)', 'tablet' => 'Mobil + Tablet (≤1024px)', 'desktop' => 'Nur Desktop (>1024px)'],
     'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
     'sql'       => "varchar(10) NOT NULL default ''",
 ];

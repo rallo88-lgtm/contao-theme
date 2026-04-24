@@ -2060,12 +2060,9 @@ body.rct-right-open #right {
 }
 
 /* Module visibility control */
-@media (max-width: 768px) {
-  [data-rct-visibility="desktop"] { display: none !important; }
-}
-@media (min-width: 769px) {
-  [data-rct-visibility="mobile"]  { display: none !important; }
-}
+@media (max-width: 1024px) { [data-rct-visibility="desktop"] { display: none !important; } }
+@media (min-width: 769px)  { [data-rct-visibility="mobile"]  { display: none !important; } }
+@media (min-width: 1025px) { [data-rct-visibility="tablet"]  { display: none !important; } }
 
 
 /* ------------------------------------------------------------
