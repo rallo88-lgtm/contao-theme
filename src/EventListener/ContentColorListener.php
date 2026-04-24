@@ -172,10 +172,15 @@ class ContentColorListener
         }
         $class = 'style-' . ($style === 'light' ? 'light' : 'dark');
 
-        $needle = 'class="content-download';
+        // "content-downloads" (plural) zuerst probieren, sonst "content-download" (singular)
+        $needle = 'class="content-downloads';
         $pos    = strpos($buffer, $needle);
         if ($pos === false) {
-            return $buffer;
+            $needle = 'class="content-download';
+            $pos    = strpos($buffer, $needle);
+            if ($pos === false) {
+                return $buffer;
+            }
         }
         $insertAt = $pos + strlen($needle);
         return substr($buffer, 0, $insertAt) . ' ' . $class . substr($buffer, $insertAt);
