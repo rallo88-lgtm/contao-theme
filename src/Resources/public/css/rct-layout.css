@@ -837,12 +837,12 @@ nav.mod_breadcrumb ul {
 /* Separator: / in Accent-Farbe */
 .mod_breadcrumb li:not(:last-child)::after {
   content: "/";
-  margin: 0 0.45rem;
+  margin: 0 2px;
   font-family: var(--rct-font-mono);
   font-size: 0.82rem;
   color: var(--rct-accent);
-  opacity: 0.4;
-  font-weight: normal;
+  opacity: 1;
+  font-weight: 600;
 }
 
 /* Aktives / letztes Item: Accent-Glow */
@@ -868,7 +868,6 @@ nav.mod_breadcrumb ul {
   font-family: var(--rct-font-mono);
   font-size: 0.82rem;
   font-weight: 400;
-  letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
   color: inherit;
