@@ -22,7 +22,7 @@
                   fill="none"
                   stroke-width="{{ orientation == 'donut' ? 20 : 50 }}"
                   pathLength="100"
-                  stroke-dashoffset="-{{ bar.pieOffset }}"
+                  transform="rotate({{ -90 + bar.pieOffset * 3.6 }} 50 50)"
                   style="--seg-length: {{ bar.pieNorm }}; --seg-delay: {{ bar.delay }}s;{% if bar.colorCss %} stroke: {{ bar.colorCss }};{% endif %}" />
         {% endfor %}
       </svg>
