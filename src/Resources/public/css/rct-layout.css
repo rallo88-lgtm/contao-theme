@@ -943,7 +943,7 @@ position: sticky;
   z-index: 510;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 }
 
