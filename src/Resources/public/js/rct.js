@@ -1060,16 +1060,49 @@ window.applyLayout = function (layout) {
 
   // ── Icon-Referenz: Klick kopiert tabler:<slug> in die Zwischenablage ──
   (function initIconReference() {
-    document.querySelectorAll('.rct-icon-reference-cell').forEach(function(cell) {
-      cell.addEventListener('click', function() {
-        var value = cell.getAttribute('data-copy') || '';
-        if (!value || !navigator.clipboard) return;
-        navigator.clipboard.writeText(value).then(function() {
-          cell.classList.add('is-copied');
-          setTimeout(function() { cell.classList.remove('is-copied'); }, 1200);
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      // Fallback für HTTP / alte Browser
+      return new Promise(function(resolve, reject) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy') ? resolve() : reject();
+        } catch (e) { reject(e); }
+        document.body.removeChild(ta);
+      });
+    }
+
+    function attach() {
+      var cells = document.querySelectorAll('.rct-icon-reference-cell');
+      if (!cells.length) return;
+      cells.forEach(function(cell) {
+        if (cell.dataset.rctIrBound) return;
+        cell.dataset.rctIrBound = '1';
+        cell.addEventListener('click', function(e) {
+          e.preventDefault();
+          var value = cell.getAttribute('data-copy') || '';
+          if (!value) return;
+          copyText(value).then(function() {
+            cell.classList.add('is-copied');
+            setTimeout(function() { cell.classList.remove('is-copied'); }, 1200);
+          });
         });
       });
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', attach);
+    } else {
+      attach();
+    }
+    document.addEventListener('rct:page-ready', attach);
   })();
 
   // ── Timeline: Intersection Observer — Items einzeln einblenden ──────────
