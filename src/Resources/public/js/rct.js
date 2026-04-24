@@ -206,20 +206,24 @@
         }
       });
 
-      // Navbar-Dropdown: Desktop Hover (>1024px) via is-hover Klasse
+      // Navbar-Dropdown: Desktop Hover (>1024px) — position:fixed mit JS-berechneten Koordinaten
       document.querySelectorAll('#navbar .mod_navigation ul.level_1 > li.submenu').forEach(li => {
+        const dropdown = li.querySelector('ul.level_2');
+        if (!dropdown) return;
         let t;
-        const open  = () => { clearTimeout(t); li.classList.add('is-hover'); };
+        const open = () => {
+          clearTimeout(t);
+          if (window.matchMedia('(max-width: 1024px)').matches) return;
+          const rect = li.getBoundingClientRect();
+          dropdown.style.top  = rect.bottom + 'px';
+          dropdown.style.left = rect.left   + 'px';
+          li.classList.add('is-hover');
+        };
         const close = () => { t = setTimeout(() => li.classList.remove('is-hover'), 80); };
         li.addEventListener('mouseenter', open);
         li.addEventListener('mouseleave', close);
-      });
-      document.querySelectorAll('#navbar .mod_navigation ul.level_2 > li.submenu').forEach(li => {
-        let t;
-        const open  = () => { clearTimeout(t); li.classList.add('is-hover'); };
-        const close = () => { t = setTimeout(() => li.classList.remove('is-hover'), 80); };
-        li.addEventListener('mouseenter', open);
-        li.addEventListener('mouseleave', close);
+        dropdown.addEventListener('mouseenter', () => clearTimeout(t));
+        dropdown.addEventListener('mouseleave', close);
       });
 
       // Navbar-Hamburger (≤1024px): Tap auf Parent öffnet Submenu
