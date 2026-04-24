@@ -4174,6 +4174,15 @@
   transition: background 0.2s, color 0.2s;
 }
 
+/* rct-download-link im dark Kontext: Surface-Background raus */
+.content-download.style-dark .rct-download-link,
+.content-downloads.style-dark .rct-download-link {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: rgba(255, 255, 255, 0.75);
+}
+
 /* Extension-Badge */
 .content-download.style-dark .download-element::before,
 .content-downloads.style-dark .download-element::before {
