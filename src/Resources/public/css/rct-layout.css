@@ -2209,7 +2209,7 @@ body.rct-right-open #right {
   .rct-page-title { font-size: 1.75rem; }
 }
 
-@media (max-width: 1250px) { .mod_breadcrumb { display: none !important; } }
+@media (max-width: 1250px) { nav.mod_breadcrumb { display: none !important; } }
 
 /* --- MOBILE (≤ 767px) --- */
 @media (max-width: 767px) {
