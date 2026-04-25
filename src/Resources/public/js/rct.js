@@ -924,7 +924,8 @@ window.applyLayout = function (layout) {
       const centering = Math.max(0, (mainInner - maxWidth) / 2);
 
       // right = rechte Sidebar + #main-padding-right + Zentrierung + content-inner-padding-right
-      const rightPos = padRight + 40 + centering + 20;
+      let rightPos = padRight + 40 + centering + 20;
+      if (layout === 'classic') rightPos += 10;
       scrollTopBtn.style.right = rightPos + 'px';
       privacyBtn.style.right   = (rightPos + 34) + 'px'; // 28px Btn + 6px Gap
     }
