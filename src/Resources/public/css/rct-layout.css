@@ -1458,6 +1458,13 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   width: 100%;
   max-width: none;
 }
+/* Slider in Fullwidth-Section: keine Pfeile + keine Pagination drunter */
+.rct-fullwidth .swiper { padding-bottom: 0; }
+.rct-fullwidth .swiper-button-prev,
+.rct-fullwidth .swiper-button-next,
+.rct-fullwidth .swiper-pagination {
+  display: none !important;
+}
 .rct-fullwidth .swiper-slide > * {
   flex: 1;
   width: 100%;
