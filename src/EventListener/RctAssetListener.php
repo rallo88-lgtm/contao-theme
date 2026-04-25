@@ -70,7 +70,8 @@ class RctAssetListener
         $css .= "  --rct-radius-xl: calc(" . $this->escape($config['rct_radius']) . " * 4);\n";
         $css .= "  --rct-body-bg: " . $this->escape($config['rct_color_body_bg'] ?? '#000000') . ";\n";
         $css .= "}\n";
-        $css .= "body { background-color: var(--rct-body-bg); }\n";
+        // Body-BG nur in Classic — andere Layouts haben Canvas/Main-Overlay, würde durchscheinen
+        $css .= "html[data-layout=\"classic\"] body { background-color: var(--rct-body-bg); }\n";
 
         // Colors only for default theme — theme switcher overrides these for all other themes
         $css .= ":root:not([data-theme]), :root[data-theme=\"default\"] {\n";
