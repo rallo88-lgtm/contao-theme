@@ -35,6 +35,7 @@ class RctConfigController extends AbstractBackendController
         'rct_color_accent'       => '#27c4f4',
         'rct_color_primary'      => '#2951c7',
         'rct_color_primary_light'=> '#27c4f4',
+        'rct_color_body_bg'      => '#000000',
         'rct_grad1'              => '#27c4f4',
         'rct_grad2'              => '#2951c7',
         'rct_grad3'              => '#1d2db2',
