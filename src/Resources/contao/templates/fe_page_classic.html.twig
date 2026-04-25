@@ -42,11 +42,10 @@
       </div>
     </nav>
 
-    {# Main mit content-inner; Fullwidth-Inhalte brechen via rct_fullwidth_start/end CE aus #}
+    {# Main ohne content-inner — Articles übernehmen die Zentrierung,
+       Fullwidth-Sections brechen automatisch aus dem Article aus #}
     <main id="main" role="main">
-      <div class="rct-content-inner">
-        {{ main|raw }}
-      </div>
+      {{ main|raw }}
 
       <footer id="footer" role="contentinfo">
         {{ footer|raw }}

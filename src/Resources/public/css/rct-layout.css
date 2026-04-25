@@ -1337,34 +1337,25 @@ position: sticky;
 }
 [data-layout="classic"] #main {
   padding: 0;
-  overflow-x: visible;
-}
-/* Scrollbar-Schutz: Breakout darf raus aus #main, aber nicht aus body */
-html[data-layout="classic"],
-html[data-layout="classic"] body {
   overflow-x: clip;
 }
-/* Classic: .mod_article darf nichts constrainen (kein backdrop-filter,
-   kein max-width, sonst würde der Fullwidth-Breakout abgeschnitten) */
+/* Classic: Article übernimmt die Zentrierung (vorher content-inner),
+   ohne Background/Glow-Effekte aus dem Standard-Layout */
 [data-layout="classic"] .mod_article {
-  max-width: none;
-  margin: 0;
-  padding: 0;
+  max-width: var(--rct-max-width);
+  margin: 0 auto;
+  padding: 0 20px;
   background: none;
   box-shadow: none;
   backdrop-filter: none;
   border-radius: 0;
 }
-[data-layout="classic"] .rct-content-inner {
-  container-type: normal;
-}
-/* Fullwidth-Breakout: bricht aus jeder Wrapping-Tiefe auf 100vw aus */
+/* Fullwidth-Breakout: bricht aus dem Article auf Viewport-Breite aus */
 .rct-fullwidth {
-  position: relative !important;
-  width: 100vw !important;
-  max-width: 100vw !important;
-  margin-left: calc(50% - 50vw) !important;
-  margin-right: calc(50% - 50vw) !important;
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 [data-layout="classic"] #bottom.rct-classic-bottom {
   background: #fff;
