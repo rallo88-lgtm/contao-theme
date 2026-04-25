@@ -1296,13 +1296,20 @@ position: sticky;
 }
 [data-layout="classic"] #navbar {
   transition: box-shadow 0.3s ease;
+  background: #fff;
 }
 /* Classic Nav: reiner Text, keine Button-Styles, keine Underlines */
+[data-layout="classic"] #navbar .mod_navigation ul.level_1 > li > a {
+  color: var(--rct-text-muted);
+  text-shadow: none;
+}
 [data-layout="classic"] #navbar .mod_navigation ul.level_1 > li > a:hover,
 [data-layout="classic"] #navbar .mod_navigation ul.level_1 > li.trail > a,
 [data-layout="classic"] #navbar .mod_navigation ul.level_1 > li.active > a {
+  color: var(--rct-accent);
   background: none;
   border-bottom: 0;
+  text-shadow: none;
 }
 [data-layout="classic"] #navbar .mod_navigation ul.level_1 > li > a::after {
   background: transparent;
