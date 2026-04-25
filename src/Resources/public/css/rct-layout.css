@@ -1225,6 +1225,20 @@ position: sticky;
   background: none;
   border-bottom: 0;
 }
+@media (min-width: 1025px) {
+  [data-layout="classic"] #header { display: none; }
+}
+/* Header-Module nebeneinander statt gestapelt: Burger | Suche | Logo (rechts) */
+[data-layout="classic"] #header .inside {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 10px 20px;
+}
+[data-layout="classic"] #header #rct-nav-toggle    { order: 1; }
+[data-layout="classic"] #header #rct-search-toggle { order: 2; }
+[data-layout="classic"] #header .rct-header-logo-link,
+[data-layout="classic"] #header .rct-logo-link     { order: 3; margin-left: auto; }
 [data-layout="classic"] #navbar {
   display: block;
   max-width: none;
