@@ -1,11 +1,11 @@
 {#
   RCT – fe_page_classic.html.twig
   Layout-Variante "Classic":
-   - Keine Sidebars (left/right entfernt)
    - Header oben optional (classic_header section, leer = keine Höhe)
    - Navbar: edge-to-edge BG, innen .rct-content-inner mit Logo links + Menü rechts
-   - Main: nur .rct-content-inner; Fullwidth-Inhalte via rct_fullwidth_start/end CE
-   - Bottom: nicht sticky, klassischer Footer-Bereich mit kleinem Logo
+   - #left: nur Mobile-Drawer (Hamburger-Toggle aus rct_nav_toggle Modul)
+   - Main: ohne content-inner; Fullwidth-Sections brechen aus dem Article aus
+   - Bottom: fixed Footer mit hellem Look + Footer-Logo
 #}
 {% extends "@Contao/fe_page.html.twig" %}
 
@@ -37,6 +37,18 @@
         </div>
       </div>
     </nav>
+
+    {# Mobile-Drawer #left — auf Desktop versteckt, auf Mobile via
+       rct_nav_toggle (Hamburger im classic_navbar_right) togglebar #}
+    <aside id="left" aria-label="Hauptnavigation">
+      <button class="rct-sidebar-close-btn js-close-sidebar" aria-label="Menü schließen">
+        <svg class="rct-icon-shove" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="arrow-1" d="M18 6L12 12L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path class="arrow-2" d="M12 6L6 12L12 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+      <div class="inside sitenavigation">{{ left|raw }}</div>
+    </aside>
 
     {# Main ohne content-inner — Articles übernehmen die Zentrierung,
        Fullwidth-Sections brechen automatisch aus dem Article aus #}

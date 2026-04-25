@@ -1360,6 +1360,32 @@ position: sticky;
   overflow-x: clip;
   background-color: transparent;
 }
+/* #left in Classic: nur Mobile-Drawer (Desktop weggeschoben).
+   Existing #left-Styling (position:fixed, transform-Animation) greift dann
+   per body.rct-sidebar-open Toggle wie in den anderen Layouts. */
+@media (min-width: 1025px) {
+  [data-layout="classic"] #left { display: none; }
+  /* Hamburger-Button in Classic auf Desktop überflüssig */
+  [data-layout="classic"] #rct-nav-toggle { display: none; }
+}
+@media (max-width: 1024px) {
+  [data-layout="classic"] #left {
+    transform: translateX(calc(var(--rct-sidebar-left-width) * -1));
+    top: 0;
+    height: 100vh;
+  }
+  [data-layout="classic"] body.rct-sidebar-open #left {
+    transform: translateX(0);
+  }
+  [data-layout="classic"] #rct-nav-toggle { display: flex; }
+}
+/* Leere mod_article durch DOM-Breakout des Fullwidth-CE ausblenden
+   (start-CE schließt Article + öffnet evtl. eine leere mod_article-Hülle) */
+[data-layout="classic"] .mod_article:not(:has(*)) {
+  display: none;
+  margin: 0;
+  padding: 0;
+}
 /* Classic: Article übernimmt die Zentrierung (vorher content-inner),
    ohne Background/Glow-Effekte aus dem Standard-Layout */
 [data-layout="classic"] .mod_article {
