@@ -305,6 +305,118 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_fullwidth_start'] =
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_fullwidth_end'] =
     '{type_legend},type;{invisible_legend:hide},invisible,start,stop';
 
+// ============================================================
+// RCT Slider Box
+// ============================================================
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_slider_box'] =
+    '{type_legend},type;{image_legend},rct_sb_image,rct_sb_image_alt,rct_sb_bg_position,rct_sb_overlay,rct_sb_min_height;{content_legend},rct_sb_overline,rct_sb_headline,rct_sb_text,rct_sb_align,rct_content_color;{link_legend:hide},rct_sb_link_page,rct_sb_link_url,rct_sb_link_label,rct_sb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_image'] = [
+    'label'     => ['Hintergrundbild', 'Bild als Slide-Hintergrund (cover, position konfigurierbar)'],
+    'inputType' => 'fileTree',
+    'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif', 'fieldType' => 'radio', 'tl_class' => 'clr'],
+    'sql'       => "binary(16) NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_image_alt'] = [
+    'label'     => ['Alt-Text', 'Bildbeschreibung (Barrierefreiheit)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_bg_position'] = [
+    'label'     => ['Bild-Ausschnitt (BG-Position)', 'Welcher Teil des Bildes ist beim Croppen sichtbar (besonders relevant für Mobile)'],
+    'inputType' => 'select',
+    'options'   => [
+        'center'        => 'Mitte (Standard)',
+        'top'           => 'Oben',
+        'bottom'        => 'Unten',
+        'left'          => 'Links',
+        'right'         => 'Rechts',
+        'top left'      => 'Oben links',
+        'top right'     => 'Oben rechts',
+        'bottom left'   => 'Unten links',
+        'bottom right'  => 'Unten rechts',
+    ],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(16) NOT NULL default 'center'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_overlay'] = [
+    'label'     => ['Overlay', 'Dunkles Overlay über dem BG (verbessert Textlesbarkeit)'],
+    'inputType' => 'select',
+    'options'   => ['' => 'Kein Overlay', '20' => '20%', '30' => '30%', '40' => '40%', '50' => '50%', '60' => '60%', '70' => '70%', '80' => '80%'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(3) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_min_height'] = [
+    'label'     => ['Mindesthöhe', 'z.B. 500px, 70vh, 100vh'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 16, 'tl_class' => 'w50', 'rgxp' => 'alnum'],
+    'sql'       => "varchar(16) NOT NULL default '500px'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_overline'] = [
+    'label'     => ['Overline', 'Kleiner Text über der Headline (z.B. Kategorie, Eyebrow)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 128, 'tl_class' => 'long clr'],
+    'sql'       => "varchar(128) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_headline'] = [
+    'label'     => ['Headline', 'Hauptüberschrift (H2)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_text'] = [
+    'label'     => ['Text', 'Body-Text unter der Headline'],
+    'inputType' => 'textarea',
+    'eval'      => ['style' => 'height:120px', 'tl_class' => 'clr'],
+    'sql'       => "text NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_align'] = [
+    'label'     => ['Text-Ausrichtung', 'Horizontale Ausrichtung von Headline/Text/Button'],
+    'inputType' => 'select',
+    'options'   => ['left' => 'Links', 'center' => 'Mittig', 'right' => 'Rechts'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(8) NOT NULL default 'center'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_page'] = [
+    'label'      => ['Interne Seite', 'Contao-Seite als CTA-Ziel (Vorrang vor URL)'],
+    'inputType'  => 'pageTree',
+    'foreignKey' => 'tl_page.title',
+    'eval'       => ['fieldType' => 'radio', 'tl_class' => 'clr'],
+    'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
+    'sql'        => "int(10) unsigned NOT NULL default 0",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_url'] = [
+    'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_label'] = [
+    'label'     => ['Link-Text', 'Beschriftung des CTA-Buttons (Standard: „Mehr erfahren")'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
+    'sql'       => "varchar(64) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_target'] = [
+    'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+    'sql'       => "char(1) NOT NULL default ''",
+];
+
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_icon_reference'] =
     '{type_legend},type;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 

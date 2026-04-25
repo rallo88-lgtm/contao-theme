@@ -59,6 +59,9 @@ $GLOBALS['TL_LANG']['CTE']['rct_grid_col_start'] = ['RCT Grid-Spalte (Start)', '
 $GLOBALS['TL_LANG']['CTE']['rct_grid_col_end']   = ['RCT Grid-Spalte (Ende)', 'Schließt die Grid-Spalte'];
 $GLOBALS['TL_LANG']['CTE']['rct_fullwidth_start']= ['RCT Fullwidth (Start)', 'Bricht aus dem Content-Container aus für 100% Viewport-Breite'];
 $GLOBALS['TL_LANG']['CTE']['rct_fullwidth_end']  = ['RCT Fullwidth (Ende)', 'Schließt die Fullwidth-Section'];
+$GLOBALS['TL_LANG']['CTE']['rct_slider_box']     = ['RCT Slider-Box', 'Hero-Slide mit BG-Bild, Overline, Headline, Text und CTA — funktioniert im Slider und standalone'];
+
+$GLOBALS['TL_LANG']['tl_content']['image_legend'] = 'Bild & Layout';
 $GLOBALS['TL_LANG']['CTE']['rct_icon_reference'] = ['RCT Icon-Referenz', 'Zeigt alle gebündelten Tabler-Icons mit Slugs zum Kopieren'];
 $GLOBALS['TL_LANG']['CTE']['rct_image_textbox']  = ['RCT Image-Textbox', 'Karte mit Bild, Überschrift, Text und Link (light/dark)'];
 $GLOBALS['TL_LANG']['CTE']['rct_icon_textbox']   = ['RCT Icon-Textbox', 'Karte mit großem Icon, Überschrift, Text und Link (light/dark)'];

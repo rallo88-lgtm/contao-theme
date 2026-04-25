@@ -5585,3 +5585,83 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   .rct-hero-headline { font-size: clamp(34px, 9vw, 54px); }
   .rct-hero-body     { max-width: 100%; }
 }
+
+/* ============================================================
+   RCT Slider Box — Hero-Slide self-contained (BG + Inhalt)
+   ============================================================ */
+.rct-sliderbox {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  color: #fff;
+}
+.rct-sliderbox-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.rct-sliderbox-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--rct-max-width);
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+.rct-sliderbox.align-left   .rct-sliderbox-content { text-align: left; }
+.rct-sliderbox.align-center .rct-sliderbox-content { text-align: center; }
+.rct-sliderbox.align-right  .rct-sliderbox-content { text-align: right; }
+.rct-sliderbox.align-center .rct-sliderbox-text    { margin-left: auto; margin-right: auto; }
+.rct-sliderbox.align-right  .rct-sliderbox-text    { margin-left: auto; }
+
+.rct-sliderbox-overline {
+  font-family: var(--rct-font-headline);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 0 0 1rem;
+  opacity: 0.85;
+}
+.rct-sliderbox-headline {
+  font-family: var(--rct-font-headline);
+  font-size: clamp(2rem, 5vw, 4rem);
+  margin: 0 0 1rem;
+  line-height: 1.1;
+  color: inherit;
+}
+.rct-sliderbox-text {
+  font-size: 1.125rem;
+  line-height: 1.55;
+  margin: 0 0 1.75rem;
+  max-width: 640px;
+}
+.rct-sliderbox-btn {
+  display: inline-block;
+  background: var(--rct-accent);
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.rct-sliderbox-btn:hover {
+  background: var(--rct-primary);
+  transform: translateY(-1px);
+}
+
+/* Slider-Kontext: full-width über fullwidth-CE oder rct-fullwidth Wrapper */
+.rct-fullwidth .rct-sliderbox-inner {
+  max-width: var(--rct-max-width);
+}
+
+@media (max-width: 768px) {
+  .rct-sliderbox-inner   { padding: 40px 20px; }
+  .rct-sliderbox-text    { font-size: 1rem; }
+}

@@ -1,0 +1,36 @@
+{#
+  RCT – rct_slider_box.html.twig
+  Hero-Slide-Box: BG-Bild + Overlay + Inhalt (Overline, Headline, Text, CTA).
+  Funktioniert standalone und als Kind eines Sliders.
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-sliderbox align-{{ align }}{{ cssClass ? ' ' ~ cssClass }}"
+     style="
+       {%- if imgSrc %}background-image: url('{{ imgSrc }}');{% endif %}
+       background-position: {{ bgPosition }};
+       min-height: {{ minHeight }};
+       {%- if contentColor %}color: {{ contentColor }};{% endif %}
+     "
+     {%- if imgAlt %} role="img" aria-label="{{ imgAlt }}"{% endif %}
+     {%- if htmlId %} id="{{ htmlId }}"{% endif %}>
+
+  {% if overlayOpacity > 0 %}
+    <div class="rct-sliderbox-overlay" style="background: rgba(0,0,0,{{ (overlayOpacity / 100)|number_format(2, '.', '') }});"></div>
+  {% endif %}
+
+  <div class="rct-sliderbox-inner">
+    <div class="rct-sliderbox-content">
+      {% if overline %}<p class="rct-sliderbox-overline">{{ overline }}</p>{% endif %}
+      {% if headline %}<h2 class="rct-sliderbox-headline">{{ headline }}</h2>{% endif %}
+      {% if text %}<div class="rct-sliderbox-text">{{ text|raw }}</div>{% endif %}
+      {% if linkUrl %}
+        <a href="{{ linkUrl }}" class="rct-sliderbox-btn" target="{{ linkTarget }}"{% if linkTarget == '_blank' %} rel="noopener noreferrer"{% endif %}>
+          {{ linkLabel }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
