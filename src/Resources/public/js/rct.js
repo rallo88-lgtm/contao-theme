@@ -280,21 +280,24 @@
       }
     }
 
-    // 2. Suche-Trigger
-    const searchTrigger = document.getElementById('rct-nav-search');
-    if (searchTrigger && overlayContainer) {
-        searchTrigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            overlayContainer.innerHTML = `
-                <div class="rct-search-box">
-                    <h2>Suche</h2>
-                    <form action="suche" method="get">
-                        <input type="text" name="keywords" class="rct-input" placeholder="Suchbegriff..." autofocus>
-                        <button type="submit" class="rct-btn">Suchen</button>
-                    </form>
-                </div>
-            `;
-            overlay.classList.add('is-active');
+    // 2. Suche-Trigger — querySelectorAll damit mehrere Instanzen
+    // (z.B. navbar + mobile-header) alle die Suche öffnen
+    const searchTriggers = document.querySelectorAll('[id="rct-nav-search"]');
+    if (searchTriggers.length && overlayContainer) {
+        searchTriggers.forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                overlayContainer.innerHTML = `
+                    <div class="rct-search-box">
+                        <h2>Suche</h2>
+                        <form action="suche" method="get">
+                            <input type="text" name="keywords" class="rct-input" placeholder="Suchbegriff..." autofocus>
+                            <button type="submit" class="rct-btn">Suchen</button>
+                        </form>
+                    </div>
+                `;
+                overlay.classList.add('is-active');
+            });
         });
     }
 
