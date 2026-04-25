@@ -1247,10 +1247,14 @@ html[data-layout="classic"] #header #classic_header > .inside {
   padding: 0 !important;
   width: 100%;
 }
-html[data-layout="classic"] #header #rct-nav-toggle  { order: 1; }
-html[data-layout="classic"] #header #rct-nav-search  { order: 2; }
 html[data-layout="classic"] #header .rct-header-logo-link,
-html[data-layout="classic"] #header .rct-logo-link   { order: 3; margin-left: auto; }
+html[data-layout="classic"] #header .rct-logo-link   { order: 1; }
+html[data-layout="classic"] #header #rct-nav-toggle  { order: 2; margin-left: auto; }
+html[data-layout="classic"] #header #rct-nav-search  { order: 3; }
+/* Auf Mobile in Classic die Navbar ausblenden — Menu läuft via #left-Drawer */
+@media (max-width: 1024px) {
+  html[data-layout="classic"] #navbar { display: none !important; }
+}
 [data-layout="classic"] #navbar {
   display: block;
   max-width: none;
