@@ -19,16 +19,25 @@ $GLOBALS['TL_DCA']['tl_content']['config']['onload_callback'][] = static functio
 // Max-Height + Effect zu den Slider-Paletten (sliderStart = Gruppen-Slider, swiper = standalone)
 PaletteManipulator::create()
     ->addField('rct_slider_max_height', 'sliderContinuous', PaletteManipulator::POSITION_AFTER)
-    ->addField('rct_slider_effect', 'rct_slider_max_height', PaletteManipulator::POSITION_AFTER)
+    ->addField('rct_slider_max_height_mobile', 'rct_slider_max_height', PaletteManipulator::POSITION_AFTER)
+    ->addField('rct_slider_effect', 'rct_slider_max_height_mobile', PaletteManipulator::POSITION_AFTER)
     ->applyToPalette('sliderStart', 'tl_content');
 
 PaletteManipulator::create()
     ->addField('rct_slider_max_height', 'sliderContinuous', PaletteManipulator::POSITION_AFTER)
-    ->addField('rct_slider_effect', 'rct_slider_max_height', PaletteManipulator::POSITION_AFTER)
+    ->addField('rct_slider_max_height_mobile', 'rct_slider_max_height', PaletteManipulator::POSITION_AFTER)
+    ->addField('rct_slider_effect', 'rct_slider_max_height_mobile', PaletteManipulator::POSITION_AFTER)
     ->applyToPalette('swiper', 'tl_content');
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_slider_max_height'] = [
-    'label'     => ['Slide-Höhe', 'Max-Höhe der Slides (z.B. 400px, 50vh). Inhalt wird vertikal zentriert, Überstand abgeschnitten.'],
+    'label'     => ['Slide-Höhe (Desktop)', 'Max-Höhe der Slides ab 1025px (z.B. 400px, 50vh). Inhalt wird vertikal zentriert, Überstand abgeschnitten.'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 16, 'tl_class' => 'w50', 'rgxp' => 'alnum'],
+    'sql'       => "varchar(16) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_slider_max_height_mobile'] = [
+    'label'     => ['Slide-Höhe (Mobile)', 'Max-Höhe der Slides ≤1024px (z.B. 300px, 60vh). Leer = Desktop-Wert wird verwendet.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 16, 'tl_class' => 'w50', 'rgxp' => 'alnum'],
     'sql'       => "varchar(16) NOT NULL default ''",

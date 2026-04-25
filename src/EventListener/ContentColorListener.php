@@ -195,15 +195,19 @@ class ContentColorListener
 
     private function injectSliderMaxHeight(ContentModel $model, string $buffer): string
     {
+        $vars = [];
         $mh = trim((string) $model->rct_slider_max_height);
-        if ($mh === '') {
+        if ($mh !== '' && preg_match('/^\d+(\.\d+)?(px|vh|vw|%|em|rem)?$/', $mh)) {
+            $vars[] = '--rct-slide-max-height:' . $mh;
+        }
+        $mhm = trim((string) $model->rct_slider_max_height_mobile);
+        if ($mhm !== '' && preg_match('/^\d+(\.\d+)?(px|vh|vw|%|em|rem)?$/', $mhm)) {
+            $vars[] = '--rct-slide-max-height-mobile:' . $mhm;
+        }
+        if (empty($vars)) {
             return $buffer;
         }
-        // Nur einfache CSS-Werte erlauben: 400px, 50vh, 100%, 20rem
-        if (!preg_match('/^\d+(\.\d+)?(px|vh|vw|%|em|rem)?$/', $mh)) {
-            return $buffer;
-        }
-        return $this->injectStyle($buffer, '--rct-slide-max-height:' . $mh);
+        return $this->injectStyle($buffer, implode(';', $vars));
     }
 
     private function injectSliderEffect(ContentModel $model, string $buffer): string

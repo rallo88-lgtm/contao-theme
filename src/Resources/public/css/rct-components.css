@@ -1543,6 +1543,11 @@
   max-height: var(--rct-slide-max-height, none);
   overflow: hidden;
 }
+@media (max-width: 1024px) {
+  .swiper-wrapper .swiper-slide {
+    max-height: var(--rct-slide-max-height-mobile, var(--rct-slide-max-height, none));
+  }
+}
 
 /* ==========================================================================
    19. Downloads (Mehrfach)
