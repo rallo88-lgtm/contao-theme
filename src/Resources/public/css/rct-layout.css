@@ -1245,6 +1245,21 @@ position: sticky;
   align-items: center;
   gap: 1rem;
 }
+[data-layout="classic"] .rct-classic-navbar-left .rct-logo-link,
+[data-layout="classic"] .rct-classic-navbar-left .rct-header-logo-link {
+  display: inline-flex;
+  align-items: center;
+}
+[data-layout="classic"] .rct-classic-navbar-left img,
+[data-layout="classic"] .rct-classic-navbar-left svg {
+  height: 48px;
+  width: auto;
+  max-width: 100%;
+  display: block;
+}
+[data-layout="classic"] .rct-classic-navbar-left .rct-logo-custom {
+  width: auto !important;
+}
 [data-layout="classic"] #main {
   padding: 0;
 }
