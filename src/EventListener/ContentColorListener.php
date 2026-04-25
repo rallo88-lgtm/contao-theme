@@ -30,9 +30,11 @@ class ContentColorListener
             return $this->injectDownloadStyle($model, $buffer);
         }
 
-        // Slider: max-height als CSS-Variable
+        // Slider: max-height als CSS-Variable + Übergangs-Effekt in data-settings
         if ($model->type === 'sliderStart' || $model->type === 'swiper') {
-            return $this->injectSliderMaxHeight($model, $buffer);
+            $buffer = $this->injectSliderMaxHeight($model, $buffer);
+            $buffer = $this->injectSliderEffect($model, $buffer);
+            return $buffer;
         }
 
         if (!\in_array($model->type, self::SUPPORTED_COLOR, true)) {
@@ -202,6 +204,27 @@ class ContentColorListener
             return $buffer;
         }
         return $this->injectStyle($buffer, '--rct-slide-max-height:' . $mh);
+    }
+
+    private function injectSliderEffect(ContentModel $model, string $buffer): string
+    {
+        $effect = trim((string) $model->rct_slider_effect);
+        if ($effect !== 'fade') {
+            return $buffer;
+        }
+        // data-settings="..." Attribut finden, JSON dekodieren, Effekt mergen
+        if (!preg_match('/data-settings="([^"]*)"/', $buffer, $m)) {
+            return $buffer;
+        }
+        $json = html_entity_decode($m[1], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $settings = json_decode($json, true);
+        if (!is_array($settings)) {
+            return $buffer;
+        }
+        $settings['effect'] = 'fade';
+        $settings['fadeEffect'] = ['crossFade' => true];
+        $newJson = htmlspecialchars(json_encode($settings, JSON_UNESCAPED_SLASHES), ENT_QUOTES, 'UTF-8');
+        return preg_replace('/data-settings="[^"]*"/', 'data-settings="' . $newJson . '"', $buffer, 1);
     }
 
     private function injectAccordionStyle(ContentModel $model, string $buffer): string
