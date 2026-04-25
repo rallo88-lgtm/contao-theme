@@ -1,4 +1,3 @@
-{# DOM-Breakout: schließt .rct-content-inner, öffnet eine Fullwidth-Section.
-   Muss innerhalb von <main> > .rct-content-inner verwendet werden und durch
-   rct_fullwidth_end wieder geschlossen werden. #}
-</div><section class="rct-fullwidth{% if cssClass %} {{ cssClass }}{% endif %}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+{# CSS-Breakout: Section bleibt im Element-Flow und sprengt sich per CSS auf 100vw.
+   Schließendes Element via rct_fullwidth_end. #}
+<section class="rct-fullwidth{% if cssClass %} {{ cssClass }}{% endif %}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
