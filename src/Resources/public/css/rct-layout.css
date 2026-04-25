@@ -1339,6 +1339,20 @@ position: sticky;
   padding: 0;
   overflow-x: clip;
 }
+/* Classic: .mod_article darf nichts constrainen (kein backdrop-filter,
+   kein max-width, sonst würde der Fullwidth-Breakout abgeschnitten) */
+[data-layout="classic"] .mod_article {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  border-radius: 0;
+}
+[data-layout="classic"] .rct-content-inner {
+  container-type: normal;
+}
 /* Fullwidth-Breakout: bricht aus jeder Wrapping-Tiefe auf 100vw aus */
 .rct-fullwidth {
   position: relative;
