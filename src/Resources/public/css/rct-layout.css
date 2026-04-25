@@ -1352,7 +1352,7 @@ position: sticky;
 }
 /* Letzter Artikel braucht Platz vor dem fixed Bottom-Bar */
 [data-layout="classic"] #main > .mod_article:last-of-type {
-  margin-bottom: var(--rct-bottom-height);
+  margin-bottom: calc(var(--rct-bottom-height) + 40px);
 }
 /* Fullwidth-Section: ist nach DOM-Breakout direktes Kind von <main>
    und nimmt deshalb einfach 100% der main-Breite (= 100vw in Classic) */
