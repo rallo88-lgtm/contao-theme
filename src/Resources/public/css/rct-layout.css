@@ -1314,6 +1314,27 @@ position: sticky;
 [data-layout="classic"] #navbar .mod_navigation ul.level_1 > li > a::after {
   background: transparent;
 }
+/* Classic Dropdown (Level 2 + 3): helles Theme, gleiche Text-Logik wie Level 1 */
+[data-layout="classic"] #navbar .mod_navigation ul.level_2,
+[data-layout="classic"] #navbar .mod_navigation ul.level_3 {
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+[data-layout="classic"] #navbar .mod_navigation ul.level_2 > li > a,
+[data-layout="classic"] #navbar .mod_navigation ul.level_3 > li > a {
+  color: var(--rct-text-muted);
+  text-shadow: none;
+}
+[data-layout="classic"] #navbar .mod_navigation ul.level_2 > li > a:hover,
+[data-layout="classic"] #navbar .mod_navigation ul.level_2 > li.trail > a,
+[data-layout="classic"] #navbar .mod_navigation ul.level_2 > li.active > a,
+[data-layout="classic"] #navbar .mod_navigation ul.level_3 > li > a:hover,
+[data-layout="classic"] #navbar .mod_navigation ul.level_3 > li.trail > a,
+[data-layout="classic"] #navbar .mod_navigation ul.level_3 > li.active > a {
+  color: var(--rct-accent);
+  background: #e8e8e8;
+}
 [data-layout="classic"] #main {
   padding: 0;
 }
