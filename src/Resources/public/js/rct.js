@@ -49,8 +49,11 @@
         // Mobile: keine Persistenz, immer geschlossen beim Laden
         body.classList.remove('rct-sidebar-closed');
         body.classList.remove('rct-sidebar-open');
-        // Layout immer auf sidebar zurücksetzen
-        document.documentElement.removeAttribute('data-layout');
+        // Layout nur zurücksetzen wenn die Seite KEIN data-fixed hat
+        // (sonst killt das per-Seite Templates wie classic/topnav/nav-left/right)
+        if (!document.documentElement.hasAttribute('data-fixed')) {
+          document.documentElement.removeAttribute('data-layout');
+        }
         return;
       }
 
