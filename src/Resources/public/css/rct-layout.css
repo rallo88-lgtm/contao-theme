@@ -1237,7 +1237,7 @@ position: sticky;
   justify-content: space-between;
   align-items: center;
   gap: 2rem;
-  padding: 0.75rem 1.5rem;
+  padding: 10px 40px;
 }
 [data-layout="classic"] .rct-classic-navbar-left,
 [data-layout="classic"] .rct-classic-navbar-right {
