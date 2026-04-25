@@ -299,6 +299,12 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_grid_col_start'] =
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_grid_col_end'] =
     '{type_legend},type;{invisible_legend:hide},invisible,start,stop';
 
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_fullwidth_start'] =
+    '{type_legend},type;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_fullwidth_end'] =
+    '{type_legend},type;{invisible_legend:hide},invisible,start,stop';
+
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_icon_reference'] =
     '{type_legend},type;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
