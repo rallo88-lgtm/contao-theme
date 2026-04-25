@@ -1339,20 +1339,9 @@ position: sticky;
   padding: 0;
 }
 [data-layout="classic"] #bottom.rct-classic-bottom {
-  position: relative;
-  bottom: auto;
-  width: auto;
-  height: auto;
-  z-index: auto;
-  flex-wrap: nowrap;
   background: #fff;
   border-top: 1px solid var(--rct-accent);
-  padding: 3rem 2rem;
-  margin-top: 4rem;
   color: var(--rct-text-muted);
-  font-size: inherit;
-  letter-spacing: normal;
-  text-transform: none;
 }
 [data-layout="classic"] #bottom.rct-classic-bottom a {
   color: var(--rct-text-muted);
@@ -1360,12 +1349,6 @@ position: sticky;
 }
 [data-layout="classic"] #bottom.rct-classic-bottom a:hover {
   color: var(--rct-accent);
-}
-[data-layout="classic"] #bottom .rct-classic-bottom-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2rem;
 }
 
 /* FULLSCREEN */
