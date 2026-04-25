@@ -1355,6 +1355,21 @@ position: sticky;
 .rct-fullwidth {
   width: 100%;
 }
+/* Inhalte in der Fullwidth-Section gehen edge-to-edge */
+.rct-fullwidth figure {
+  margin: 0;
+}
+.rct-fullwidth img,
+.rct-fullwidth video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.rct-fullwidth .content-swiper,
+.rct-fullwidth .swiper {
+  width: 100%;
+  max-width: none;
+}
 [data-layout="classic"] #bottom.rct-classic-bottom {
   background: #fff;
   border-top: 1px solid var(--rct-accent);
