@@ -791,7 +791,10 @@ window.applyLayout = function (layout) {
     body.classList.remove('rct-right-open');
   }
 
-  localStorage.setItem('rct-layout', layout || 'sidebar');
+  // 'classic' ist ein per-Seite Template, keine User-Preference → nicht persistieren
+  if (layout !== 'classic') {
+    localStorage.setItem('rct-layout', layout || 'sidebar');
+  }
   const nameEl = document.querySelector('.current-layout-name');
   if (nameEl) nameEl.textContent = layoutLabels[layout] || 'Sidebar';
 

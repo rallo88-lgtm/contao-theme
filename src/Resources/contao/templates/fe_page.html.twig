@@ -23,7 +23,7 @@
           && localStorage.getItem('rct-sidebar-right-state') === 'open') {
         document.documentElement.classList.add('rct-right-initial-open');
       }
-      if (l && l !== 'sidebar') {
+      if (l && l !== 'sidebar' && l !== 'classic') {
         document.documentElement.setAttribute('data-layout', l);
       }
     })();
