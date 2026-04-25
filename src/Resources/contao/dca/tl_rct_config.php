@@ -13,6 +13,7 @@ $GLOBALS['TL_DCA']['tl_rct_config'] = [
         'rct_color_accent'       => ['sql' => "varchar(7) NOT NULL default '#27c4f4'"],
         'rct_color_primary'      => ['sql' => "varchar(7) NOT NULL default '#2951c7'"],
         'rct_color_primary_light'=> ['sql' => "varchar(7) NOT NULL default '#27c4f4'"],
+        'rct_color_body_bg'      => ['sql' => "varchar(7) NOT NULL default '#000000'"],
         'rct_grad1'              => ['sql' => "varchar(7) NOT NULL default '#27c4f4'"],
         'rct_grad2'              => ['sql' => "varchar(7) NOT NULL default '#2951c7'"],
         'rct_grad3'              => ['sql' => "varchar(7) NOT NULL default '#1d2db2'"],
