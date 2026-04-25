@@ -1264,26 +1264,45 @@ position: sticky;
   max-width: 100%;
   transition: height 0.3s ease;
 }
-/* Mobile-Variante default hidden (Desktop-Logo gewinnt) */
-[data-layout="classic"] .rct-classic-navbar-left .rct-logo-img-mobile {
-  display: none !important;
+/* Logo-Swap via Opacity-Crossfade statt display:none (kein Layout-Flackern).
+   Beide Logos sitzen im selben Stack via absolute Positionierung im Container. */
+[data-layout="classic"] .rct-classic-navbar-left {
+  position: relative;
 }
-/* Mobile-Breakpoint: Mobile-Logo zeigen, Desktop verstecken */
+[data-layout="classic"] .rct-classic-navbar-left .rct-logo-img-mobile,
+[data-layout="classic"] .rct-classic-navbar-left .rct-logo-img-desktop {
+  transition: opacity 0.25s ease, height 0.3s ease;
+}
+[data-layout="classic"] .rct-classic-navbar-left .rct-logo-img-mobile {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+/* Mobile-Breakpoint: Mobile-Logo zeigen, Desktop ausblenden */
 @media (max-width: 1024px) {
   [data-layout="classic"] .rct-classic-navbar-left .rct-logo-img-desktop {
-    display: none !important;
+    opacity: 0;
+    pointer-events: none;
   }
   [data-layout="classic"] .rct-classic-navbar-left .rct-logo-img-mobile {
-    display: block !important;
+    opacity: 1;
+    pointer-events: auto;
+    position: static;
+    transform: none;
   }
 }
-/* Sticky/Scrolled auf Desktop: zur Mobile-Variante wechseln + alle imgs kompakt */
+/* Scrolled auf Desktop: Mobile-Logo einfaden, Desktop ausfaden, alle imgs kompakt */
 @media (min-width: 1025px) {
   [data-layout="classic"] #navbar.is-scrolled .rct-classic-navbar-left .rct-logo-img-desktop {
-    display: none !important;
+    opacity: 0;
+    pointer-events: none;
   }
   [data-layout="classic"] #navbar.is-scrolled .rct-classic-navbar-left .rct-logo-img-mobile {
-    display: block !important;
+    opacity: 1;
+    pointer-events: auto;
   }
   [data-layout="classic"] #navbar.is-scrolled .rct-classic-navbar-left img,
   [data-layout="classic"] #navbar.is-scrolled .rct-classic-navbar-left svg {

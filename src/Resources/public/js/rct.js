@@ -732,10 +732,20 @@
 
     const pageHeader = document.getElementById('header');
     if (navbar || pageHeader) {
-      window.addEventListener('scroll', function () {
-        const scrolled = window.scrollY > 16;
-        if (navbar)      navbar.classList.toggle('is-scrolled', scrolled);
-        if (pageHeader)  pageHeader.classList.toggle('is-scrolled', scrolled);
+      // Hysterese gegen Flackern an der Schwelle: rein bei >80, raus bei <30
+      let isScrolled = false;
+      let raf = 0;
+      const updateScrolled = () => {
+        raf = 0;
+        const y = window.scrollY;
+        const next = isScrolled ? y > 30 : y > 80;
+        if (next === isScrolled) return;
+        isScrolled = next;
+        if (navbar)     navbar.classList.toggle('is-scrolled', isScrolled);
+        if (pageHeader) pageHeader.classList.toggle('is-scrolled', isScrolled);
+      };
+      window.addEventListener('scroll', () => {
+        if (!raf) raf = requestAnimationFrame(updateScrolled);
       }, { passive: true });
     }
 
