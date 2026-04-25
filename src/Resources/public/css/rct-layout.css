@@ -1338,22 +1338,30 @@ position: sticky;
 [data-layout="classic"] #main {
   padding: 0;
 }
-[data-layout="classic"] .rct-classic-bottom {
+[data-layout="classic"] #bottom.rct-classic-bottom {
   position: relative;
+  bottom: auto;
+  width: auto;
+  height: auto;
+  z-index: auto;
+  flex-wrap: nowrap;
   background: #fff;
   border-top: 1px solid var(--rct-accent);
-  padding: 3rem 0;
+  padding: 3rem 2rem;
   margin-top: 4rem;
   color: var(--rct-text-muted);
+  font-size: inherit;
+  letter-spacing: normal;
+  text-transform: none;
 }
-[data-layout="classic"] .rct-classic-bottom a {
+[data-layout="classic"] #bottom.rct-classic-bottom a {
   color: var(--rct-text-muted);
   text-shadow: none;
 }
-[data-layout="classic"] .rct-classic-bottom a:hover {
+[data-layout="classic"] #bottom.rct-classic-bottom a:hover {
   color: var(--rct-accent);
 }
-[data-layout="classic"] .rct-classic-bottom-inner {
+[data-layout="classic"] #bottom .rct-classic-bottom-inner {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
