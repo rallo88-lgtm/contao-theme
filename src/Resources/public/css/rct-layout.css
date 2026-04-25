@@ -1358,6 +1358,7 @@ position: sticky;
 [data-layout="classic"] #main {
   padding: 0;
   overflow-x: clip;
+  background-color: transparent;
 }
 /* Classic: Article übernimmt die Zentrierung (vorher content-inner),
    ohne Background/Glow-Effekte aus dem Standard-Layout */
