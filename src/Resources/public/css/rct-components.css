@@ -5513,7 +5513,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   position: absolute;
   right: 20px;
   top: 5%;
-  bottom: 5%;
+  bottom: 0;
   width: 5px;
   background: linear-gradient(to bottom, transparent, var(--rct-accent), transparent);
   opacity: 0.25;
