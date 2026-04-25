@@ -1350,12 +1350,10 @@ position: sticky;
   backdrop-filter: none;
   border-radius: 0;
 }
-/* Fullwidth-Breakout: bricht aus dem Article auf Viewport-Breite aus */
+/* Fullwidth-Section: ist nach DOM-Breakout direktes Kind von <main>
+   und nimmt deshalb einfach 100% der main-Breite (= 100vw in Classic) */
 .rct-fullwidth {
-  position: relative;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  width: 100%;
 }
 [data-layout="classic"] #bottom.rct-classic-bottom {
   background: #fff;

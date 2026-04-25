@@ -1,3 +1,4 @@
-{# CSS-Breakout: Section bleibt im Element-Flow und sprengt sich per CSS auf 100vw.
-   Schließendes Element via rct_fullwidth_end. #}
-<section class="rct-fullwidth{% if cssClass %} {{ cssClass }}{% endif %}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+{# DOM-Breakout: schließt die umgebende .mod_article Div, öffnet eine
+   Fullwidth-Section als Sibling. Muss durch rct_fullwidth_end geschlossen
+   und die Article-Div wieder geöffnet werden. #}
+</div><section class="rct-fullwidth{% if cssClass %} {{ cssClass }}{% endif %}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
