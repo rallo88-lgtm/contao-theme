@@ -1245,6 +1245,13 @@ position: sticky;
   align-items: center;
   gap: 1rem;
 }
+/* Mehrere Module in einem Section-Slot nebeneinander statt gestapelt */
+[data-layout="classic"] .rct-classic-navbar-left .inside,
+[data-layout="classic"] .rct-classic-navbar-right .inside {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 [data-layout="classic"] .rct-classic-navbar-left .rct-logo-link,
 [data-layout="classic"] .rct-classic-navbar-left .rct-header-logo-link {
   display: inline-flex;
