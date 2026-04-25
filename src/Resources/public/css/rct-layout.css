@@ -2191,6 +2191,7 @@ body.rct-right-open #right {
   right: 16px;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 200;
   background: transparent;
   border: 1px solid currentColor;
   border-radius: 3px;
@@ -2217,6 +2218,7 @@ body.rct-right-open #right {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 200;
   background: transparent;
   border: 1px solid currentColor;
   border-radius: 3px;
