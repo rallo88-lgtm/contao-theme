@@ -1,0 +1,73 @@
+{#
+  RCT – fe_page_classic.html.twig
+  Layout-Variante "Classic":
+   - Keine Sidebars (left/right entfernt)
+   - Header oben optional (classic_header section, leer = keine Höhe)
+   - Navbar: edge-to-edge BG, innen .rct-content-inner mit Logo links + Menü rechts
+   - Main: nur .rct-content-inner; Fullwidth-Inhalte via rct_fullwidth_start/end CE
+   - Bottom: nicht sticky, klassischer Footer-Bereich mit kleinem Logo
+#}
+{% extends "@Contao/fe_page.html.twig" %}
+
+{% block head_init %}
+  {{ parent() }}
+  <script>
+    (function() {
+      document.documentElement.setAttribute('data-fixed', '1');
+      document.documentElement.setAttribute('data-layout', 'classic');
+    })();
+  </script>
+{% endblock %}
+
+{% block wrapper %}
+<div id="wrapper" class="rct-classic">
+    <canvas id="gradient-canvas"></canvas>
+    <canvas id="rct-effects-canvas"></canvas>
+    <canvas id="rct-dots-canvas"></canvas>
+
+    {# Optionaler Header-Slot oben (leer = collapsed via CSS) #}
+    <header id="header" class="rct-classic-header" role="banner">
+      {{ contao_section('classic_header') }}
+    </header>
+
+    {# Edge-to-edge Navbar mit innerem content-inner (Logo links + Menü rechts) #}
+    <nav id="navbar" class="rct-classic-navbar" role="navigation" aria-label="Hauptnavigation">
+      <div class="rct-content-inner rct-classic-navbar-inner">
+        <div class="rct-classic-navbar-left">
+          {{ contao_section('classic_navbar_left') }}
+        </div>
+        <div class="rct-classic-navbar-right">
+          {{ contao_section('classic_navbar_right') }}
+        </div>
+      </div>
+    </nav>
+
+    {# Main mit content-inner; Fullwidth-Inhalte brechen via rct_fullwidth_start/end CE aus #}
+    <main id="main" role="main">
+      <div class="rct-content-inner">
+        {{ main|raw }}
+      </div>
+
+      <footer id="footer" role="contentinfo">
+        {{ footer|raw }}
+      </footer>
+    </main>
+
+    {# Klassischer Footer-Bereich (nicht sticky), eigene CSS-Klasse für Custom Styling #}
+    <div id="bottom" class="rct-classic-bottom">
+      <div class="rct-content-inner rct-classic-bottom-inner">
+        <div class="rct-classic-bottom-logo">
+          {{ contao_section('classic_bottom_logo') }}
+        </div>
+        <div class="rct-classic-bottom-content">
+          {{ contao_section('bottom') }}
+        </div>
+      </div>
+    </div>
+
+</div>{# /#wrapper #}
+
+<div id="globalOverlay" class="rct-overlay" aria-hidden="true">
+  <div class="rct-overlay-close-btn">&times;</div><div class="rct-overlay-content"></div>
+</div>
+{% endblock %}
