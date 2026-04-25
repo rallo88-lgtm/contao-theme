@@ -309,7 +309,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_fullwidth_end'] =
 // RCT Slider Box
 // ============================================================
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_slider_box'] =
-    '{type_legend},type;{image_legend},rct_sb_image,rct_sb_image_alt,rct_sb_bg_position,rct_sb_overlay,rct_sb_min_height;{content_legend},rct_sb_overline,rct_sb_headline,rct_sb_text,rct_sb_align,rct_content_color;{link_legend:hide},rct_sb_link_page,rct_sb_link_url,rct_sb_link_label,rct_sb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{image_legend},rct_sb_image,rct_sb_image_alt,rct_sb_bg_position,rct_sb_overlay,rct_sb_min_height;{content_legend},rct_sb_overline,rct_sb_headline,rct_sb_text,rct_sb_align,rct_content_color;{link_legend:hide},rct_sb_link_page,rct_sb_link_url,rct_sb_link_label,rct_sb_link_style,rct_sb_link_target,rct_sb_link2_page,rct_sb_link2_url,rct_sb_link2_label,rct_sb_link2_style,rct_sb_link2_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_image'] = [
     'label'     => ['Hintergrundbild', 'Bild als Slide-Hintergrund (cover, position konfigurierbar)'],
@@ -412,6 +412,52 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_label'] = [
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_target'] = [
     'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+    'sql'       => "char(1) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_style'] = [
+    'label'     => ['Button-Stil', 'Optisches Erscheinungsbild des Buttons'],
+    'inputType' => 'select',
+    'options'   => ['primary' => 'Primary (gefüllt)', 'outline' => 'Outline (Rahmen)', 'ghost' => 'Ghost (transparent)'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(8) NOT NULL default 'primary'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link2_page'] = [
+    'label'      => ['Zweiter Button — Interne Seite', 'Optionaler zweiter CTA-Button'],
+    'inputType'  => 'pageTree',
+    'foreignKey' => 'tl_page.title',
+    'eval'       => ['fieldType' => 'radio', 'tl_class' => 'clr'],
+    'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
+    'sql'        => "int(10) unsigned NOT NULL default 0",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link2_url'] = [
+    'label'     => ['Zweiter Button — Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link2_label'] = [
+    'label'     => ['Zweiter Button — Text', 'Beschriftung; leer = Button wird nicht angezeigt'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
+    'sql'       => "varchar(64) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link2_style'] = [
+    'label'     => ['Zweiter Button — Stil', 'Optisches Erscheinungsbild'],
+    'inputType' => 'select',
+    'options'   => ['primary' => 'Primary (gefüllt)', 'outline' => 'Outline (Rahmen)', 'ghost' => 'Ghost (transparent)'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(8) NOT NULL default 'outline'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link2_target'] = [
+    'label'     => ['Zweiter Button — Neues Tab', 'Link in neuem Tab öffnen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
     'sql'       => "char(1) NOT NULL default ''",

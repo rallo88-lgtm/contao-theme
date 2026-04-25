@@ -25,10 +25,19 @@
       {% if overline %}<p class="rct-sliderbox-overline">{{ overline }}</p>{% endif %}
       {% if headline %}<h2 class="rct-sliderbox-headline">{{ headline }}</h2>{% endif %}
       {% if text %}<div class="rct-sliderbox-text">{{ text|raw }}</div>{% endif %}
-      {% if linkUrl %}
-        <a href="{{ linkUrl }}" class="rct-sliderbox-btn" target="{{ linkTarget }}"{% if linkTarget == '_blank' %} rel="noopener noreferrer"{% endif %}>
-          {{ linkLabel }}
-        </a>
+      {% if linkUrl or link2Url %}
+        <div class="rct-sliderbox-buttons">
+          {% if linkUrl %}
+            <a href="{{ linkUrl }}" class="rct-btn rct-btn--{{ linkStyle }}" target="{{ linkTarget }}"{% if linkTarget == '_blank' %} rel="noopener noreferrer"{% endif %}>
+              {{ linkLabel }}
+            </a>
+          {% endif %}
+          {% if link2Url %}
+            <a href="{{ link2Url }}" class="rct-btn rct-btn--{{ link2Style }}" target="{{ link2Target }}"{% if link2Target == '_blank' %} rel="noopener noreferrer"{% endif %}>
+              {{ link2Label }}
+            </a>
+          {% endif %}
+        </div>
       {% endif %}
     </div>
   </div>

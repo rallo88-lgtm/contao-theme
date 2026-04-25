@@ -5640,21 +5640,14 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   margin: 0 0 1.75rem;
   max-width: 640px;
 }
-.rct-sliderbox-btn {
-  display: inline-block;
-  background: var(--rct-accent);
-  color: #fff;
-  padding: 14px 32px;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  transition: background 0.2s ease, transform 0.2s ease;
+.rct-sliderbox-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 0.5rem;
 }
-.rct-sliderbox-btn:hover {
-  background: var(--rct-primary);
-  transform: translateY(-1px);
-}
+.rct-sliderbox.align-center .rct-sliderbox-buttons { justify-content: center; }
+.rct-sliderbox.align-right  .rct-sliderbox-buttons { justify-content: flex-end; }
 
 /* Slider-Kontext: full-width über fullwidth-CE oder rct-fullwidth Wrapper */
 .rct-fullwidth .rct-sliderbox-inner {

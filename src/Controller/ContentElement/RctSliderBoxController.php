@@ -36,10 +36,15 @@ class RctSliderBoxController extends AbstractContentElementController
         $template->align          = $model->rct_sb_align ?: 'center';
         $template->contentColor   = trim((string) $model->rct_content_color);
 
-        $linkUrl = $this->resolveUrl((int) $model->rct_sb_link_page, (string) $model->rct_sb_link_url);
-        $template->linkUrl    = $linkUrl;
+        $template->linkUrl    = $this->resolveUrl((int) $model->rct_sb_link_page, (string) $model->rct_sb_link_url);
         $template->linkLabel  = htmlspecialchars((string) ($model->rct_sb_link_label ?: 'Mehr erfahren'), ENT_QUOTES, 'UTF-8');
         $template->linkTarget = $model->rct_sb_link_target ? '_blank' : '_self';
+        $template->linkStyle  = $model->rct_sb_link_style ?: 'primary';
+
+        $template->link2Url    = $this->resolveUrl((int) $model->rct_sb_link2_page, (string) $model->rct_sb_link2_url);
+        $template->link2Label  = htmlspecialchars((string) $model->rct_sb_link2_label, ENT_QUOTES, 'UTF-8');
+        $template->link2Target = $model->rct_sb_link2_target ? '_blank' : '_self';
+        $template->link2Style  = $model->rct_sb_link2_style ?: 'outline';
 
         $cssId              = StringUtil::deserialize($model->cssID, true);
         $template->htmlId   = trim($cssId[0] ?? '', '"\'');
