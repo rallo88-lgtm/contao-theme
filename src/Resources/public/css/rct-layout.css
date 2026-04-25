@@ -1252,14 +1252,16 @@ position: sticky;
 }
 [data-layout="classic"] .rct-classic-navbar-left img,
 [data-layout="classic"] .rct-classic-navbar-left svg {
-  height: 48px !important;
+  height: 100px !important;
   width: auto !important;
   max-width: 100%;
+  transition: height 0.3s ease;
 }
-/* Responsive Logo: Desktop/Mobile-Wechsel — überschreibt inline style="display:block" */
+/* Mobile-Variante default hidden (Desktop-Logo gewinnt) */
 [data-layout="classic"] .rct-classic-navbar-left .rct-logo-img-mobile {
   display: none !important;
 }
+/* Mobile-Breakpoint: Mobile-Logo zeigen, Desktop verstecken */
 @media (max-width: 1024px) {
   [data-layout="classic"] .rct-classic-navbar-left .rct-logo-img-desktop {
     display: none !important;
@@ -1268,9 +1270,25 @@ position: sticky;
     display: block !important;
   }
 }
-/* is-scrolled Effekt aus dem Sidebar-Layout in Classic neutralisieren */
+/* Sticky/Scrolled auf Desktop: zur Mobile-Variante wechseln + alle imgs kompakt */
+@media (min-width: 1025px) {
+  [data-layout="classic"] #navbar.is-scrolled .rct-classic-navbar-left .rct-logo-img-desktop {
+    display: none !important;
+  }
+  [data-layout="classic"] #navbar.is-scrolled .rct-classic-navbar-left .rct-logo-img-mobile {
+    display: block !important;
+  }
+  [data-layout="classic"] #navbar.is-scrolled .rct-classic-navbar-left img,
+  [data-layout="classic"] #navbar.is-scrolled .rct-classic-navbar-left svg {
+    height: 40px !important;
+  }
+}
+/* is-scrolled Padding-Sprung aus dem Sidebar-Layout neutralisieren */
 [data-layout="classic"] #navbar.is-scrolled {
   padding-top: 0;
+}
+[data-layout="classic"] #navbar {
+  transition: box-shadow 0.3s ease;
 }
 [data-layout="classic"] #main {
   padding: 0;
