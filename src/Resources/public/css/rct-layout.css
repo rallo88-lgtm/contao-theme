@@ -1340,10 +1340,18 @@ position: sticky;
 }
 [data-layout="classic"] .rct-classic-bottom {
   position: relative;
-  background: var(--rct-shell-bg);
-  border-top: 1px solid var(--rct-shell-border);
+  background: #fff;
+  border-top: 1px solid var(--rct-accent);
   padding: 3rem 0;
   margin-top: 4rem;
+  color: var(--rct-text-muted);
+}
+[data-layout="classic"] .rct-classic-bottom a {
+  color: var(--rct-text-muted);
+  text-shadow: none;
+}
+[data-layout="classic"] .rct-classic-bottom a:hover {
+  color: var(--rct-accent);
 }
 [data-layout="classic"] .rct-classic-bottom-inner {
   display: flex;
