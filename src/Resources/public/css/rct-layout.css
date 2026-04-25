@@ -1290,6 +1290,16 @@ position: sticky;
 [data-layout="classic"] #navbar {
   transition: box-shadow 0.3s ease;
 }
+/* Classic Nav: reiner Text, keine Button-Styles, keine Underlines */
+[data-layout="classic"] #navbar .mod_navigation ul.level_1 > li > a:hover,
+[data-layout="classic"] #navbar .mod_navigation ul.level_1 > li.trail > a,
+[data-layout="classic"] #navbar .mod_navigation ul.level_1 > li.active > a {
+  background: none;
+  border-bottom: 0;
+}
+[data-layout="classic"] #navbar .mod_navigation ul.level_1 > li > a::after {
+  background: transparent;
+}
 [data-layout="classic"] #main {
   padding: 0;
 }
