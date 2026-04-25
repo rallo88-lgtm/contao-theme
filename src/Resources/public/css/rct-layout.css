@@ -1252,13 +1252,25 @@ position: sticky;
 }
 [data-layout="classic"] .rct-classic-navbar-left img,
 [data-layout="classic"] .rct-classic-navbar-left svg {
-  height: 48px;
-  width: auto;
-  max-width: 100%;
-  display: block;
-}
-[data-layout="classic"] .rct-classic-navbar-left .rct-logo-custom {
+  height: 48px !important;
   width: auto !important;
+  max-width: 100%;
+}
+/* Responsive Logo: Desktop/Mobile-Wechsel — überschreibt inline style="display:block" */
+[data-layout="classic"] .rct-classic-navbar-left .rct-logo-img-mobile {
+  display: none !important;
+}
+@media (max-width: 1024px) {
+  [data-layout="classic"] .rct-classic-navbar-left .rct-logo-img-desktop {
+    display: none !important;
+  }
+  [data-layout="classic"] .rct-classic-navbar-left .rct-logo-img-mobile {
+    display: block !important;
+  }
+}
+/* is-scrolled Effekt aus dem Sidebar-Layout in Classic neutralisieren */
+[data-layout="classic"] #navbar.is-scrolled {
+  padding-top: 0;
 }
 [data-layout="classic"] #main {
   padding: 0;
