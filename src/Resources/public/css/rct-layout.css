@@ -1255,25 +1255,15 @@ html[data-layout="classic"] #header #rct-nav-search  { order: 3; }
 @media (max-width: 1024px) {
   html[data-layout="classic"] #navbar { display: none !important; }
 }
-/* #left in Classic: keine reduzierte Opacity, Logo im Drawer zentriert */
-html[data-layout="classic"] #left,
-html[data-layout="classic"] #left .inside,
-html[data-layout="classic"] #left .rct-header-logo-link,
-html[data-layout="classic"] #left .rct-logo-link {
-  opacity: 1 !important;
+/* #left in Classic: kein Sidebar-Alpha-Overlay, Logo im Drawer zentriert */
+html[data-layout="classic"] #left::before {
+  opacity: 1;
 }
-html[data-layout="classic"] #left .rct-header-logo-link,
-html[data-layout="classic"] #left .rct-logo-link {
+html[data-layout="classic"] #left .rct-logo-link,
+html[data-layout="classic"] #left .rct-header-logo-link {
   display: block;
   text-align: center;
-  margin: 0 auto 1.5rem;
-}
-html[data-layout="classic"] #left .rct-header-logo-link img,
-html[data-layout="classic"] #left .rct-header-logo-link svg,
-html[data-layout="classic"] #left .rct-logo-link img,
-html[data-layout="classic"] #left .rct-logo-link svg {
-  margin: 0 auto;
-  display: block;
+  margin: 10px 15px;
 }
 [data-layout="classic"] #navbar {
   display: block;
