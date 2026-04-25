@@ -1350,6 +1350,10 @@ position: sticky;
   backdrop-filter: none;
   border-radius: 0;
 }
+/* Letzter Artikel braucht Platz vor dem fixed Bottom-Bar */
+[data-layout="classic"] #main > .mod_article:last-of-type {
+  margin-bottom: var(--rct-bottom-height);
+}
 /* Fullwidth-Section: ist nach DOM-Breakout direktes Kind von <main>
    und nimmt deshalb einfach 100% der main-Breite (= 100vw in Classic) */
 .rct-fullwidth {
