@@ -1350,6 +1350,9 @@ position: sticky;
 [data-layout="classic"] #bottom.rct-classic-bottom a:hover {
   color: var(--rct-accent);
 }
+[data-layout="classic"] #bottom .rct-classic-bottom-content {
+  padding: 0 20px;
+}
 
 /* FULLSCREEN */
 [data-layout="full"] #header          { display: none; }
