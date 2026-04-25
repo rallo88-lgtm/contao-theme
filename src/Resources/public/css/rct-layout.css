@@ -1355,7 +1355,22 @@ position: sticky;
 .rct-fullwidth {
   width: 100%;
 }
-/* Inhalte in der Fullwidth-Section gehen edge-to-edge */
+/* Inhalte in der Fullwidth-Section gehen edge-to-edge.
+   Wrapper-Chain (swiper, slide, content-image, figure) muss explizit
+   100% breit sein, sonst stauchen sie sich auf img-intrinsic-Width. */
+.rct-fullwidth .content-swiper,
+.rct-fullwidth .swiper,
+.rct-fullwidth .swiper-wrapper,
+.rct-fullwidth .swiper-slide,
+.rct-fullwidth .content-image,
+.rct-fullwidth figure {
+  width: 100%;
+  max-width: none;
+}
+.rct-fullwidth .swiper-slide > * {
+  flex: 1;
+  width: 100%;
+}
 .rct-fullwidth figure {
   margin: 0;
 }
@@ -1364,11 +1379,6 @@ position: sticky;
   width: 100%;
   height: auto;
   display: block;
-}
-.rct-fullwidth .content-swiper,
-.rct-fullwidth .swiper {
-  width: 100%;
-  max-width: none;
 }
 [data-layout="classic"] #bottom.rct-classic-bottom {
   background: #fff;
