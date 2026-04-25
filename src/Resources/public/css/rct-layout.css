@@ -1250,7 +1250,7 @@ html[data-layout="classic"] #header #classic_header > .inside {
 html[data-layout="classic"] #header .rct-header-logo-link,
 html[data-layout="classic"] #header .rct-logo-link   { order: 1; }
 html[data-layout="classic"] #header #rct-nav-toggle  { order: 2; margin-left: auto; }
-html[data-layout="classic"] #header #rct-nav-search  { order: 3; }
+html[data-layout="classic"] #header .rct-nav-search  { order: 3; }
 /* Auf Mobile in Classic die Navbar ausblenden — Menu läuft via #left-Drawer */
 @media (max-width: 1024px) {
   html[data-layout="classic"] #navbar { display: none !important; }

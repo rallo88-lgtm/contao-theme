@@ -282,7 +282,7 @@
 
     // 2. Suche-Trigger — querySelectorAll damit mehrere Instanzen
     // (z.B. navbar + mobile-header) alle die Suche öffnen
-    const searchTriggers = document.querySelectorAll('[id="rct-nav-search"]');
+    const searchTriggers = document.querySelectorAll('.rct-nav-search, [id="rct-nav-search"]');
     if (searchTriggers.length && overlayContainer) {
         searchTriggers.forEach(trigger => {
             trigger.addEventListener('click', (e) => {
@@ -994,7 +994,7 @@ window.applyLayout = function (layout) {
   // Ripple nur auf Header-Buttons
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll(
-      '#rct-nav-toggle, #rct-fullscreen-toggle, #rct-nav-search, #rct-right-toggle, ' +
+      '#rct-nav-toggle, #rct-fullscreen-toggle, .rct-nav-search, #rct-right-toggle, ' +
       '#rct-scroll-top, .theme-trigger, .layout-trigger'
     ).forEach(el => el.addEventListener('click', createRipple));
   });
