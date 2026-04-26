@@ -6,6 +6,8 @@ use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Twig\FragmentTemplate;
+use Contao\LayoutModel;
+use Contao\PageModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,7 +23,18 @@ class RctFullwidthStartController extends AbstractContentElementController
         $cssId              = \Contao\StringUtil::deserialize($model->cssID, true);
         $template->htmlId   = trim($cssId[0] ?? '', '"\'');
         $template->cssClass = $cssId[1] ?? '';
+        $template->isClassic = $this->isClassicLayout($request);
 
         return $template->getResponse();
+    }
+
+    private function isClassicLayout(Request $request): bool
+    {
+        $page = $request->attributes->get('pageModel');
+        if (!$page instanceof PageModel) {
+            return false;
+        }
+        $layout = LayoutModel::findById($page->layout);
+        return $layout && $layout->template === 'fe_page_classic';
     }
 }

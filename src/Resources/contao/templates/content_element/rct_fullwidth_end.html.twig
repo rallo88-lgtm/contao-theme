@@ -1,3 +1,5 @@
-{# Schließt die Fullwidth-Section und öffnet eine neue .mod_article-Div,
-   damit das schließende </div> der Article-Template was zum Schließen hat. #}
-</section><div class="mod_article block">
+{# Schließt fullwidth-Section + öffnet wieder mod_article (+ rct-content-inner).
+   In Classic muss nur die mod_article-Hülle wieder aufgemacht werden.
+   In anderen Layouts zusätzlich rct-content-inner, damit das schließende </div>
+   im fe_page-Template wieder etwas zum Schließen hat. #}
+</section>{% if not isClassic %}<div class="rct-content-inner">{% endif %}<div class="mod_article block">

@@ -1420,8 +1420,8 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   [data-layout="classic"] #rct-nav-toggle { display: flex; }
 }
 /* Leere mod_article durch DOM-Breakout des Fullwidth-CE ausblenden
-   (start-CE schließt Article + öffnet evtl. eine leere mod_article-Hülle) */
-[data-layout="classic"] .mod_article:not(:has(*)) {
+   (end-CE öffnet eine neue mod_article-Hülle; bleibt sie ohne CEs leer) */
+.mod_article:not(:has(*)) {
   display: none;
   margin: 0;
   padding: 0;
@@ -1441,8 +1441,11 @@ html[data-layout="classic"] #left .rct-header-logo-link {
 [data-layout="classic"] #main > .mod_article:last-of-type {
   margin-bottom: calc(var(--rct-bottom-height) * 2);
 }
-/* Fullwidth-Section: ist nach DOM-Breakout direktes Kind von <main>
-   und nimmt deshalb einfach 100% der main-Breite (= 100vw in Classic) */
+/* Fullwidth-Section: ist nach DOM-Breakout direktes Kind von <main>.
+   - Classic: main = 100vw → echte 100vw-Breite
+   - Sidebar-Layouts: main = Bereich zwischen den Sidebars → wächst auf 100vw
+     wenn Sidebars weggetoggelt werden (mainContainer padding 0)
+   - Topnav: mainContainer hat padding 0 → 100vw */
 .rct-fullwidth {
   width: 100%;
 }
