@@ -21,6 +21,7 @@ class RctHeroController extends AbstractContentElementController
         $template->headline = strip_tags((string) $model->rct_hero_headline, '<em>');
         $template->body     = $model->rct_hero_body ? nl2br(htmlspecialchars((string) $model->rct_hero_body, ENT_QUOTES, 'UTF-8')) : '';
         $template->layout   = $model->rct_hero_layout ?: 'centered';
+        $template->maxWidth = (string) $model->rct_hero_max_width;
 
         // Überschrift-Farbe (direkt auf <h1> gesetzt, ContentColorListener überspringt rct_hero)
         $hlColor = trim((string) $model->rct_content_color);

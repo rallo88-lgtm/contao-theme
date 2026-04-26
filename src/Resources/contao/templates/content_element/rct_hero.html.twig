@@ -6,7 +6,7 @@
 {% extends '@Contao/content_element/_base.html.twig' %}
 
 {% block content %}
-<section class="rct-hero layout-{{ layout }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+<section class="rct-hero layout-{{ layout }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}{% if maxWidth %} style="max-width:{{ maxWidth }};margin-left:auto;margin-right:auto"{% endif %}>
 
   <div class="rct-hero-inner">
 

@@ -1281,7 +1281,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_pricing_style'] = [
 // ============================================================
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_hero'] =
-    '{type_legend},type;{hero_legend},rct_hero_overline,rct_hero_headline,rct_hl_font,rct_content_color,rct_hero_body,rct_hero_layout;{hero_btn1_legend},rct_hero_btn1_label,rct_hero_btn1_page,rct_hero_btn1_url,rct_hero_btn1_style,rct_hero_btn1_target;{hero_btn2_legend:hide},rct_hero_btn2_label,rct_hero_btn2_page,rct_hero_btn2_url,rct_hero_btn2_style,rct_hero_btn2_target;{hero_image_legend:hide},rct_hero_image,rct_hero_image_alt,rct_hero_slide_speed;{hero_stats_legend:hide},rct_hero_stats;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{hero_legend},rct_hero_overline,rct_hero_headline,rct_hl_font,rct_content_color,rct_hero_body,rct_hero_layout,rct_hero_max_width;{hero_btn1_legend},rct_hero_btn1_label,rct_hero_btn1_page,rct_hero_btn1_url,rct_hero_btn1_style,rct_hero_btn1_target;{hero_btn2_legend:hide},rct_hero_btn2_label,rct_hero_btn2_page,rct_hero_btn2_url,rct_hero_btn2_style,rct_hero_btn2_target;{hero_image_legend:hide},rct_hero_image,rct_hero_image_alt,rct_hero_slide_speed;{hero_stats_legend:hide},rct_hero_stats;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_overline'] = [
     'label'     => ['Overline', 'Kleiner Text über der Überschrift, z.B. "Contao 5 · Design System"'],
@@ -1310,6 +1310,22 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_layout'] = [
     'options'   => ['centered' => 'Zentriert', 'split' => 'Zweispaltig (Bild rechts)'],
     'eval'      => ['tl_class' => 'w50'],
     'sql'       => "varchar(12) NOT NULL default 'centered'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_max_width'] = [
+    'label'     => ['Maximale Breite', 'Begrenzt die Hero-Breite — sinnvoll in Fullwidth-Articles. Leer = volle Breite.'],
+    'inputType' => 'select',
+    'options'   => [
+        ''       => 'Volle Breite (kein Limit)',
+        '1920px' => '1920px',
+        '1600px' => '1600px',
+        '1440px' => '1440px (Theme-Standard)',
+        '1200px' => '1200px',
+        '1000px' => '1000px',
+        '800px'  => '800px',
+    ],
+    'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
+    'sql'       => "varchar(20) NOT NULL default ''",
 ];
 
 // Button 1
