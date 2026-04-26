@@ -2797,7 +2797,7 @@
 }
 
 .rct-cta.style-dark .rct-cta-icon {
-  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--cta-color) 60%, transparent));
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--cta-color) 90%, transparent));
 }
 
 /* ── Mobile ── */
@@ -5038,6 +5038,9 @@
    die Utility würde sonst leere Article-Hüllen sichtbar erzwingen */
 .block:not(.mod_article)   { display: block !important; }
 .flex    { display: flex  !important; }
+.flex-col       { flex-direction: column !important; }
+.justify-center { justify-content: center !important; }
+.items-center   { align-items: center !important; }
 .text-center { text-align: center !important; }
 .text-right  { text-align: right  !important; }
 
