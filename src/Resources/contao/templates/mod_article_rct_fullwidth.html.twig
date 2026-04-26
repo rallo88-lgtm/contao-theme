@@ -1,0 +1,45 @@
+{#
+  RCT – Article-Level Fullwidth-Template
+  Auswählbar pro Article via tl_article.customTpl Dropdown.
+
+  Macht denselben DOM-Breakout wie das CE-Paar rct_fullwidth_start/end,
+  aber auf Article-Ebene: der GANZE Artikel wird zur Fullwidth-Section.
+  Sinnvoll für Hero-Artikel, Cover-Sliders, Splash-Screens — alles wo
+  ein Artikel komplett edge-to-edge zwischen den Sidebars laufen soll.
+
+  - In Classic ist <main> direktes Parent → kein extra </div> nötig
+  - In allen anderen Layouts liegt .rct-content-inner darüber → 1× </div>
+    schließen (Article wird Sibling von .rct-content-inner unter <main>),
+    danach wieder öffnen damit das schließende </div> in fe_page passt
+
+  isClassic kommt vom RctArticleFullwidthListener.
+#}
+{% set wrapperAttributes = attrs(cssID)
+    .addClass([class, 'block', 'rct-fullwidth-article'])
+    .addStyle(style|default)
+%}
+
+{% if teaserOnly|default %}
+
+    {# Teaser-Mode: kein Breakout (Teaser ist für Listen, nicht Page-Anzeige) #}
+    <article{{ wrapperAttributes }}>
+        <div class="ce_text block">
+            <h2>{{ headline|insert_tag_raw }}</h2>
+            <div class="teaser">
+                {{ teaser|default|sanitize_html('contao')|csp_inline_styles|insert_tag_raw }}
+                <p class="more"><a href="{{ href }}" title="{{ readMore }}">{{ more }} <span class="invisible">{{ headline }}</span></a></p>
+            </div>
+        </div>
+    </article>
+
+{% elseif noMarkup|default %}
+
+    {{ elements|join|raw }}
+
+{% else %}
+
+    {% if not isClassic %}</div>{% endif %}<div{{ wrapperAttributes }}>
+        {{ elements|join|raw }}
+    </div>{% if not isClassic %}<div class="rct-content-inner">{% endif %}
+
+{% endif %}
