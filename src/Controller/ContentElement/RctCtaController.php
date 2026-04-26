@@ -57,6 +57,20 @@ class RctCtaController extends AbstractContentElementController
             ];
         }
 
+        // BG-Override (überschreibt style-Default wenn bg_color gesetzt)
+        $bgColor = (string) $model->rct_cta_bg_color;
+        $bgAlpha = max(0, min(100, (int) ($model->rct_cta_bg_alpha ?: 100)));
+        $bgBlur  = max(0, (int) $model->rct_cta_blur);
+
+        $bgClass = $bgColor !== '' ? ' has-bg-' . $bgColor : '';
+        $bgStyle = '';
+        if ($bgColor !== '') {
+            $bgStyle .= '--rct-cta-bg-alpha:' . round($bgAlpha / 100, 2) . ';';
+        }
+        if ($bgBlur > 0) {
+            $bgStyle .= "backdrop-filter:blur({$bgBlur}px);-webkit-backdrop-filter:blur({$bgBlur}px);";
+        }
+
         $template->btnFg       = $btnFg;
         $template->ctaHeadline = htmlspecialchars((string) $model->rct_cta_headline, ENT_QUOTES, 'UTF-8');
         $template->ctaText     = $model->rct_cta_text ? nl2br(htmlspecialchars((string) $model->rct_cta_text, ENT_QUOTES, 'UTF-8')) : '';
@@ -64,6 +78,8 @@ class RctCtaController extends AbstractContentElementController
         $template->colorCss    = $colorCss;
         $template->layout      = $model->rct_cta_layout ?: 'centered';
         $template->ctaStyle    = $model->rct_cta_style ?: 'light';
+        $template->bgClass     = $bgClass;
+        $template->bgStyle     = $bgStyle;
         $template->btn1        = $btn1;
         $template->btn2        = $btn2;
         $cssId                 = \Contao\StringUtil::deserialize($model->cssID, true);

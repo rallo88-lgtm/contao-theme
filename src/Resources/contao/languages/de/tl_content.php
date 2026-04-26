@@ -73,6 +73,7 @@ $GLOBALS['TL_LANG']['CTE']['rct_chart_bars'] = ['RCT Balkendiagramm', 'Animierte
 // CTA
 $GLOBALS['TL_LANG']['CTE']['rct_cta']                   = ['RCT Call-to-Action', 'Handlungsaufforderung mit Headline, Text und bis zu 2 Buttons'];
 $GLOBALS['TL_LANG']['tl_content']['cta_legend']         = 'Inhalt';
+$GLOBALS['TL_LANG']['tl_content']['cta_bg_legend']      = 'RCT Hintergrund';
 $GLOBALS['TL_LANG']['tl_content']['cta_btn1_legend']    = 'Primärer Button';
 $GLOBALS['TL_LANG']['tl_content']['cta_btn2_legend']    = 'Sekundärer Button (optional)';
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_headline']   = ['Überschrift', 'Hauptaussage'];
@@ -81,6 +82,9 @@ $GLOBALS['TL_LANG']['tl_content']['rct_cta_icon']       = ['Icon / Emoji', 'Symb
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_color']      = ['Farbe', 'Akzentfarbe'];
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_layout']     = ['Layout', 'Zentriert, Banner oder Karte'];
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_style']      = ['Stil', 'Hell oder Dunkel (Shell-Look)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_cta_bg_color']   = ['Hintergrundfarbe', 'Überschreibt den Stil-Default. Leer = Stil-Default verwenden'];
+$GLOBALS['TL_LANG']['tl_content']['rct_cta_bg_alpha']   = ['Transparenz', 'Deckkraft (0% = unsichtbar, 100% = deckend)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_cta_blur']       = ['Backdrop-Blur', 'Frosted-Glass-Effekt hinter der CTA-Box'];
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_btn1_label'] = ['Button-Text', 'Beschriftung'];
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_btn1_page']  = ['Interne Seite', 'Contao-Seite als Ziel (Vorrang vor externer URL)'];
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_btn1_url']   = ['Externe URL', 'Manuelle URL (ignoriert wenn Seite gewählt)'];

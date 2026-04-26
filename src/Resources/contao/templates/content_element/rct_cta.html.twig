@@ -6,7 +6,7 @@
 {% extends '@Contao/content_element/_base.html.twig' %}
 
 {% block content %}
-<div class="rct-cta layout-{{ layout }} style-{{ ctaStyle }}{{ cssClass ? ' ' ~ cssClass }}" style="--cta-color: {{ colorCss }}; --cta-btn-fg: {{ btnFg }};"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+<div class="rct-cta layout-{{ layout }} style-{{ ctaStyle }}{{ bgClass }}{{ cssClass ? ' ' ~ cssClass }}" style="--cta-color: {{ colorCss }}; --cta-btn-fg: {{ btnFg }};{{ bgStyle }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
 
   {% if layout == 'banner' %}
 

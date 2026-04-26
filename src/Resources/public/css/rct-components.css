@@ -2761,12 +2761,28 @@
 /* No glow on banner (too distracting inline) */
 .rct-cta.layout-banner .rct-cta-glow { display: none; }
 
+/* ── Light style variant (Default) ── */
+.rct-cta.style-light {
+  background: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--cta-color) 18%, transparent);
+  border-radius: var(--rct-radius-xl, 0.75rem);
+}
+
 /* ── Dark style variant ── */
 .rct-cta.style-dark {
   background: color-mix(in srgb, var(--cta-color) 5%, var(--rct-shell-bg, #171717));
   border: 1px solid color-mix(in srgb, var(--cta-color) 25%, transparent);
   border-radius: var(--rct-radius-xl, 0.75rem);
 }
+
+/* ── BG-Override (überschreibt style-Default wenn rct_cta_bg_color gesetzt) ── */
+.rct-cta.has-bg-white  { background: rgba(255, 255, 255, var(--rct-cta-bg-alpha, 1)); color: #1a1a1a; }
+.rct-cta.has-bg-dark   { background: rgba(23, 23, 23,    var(--rct-cta-bg-alpha, 1)); color: var(--rct-shell-text, #e0e0e0); }
+.rct-cta.has-bg-accent { background: color-mix(in srgb, var(--rct-accent) calc(var(--rct-cta-bg-alpha, 1) * 100%), transparent); color: #0a0a0a; }
+.rct-cta.has-bg-dark .rct-cta-headline   { color: var(--rct-shell-text, #e0e0e0); }
+.rct-cta.has-bg-dark .rct-cta-text       { color: color-mix(in srgb, var(--rct-shell-text, #e0e0e0) 60%, transparent); }
+.rct-cta.has-bg-accent .rct-cta-headline { color: #0a0a0a; }
+.rct-cta.has-bg-accent .rct-cta-text     { color: rgba(0, 0, 0, 0.7); }
 
 .rct-cta.style-dark.layout-card {
   background: color-mix(in srgb, var(--cta-color) 7%, var(--rct-shell-bg, #171717));

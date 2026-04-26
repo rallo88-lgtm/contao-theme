@@ -766,7 +766,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_size'] = [
 // ============================================================
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_cta'] =
-    '{type_legend},type;{cta_legend},rct_cta_headline,rct_cta_text,rct_cta_icon,rct_cta_color,rct_cta_layout,rct_cta_style;{cta_btn1_legend},rct_cta_btn1_label,rct_cta_btn1_page,rct_cta_btn1_url,rct_cta_btn1_style,rct_cta_btn1_target;{cta_btn2_legend:hide},rct_cta_btn2_label,rct_cta_btn2_page,rct_cta_btn2_url,rct_cta_btn2_style,rct_cta_btn2_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{cta_legend},rct_cta_headline,rct_cta_text,rct_cta_icon,rct_cta_color,rct_cta_layout,rct_cta_style;{cta_bg_legend:hide},rct_cta_bg_color,rct_cta_bg_alpha,rct_cta_blur;{cta_btn1_legend},rct_cta_btn1_label,rct_cta_btn1_page,rct_cta_btn1_url,rct_cta_btn1_style,rct_cta_btn1_target;{cta_btn2_legend:hide},rct_cta_btn2_label,rct_cta_btn2_page,rct_cta_btn2_url,rct_cta_btn2_style,rct_cta_btn2_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_headline'] = [
     'label'     => ['Überschrift', 'Hauptaussage des CTA'],
@@ -828,6 +828,56 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_style'] = [
     ],
     'eval'      => ['tl_class' => 'w50'],
     'sql'       => "varchar(8) NOT NULL default 'light'",
+];
+
+// CTA Hintergrund (überschreibt den Stil-Default wenn gesetzt)
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_bg_color'] = [
+    'label'     => ['Hintergrundfarbe', 'Überschreibt den Stil-Default. Leer = Stil-Default verwenden'],
+    'inputType' => 'select',
+    'options'   => [
+        ''       => 'Stil-Default',
+        'dark'   => 'Dunkel (#171717)',
+        'white'  => 'Weiß',
+        'accent' => 'Akzentfarbe (Cyan)',
+    ],
+    'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
+    'sql'       => "varchar(12) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_bg_alpha'] = [
+    'label'     => ['Transparenz', 'Deckkraft des Hintergrunds (0% = unsichtbar, 100% = deckend)'],
+    'inputType' => 'select',
+    'options'   => [
+        '0'   => '0% (unsichtbar)',
+        '5'   => '5%',
+        '10'  => '10%',
+        '15'  => '15%',
+        '20'  => '20%',
+        '30'  => '30%',
+        '40'  => '40%',
+        '50'  => '50%',
+        '60'  => '60%',
+        '70'  => '70%',
+        '80'  => '80%',
+        '90'  => '90%',
+        '100' => '100% (deckend)',
+    ],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(4) NOT NULL default '100'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_blur'] = [
+    'label'     => ['Backdrop-Blur', 'Weichzeichner-Effekt hinter der CTA-Box (Frosted Glass)'],
+    'inputType' => 'select',
+    'options'   => [
+        '0'  => 'Kein Blur',
+        '4'  => 'Leicht (4px)',
+        '8'  => 'Mittel (8px)',
+        '12' => 'Stark (12px)',
+        '20' => 'Sehr stark (20px)',
+    ],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(4) NOT NULL default '0'",
 ];
 
 // Button 1
