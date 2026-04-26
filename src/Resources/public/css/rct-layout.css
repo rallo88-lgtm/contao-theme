@@ -1474,12 +1474,13 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   width: 100%;
   max-width: none;
   margin: 0;
+}
+/* Default-Reset (kein RCT-BG aktiv): edge-to-edge ohne BG/Shadow/Radius/Padding.
+   Mit RCT-BG greifen padding 1.5rem + border-radius var(--rct-radius-lg) + bg
+   aus [class*="rct-article-bg-"] / .rct-article-bg-{white,dark,accent}. */
+.mod_article.rct-fullwidth-article:not([class*="rct-article-bg-"]) {
   padding: 0;
   border-radius: 0;
-}
-/* BG/Shadow nur dann resetten wenn KEIN RCT-Hintergrund vom Listener gesetzt
-   wurde — sonst würde rct-article-bg-{white,dark,accent} überschrieben */
-.mod_article.rct-fullwidth-article:not([class*="rct-article-bg-"]) {
   background: none;
   box-shadow: none;
 }
