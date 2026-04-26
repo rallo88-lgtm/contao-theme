@@ -23,6 +23,21 @@ class RctHeroController extends AbstractContentElementController
         $template->layout   = $model->rct_hero_layout ?: 'centered';
         $template->maxWidth = (string) $model->rct_hero_max_width;
 
+        // BG-Override (analog CTA)
+        $bgColor = (string) $model->rct_hero_bg_color;
+        $bgAlpha = max(0, min(100, (int) ($model->rct_hero_bg_alpha ?: 100)));
+        $bgBlur  = max(0, (int) $model->rct_hero_blur);
+
+        $template->bgClass = $bgColor !== '' ? ' has-bg-' . $bgColor : '';
+        $bgStyle = '';
+        if ($bgColor !== '') {
+            $bgStyle .= '--rct-hero-bg-alpha:' . round($bgAlpha / 100, 2) . ';';
+        }
+        if ($bgBlur > 0) {
+            $bgStyle .= "backdrop-filter:blur({$bgBlur}px);-webkit-backdrop-filter:blur({$bgBlur}px);";
+        }
+        $template->bgStyle = $bgStyle;
+
         // Überschrift-Farbe (direkt auf <h1> gesetzt, ContentColorListener überspringt rct_hero)
         $hlColor = trim((string) $model->rct_content_color);
         if ($hlColor !== '' && !str_starts_with($hlColor, 'var(')) {

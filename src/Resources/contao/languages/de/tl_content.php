@@ -86,6 +86,10 @@ $GLOBALS['TL_LANG']['tl_content']['rct_cta_bg_color']   = ['Hintergrundfarbe', '
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_bg_alpha']   = ['Transparenz', 'Deckkraft (0% = unsichtbar, 100% = deckend)'];
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_blur']       = ['Backdrop-Blur', 'Frosted-Glass-Effekt hinter der CTA-Box'];
 $GLOBALS['TL_LANG']['tl_content']['rct_hero_max_width'] = ['Maximale Breite', 'Begrenzt die Hero-Breite — sinnvoll in Fullwidth-Articles. Leer = volle Breite.'];
+$GLOBALS['TL_LANG']['tl_content']['hero_bg_legend']     = 'RCT Hintergrund';
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_bg_color']  = ['Hintergrundfarbe', 'Färbt die Hero-Section. Leer = transparent.'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_bg_alpha']  = ['Transparenz', 'Deckkraft (0% = unsichtbar, 100% = deckend)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_hero_blur']      = ['Backdrop-Blur', 'Frosted-Glass-Effekt hinter der Hero-Section'];
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_btn1_label'] = ['Button-Text', 'Beschriftung'];
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_btn1_page']  = ['Interne Seite', 'Contao-Seite als Ziel (Vorrang vor externer URL)'];
 $GLOBALS['TL_LANG']['tl_content']['rct_cta_btn1_url']   = ['Externe URL', 'Manuelle URL (ignoriert wenn Seite gewählt)'];

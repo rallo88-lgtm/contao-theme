@@ -5382,6 +5382,24 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   overflow: hidden;
 }
 
+/* BG-Override (rct_hero_bg_color gesetzt) — färbt direkt die Hero-Section.
+   Mit BG bekommt die Section auch horizontales Padding + Border-Radius
+   damit Inhalt nicht am Rand klebt. */
+.rct-hero.has-bg-white  { background: rgba(255, 255, 255, var(--rct-hero-bg-alpha, 1)); color: #1a1a1a; }
+.rct-hero.has-bg-dark   { background: rgba(23, 23, 23,    var(--rct-hero-bg-alpha, 1)); }
+.rct-hero.has-bg-accent { background: color-mix(in srgb, var(--rct-accent) calc(var(--rct-hero-bg-alpha, 1) * 100%), transparent); color: #0a0a0a; }
+.rct-hero[class*=" has-bg-"],
+.rct-hero[class^="has-bg-"] {
+  padding: 80px 60px;
+  border-radius: var(--rct-radius-lg);
+}
+@media (max-width: 900px) {
+  .rct-hero[class*=" has-bg-"],
+  .rct-hero[class^="has-bg-"] {
+    padding: 60px 24px;
+  }
+}
+
 .rct-hero-inner {
   display: flex;
   align-items: center;
