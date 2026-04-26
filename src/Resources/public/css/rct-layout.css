@@ -1426,6 +1426,13 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   margin: 0;
   padding: 0;
 }
+/* Leere rct-content-inner-Hülle (durch DOM-Breakout entstanden) ebenfalls ausblenden,
+   sonst bleibt das padding-bottom als sichtbarer Streifen über/unter der Section.
+   Greift NUR wenn das einzige Child eine leere mod_article ist — andere Articles
+   davor/danach bleiben unangetastet. */
+.rct-content-inner:has(> .mod_article:only-child:not(:has(*))) {
+  display: none;
+}
 /* Classic: Article übernimmt die Zentrierung (vorher content-inner),
    ohne Background/Glow-Effekte aus dem Standard-Layout */
 [data-layout="classic"] .mod_article {
