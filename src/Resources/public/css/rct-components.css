@@ -5392,6 +5392,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 .rct-hero[class^="has-bg-"] {
   padding: 80px 60px;
   border-radius: var(--rct-radius-lg);
+  border: 1px solid color-mix(in srgb, var(--rct-accent) 25%, transparent);
 }
 @media (max-width: 900px) {
   .rct-hero[class*=" has-bg-"],
