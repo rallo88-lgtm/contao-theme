@@ -418,8 +418,8 @@
 [data-theme="sparta"] #rct-dots-canvas {
   display: none !important;
 }
-/* Sparta: Main-Background solid schwarz */
-[data-theme="sparta"] #main {
+/* Sparta: Main-Background solid schwarz (auf #mainContainer, sonst Sidebar-Snap) */
+[data-theme="sparta"] #mainContainer {
   background-color: #0f0f0f;
 }
 
@@ -445,7 +445,7 @@
     background: rgba(255, 255, 255, 0.85);
     color: #000;
 }
-[data-theme="sparta2"] #main {
+[data-theme="sparta2"] #mainContainer {
   background-color: rgb(233, 233, 237);
 }
 [data-theme="sparta2"] .rct-search-input {
@@ -601,6 +601,9 @@ body.rct-layout-full #wrapper {
   flex: 1;
   overflow-x: hidden;
   position: relative;
+  /* BG hier statt auf #main, damit beim Sidebar-Toggle die padding-Änderung
+     nicht die gefärbte Box-Breite verschiebt (sonst sichtbarer "Snap"). */
+  background-color: rgba(14, 14, 24, var(--rct-main-alpha));
 }
 
 /* Kleiner visueller Trenner (z.B. zwischen Header-Icons) */
@@ -1398,6 +1401,9 @@ html[data-layout="classic"] #left .rct-header-logo-link {
 [data-layout="classic"] #main {
   padding: 0;
   overflow-x: clip;
+}
+/* Classic: kein Tint auf #mainContainer, sonst leakt's über den body-bg */
+[data-layout="classic"] #mainContainer {
   background-color: transparent;
 }
 /* #left in Classic: nur Mobile-Drawer (Desktop weggeschoben).
@@ -2097,12 +2103,11 @@ body.rct-right-open #right {
   flex: 1;
   min-width: 0;
   min-height: calc(100vh - var(--rct-header-height) - var(--rct-bottom-height));
-  background-color: rgba(14, 14, 24, var(--rct-main-alpha));
+  /* BG ist eine Ebene höher auf #mainContainer — siehe dort für Begründung */
   padding: 40px;
   overflow-y: auto;
   overflow-x: hidden;
-  /* Keine margin-Transition mehr – Bewegung läuft über #mainContainer padding */
-    position: relative;
+  position: relative;
   z-index: 100;
 }
 
