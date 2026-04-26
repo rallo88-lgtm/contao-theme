@@ -2705,7 +2705,7 @@
 
 /* ── Shared content styles ── */
 .rct-cta-icon {
-  font-size: 2.5rem;
+  font-size: 3rem;
   line-height: 1;
   filter: drop-shadow(0 0 10px color-mix(in srgb, var(--cta-color) 50%, transparent));
 }
@@ -2797,7 +2797,7 @@
 }
 
 .rct-cta.style-dark .rct-cta-icon {
-  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--cta-color) 90%, transparent));
+  filter: drop-shadow(0 0 9px color-mix(in srgb, var(--cta-color) 90%, transparent));
 }
 
 /* ── Mobile ── */
@@ -5573,8 +5573,16 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   overflow: hidden;
   height: 100%;
   min-height: 420px;
-  /* Linke Diagonale + Eselsohr oben rechts */
-  clip-path: polygon(7% 0%, calc(100% - 22px) 0%, 100% 22px, 100% 100%, 0% 100%);
+  /* Trapez-Tür: linke Kante kürzer als rechte ("öffnet" sich nach innen,
+     der vertikale Akzent-Strich am Text wirkt wie der Lichtschein durch die
+     Tür). Plus Eselsohr oben rechts. */
+  clip-path: polygon(
+    0% 12%,
+    calc(100% - 22px) 0%,
+    100% 22px,
+    100% 100%,
+    0% 88%
+  );
 }
 .rct-hero-img-wrap img {
   width: 100%;
@@ -5606,7 +5614,11 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   .rct-hero.layout-split .rct-hero-text::after { display: none; }
   .rct-hero-visual,
   .rct-hero-img-wrap { min-height: 260px; }
-  .rct-hero-img-wrap { margin-top: 40px; }
+  .rct-hero-img-wrap {
+    margin-top: 40px;
+    /* Bild liegt unter dem Text → Tür-Effekt aus, nur Eselsohr behalten */
+    clip-path: polygon(0% 0%, calc(100% - 22px) 0%, 100% 22px, 100% 100%, 0% 100%);
+  }
   .rct-hero-visual::after { top: 46px; }
   .rct-hero-headline { font-size: clamp(34px, 9vw, 54px); }
   .rct-hero-body     { max-width: 100%; }
