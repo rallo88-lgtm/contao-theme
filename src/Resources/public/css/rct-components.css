@@ -5577,11 +5577,11 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
      der vertikale Akzent-Strich am Text wirkt wie der Lichtschein durch die
      Tür). Plus Eselsohr oben rechts. */
   clip-path: polygon(
-    0% 3%,
+    0% 5%,
     calc(100% - 22px) 0%,
     100% 22px,
     100% 100%,
-    0% 97%
+    0% 95%
   );
 }
 .rct-hero-img-wrap img {
