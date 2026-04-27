@@ -1,0 +1,44 @@
+{#
+  RCT – rct_productbox.html.twig
+  Produkt-Karte mit Banner, Bild, Headline, Subheadline, Text, Preis-Block, optionalem CTA.
+  Style: light | dark.
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<article class="rct-productbox style-{{ boxStyle }}{{ cssClass ? ' ' ~ cssClass }}"
+         style="--pb-color: {{ colorCss }};"
+         {% if htmlId %}id="{{ htmlId }}"{% endif %}>
+
+  {% if bannerText %}
+    <div class="rct-productbox-banner">{{ bannerText }}</div>
+  {% endif %}
+
+  {% if imgSrc %}
+    <figure class="rct-productbox-image">
+      <img src="{{ imgSrc }}" alt="{{ imgAlt }}" loading="lazy">
+    </figure>
+  {% endif %}
+
+  <div class="rct-productbox-content">
+    {% if headline %}<h3 class="rct-productbox-headline">{{ headline }}</h3>{% endif %}
+    {% if subheadline %}<p class="rct-productbox-subheadline">{{ subheadline }}</p>{% endif %}
+    {% if text %}<div class="rct-productbox-text">{{ text|raw }}</div>{% endif %}
+  </div>
+
+  {% if priceExtra or price or btn %}
+    <div class="rct-productbox-foot">
+      {% if priceExtra %}<div class="rct-productbox-price-extra">{{ priceExtra }}</div>{% endif %}
+      {% if price %}
+        <div class="rct-productbox-price">
+          <span class="rct-productbox-price-value">{{ price }}</span>
+          {% if priceNote %}<span class="rct-productbox-price-note">{{ priceNote }}</span>{% endif %}
+        </div>
+      {% endif %}
+      {% if btn %}
+        <a href="{{ btn.url }}" class="rct-productbox-btn rct-btn rct-btn--{{ btn.style }}" target="{{ btn.target }}"{% if btn.target == '_blank' %} rel="noopener noreferrer"{% endif %}>{{ btn.label }}</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</article>
+{% endblock %}

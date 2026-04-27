@@ -1604,3 +1604,135 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_icon'] = [
     'wizard'    => [[IconPickerWizard::class, 'generate']],
     'sql'       => "varchar(32) NOT NULL default ''",
 ];
+
+// ============================================================
+// RCT Productbox
+// ============================================================
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_productbox'] =
+    '{type_legend},type;{productbox_legend},rct_productbox_banner,rct_productbox_color,rct_productbox_image,rct_productbox_image_alt,rct_productbox_headline,rct_productbox_subheadline,rct_productbox_text,rct_productbox_style;{productbox_price_legend},rct_productbox_price_extra,rct_productbox_price,rct_productbox_price_note;{productbox_btn_legend:hide},rct_productbox_btn_label,rct_productbox_btn_page,rct_productbox_btn_url,rct_productbox_btn_style,rct_productbox_btn_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_banner'] = [
+    'label'     => ['Banner-Text', 'Optional. Erscheint oben links als Akzent-Streifen (z.B. "TOP PREIS", "NEU", "AKTION"). Leer lassen für keinen Banner.'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
+    'sql'       => "varchar(32) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_color'] = [
+    'label'     => ['Akzentfarbe', 'Färbt Banner, Subheadline und Preis'],
+    'inputType' => 'select',
+    'options'   => [
+        'accent'    => 'Akzentfarbe (Standard)',
+        'primary'   => 'Primärfarbe',
+        'secondary' => 'Lavendel',
+        'orange'    => 'Orange',
+        'red'       => 'Rot',
+        'green'     => 'Grün',
+        'purple'    => 'Lila',
+    ],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(16) NOT NULL default 'accent'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_image'] = [
+    'label'     => ['Produktbild', 'Bild oben in der Box'],
+    'inputType' => 'fileTree',
+    'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif,gif,svg', 'fieldType' => 'radio', 'tl_class' => 'clr'],
+    'sql'       => "binary(16) NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_image_alt'] = [
+    'label'     => ['Alt-Text', 'Alternativtext für das Produktbild (Barrierefreiheit)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_headline'] = [
+    'label'     => ['Produktname / Überschrift', 'z.B. "Propangas-Alukaufflasche 11 KG"'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_subheadline'] = [
+    'label'     => ['Subheadline', 'Kleine Mono-Zeile in Akzentfarbe direkt unter der Headline (z.B. Verfügbarkeit, Verkaufsort)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_text'] = [
+    'label'     => ['Beschreibungstext', 'Kurze Beschreibung. Einfaches HTML (<strong>, <em>) erlaubt.'],
+    'inputType' => 'textarea',
+    'eval'      => ['style' => 'height:100px', 'tl_class' => 'clr'],
+    'sql'       => "text NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_style'] = [
+    'label'     => ['Stil', 'Hell (weiße Karte) oder Dunkel (Shell-Look)'],
+    'inputType' => 'select',
+    'options'   => ['light' => 'Hell', 'dark' => 'Dunkel (Shell-Look)'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(8) NOT NULL default 'light'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_price_extra'] = [
+    'label'     => ['Preis-Hinweis (oben)', 'Optional. Kleine Zeile über dem Preis (z.B. "Solange der Vorrat reicht", "Jetzt nur")'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 64, 'tl_class' => 'long clr'],
+    'sql'       => "varchar(64) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_price'] = [
+    'label'     => ['Preis', 'Großer Preis-Wert in Akzentfarbe, z.B. "€ 124,90". Leer lassen für keinen Preis.'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
+    'sql'       => "varchar(32) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_price_note'] = [
+    'label'     => ['MwSt-Hinweis', 'Kleine Zeile unter dem Preis, z.B. "inkl. 19% MwSt." oder "zzgl. Versand"'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
+    'sql'       => "varchar(64) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_label'] = [
+    'label'     => ['Button-Text', 'Optional. Leer = kein Button. Beschriftung des CTA-Buttons unten.'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
+    'sql'       => "varchar(64) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_page'] = [
+    'label'      => ['Interne Seite', 'Contao-Seite als Ziel (Vorrang vor URL)'],
+    'inputType'  => 'pageTree',
+    'foreignKey' => 'tl_page.title',
+    'eval'       => ['fieldType' => 'radio', 'tl_class' => 'clr'],
+    'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
+    'sql'        => "int(10) unsigned NOT NULL default 0",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_url'] = [
+    'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_style'] = [
+    'label'     => ['Button-Stil', 'Optik des Buttons'],
+    'inputType' => 'select',
+    'options'   => ['primary' => 'Primary (gefüllt)', 'outline' => 'Outline', 'ghost' => 'Ghost (Pfeil)'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(16) NOT NULL default 'primary'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_target'] = [
+    'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+    'sql'       => "char(1) NOT NULL default ''",
+];

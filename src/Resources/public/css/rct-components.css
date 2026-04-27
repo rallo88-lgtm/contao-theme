@@ -6084,3 +6084,155 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   background-position: 0 50%;
   background-repeat: repeat-x;
 }
+
+
+/* ------------------------------------------------------------
+   N+1. PRODUCTBOX (.rct-productbox)
+   Produkt-Karte: Banner (optional, oben links), Bild, Headline,
+   Subheadline, Text, Preis-Block (Foot), optionaler CTA.
+   Style: light | dark. Akzentfarbe via --pb-color (inline-Style
+   vom Controller).
+   ------------------------------------------------------------ */
+
+.rct-productbox {
+  --pb-color: var(--rct-accent);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--rct-radius-lg, 0.5rem);
+  border: 1px solid color-mix(in srgb, var(--pb-color) 25%, transparent);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.rct-productbox.style-light {
+  background: #ffffff;
+  color: #1a1a1a;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+.rct-productbox.style-dark {
+  background: color-mix(in srgb, var(--pb-color) 5%, var(--rct-shell-bg, #171717));
+  color: var(--rct-shell-text, #e0e0e0);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.rct-productbox:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+/* Banner (oben links, schräger Streifen-Look) */
+.rct-productbox-banner {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  z-index: 2;
+  padding: 6px 16px 6px 14px;
+  background: var(--pb-color);
+  color: #ffffff;
+  font-family: var(--rct-font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 50%, 100% 100%, 0 100%);
+}
+
+/* Bild */
+.rct-productbox-image {
+  margin: 0;
+  padding: 24px 24px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.rct-productbox-image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.rct-productbox:hover .rct-productbox-image img {
+  transform: scale(1.04);
+}
+
+/* Content (Headline + Subheadline + Text) */
+.rct-productbox-content {
+  flex: 1;
+  padding: 16px 24px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rct-productbox-headline {
+  font-family: var(--rct-font-headline);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0;
+  color: inherit;
+}
+.rct-productbox-subheadline {
+  font-family: var(--rct-font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--pb-color);
+  margin: 0;
+}
+.rct-productbox-text {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, currentColor 80%, transparent);
+}
+.rct-productbox-text :is(p, ul, ol) { margin: 0 0 0.5rem; }
+.rct-productbox-text :is(p, ul, ol):last-child { margin-bottom: 0; }
+
+/* Foot — Preis-Block + optionaler Button, rechtsbündig */
+.rct-productbox-foot {
+  padding: 12px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  text-align: right;
+}
+.rct-productbox-price-extra {
+  font-family: var(--rct-font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--pb-color);
+}
+.rct-productbox-price {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.rct-productbox-price-value {
+  font-family: var(--rct-font-headline);
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--pb-color);
+}
+.rct-productbox-price-note {
+  margin-top: 4px;
+  font-family: var(--rct-font-mono);
+  font-size: 0.7rem;
+  color: color-mix(in srgb, currentColor 60%, transparent);
+}
+.rct-productbox-btn {
+  margin-top: 4px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .rct-productbox-image   { padding: 20px 16px 4px; }
+  .rct-productbox-content { padding: 12px 16px 4px; }
+  .rct-productbox-foot    { padding: 8px 16px 16px; }
+  .rct-productbox-banner  { font-size: 11px; padding: 5px 14px 5px 12px; letter-spacing: 0.14em; }
+}

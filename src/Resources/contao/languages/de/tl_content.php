@@ -216,3 +216,25 @@ $GLOBALS['TL_LANG']['tl_content']['rct_divider_status']         = ['Status-Text 
 $GLOBALS['TL_LANG']['tl_content']['rct_divider_status_dot']     = ['Status-Punkt', 'Caption (09): pulsierender Akzent-Punkt rechts'];
 $GLOBALS['TL_LANG']['tl_content']['rct_divider_ruler_max']      = ['Skala-Maximum (Ruler)', 'Ruler (11): höchster Wert der Skala — Default 1200, 7 Beschriftungen 0…max'];
 $GLOBALS['TL_LANG']['tl_content']['rct_divider_icon']           = ['Icon (Marker)', 'Marker (06): Emoji oder tabler:<slug>. Leer = klassische Diamond-Raute.'];
+
+// Productbox
+$GLOBALS['TL_LANG']['CTE']['rct_productbox']                       = ['RCT Produktbox', 'Produkt-Karte mit Banner, Bild, Headline, Preis-Block und optionalem CTA-Button'];
+$GLOBALS['TL_LANG']['tl_content']['productbox_legend']             = 'Produkt-Inhalt';
+$GLOBALS['TL_LANG']['tl_content']['productbox_price_legend']       = 'Preis-Block';
+$GLOBALS['TL_LANG']['tl_content']['productbox_btn_legend']         = 'Button (optional)';
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_banner']         = ['Banner-Text', 'Optional. Erscheint oben links als Akzent-Streifen (z.B. "TOP PREIS", "NEU", "AKTION")'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_color']          = ['Akzentfarbe', 'Färbt Banner, Subheadline und Preis'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_image']          = ['Produktbild', 'Bild oben in der Box'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_image_alt']      = ['Alt-Text', 'Alternativtext für das Produktbild'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_headline']       = ['Produktname / Überschrift', 'z.B. "Propangas-Alukaufflasche 11 KG"'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_subheadline']    = ['Subheadline', 'Kleine Mono-Zeile in Akzentfarbe direkt unter der Headline'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_text']           = ['Beschreibungstext', 'Kurze Beschreibung. Einfaches HTML (<strong>, <em>) erlaubt.'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_style']          = ['Stil', 'Hell (weiße Karte) oder Dunkel (Shell-Look)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_price_extra']    = ['Preis-Hinweis (oben)', 'Optional. Kleine Zeile über dem Preis'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_price']          = ['Preis', 'Großer Preis-Wert, z.B. "€ 124,90". Leer = kein Preis.'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_price_note']     = ['MwSt-Hinweis', 'Kleine Zeile unter dem Preis, z.B. "inkl. 19% MwSt."'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_btn_label']      = ['Button-Text', 'Optional. Leer = kein Button.'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_btn_page']       = ['Interne Seite', 'Contao-Seite als Ziel (Vorrang vor URL)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_btn_url']        = ['Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_btn_style']      = ['Button-Stil', 'Optik des Buttons'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_btn_target']     = ['Neues Tab', 'Link in neuem Tab öffnen'];

@@ -55,7 +55,8 @@
       "Bash(curl -s \"https://rct.a-web-service.de/\")",
       "WebFetch(domain:eclipse.premium-contao-themes.com)",
       "Bash(curl *)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "WebFetch(domain:raabe-gas.de)"
     ]
   }
 }
