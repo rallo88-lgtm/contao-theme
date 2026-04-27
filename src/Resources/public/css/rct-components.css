@@ -6600,6 +6600,9 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   margin: 0;
   flex: 1;
   min-width: 0;
+  position: relative;
+  left: -10px;
+  top: -2px;
 }
 .ce_form .widget-checkbox a {
   color: var(--rct-accent);
@@ -6650,11 +6653,13 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   align-items: center;
   gap: 8px;
   font-family: var(--rct-font-mono);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: var(--rct-text-faint, #747a64);
+  position: relative;
+  top: -5px;
 }
 .rct-form-footer::before {
   content: '';
