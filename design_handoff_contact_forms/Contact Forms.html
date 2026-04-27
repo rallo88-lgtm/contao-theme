@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RCT — Contact Forms</title>
+<style>
+@font-face { font-family: 'Space Grotesk'; font-weight: 400; font-display: swap; src: url('../fonts/space-grotesk-v22-latin-regular.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-weight: 500; font-display: swap; src: url('../fonts/space-grotesk-v22-latin-500.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-weight: 600; font-display: swap; src: url('../fonts/space-grotesk-v22-latin-600.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-weight: 700; font-display: swap; src: url('../fonts/space-grotesk-v22-latin-700.woff2') format('woff2'); }
+@font-face { font-family: 'DM Mono'; font-weight: 400; font-display: swap; src: url('../fonts/dm-mono-v16-latin-regular.woff2') format('woff2'); }
+@font-face { font-family: 'DM Mono'; font-weight: 500; font-display: swap; src: url('../fonts/dm-mono-v16-latin-500.woff2') format('woff2'); }
+
+:root {
+  --accent:  #27c4f4;
+  --primary: #2951c7;
+  --grad-1: #27c4f4; --grad-2: #2951c7; --grad-3: #1d2db2; --grad-4: #14054a;
+  --font-head: 'Space Grotesk', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --ease: cubic-bezier(.4,0,.2,1);
+}
+[data-accent="lime"]   { --accent:#8aba16; --primary:#4d8a12; --grad-1:#8aba16;--grad-2:#4d8a12;--grad-3:#add633;--grad-4:#164a1a; }
+[data-accent="purple"] { --accent:#a855f7; --primary:#4c1d95; --grad-1:#2d1b4e;--grad-2:#1c192e;--grad-3:#4c1d95;--grad-4:#1e1b4b; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: var(--font-head);
+  background: #1a1a22;
+}
+
+/* ══════════════════════════════════════════
+   FORM (shared markup, themed by parent class)
+══════════════════════════════════════════ */
+.rct-form {
+  --bg: #0e0e18;
+  --surface: rgba(255,255,255,0.025);
+  --field-bg: rgba(255,255,255,0.04);
+  --field-bg-focus: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.10);
+  --border-strong: rgba(255,255,255,0.20);
+  --border-focus: var(--accent);
+  --txt: #ffffff;
+  --txt-muted: rgba(255,255,255,0.6);
+  --txt-faint: rgba(255,255,255,0.4);
+  --label-mono: rgba(255,255,255,0.55);
+  --error: #ff6b6b;
+  --aurora-opacity: 0.85;
+}
+.rct-form.is-light {
+  --bg: #fbf9f8;
+  --surface: rgba(0,0,0,0.012);
+  --field-bg: #ffffff;
+  --field-bg-focus: #ffffff;
+  --border: rgba(27,28,28,0.12);
+  --border-strong: rgba(27,28,28,0.28);
+  --border-focus: var(--primary);
+  --txt: #1b1c1c;
+  --txt-muted: #434936;
+  --txt-faint: #747a64;
+  --label-mono: #747a64;
+  --error: #ba1a1a;
+  --aurora-opacity: 0;
+}
+
+.rct-form {
+  position: relative;
+  width: 100%; height: 100%;
+  background: var(--bg);
+  color: var(--txt);
+  padding: 56px clamp(28px, 5vw, 64px);
+  overflow: hidden;
+}
+
+/* Aurora background (dark only) */
+.rct-form .aurora {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: var(--aurora-opacity);
+  background:
+    radial-gradient(ellipse 70% 60% at 85% 20%, color-mix(in oklab, var(--grad-1) 22%, transparent), transparent 60%),
+    radial-gradient(ellipse 60% 70% at 10% 90%, color-mix(in oklab, var(--grad-3) 18%, transparent), transparent 65%);
+}
+/* Light variant: subtle dot grid */
+.rct-form.is-light .aurora {
+  opacity: 1;
+  background-image: radial-gradient(circle, rgba(27,28,28,0.06) 1px, transparent 1.2px);
+  background-size: 22px 22px;
+  background-position: 0 0;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+.rct-form-inner {
+  position: relative; z-index: 1;
+  max-width: 560px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 36px;
+}
+
+/* ── Header ── */
+.form-head { display: flex; flex-direction: column; gap: 14px; }
+.form-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.22em;
+  color: var(--accent);
+}
+.rct-form.is-light .form-eyebrow { color: var(--primary); }
+.form-eyebrow::before {
+  content: ''; width: 24px; height: 1px; background: currentColor;
+}
+.form-title {
+  font-size: clamp(28px, 3.2vw, 40px); font-weight: 700;
+  letter-spacing: -0.025em; line-height: 1.05;
+}
+.form-intro {
+  font-size: 14.5px; line-height: 1.6;
+  color: var(--txt-muted);
+  max-width: 460px;
+}
+
+/* ── Meta strip ── */
+.form-meta {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--label-mono);
+}
+.form-meta .v { width: 1px; height: 12px; background: var(--border-strong); }
+.form-meta .acc { color: var(--accent); }
+.rct-form.is-light .form-meta .acc { color: var(--primary); }
+
+/* ── Fieldset ── */
+.form-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px 18px;
+}
+.field { position: relative; display: flex; flex-direction: column; gap: 8px; }
+.field.full { grid-column: 1 / -1; }
+
+.field-label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--label-mono);
+  display: flex; align-items: center; gap: 8px;
+}
+.field-label .req { color: var(--accent); font-weight: 500; }
+.rct-form.is-light .field-label .req { color: var(--primary); }
+.field-label .num {
+  font-size: 9px; opacity: 0.6;
+}
+
+.field-input,
+.field-textarea {
+  width: 100%;
+  background: var(--field-bg);
+  border: 1px solid var(--border);
+  color: var(--txt);
+  font-family: var(--font-head); font-size: 14.5px; font-weight: 400;
+  padding: 13px 14px;
+  outline: none;
+  transition: border-color .18s var(--ease), background .18s var(--ease), box-shadow .18s var(--ease);
+  border-radius: 2px;
+}
+.field-textarea {
+  resize: vertical; min-height: 140px;
+  font-family: var(--font-head); line-height: 1.55;
+}
+.field-input::placeholder,
+.field-textarea::placeholder { color: var(--txt-faint); }
+.field-input:hover,
+.field-textarea:hover { border-color: var(--border-strong); }
+.field-input:focus,
+.field-textarea:focus {
+  border-color: var(--border-focus);
+  background: var(--field-bg-focus);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--border-focus) 18%, transparent);
+}
+
+/* ── Captcha row ── */
+.field-captcha {
+  display: flex; align-items: stretch; gap: 12px;
+}
+.captcha-question {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 0 14px;
+  border: 1px dashed var(--border-strong);
+  font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+  color: var(--txt-muted);
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+.captcha-question .op { color: var(--accent); }
+.rct-form.is-light .captcha-question .op { color: var(--primary); }
+.field-captcha .field-input { flex: 1; }
+
+/* ── Checkbox ── */
+.field-check {
+  display: flex; align-items: flex-start; gap: 12px;
+  cursor: pointer;
+  font-size: 13px; line-height: 1.55; color: var(--txt-muted);
+}
+.field-check input { display: none; }
+.field-check .box {
+  flex-shrink: 0; width: 18px; height: 18px;
+  border: 1px solid var(--border-strong);
+  background: var(--field-bg);
+  position: relative; margin-top: 1px;
+  transition: border-color .15s, background .15s;
+}
+.field-check .box::after {
+  content: ''; position: absolute; inset: 3px;
+  background: var(--accent); transform: scale(0);
+  transition: transform .15s var(--ease);
+}
+.rct-form.is-light .field-check .box::after { background: var(--primary); }
+.field-check input:checked + .box { border-color: var(--accent); }
+.rct-form.is-light .field-check input:checked + .box { border-color: var(--primary); }
+.field-check input:checked + .box::after { transform: scale(1); }
+.field-check a {
+  color: var(--accent); text-decoration: none;
+  border-bottom: 1px dotted color-mix(in oklab, var(--accent) 60%, transparent);
+}
+.rct-form.is-light .field-check a {
+  color: var(--primary);
+  border-bottom-color: color-mix(in oklab, var(--primary) 60%, transparent);
+}
+
+/* ── Submit row ── */
+.form-actions {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  justify-content: space-between;
+}
+.btn-submit {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-head); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  background: var(--accent); color: #0e0e18;
+  border: none; padding: 15px 30px; cursor: pointer;
+  transition: opacity .18s, transform .15s;
+  border-radius: 2px;
+}
+.rct-form.is-light .btn-submit { background: var(--primary); color: #ffffff; }
+.btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-submit svg { width: 13px; height: 13px; transition: transform .2s; }
+.btn-submit:hover svg { transform: translateX(4px); }
+
+.form-status {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--label-mono);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.form-status .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 22%, transparent);
+}
+.rct-form.is-light .form-status .dot { background: var(--primary); box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 22%, transparent); }
+
+/* Honeypot — visually hidden */
+.hp { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
+
+/* ── Footer note ── */
+.form-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; padding-top: 18px;
+  border-top: 1px dashed var(--border);
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--label-mono);
+}
+.form-foot .arrow { color: var(--accent); }
+.rct-form.is-light .form-foot .arrow { color: var(--primary); }
+
+@media (max-width: 540px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .field-captcha { flex-direction: column; }
+}
+
+/* ══════════════════════════════════════════
+   TWEAKS PANEL
+══════════════════════════════════════════ */
+#tweaks-panel {
+  display: none;
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  background: rgba(14,14,24,0.97); border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px); padding: 20px 22px; width: 220px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  color: #fff; font-family: var(--font-head);
+}
+#tweaks-panel.open { display: block; }
+.tp-head { font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: 0.16em; color: #888; margin-bottom: 16px; }
+.tp-row { margin-bottom: 14px; }
+.tp-lbl { font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 5px; display: block; }
+.tp-sel {
+  width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  color: #fff; font-family: var(--font-mono); font-size: 11px;
+  padding: 7px 8px; outline: none; cursor: pointer;
+}
+.tp-sel option { background: #1a1a22; }
+</style>
+</head>
+<body>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+function ContactForm({ tone = 'dark' }) {
+  const [agree, setAgree] = useState(false);
+  return (
+    <div className={`rct-form ${tone === 'light' ? 'is-light' : ''}`}>
+      <div className="aurora" aria-hidden="true"></div>
+
+      <div className="rct-form-inner">
+
+        {/* Header */}
+        <header className="form-head">
+          <div className="form-eyebrow">Kontakt · § 01</div>
+          <h1 className="form-title">Schreiben Sie uns.</h1>
+          <p className="form-intro">
+            Fragen zum System, zu einem Projekt oder ein konkretes Briefing — wir antworten in der Regel innerhalb eines Werktags.
+          </p>
+        </header>
+
+        {/* Meta */}
+        <div className="form-meta">
+          <span className="acc">FORM /CONTACT</span>
+          <span className="v"></span>
+          <span>5 Felder</span>
+          <span className="v"></span>
+          <span>~ 60 Sek.</span>
+          <span className="v"></span>
+          <span>DSGVO</span>
+        </div>
+
+        {/* Fields */}
+        <form onSubmit={(e) => e.preventDefault()} noValidate>
+          <div className="form-grid">
+
+            <div className="field">
+              <label className="field-label" htmlFor="f-name">
+                <span className="num">01</span>
+                Name <span className="req">*</span>
+              </label>
+              <input id="f-name" name="name" className="field-input" type="text"
+                placeholder="Vor- und Nachname" required autoComplete="name" />
+            </div>
+
+            <div className="field">
+              <label className="field-label" htmlFor="f-email">
+                <span className="num">02</span>
+                E-Mail <span className="req">*</span>
+              </label>
+              <input id="f-email" name="email" className="field-input" type="email"
+                placeholder="name@firma.de" required autoComplete="email" />
+            </div>
+
+            <div className="field full">
+              <label className="field-label" htmlFor="f-msg">
+                <span className="num">03</span>
+                Nachricht <span className="req">*</span>
+              </label>
+              <textarea id="f-msg" name="message" className="field-textarea"
+                placeholder="Worum geht es? Kurz und konkret reicht völlig." required></textarea>
+            </div>
+
+            <div className="field full">
+              <label className="field-label" htmlFor="f-captcha">
+                <span className="num">04</span>
+                Sicherheitsfrage <span className="req">*</span>
+              </label>
+              <div className="field-captcha">
+                <div className="captcha-question">
+                  <span>6</span><span className="op">+</span><span>2</span><span className="op">=</span>
+                </div>
+                <input id="f-captcha" name="captcha" className="field-input" type="text"
+                  inputMode="numeric" placeholder="Antwort eingeben" required />
+              </div>
+            </div>
+
+            <div className="field full">
+              <label className="field-check">
+                <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} required />
+                <span className="box"></span>
+                <span>
+                  Ich habe die <a href="#">Datenschutzerklärung</a> zur Kenntnis genommen
+                  und stimme der Verarbeitung meiner Daten zur Kontaktaufnahme zu.
+                </span>
+              </label>
+            </div>
+
+            {/* Honeypot */}
+            <input className="hp" tabIndex="-1" autoComplete="off" name="website" type="text" />
+
+          </div>
+
+          {/* Actions */}
+          <div className="form-actions" style={{ marginTop: 28 }}>
+            <button type="submit" className="btn-submit">
+              Nachricht senden
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+            <span className="form-status">
+              <span className="dot"></span> Verschlüsselte Übertragung
+            </span>
+          </div>
+        </form>
+
+        {/* Footer */}
+        <div className="form-foot">
+          <span>Antwort innerhalb 1 Werktag</span>
+          <span><span className="arrow">›</span> kontakt@a-web-service.de</span>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [accent, setAccent] = useState(localStorage.getItem('rct-cf-accent') || 'default');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-accent', accent);
+    localStorage.setItem('rct-cf-accent', accent);
+  }, [accent]);
+
+  useEffect(() => {
+    const onMsg = (e) => {
+      if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('open');
+      if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  useEffect(() => {
+    const sel = document.getElementById('tp-accent');
+    if (!sel) return;
+    sel.value = accent;
+    const handler = (e) => {
+      setAccent(e.target.value);
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accent: e.target.value } }, '*');
+    };
+    sel.addEventListener('change', handler);
+    return () => sel.removeEventListener('change', handler);
+  }, [accent]);
+
+  return (
+    <DesignCanvas title="RCT — Kontaktformular" subtitle="Hell + Dunkel · Live-Variante: rct.a-web-service.de/kontakt">
+      <DCSection id="forms" title="Kontaktformulare">
+        <DCArtboard id="dark"  label="01 — Dark (Default)"  width={720} height={920}>
+          <ContactForm tone="dark" />
+        </DCArtboard>
+        <DCArtboard id="light" label="02 — Light Surface"   width={720} height={920}>
+          <ContactForm tone="light" />
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<!-- Tweaks -->
+<div id="tweaks-panel">
+  <div class="tp-head">Tweaks</div>
+  <div class="tp-row">
+    <span class="tp-lbl">Akzentfarbe</span>
+    <select class="tp-sel" id="tp-accent">
+      <option value="default">Blue Night (Cyan)</option>
+      <option value="lime">Lime</option>
+      <option value="purple">Purple</option>
+    </select>
+  </div>
+</div>
+
+</body>
+</html>

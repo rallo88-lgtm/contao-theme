@@ -1786,3 +1786,17 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_target'] = [
     'eval'      => ['tl_class' => 'w50 m12'],
     'sql'       => "char(1) NOT NULL default ''",
 ];
+
+// ============================================================
+// RCT Form Header (Meta-Strip)
+// ============================================================
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_form_header'] =
+    '{type_legend},type;{form_header_legend},rct_form_header_items;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_form_header_items'] = [
+    'label'     => ['Meta-Items', "Eine Zeile pro Item — werden im Frontend mit vertikalen Trenn-Strichen gerendert. Die erste Zeile bekommt die Akzentfarbe.\n\nBeispiel:\nFORM /CONTACT\n5 Felder\n~ 60 Sek.\nDSGVO"],
+    'inputType' => 'textarea',
+    'eval'      => ['style' => 'height:100px; font-family:monospace', 'tl_class' => 'clr'],
+    'sql'       => "text NULL",
+];

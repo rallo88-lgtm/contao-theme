@@ -245,3 +245,8 @@ $GLOBALS['TL_LANG']['tl_content']['rct_productbox_btn_page']       = ['Interne S
 $GLOBALS['TL_LANG']['tl_content']['rct_productbox_btn_url']        = ['Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'];
 $GLOBALS['TL_LANG']['tl_content']['rct_productbox_btn_style']      = ['Button-Stil', 'Optik des Buttons'];
 $GLOBALS['TL_LANG']['tl_content']['rct_productbox_btn_target']     = ['Neues Tab', 'Link in neuem Tab öffnen'];
+
+// Form Header (Meta-Strip)
+$GLOBALS['TL_LANG']['CTE']['rct_form_header']                      = ['RCT Form-Header', 'Meta-Strip mit vertikalen Trenn-Strichen — eine Zeile pro Item, erste Zeile in Akzentfarbe. Setze das CE über ein Contao-Formular.'];
+$GLOBALS['TL_LANG']['tl_content']['form_header_legend']            = 'Meta-Strip';
+$GLOBALS['TL_LANG']['tl_content']['rct_form_header_items']         = ['Items', 'Eine Zeile pro Item. Erste Zeile = Akzentfarbe.'];

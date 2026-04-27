@@ -6363,3 +6363,304 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   .rct-productbox-foot    { padding: 8px 16px 16px; }
   .rct-productbox-banner  { font-size: 11px; padding: 5px 14px 5px 12px; letter-spacing: 0.14em; }
 }
+
+
+/* ============================================================
+   FORMS — Contact-Form Skin
+   Style auf Contao-Standard mod_form (.ce_form > form > .formbody >
+   .widget-text/.widget-textarea/.widget-checkbox/.widget-captcha/.widget-submit).
+   Default-Variante = light (für weiße mod_articles).
+   Dark-Variante per CSS-Klasse "is-dark" auf dem ce_form-Wrapper.
+   ============================================================ */
+
+/* Lokale Tokens für Forms — werden von .is-dark überschrieben */
+.ce_form {
+  --rf-field-bg:       #ffffff;
+  --rf-field-bg-focus: #ffffff;
+  --rf-border:         rgba(27, 28, 28, 0.12);
+  --rf-border-strong:  rgba(27, 28, 28, 0.28);
+  --rf-border-focus:   var(--rct-accent);
+  --rf-txt:            var(--rct-text, #1b1c1c);
+  --rf-txt-muted:      var(--rct-text-muted, #434936);
+  --rf-txt-faint:      var(--rct-text-faint, #747a64);
+  --rf-label:          var(--rct-text-faint, #747a64);
+  --rf-error:          #ba1a1a;
+  --rf-btn-fg:         #ffffff;
+}
+.ce_form.is-dark {
+  --rf-field-bg:       rgba(255, 255, 255, 0.04);
+  --rf-field-bg-focus: rgba(255, 255, 255, 0.06);
+  --rf-border:         rgba(255, 255, 255, 0.10);
+  --rf-border-strong:  rgba(255, 255, 255, 0.20);
+  --rf-border-focus:   var(--rct-accent);
+  --rf-txt:            #ffffff;
+  --rf-txt-muted:      rgba(255, 255, 255, 0.6);
+  --rf-txt-faint:      rgba(255, 255, 255, 0.4);
+  --rf-label:          rgba(255, 255, 255, 0.55);
+  --rf-error:          #ff6b6b;
+  --rf-btn-fg:         #0e0e18;
+}
+
+/* Form-Body Layout */
+.ce_form .formbody {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 560px;
+  color: var(--rf-txt);
+}
+.ce_form.is-dark .formbody {
+  color: var(--rf-txt);
+}
+
+/* Float-2-Spalten-Wrapper (HTML-Snippet style="width:50%;float:left") werden
+   in einen flex-row gepresst — robuster als float und respektiert gap */
+.ce_form .formbody > div[style*="float:left"],
+.ce_form .formbody > div[style*="float: left"] {
+  float: none !important;
+  width: auto !important;
+  flex: 1 1 0;
+}
+/* Die Float-Wrapper liegen oft als Geschwister-Paar — wir gruppieren
+   sie via flex auf dem unmittelbaren parent (formbody). Damit das
+   Pair nebeneinander steht, müssen die Floats in einen flex-row Container.
+   Nicht ohne Markup-Anpassung möglich → Ralph soll im Form-HTML statt
+   width/float lieber class="rct-form-row" auf einen wrappenden div setzen. */
+
+.ce_form .rct-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 540px) {
+  .ce_form .rct-form-row { grid-template-columns: 1fr; }
+}
+
+/* Widget-Wrapper */
+.ce_form .widget {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+.ce_form .widget label {
+  font-family: var(--rct-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--rf-label);
+}
+.ce_form .widget label.mandatory::after {
+  content: ' *';
+  color: var(--rct-accent);
+  font-weight: 500;
+}
+
+/* Inputs (text, email, captcha) + Textarea */
+.ce_form .widget input.text,
+.ce_form .widget input.captcha,
+.ce_form .widget input[type="email"],
+.ce_form .widget input[type="tel"],
+.ce_form .widget input[type="url"],
+.ce_form .widget textarea.textarea {
+  width: 100%;
+  background: var(--rf-field-bg);
+  border: 1px solid var(--rf-border);
+  color: var(--rf-txt);
+  font-family: var(--rct-font-headline);
+  font-size: 14.5px;
+  font-weight: 400;
+  padding: 13px 14px;
+  outline: none;
+  border-radius: 2px;
+  transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+}
+.ce_form .widget textarea.textarea {
+  resize: vertical;
+  min-height: 140px;
+  line-height: 1.55;
+}
+.ce_form .widget input::placeholder,
+.ce_form .widget textarea::placeholder {
+  color: var(--rf-txt-faint);
+}
+.ce_form .widget input:hover,
+.ce_form .widget textarea:hover {
+  border-color: var(--rf-border-strong);
+}
+.ce_form .widget input:focus,
+.ce_form .widget textarea:focus {
+  border-color: var(--rf-border-focus);
+  background: var(--rf-field-bg-focus);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--rf-border-focus) 18%, transparent);
+}
+/* Validierungsfehler */
+.ce_form .widget input[aria-invalid="true"],
+.ce_form .widget textarea[aria-invalid="true"] {
+  border-color: var(--rf-error);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--rf-error) 18%, transparent);
+}
+.ce_form .widget p.error {
+  font-family: var(--rct-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--rf-error);
+  margin: 0;
+}
+.ce_form .widget p.error::before { content: '! '; }
+
+/* Captcha — Frage als boxed prompt rechts neben Input */
+.ce_form .widget-captcha {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.ce_form .widget-captcha .captcha_text {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px dashed var(--rf-border-strong);
+  font-family: var(--rct-font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--rf-txt-muted);
+  letter-spacing: 0.05em;
+  user-select: none;
+  width: max-content;
+  border-radius: 2px;
+}
+
+/* Checkbox */
+.ce_form .widget-checkbox fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.ce_form .widget-checkbox legend {
+  font-family: var(--rct-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--rf-label);
+  padding: 0;
+  margin-bottom: 6px;
+}
+.ce_form .widget-checkbox span {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--rf-txt-muted);
+}
+.ce_form .widget-checkbox input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--rf-border-strong);
+  background: var(--rf-field-bg);
+  position: relative;
+  margin: 1px 0 0;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  border-radius: 2px;
+}
+.ce_form .widget-checkbox input[type="checkbox"]::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: var(--rct-accent);
+  transform: scale(0);
+  transition: transform 0.15s ease;
+}
+.ce_form .widget-checkbox input[type="checkbox"]:checked {
+  border-color: var(--rct-accent);
+}
+.ce_form .widget-checkbox input[type="checkbox"]:checked::after {
+  transform: scale(1);
+}
+.ce_form .widget-checkbox label {
+  font-family: var(--rct-font-headline);
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--rf-txt-muted);
+  cursor: pointer;
+}
+.ce_form .widget-checkbox p.help {
+  font-family: var(--rct-font-headline);
+  font-size: 12px;
+  color: var(--rf-txt-muted);
+  margin: 6px 0 0;
+}
+.ce_form .widget-checkbox a {
+  color: var(--rct-accent);
+  text-decoration: none;
+  border-bottom: 1px dotted color-mix(in oklab, var(--rct-accent) 60%, transparent);
+}
+
+/* Submit */
+.ce_form .widget-submit {
+  margin-top: 6px;
+}
+.ce_form .widget-submit button.submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--rct-font-headline);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  background: var(--rct-accent);
+  color: var(--rf-btn-fg);
+  border: 0;
+  padding: 15px 30px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: opacity 0.18s, transform 0.15s;
+}
+.ce_form .widget-submit button.submit:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+.ce_form .widget-submit button.submit::after {
+  content: '→';
+  font-size: 13px;
+  transition: transform 0.2s;
+}
+.ce_form .widget-submit button.submit:hover::after {
+  transform: translateX(4px);
+}
+
+/* ── Form-Header (Meta-Strip CE) ── */
+.rct-form-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  border-top: 1px solid var(--rct-shell-border, rgba(255, 255, 255, 0.10));
+  border-bottom: 1px solid var(--rct-shell-border, rgba(255, 255, 255, 0.10));
+  font-family: var(--rct-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--rct-text-faint, #747a64);
+  margin-bottom: 22px;
+}
+.rct-form-meta .v {
+  width: 1px;
+  height: 12px;
+  background: color-mix(in srgb, currentColor 35%, transparent);
+}
+.rct-form-meta .acc {
+  color: var(--rct-accent);
+}

@@ -1,0 +1,17 @@
+{#
+  RCT – rct_form_header.html.twig
+  Meta-Strip mit vertikalen Trenn-Bars zwischen den Items.
+  Erste Zeile = Akzentfarbe, alle anderen = muted.
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+{% if items|length > 0 %}
+<div class="rct-form-meta{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+  {% for item in items %}
+    {% if not loop.first %}<span class="v" aria-hidden="true"></span>{% endif %}
+    <span{% if item.accent %} class="acc"{% endif %}>{{ item.label }}</span>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
