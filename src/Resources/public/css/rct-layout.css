@@ -2145,7 +2145,7 @@ body.rct-right-open #right {
   flex-grow: 1;
   max-width: var(--rct-max-width);
   margin: 0 auto;
-  padding: 0 20px 60px 20px;
+  padding: 20px;
   container-type: inline-size;
 }
 
