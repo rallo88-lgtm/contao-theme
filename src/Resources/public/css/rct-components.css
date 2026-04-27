@@ -6387,7 +6387,9 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   --rf-error:          #ba1a1a;
   --rf-btn-fg:         #ffffff;
 }
-.ce_form.is-dark {
+/* Dark-Variante — greift wenn .is-dark auf .ce_form ODER auf <form> liegt */
+.ce_form.is-dark,
+.ce_form form.is-dark {
   --rf-field-bg:       rgba(255, 255, 255, 0.04);
   --rf-field-bg-focus: rgba(255, 255, 255, 0.06);
   --rf-border:         rgba(255, 255, 255, 0.10);
@@ -6412,24 +6414,17 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   color: var(--rf-txt);
 }
 
-/* Float-2-Spalten-Wrapper (HTML-Snippet style="width:50%;float:left") werden
-   in einen flex-row gepresst — robuster als float und respektiert gap */
-.ce_form .formbody > div[style*="float:left"],
-.ce_form .formbody > div[style*="float: left"] {
-  float: none !important;
-  width: auto !important;
-  flex: 1 1 0;
-}
-/* Die Float-Wrapper liegen oft als Geschwister-Paar — wir gruppieren
-   sie via flex auf dem unmittelbaren parent (formbody). Damit das
-   Pair nebeneinander steht, müssen die Floats in einen flex-row Container.
-   Nicht ohne Markup-Anpassung möglich → Ralph soll im Form-HTML statt
-   width/float lieber class="rct-form-row" auf einen wrappenden div setzen. */
-
+/* 2-Spalten-Wrapper für Form-Felder.
+   Im Form-Generator als HTML-Snippet einsetzen:
+     <div class="rct-form-row">
+   …Felder…
+     </div>
+   Klappt auf Mobile auf 1 Spalte. Vertikal mittig (für Submit + Status). */
 .ce_form .rct-form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
+  align-items: center;
 }
 @media (max-width: 540px) {
   .ce_form .rct-form-row { grid-template-columns: 1fr; }
@@ -6450,8 +6445,9 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   letter-spacing: 0.18em;
   color: var(--rf-label);
 }
-.ce_form .widget label.mandatory::after {
-  content: ' *';
+/* Mandatory-Marker: Contao rendert bereits <span class="mandatory"> *</span>
+   im Label — wir färben ihn nur in Akzentfarbe */
+.ce_form .widget label .mandatory {
   color: var(--rct-accent);
   font-weight: 500;
 }
@@ -6530,11 +6526,16 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   border-radius: 2px;
 }
 
-/* Checkbox */
+/* Checkbox — fieldset zu flex-row, damit Checkbox+Ja und der p.help
+   (Datenschutz-Text) nebeneinander stehen statt untereinander */
 .ce_form .widget-checkbox fieldset {
   border: 0;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
 }
 .ce_form .widget-checkbox legend {
   font-family: var(--rct-font-mono);
@@ -6545,6 +6546,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   color: var(--rf-label);
   padding: 0;
   margin-bottom: 6px;
+  flex: 1 1 100%;
 }
 .ce_form .widget-checkbox span {
   display: inline-flex;
@@ -6596,7 +6598,9 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   font-family: var(--rct-font-headline);
   font-size: 12px;
   color: var(--rf-txt-muted);
-  margin: 6px 0 0;
+  margin: 0;
+  flex: 1;
+  min-width: 0;
 }
 .ce_form .widget-checkbox a {
   color: var(--rct-accent);
@@ -6636,6 +6640,31 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 }
 .ce_form .widget-submit button.submit:hover::after {
   transform: translateX(4px);
+}
+
+/* ── Form-Footer (Status-Zeile mit Akzent-Punkt) ──
+   Im Form-Generator als HTML-Snippet einsetzen:
+     <div class="rct-form-footer"><span>Verschlüsselte Übertragung</span></div>
+   Der Punkt vor dem Span wird automatisch gerendert. */
+.rct-form-footer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--rct-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--rct-text-faint, #747a64);
+}
+.rct-form-footer::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--rct-accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--rct-accent) 22%, transparent);
 }
 
 /* ── Form-Header (Meta-Strip CE) ── */
