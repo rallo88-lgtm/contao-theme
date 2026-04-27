@@ -104,8 +104,11 @@ class RctProductboxController extends AbstractContentElementController
         if ($raw === '') {
             return '';
         }
+        // Contao speichert HTML im textarea-Feld als Entities (&#60;b&#62; statt <b>) —
+        // erst zurückdecoden, dann durch die Whitelist filtern.
+        $decoded = html_entity_decode($raw, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $allowed = '<strong><em><b><i><u><br><small>';
-        $clean   = strip_tags($raw, $allowed);
+        $clean   = strip_tags($decoded, $allowed);
         // Alle Attribute auf erlaubten Tags entfernen (z.B. onclick=, style=)
         $clean   = preg_replace('/<(\w+)(\s+[^>]*)?>/i', '<$1>', $clean);
         return nl2br($clean);
