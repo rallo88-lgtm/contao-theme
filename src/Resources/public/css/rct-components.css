@@ -638,7 +638,6 @@
    10. FORMULARE (.ce_form, .mod_login, .mod_search)
    ------------------------------------------------------------ */
 
-.ce_form,
 .mod_login,
 .mod_search {
   background: var(--rct-surface);
