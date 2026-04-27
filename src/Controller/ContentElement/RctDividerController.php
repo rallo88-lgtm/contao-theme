@@ -58,6 +58,15 @@ class RctDividerController extends AbstractContentElementController
             if ($end   === '') $end   = 'END';
         }
 
+        // TEMP DEBUG
+        $template->debugRaw = sprintf(
+            'raw_segments=%s raw_progress=%s computed_segments=%d computed_progress=%d',
+            var_export($model->rct_divider_segments, true),
+            var_export($model->rct_divider_progress, true),
+            $segments,
+            $progress
+        );
+
         $template->variant       = $variant;
         $template->bgStyle       = $bgStyle;
         $template->label         = htmlspecialchars((string) $model->rct_divider_label, ENT_QUOTES, 'UTF-8');

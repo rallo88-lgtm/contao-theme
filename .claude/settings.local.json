@@ -46,7 +46,16 @@
       "Bash(git reset *)",
       "Bash(./deploy.sh)",
       "Bash(git *)",
-      "Bash(grep -o 'cm-link,[^{]*{[^}]*}' \"D:\\\\kunden\\\\rct-bundle\\\\src\\\\Resources\\\\public\\\\css\\\\klaro.min.css\")"
+      "Bash(grep -o 'cm-link,[^{]*{[^}]*}' \"D:\\\\kunden\\\\rct-bundle\\\\src\\\\Resources\\\\public\\\\css\\\\klaro.min.css\")",
+      "Bash(grep *)",
+      "Skill(keybindings-help)",
+      "Bash(curl -s https://rct.a-web-service.de/content-elements)",
+      "Bash(curl -s https://rct.a-web-service.de/contao-elements)",
+      "Bash(curl -s https://rct.a-web-service.de/)",
+      "Bash(curl -s \"https://rct.a-web-service.de/\")",
+      "WebFetch(domain:eclipse.premium-contao-themes.com)",
+      "Bash(curl *)",
+      "Read(//tmp/**)"
     ]
   }
 }
