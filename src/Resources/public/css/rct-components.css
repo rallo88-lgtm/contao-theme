@@ -6102,10 +6102,21 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
      es mit dem schrägen Banner) */
   clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
   border: 0;
-  /* clip-path schneidet box-shadow ab → filter:drop-shadow folgt der
-     polygon-Form. Schwarz auf dunklem Body wäre unsichtbar — daher
-     ein dezenter Akzentfarben-Glow als Schatten. */
+  /* Schatten kann hier nicht hin — clip-path wird nach filter angewendet
+     und würde drop-shadow weg-clippen. Schatten lebt auf .rct-productbox-frame.is-dark */
+}
+
+/* Wrapper-Div um das <article> — trägt den drop-shadow für dark
+   (clip-path auf article schneidet drop-shadow auf article weg) */
+.rct-productbox-frame {
+  position: relative;
+  transition: filter 0.25s ease;
+}
+.rct-productbox-frame.is-dark {
   filter: drop-shadow(0 4px 10px color-mix(in oklab, var(--pb-color) 18%, transparent));
+}
+.content-rct-productbox:hover .rct-productbox-frame.is-dark {
+  filter: drop-shadow(0 12px 24px color-mix(in oklab, var(--pb-color) 45%, transparent));
 }
 /* Akzent-Notch oben rechts (Triangle, in Akzentfarbe) */
 .rct-productbox.style-dark::after {
@@ -6130,9 +6141,6 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 .content-rct-productbox:hover .rct-productbox {
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-}
-.content-rct-productbox:hover .rct-productbox.style-dark {
-  filter: drop-shadow(0 12px 24px color-mix(in oklab, var(--pb-color) 45%, transparent));
 }
 .content-rct-productbox:hover .rct-productbox-image img {
   transform: scale(1.04);

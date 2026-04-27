@@ -8,8 +8,8 @@
 {% extends '@Contao/content_element/_base.html.twig' %}
 
 {% block content %}
+<div class="rct-productbox-frame{% if boxStyle == 'dark' %} is-dark{% endif %}" style="--pb-color: {{ colorCss }};">
 <article class="rct-productbox style-{{ boxStyle }} layout-{{ layout }}{{ cssClass ? ' ' ~ cssClass }}"
-         style="--pb-color: {{ colorCss }};"
          {% if htmlId %}id="{{ htmlId }}"{% endif %}>
 
   {% if bannerText %}
@@ -56,6 +56,7 @@
 
   </div>
 </article>
+</div>
 
 {% if images|length > 1 %}
 <script>
