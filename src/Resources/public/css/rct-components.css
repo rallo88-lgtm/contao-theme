@@ -331,7 +331,6 @@
   color: #1a1a1a;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   position: relative;
-  overflow: hidden;
 }
 
 .mod_article + .mod_article {
@@ -6108,9 +6107,6 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
      ein dezenter Akzentfarben-Glow als Schatten. */
   filter: drop-shadow(0 4px 10px color-mix(in oklab, var(--pb-color) 18%, transparent));
 }
-.rct-productbox.style-dark:hover {
-  filter: drop-shadow(0 12px 24px color-mix(in oklab, var(--pb-color) 45%, transparent));
-}
 /* Akzent-Notch oben rechts (Triangle, in Akzentfarbe) */
 .rct-productbox.style-dark::after {
   content: '';
@@ -6128,9 +6124,18 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   transition: background 0.4s;
 }
 
-.rct-productbox:hover {
+/* Hover-Trigger liegt auf dem Contao-CE-Wrapper (.content-rct-productbox)
+   statt auf dem inneren <article> — damit der Hover-Bereich der ganzen
+   sichtbaren Card-Fläche entspricht und nicht nur dem article. */
+.content-rct-productbox:hover .rct-productbox {
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+.content-rct-productbox:hover .rct-productbox.style-dark {
+  filter: drop-shadow(0 12px 24px color-mix(in oklab, var(--pb-color) 45%, transparent));
+}
+.content-rct-productbox:hover .rct-productbox-image img {
+  transform: scale(1.04);
 }
 
 /* Layout: horizontal (Bild links, Body rechts) */
@@ -6194,9 +6199,6 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   height: auto;
   display: block;
   transition: transform 0.4s ease;
-}
-.rct-productbox:hover .rct-productbox-image img {
-  transform: scale(1.04);
 }
 /* Slideshow: erstes Bild im flow (definiert Höhe), folgende als overlay
    mit fade-Wechsel — so behalten Multi-Bild-Karten dieselbe Höhe wie Single. */
