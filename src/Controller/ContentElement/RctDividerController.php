@@ -32,8 +32,16 @@ class RctDividerController extends AbstractContentElementController
             : '';
 
         // Stepped: Segments (Total) + Progress (wieviele "on")
-        $segments = max(1, min(20, (int) ($model->rct_divider_segments ?: 6)));
+        $segments = (int) ($model->rct_divider_segments ?: 0);
+        if ($segments < 2) {
+            $segments = 6; // Default wenn leer / 0 / 1 (1-Segment-Stepper macht keinen Sinn)
+        }
+        $segments = min(20, $segments);
         $progress = max(0, min($segments, (int) $model->rct_divider_progress));
+        $stepArr  = [];
+        for ($i = 0; $i < $segments; $i++) {
+            $stepArr[] = $i < $progress; // true = "on"
+        }
 
         // Ruler: Maximum (Default 1200), 7 Schritte
         $rulerMax = max(1, (int) ($model->rct_divider_ruler_max ?: 1200));
@@ -57,6 +65,7 @@ class RctDividerController extends AbstractContentElementController
         $template->total         = htmlspecialchars((string) $model->rct_divider_total, ENT_QUOTES, 'UTF-8');
         $template->segments      = $segments;
         $template->progress      = $progress;
+        $template->stepArr       = $stepArr;
         $template->start         = htmlspecialchars($start, ENT_QUOTES, 'UTF-8');
         $template->end           = htmlspecialchars($end,   ENT_QUOTES, 'UTF-8');
         $template->status        = htmlspecialchars((string) $model->rct_divider_status, ENT_QUOTES, 'UTF-8');

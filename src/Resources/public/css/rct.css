@@ -667,14 +667,8 @@ nav.mod_breadcrumb ul li a {
 
 /* ------------------------------------------------------------
    18. UTILITY CLASSES
+   (.rct-divider lebt jetzt als CE-Klasse in rct-components.css)
    ------------------------------------------------------------ */
-.rct-divider {
-  height: 1px;
-  background: var(--rct-outline);
-  margin: 2rem 0;
-  opacity: 0.3;
-}
-
 .rct-tag {
   display: inline-flex;
   align-items: center;
