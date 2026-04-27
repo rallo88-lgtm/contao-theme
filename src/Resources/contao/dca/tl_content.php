@@ -1552,14 +1552,14 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_segments'] = [
     'label'     => ['Segmente (Stepped)', 'Stepped (09): Anzahl Segmente — Default 6'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'natural', 'maxlength' => 2, 'tl_class' => 'w50', 'default' => 6],
-    'sql'       => "tinyint(2) unsigned NOT NULL default 6",
+    'sql'       => "smallint(5) unsigned NOT NULL default 6",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_progress'] = [
     'label'     => ['Fortschritt (Stepped)', 'Stepped (09): Wieviele Segmente sind "an" (Akzent)'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'natural', 'maxlength' => 2, 'tl_class' => 'w50'],
-    'sql'       => "tinyint(2) unsigned NOT NULL default 0",
+    'sql'       => "smallint(5) unsigned NOT NULL default 0",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_start'] = [

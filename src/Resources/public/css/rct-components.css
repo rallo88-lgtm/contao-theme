@@ -5986,7 +5986,11 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   height: 5px;
   border-radius: 50%;
   background: var(--rct-accent);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--rct-accent) 18%, transparent);
+  animation: rct-divider-dot-pulse 1.6s ease-in-out infinite;
+}
+@keyframes rct-divider-dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--rct-accent) 60%, transparent); }
+  50%      { box-shadow: 0 0 0 8px color-mix(in oklab, var(--rct-accent)  0%, transparent); }
 }
 .rct-divider--caption .line {
   height: 1px;
