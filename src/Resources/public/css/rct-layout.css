@@ -1281,6 +1281,9 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   align-items: center;
   gap: 2rem;
   padding: 10px 40px;
+  max-width: var(--rct-max-width);
+  margin: 0 auto;
+  width: 100%;
 }
 [data-layout="classic"] .rct-classic-navbar-left,
 [data-layout="classic"] .rct-classic-navbar-right {
