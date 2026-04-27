@@ -6401,6 +6401,15 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   --rf-error:          #ff6b6b;
   --rf-btn-fg:         #0e0e18;
 }
+/* Dark-Form bekommt eigenes dunkles Surface — sonst wäre weiße Schrift
+   auf weißem mod_article-BG unlesbar. Padding + Radius + Border drumherum. */
+.ce_form form.is-dark {
+  background: var(--rct-shell-bg, #171717);
+  color: var(--rf-txt);
+  padding: clamp(24px, 4vw, 48px);
+  border-radius: var(--rct-radius-lg, 0.5rem);
+  border: 1px solid var(--rf-border);
+}
 
 /* Form-Body Layout */
 .ce_form .formbody {
