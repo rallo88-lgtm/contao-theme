@@ -6678,6 +6678,11 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--rct-accent) 22%, transparent);
 }
 
+/* In einer .rct-form-row (z.B. Submit + Status) rechtsbündig */
+.ce_form .rct-form-row > .rct-form-footer {
+  justify-self: end;
+}
+
 /* ── Form-Header (Meta-Strip CE) ──
    Default = light (für weiße mod_articles).
    Modifier .style-dark für Form-Header über/in dark-Forms. */
