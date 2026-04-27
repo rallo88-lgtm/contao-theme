@@ -29,6 +29,7 @@ class RctFormHeaderController extends AbstractContentElementController
         }
 
         $template->items = $items;
+        $template->style = $model->rct_form_header_style ?: 'light';
 
         $cssId              = StringUtil::deserialize($model->cssID, true);
         $template->htmlId   = trim($cssId[0] ?? '', '"\'');

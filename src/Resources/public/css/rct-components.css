@@ -6680,22 +6680,29 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--rct-accent) 22%, transparent);
 }
 
-/* ── Form-Header (Meta-Strip CE) ── */
+/* ── Form-Header (Meta-Strip CE) ──
+   Default = light (für weiße mod_articles).
+   Modifier .style-dark für Form-Header über/in dark-Forms. */
 .rct-form-meta {
   display: flex;
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
   padding: 10px 0;
-  border-top: 1px solid var(--rct-shell-border, rgba(255, 255, 255, 0.10));
-  border-bottom: 1px solid var(--rct-shell-border, rgba(255, 255, 255, 0.10));
+  border-top: 1px solid rgba(27, 28, 28, 0.12);
+  border-bottom: 1px solid rgba(27, 28, 28, 0.12);
   font-family: var(--rct-font-mono);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: var(--rct-text-faint, #747a64);
-  margin-bottom: 22px;
+  margin: 22px 0;
+}
+.rct-form-meta.style-dark {
+  border-top-color: rgba(255, 255, 255, 0.12);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.55);
 }
 .rct-form-meta .v {
   width: 1px;

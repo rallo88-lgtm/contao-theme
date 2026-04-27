@@ -250,3 +250,4 @@ $GLOBALS['TL_LANG']['tl_content']['rct_productbox_btn_target']     = ['Neues Tab
 $GLOBALS['TL_LANG']['CTE']['rct_form_header']                      = ['RCT Form-Header', 'Meta-Strip mit vertikalen Trenn-Strichen — eine Zeile pro Item, erste Zeile in Akzentfarbe. Setze das CE über ein Contao-Formular.'];
 $GLOBALS['TL_LANG']['tl_content']['form_header_legend']            = 'Meta-Strip';
 $GLOBALS['TL_LANG']['tl_content']['rct_form_header_items']         = ['Items', 'Eine Zeile pro Item. Erste Zeile = Akzentfarbe.'];
+$GLOBALS['TL_LANG']['tl_content']['rct_form_header_style']         = ['Stil', 'Hell (für weiße Surfaces) oder Dunkel (für Shell-/Aurora-BG)'];

@@ -7,7 +7,7 @@
 
 {% block content %}
 {% if items|length > 0 %}
-<div class="rct-form-meta{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+<div class="rct-form-meta style-{{ style }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
   {% for item in items %}
     {% if not loop.first %}<span class="v" aria-hidden="true"></span>{% endif %}
     <span{% if item.accent %} class="acc"{% endif %}>{{ item.label }}</span>

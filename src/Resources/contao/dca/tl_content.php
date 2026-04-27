@@ -1792,11 +1792,19 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_target'] = [
 // ============================================================
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_form_header'] =
-    '{type_legend},type;{form_header_legend},rct_form_header_items;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{form_header_legend},rct_form_header_items,rct_form_header_style;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_form_header_items'] = [
     'label'     => ['Meta-Items', "Eine Zeile pro Item — werden im Frontend mit vertikalen Trenn-Strichen gerendert. Die erste Zeile bekommt die Akzentfarbe.\n\nBeispiel:\nFORM /CONTACT\n5 Felder\n~ 60 Sek.\nDSGVO"],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:100px; font-family:monospace', 'tl_class' => 'clr'],
     'sql'       => "text NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_form_header_style'] = [
+    'label'     => ['Stil', 'Hell (für weiße Surfaces) oder Dunkel (für Shell-/Aurora-BG)'],
+    'inputType' => 'select',
+    'options'   => ['light' => 'Hell', 'dark' => 'Dunkel'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(8) NOT NULL default 'light'",
 ];
