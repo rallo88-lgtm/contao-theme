@@ -5721,3 +5721,361 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   .rct-sliderbox-inner   { padding: 40px 20px; }
   .rct-sliderbox-text    { font-size: 1rem; }
 }
+
+
+/* ------------------------------------------------------------
+   N. DIVIDERS (.rct-divider)
+   13 token-basierte Trenner-Varianten (Port aus design_handoff_dividers).
+   Markup-Pattern siehe Twig-Template content_element/rct_divider.html.twig.
+   Statisch, keine JS, keine Hover-States. Theme-Switching automatisch
+   über bestehende RCT-Tokens (--rct-accent, --rct-shell-border, --grad-*).
+   ------------------------------------------------------------ */
+
+.rct-divider {
+  --_rd-border:        var(--rct-shell-border, rgba(255,255,255,0.08));
+  --_rd-border-strong: rgba(255,255,255,0.16);
+  --_rd-muted:         var(--rct-text-faint, #737373);
+  width: 100%;
+}
+[data-theme="sparta2"] .rct-divider {
+  --_rd-border-strong: rgba(0,0,0,0.20);
+}
+
+/* ── 02 · Accent fade ── */
+.rct-divider--fade {
+  height: var(--rd-h, 1px);
+  background: linear-gradient(to right,
+    transparent 0%,
+    var(--_rd-border-strong) 20%,
+    var(--rct-accent) 50%,
+    var(--_rd-border-strong) 80%,
+    transparent 100%);
+  opacity: 0.9;
+}
+
+/* ── 03 · Tick rail ── */
+.rct-divider--ticks {
+  position: relative;
+  height: 14px;
+}
+.rct-divider--ticks::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--_rd-border);
+}
+.rct-divider--ticks::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to right, var(--_rd-border-strong) 1px, transparent 1px);
+  background-size: 24px 100%;
+  background-position: 0 0;
+}
+
+/* ── 04 · Labeled rule ── */
+.rct-divider--labeled {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.rct-divider--labeled .line {
+  flex: 1;
+  height: 1px;
+  background: var(--_rd-border);
+}
+.rct-divider--labeled .lbl {
+  font-family: var(--rct-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--_rd-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.rct-divider--labeled .lbl .num {
+  color: var(--rct-accent);
+  font-weight: 500;
+}
+
+/* ── 05 · Section starter (left accent) ── */
+.rct-divider--section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+}
+.rct-divider--section .bar {
+  width: 3px;
+  height: 20px;
+  background: var(--rct-accent);
+}
+.rct-divider--section .ttl {
+  font-family: var(--rct-font-headline);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: inherit;
+}
+.rct-divider--section .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--_rd-border);
+}
+.rct-divider--section .idx {
+  font-family: var(--rct-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--_rd-muted);
+}
+
+/* ── 06 · Coordinate divider ── */
+.rct-divider--coord {
+  display: flex;
+  align-items: center;
+  font-family: var(--rct-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--_rd-muted);
+}
+.rct-divider--coord .x {
+  color: var(--rct-accent);
+}
+.rct-divider--coord .line {
+  flex: 1;
+  height: 1px;
+  background: var(--_rd-border);
+  margin: 0 14px;
+  position: relative;
+}
+.rct-divider--coord .line::before,
+.rct-divider--coord .line::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  width: 1px;
+  height: 7px;
+  background: var(--_rd-border-strong);
+}
+.rct-divider--coord .line::before { left: 0; }
+.rct-divider--coord .line::after  { right: 0; }
+
+/* ── 07 · Marker (Default = Diamond, optional Icon-Slot) ── */
+.rct-divider--marker {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.rct-divider--marker .line {
+  flex: 1;
+  height: 1px;
+  background: var(--_rd-border);
+}
+/* Default: Diamond-Raute (Fallback, wenn kein Icon gesetzt) */
+.rct-divider--marker .mark {
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
+  border: 1px solid var(--rct-accent);
+  flex-shrink: 0;
+  position: relative;
+}
+.rct-divider--marker .mark::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: var(--rct-accent);
+  opacity: 0.55;
+}
+/* Icon-Slot (Tabler-SVG oder Emoji) — überschreibt Diamond, wenn vorhanden */
+.rct-divider--marker .icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rct-accent);
+  font-size: 16px;
+  line-height: 1;
+}
+.rct-divider--marker .icon .rct-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── 08 · Bracket rail ── */
+.rct-divider--bracket {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--rct-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--_rd-muted);
+}
+.rct-divider--bracket .b {
+  color: var(--rct-accent);
+  font-weight: 500;
+}
+.rct-divider--bracket .line {
+  flex: 1;
+  position: relative;
+  height: 12px;
+}
+.rct-divider--bracket .line::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 1px;
+  background: repeating-linear-gradient(to right,
+    var(--_rd-border-strong) 0 4px, transparent 4px 8px);
+}
+
+/* ── 09 · Stepped accent ── */
+.rct-divider--stepped {
+  display: flex;
+  align-items: stretch;
+  height: 6px;
+}
+.rct-divider--stepped .seg {
+  flex: 1;
+  background: var(--_rd-border);
+}
+.rct-divider--stepped .seg.on {
+  background: var(--rct-accent);
+}
+.rct-divider--stepped .seg + .seg {
+  margin-left: 4px;
+}
+
+/* ── 10 · Mono caption rule (split 18% accent / rest border) ── */
+.rct-divider--caption {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rct-divider--caption .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--rct-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--_rd-muted);
+}
+.rct-divider--caption .row .end {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.rct-divider--caption .row .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--rct-accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--rct-accent) 18%, transparent);
+}
+.rct-divider--caption .line {
+  height: 1px;
+  background: linear-gradient(to right,
+    var(--rct-accent) 0%, var(--rct-accent) 18%,
+    var(--_rd-border) 18%, var(--_rd-border) 100%);
+}
+
+/* ── 11 · Aurora gradient (Hero-Break, sparsam) ── */
+.rct-divider--aurora {
+  height: var(--rd-h, 1px);
+  background: linear-gradient(to right,
+    transparent,
+    var(--grad-1) 20%,
+    var(--grad-2) 50%,
+    var(--grad-3) 80%,
+    transparent);
+  position: relative;
+  box-shadow: 0 0 24px color-mix(in oklab, var(--grad-1) 30%, transparent);
+}
+
+/* ── 12 · Ruler ── */
+.rct-divider--ruler {
+  position: relative;
+  height: 18px;
+}
+.rct-divider--ruler::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 0;
+  height: 1px;
+  background: var(--_rd-border-strong);
+}
+.rct-divider--ruler .ticks {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--_rd-border-strong) 1px, transparent 1px),
+    linear-gradient(to right, var(--_rd-border) 1px, transparent 1px);
+  background-size: 80px 10px, 16px 6px;
+  background-repeat: repeat-x;
+  background-position: 0 0, 0 0;
+}
+.rct-divider--ruler .nums {
+  position: absolute;
+  left: 0; right: 0;
+  top: 11px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--rct-font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  color: var(--_rd-muted);
+  letter-spacing: 0.1em;
+}
+
+/* ── 13 · Counter divider ── */
+.rct-divider--counter {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.rct-divider--counter .num {
+  font-family: var(--rct-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--_rd-muted);
+  letter-spacing: 0.14em;
+}
+.rct-divider--counter .num b {
+  color: var(--rct-accent);
+  font-weight: 500;
+}
+.rct-divider--counter .line {
+  flex: 1;
+  height: 1px;
+  background: var(--_rd-border);
+}
+.rct-divider--counter .arrow {
+  font-family: var(--rct-font-mono);
+  font-size: 11px;
+  color: var(--rct-accent);
+}
+
+/* ── 14 · Dotted rail ── */
+.rct-divider--dots {
+  height: 6px;
+  background-image: radial-gradient(circle, var(--_rd-border-strong) 1px, transparent 1.2px);
+  background-size: 8px 6px;
+  background-position: 0 50%;
+  background-repeat: repeat-x;
+}

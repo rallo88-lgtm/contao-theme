@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RCT — Dividers (Live-Test gegen rct-components.css)</title>
+
+<!-- Echte RCT-CSS-Files (relativ aus design_handoff_dividers/) -->
+<link rel="stylesheet" href="../src/Resources/public/css/rct-layout.css">
+<link rel="stylesheet" href="../src/Resources/public/css/rct-components.css">
+
+<style>
+  /* Test-Page-Chrome (nicht Teil des Bundles) */
+  body {
+    background: #0e0e18;
+    color: #fff;
+    font-family: var(--rct-font-headline, 'Space Grotesk', sans-serif);
+    padding: 64px clamp(20px, 5vw, 72px) 120px;
+    min-height: 100vh;
+  }
+  .head {
+    max-width: 1240px; margin: 0 auto 56px;
+    display: flex; align-items: end; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--rct-shell-border);
+  }
+  .head h1 { font-size: clamp(28px, 3vw, 42px); font-weight: 700; letter-spacing: -0.025em; line-height: 1; margin: 0; }
+  .head .label {
+    font-family: var(--rct-font-mono); font-size: 10px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.22em; color: var(--rct-accent);
+    margin-bottom: 14px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .head .label::before { content: ''; width: 24px; height: 1px; background: var(--rct-accent); }
+  .head .meta {
+    font-family: var(--rct-font-mono); font-size: 10.5px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.16em; color: var(--rct-text-faint, #737373);
+    display: flex; gap: 18px; align-items: center;
+  }
+  .head .meta b { color: #fff; font-weight: 500; }
+  .head select {
+    background: rgba(255,255,255,0.04); border: 1px solid var(--rct-shell-border);
+    color: #fff; font-family: var(--rct-font-mono); font-size: 11px;
+    padding: 6px 10px; cursor: pointer;
+  }
+  .gallery { max-width: 1240px; margin: 0 auto; display: grid; gap: 56px; }
+  .cell {
+    display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: start;
+    padding-bottom: 56px; border-bottom: 1px dashed var(--rct-shell-border);
+  }
+  .cell:last-child { border-bottom: 0; padding-bottom: 0; }
+  .cell-num { font-family: var(--rct-font-mono); font-size: 10px; font-weight: 500; color: var(--rct-text-faint, #737373); letter-spacing: 0.14em; margin-bottom: 8px; }
+  .cell-name { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .cell-desc { font-family: var(--rct-font-mono); font-size: 10.5px; color: var(--rct-text-faint, #737373); line-height: 1.6; letter-spacing: 0.02em; }
+  .cell-stage {
+    background: rgba(255,255,255,0.012); border: 1px solid var(--rct-shell-border);
+    padding: 48px 36px; min-height: 120px; display: flex; align-items: center; position: relative;
+  }
+  .cell-stage::before, .cell-stage::after {
+    content: ''; position: absolute; width: 8px; height: 8px;
+    border: 1px solid rgba(255,255,255,0.16);
+  }
+  .cell-stage::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+  .cell-stage::after  { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+  .stage-inner { width: 100%; }
+  /* Wenn 2 Beispiele in einer Stage stehen */
+  .stack { display: flex; flex-direction: column; gap: 32px; width: 100%; }
+  @media (max-width: 720px) { .cell { grid-template-columns: 1fr; gap: 14px; } .cell-stage { padding: 32px 20px; } }
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div>
+    <div class="label">Component · 03/RCT</div>
+    <h1>Dividers — Live-Test</h1>
+  </div>
+  <div class="meta">
+    <span><b>13</b>&nbsp;Varianten</span>
+    <span><b>1px</b>&nbsp;Baseline</span>
+    <label>Theme
+      <select id="theme-sel">
+        <option value="default">default (blue night)</option>
+        <option value="lime">lime</option>
+        <option value="purple">purple</option>
+        <option value="dark-cherry">dark-cherry</option>
+        <option value="dark-cherry-bloom">dark-cherry-bloom</option>
+        <option value="honey-moon">honey-moon</option>
+        <option value="candy-chaos">candy-chaos</option>
+        <option value="toxic-green">toxic-green</option>
+        <option value="claudy-sky">claudy-sky</option>
+        <option value="glass-tank">glass-tank</option>
+        <option value="neon-grid">neon-grid</option>
+        <option value="magnetic-field">magnetic-field</option>
+        <option value="sparta">sparta</option>
+        <option value="sparta2">sparta2 (light)</option>
+      </select>
+    </label>
+  </div>
+</header>
+
+<main class="gallery">
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">02 / FADE</div>
+      <div class="cell-name">Accent Fade</div>
+      <div class="cell-desc">Beidseitige Transparenz, Akzent in der Mitte. Hero-Übergänge.<br><br>Höhe: <input type="number" min="1" max="200" value="1" id="fade-h" style="width:60px;background:rgba(255,255,255,0.05);border:1px solid var(--rct-shell-border);color:#fff;font-family:var(--rct-font-mono);font-size:11px;padding:3px 6px;"> px</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--fade" id="fade-demo"></div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">03 / TICKS</div>
+      <div class="cell-name">Tick Rail</div>
+      <div class="cell-desc">Linie mit gleichmäßigen Markierungen. Tech-Inspector.</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--ticks"></div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">04 / LABELED</div>
+      <div class="cell-name">Labeled Rule</div>
+      <div class="cell-desc">Trenner mit Mono-Label. Section-Übergänge in langen Inhalten.</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--labeled">
+        <div class="line"></div>
+        <span class="lbl"><span class="num">02</span> System Status</span>
+        <div class="line"></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">05 / SECTION</div>
+      <div class="cell-name">Section Starter</div>
+      <div class="cell-desc">Linker Akzentbalken — folgt RCT-Sidebar-Active-Pattern.</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--section">
+        <div class="bar"></div>
+        <div class="ttl">Konfiguration</div>
+        <div class="rule"></div>
+        <div class="idx">§ 04</div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">06 / COORD</div>
+      <div class="cell-name">Coordinate Divider</div>
+      <div class="cell-desc">Punkt-zu-Punkt mit Endmarkierungen. Vermessungswerkzeug-Look.</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--coord">
+        <span><span class="x">x</span>0,000</span>
+        <div class="line"></div>
+        <span><span class="x">x</span>1,440</span>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">07 / MARKER</div>
+      <div class="cell-name">Marker (Diamond / Icon)</div>
+      <div class="cell-desc">Default = Diamond-Raute. Optional Icon-Slot (Tabler-SVG / Emoji).</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="stack">
+        <div class="rct-divider rct-divider--marker">
+          <div class="line"></div>
+          <div class="mark"></div>
+          <div class="line"></div>
+        </div>
+        <div class="rct-divider rct-divider--marker">
+          <div class="line"></div>
+          <span class="icon">★</span>
+          <div class="line"></div>
+        </div>
+        <div class="rct-divider rct-divider--marker">
+          <div class="line"></div>
+          <span class="icon">
+            <svg class="rct-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/>
+            </svg>
+          </span>
+          <div class="line"></div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">08 / BRACKET</div>
+      <div class="cell-name">Bracket Rail</div>
+      <div class="cell-desc">Klammern + dotted Rule. Code- und System-Bereiche.</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--bracket">
+        <span class="b">[</span>
+        <span>BEGIN</span>
+        <div class="line"></div>
+        <span>END</span>
+        <span class="b">]</span>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">09 / STEPPED</div>
+      <div class="cell-name">Stepped Accent</div>
+      <div class="cell-desc">Segmentierter Trenner — Fortschritt oder Phasenumbruch.</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--stepped">
+        <div class="seg on"></div>
+        <div class="seg on"></div>
+        <div class="seg on"></div>
+        <div class="seg"></div>
+        <div class="seg"></div>
+        <div class="seg"></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">10 / CAPTION</div>
+      <div class="cell-name">Caption Rule</div>
+      <div class="cell-desc">Doppelinformation: Titel + Status oben, Split-Rule unten (18 % Akzent).</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--caption">
+        <div class="row">
+          <span>§ 03 — Komponenten</span>
+          <span class="end">Live <span class="dot"></span></span>
+        </div>
+        <div class="line"></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">11 / AURORA</div>
+      <div class="cell-name">Aurora Gradient</div>
+      <div class="cell-desc">Verlauf der Theme-Gradient-Tokens. Reserviert für Hero-Breaks.<br><br>Höhe: <input type="number" min="1" max="200" value="1" id="aurora-h" style="width:60px;background:rgba(255,255,255,0.05);border:1px solid var(--rct-shell-border);color:#fff;font-family:var(--rct-font-mono);font-size:11px;padding:3px 6px;"> px</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--aurora" id="aurora-demo"></div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">12 / RULER</div>
+      <div class="cell-name">Ruler</div>
+      <div class="cell-desc">Mit Skalen-Beschriftung. Vermessungs-Ästhetik.</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--ruler">
+        <div class="ticks"></div>
+        <div class="nums">
+          <span>0</span><span>200</span><span>400</span><span>600</span>
+          <span>800</span><span>1000</span><span>1200</span>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">13 / COUNTER</div>
+      <div class="cell-name">Counter Divider</div>
+      <div class="cell-desc">Mit Zähler — paginierte Sektionen oder schrittweise Listen.</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--counter">
+        <span class="num"><b>03</b> / 12</span>
+        <div class="line"></div>
+        <span class="arrow">›</span>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="cell">
+    <div>
+      <div class="cell-num">14 / DOTS</div>
+      <div class="cell-name">Dotted Rail</div>
+      <div class="cell-desc">Punktraster, leiser als Hairline. Eingebettete Subsektionen.</div>
+    </div>
+    <div class="cell-stage"><div class="stage-inner">
+      <div class="rct-divider rct-divider--dots"></div>
+    </div></div>
+  </section>
+
+</main>
+
+<script>
+  const sel = document.getElementById('theme-sel');
+  const stored = localStorage.getItem('rct-divider-test-theme');
+  if (stored) { document.documentElement.setAttribute('data-theme', stored); sel.value = stored; }
+  sel.addEventListener('change', e => {
+    document.documentElement.setAttribute('data-theme', e.target.value);
+    localStorage.setItem('rct-divider-test-theme', e.target.value);
+  });
+
+  // Live-Höhe für Fade & Aurora via --rd-h
+  const wireHeight = (inputId, demoId) => {
+    const inp = document.getElementById(inputId);
+    const dem = document.getElementById(demoId);
+    inp.addEventListener('input', () => dem.style.setProperty('--rd-h', inp.value + 'px'));
+  };
+  wireHeight('fade-h',   'fade-demo');
+  wireHeight('aurora-h', 'aurora-demo');
+</script>
+</body>
+</html>

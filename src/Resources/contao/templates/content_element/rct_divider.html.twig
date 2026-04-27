@@ -1,0 +1,75 @@
+{#
+  RCT – rct_divider.html.twig
+  13 Trenner-Varianten. Variant entscheidet das Markup.
+  Gemeinsame Klassen: .rct-divider .rct-divider--<variant>
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-divider rct-divider--{{ variant }}{{ cssClass ? ' ' ~ cssClass }}"
+     role="separator" aria-orientation="horizontal"
+     {% if htmlId %}id="{{ htmlId }}"{% endif %}
+     {% if bgStyle %}style="{{ bgStyle }}"{% endif %}>
+
+  {% if variant == 'labeled' %}
+    <div class="line"></div>
+    <span class="lbl">{% if idx %}<span class="num">{{ idx }}</span> {% endif %}{{ label ?: 'Section' }}</span>
+    <div class="line"></div>
+
+  {% elseif variant == 'section' %}
+    <div class="bar"></div>
+    <div class="ttl">{{ label ?: 'Section' }}</div>
+    <div class="rule"></div>
+    {% if idx %}<div class="idx">{{ idx }}</div>{% endif %}
+
+  {% elseif variant == 'coord' %}
+    {% if start %}<span><span class="x">x</span>{{ start }}</span>{% endif %}
+    <div class="line"></div>
+    {% if end %}<span><span class="x">x</span>{{ end }}</span>{% endif %}
+
+  {% elseif variant == 'marker' %}
+    <div class="line"></div>
+    {% if icon %}
+      <span class="icon">{{ icon|rct_icon }}</span>
+    {% else %}
+      <div class="mark"></div>
+    {% endif %}
+    <div class="line"></div>
+
+  {% elseif variant == 'bracket' %}
+    <span class="b">[</span>
+    <span>{{ start }}</span>
+    <div class="line"></div>
+    <span>{{ end }}</span>
+    <span class="b">]</span>
+
+  {% elseif variant == 'stepped' %}
+    {% for i in 1..segments %}
+      <div class="seg{% if i <= progress %} on{% endif %}"></div>
+    {% endfor %}
+
+  {% elseif variant == 'caption' %}
+    <div class="row">
+      <span>{{ label ?: '§ — Section' }}</span>
+      {% if status or statusDot %}
+        <span class="end">{{ status }}{% if statusDot %} <span class="dot"></span>{% endif %}</span>
+      {% endif %}
+    </div>
+    <div class="line"></div>
+
+  {% elseif variant == 'ruler' %}
+    <div class="ticks"></div>
+    <div class="nums">
+      {% for n in rulerNums %}<span>{{ n }}</span>{% endfor %}
+    </div>
+
+  {% elseif variant == 'counter' %}
+    <span class="num">{% if idx %}<b>{{ idx }}</b>{% endif %}{% if total %} / {{ total }}{% endif %}</span>
+    <div class="line"></div>
+    <span class="arrow">›</span>
+
+  {% endif %}
+  {# fade, ticks, aurora, dots: leere Container — komplett über CSS gemalt #}
+
+</div>
+{% endblock %}
