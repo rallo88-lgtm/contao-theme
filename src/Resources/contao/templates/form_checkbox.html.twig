@@ -50,7 +50,7 @@
         {% endfor %}
 
         {% if this.help|default %}
-            <p class="help" id="help_ctrl_{{ this.id }}">{{ this.help|sanitize_html('contao')|insert_tag_raw }}</p>
+            <p class="help" id="help_ctrl_{{ this.id }}">{{ this.help|html_decode|sanitize_html('contao')|insert_tag_raw }}</p>
         {% endif %}
 
     </fieldset>
