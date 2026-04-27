@@ -2148,6 +2148,9 @@ body.rct-right-open #right {
   padding: 20px;
   container-type: inline-size;
 }
+.rct-content-inner:last-of-type {
+  margin-bottom: 40px;
+}
 
 
 /* ------------------------------------------------------------
