@@ -25,19 +25,38 @@ class RctProductboxController extends AbstractContentElementController
         'purple'    => 'var(--rct-secondary)',
     ];
 
+    private const VALID_STOCK = ['', 'available', 'low', 'sold_out'];
+
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $colorKey = $model->rct_productbox_color ?: 'accent';
         $colorCss = self::COLOR_MAP[$colorKey] ?? self::COLOR_MAP['accent'];
 
-        // Bild
-        $imgSrc = '';
-        if ($model->rct_productbox_image) {
-            $file = FilesModel::findByUuid($model->rct_productbox_image);
-            if ($file !== null) {
-                $imgSrc = '/' . $file->path;
+        // Bilder (multiSRC, mit Legacy-Fallback auf single image-Feld)
+        $images = [];
+        if ($model->rct_productbox_images) {
+            $uuids = StringUtil::deserialize($model->rct_productbox_images, true);
+            foreach ($uuids as $uuid) {
+                if (!$uuid) continue;
+                $file = FilesModel::findByUuid($uuid);
+                if ($file !== null) {
+                    $images[] = '/' . $file->path;
+                }
             }
         }
+        if (!$images && $model->rct_productbox_image) {
+            $file = FilesModel::findByUuid($model->rct_productbox_image);
+            if ($file !== null) {
+                $images[] = '/' . $file->path;
+            }
+        }
+
+        // Stock
+        $stock = (string) $model->rct_productbox_stock;
+        if (!in_array($stock, self::VALID_STOCK, true)) $stock = '';
+
+        // Layout
+        $layout = $model->rct_productbox_layout ?: 'vertical';
 
         // Button (optional)
         $btn    = [];
@@ -53,12 +72,17 @@ class RctProductboxController extends AbstractContentElementController
 
         $template->bannerText  = htmlspecialchars((string) $model->rct_productbox_banner, ENT_QUOTES, 'UTF-8');
         $template->colorCss    = $colorCss;
-        $template->imgSrc      = $imgSrc;
+        $template->layout      = $layout;
+        $template->images      = $images;
+        $template->slideSpeed  = max(1, (int) ($model->rct_productbox_slide_speed ?: 5));
         $template->imgAlt      = htmlspecialchars((string) $model->rct_productbox_image_alt, ENT_QUOTES, 'UTF-8');
         $template->headline    = htmlspecialchars((string) $model->rct_productbox_headline, ENT_QUOTES, 'UTF-8');
         $template->subheadline = htmlspecialchars((string) $model->rct_productbox_subheadline, ENT_QUOTES, 'UTF-8');
         $template->text        = $model->rct_productbox_text ? nl2br(htmlspecialchars((string) $model->rct_productbox_text, ENT_QUOTES, 'UTF-8')) : '';
+        $template->stock       = $stock;
+        $template->stockLabel  = htmlspecialchars((string) $model->rct_productbox_stock_label, ENT_QUOTES, 'UTF-8');
         $template->priceExtra  = htmlspecialchars((string) $model->rct_productbox_price_extra, ENT_QUOTES, 'UTF-8');
+        $template->priceOld    = htmlspecialchars((string) $model->rct_productbox_price_old, ENT_QUOTES, 'UTF-8');
         $template->price       = htmlspecialchars((string) $model->rct_productbox_price, ENT_QUOTES, 'UTF-8');
         $template->priceNote   = htmlspecialchars((string) $model->rct_productbox_price_note, ENT_QUOTES, 'UTF-8');
         $template->boxStyle    = $model->rct_productbox_style ?: 'light';

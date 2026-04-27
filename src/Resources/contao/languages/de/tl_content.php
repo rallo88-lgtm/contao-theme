@@ -218,19 +218,26 @@ $GLOBALS['TL_LANG']['tl_content']['rct_divider_ruler_max']      = ['Skala-Maximu
 $GLOBALS['TL_LANG']['tl_content']['rct_divider_icon']           = ['Icon (Marker)', 'Marker (06): Emoji oder tabler:<slug>. Leer = klassische Diamond-Raute.'];
 
 // Productbox
-$GLOBALS['TL_LANG']['CTE']['rct_productbox']                       = ['RCT Produktbox', 'Produkt-Karte mit Banner, Bild, Headline, Preis-Block und optionalem CTA-Button'];
-$GLOBALS['TL_LANG']['tl_content']['productbox_legend']             = 'Produkt-Inhalt';
+$GLOBALS['TL_LANG']['CTE']['rct_productbox']                       = ['RCT Produktbox', 'Produkt-Karte mit Banner, Bild(ern), Headline, Stock-Indikator, Preis-Block und optionalem CTA-Button. Layout vertikal/horizontal, Multi-Bild-Slideshow.'];
+$GLOBALS['TL_LANG']['tl_content']['productbox_legend']             = 'Produkt-Karte';
+$GLOBALS['TL_LANG']['tl_content']['productbox_image_legend']       = 'Bild(er)';
+$GLOBALS['TL_LANG']['tl_content']['productbox_content_legend']     = 'Inhalt';
 $GLOBALS['TL_LANG']['tl_content']['productbox_price_legend']       = 'Preis-Block';
 $GLOBALS['TL_LANG']['tl_content']['productbox_btn_legend']         = 'Button (optional)';
-$GLOBALS['TL_LANG']['tl_content']['rct_productbox_banner']         = ['Banner-Text', 'Optional. Erscheint oben links als Akzent-Streifen (z.B. "TOP PREIS", "NEU", "AKTION")'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_banner']         = ['Banner-Text', 'Optional. Erscheint diagonal unten links als Sticker (z.B. "TOP PREIS", "NEU", "AKTION")'];
 $GLOBALS['TL_LANG']['tl_content']['rct_productbox_color']          = ['Akzentfarbe', 'Färbt Banner, Subheadline und Preis'];
-$GLOBALS['TL_LANG']['tl_content']['rct_productbox_image']          = ['Produktbild', 'Bild oben in der Box'];
-$GLOBALS['TL_LANG']['tl_content']['rct_productbox_image_alt']      = ['Alt-Text', 'Alternativtext für das Produktbild'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_layout']         = ['Layout', 'Vertikal (Bild oben) oder horizontal (Bild links). Mobile fällt automatisch auf vertikal zurück.'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_images']         = ['Produktbilder', 'Ein oder mehrere Bilder. Bei mehreren: automatischer Fade-Wechsel.'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_image_alt']      = ['Alt-Text', 'Alternativtext für das erste Bild (Barrierefreiheit)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_slide_speed']    = ['Wechsel-Intervall (Sek.)', 'Nur bei mehreren Bildern. Default 5 Sekunden.'];
 $GLOBALS['TL_LANG']['tl_content']['rct_productbox_headline']       = ['Produktname / Überschrift', 'z.B. "Propangas-Alukaufflasche 11 KG"'];
 $GLOBALS['TL_LANG']['tl_content']['rct_productbox_subheadline']    = ['Subheadline', 'Kleine Mono-Zeile in Akzentfarbe direkt unter der Headline'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_stock']          = ['Verfügbarkeits-Indikator', 'Färbt einen kleinen Punkt grün/orange/rot über der Headline'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_stock_label']    = ['Verfügbarkeits-Text', 'z.B. "Auf Lager", "Wenige verfügbar", "Ausverkauft"'];
 $GLOBALS['TL_LANG']['tl_content']['rct_productbox_text']           = ['Beschreibungstext', 'Kurze Beschreibung. Einfaches HTML (<strong>, <em>) erlaubt.'];
-$GLOBALS['TL_LANG']['tl_content']['rct_productbox_style']          = ['Stil', 'Hell (weiße Karte) oder Dunkel (Shell-Look)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_style']          = ['Stil', 'Hell (weiße Karte) oder Dunkel (Shell-Look mit Notch)'];
 $GLOBALS['TL_LANG']['tl_content']['rct_productbox_price_extra']    = ['Preis-Hinweis (oben)', 'Optional. Kleine Zeile über dem Preis'];
+$GLOBALS['TL_LANG']['tl_content']['rct_productbox_price_old']      = ['Vorheriger Preis', 'Optional, z.B. "€ 149,90". Erscheint klein und durchgestrichen.'];
 $GLOBALS['TL_LANG']['tl_content']['rct_productbox_price']          = ['Preis', 'Großer Preis-Wert, z.B. "€ 124,90". Leer = kein Preis.'];
 $GLOBALS['TL_LANG']['tl_content']['rct_productbox_price_note']     = ['MwSt-Hinweis', 'Kleine Zeile unter dem Preis, z.B. "inkl. 19% MwSt."'];
 $GLOBALS['TL_LANG']['tl_content']['rct_productbox_btn_label']      = ['Button-Text', 'Optional. Leer = kein Button.'];

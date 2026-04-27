@@ -1,12 +1,14 @@
 {#
   RCT – rct_productbox.html.twig
-  Produkt-Karte mit Banner, Bild, Headline, Subheadline, Text, Preis-Block, optionalem CTA.
+  Produkt-Karte mit Banner, Bild(ern), Headline, Stock-Indikator, Preis-Block, optionalem CTA.
   Style: light | dark.
+  Layout: vertical (Bild oben) | horizontal (Bild links).
+  Mehrere Bilder: automatischer Fade-Wechsel (data-pb-slides).
 #}
 {% extends '@Contao/content_element/_base.html.twig' %}
 
 {% block content %}
-<article class="rct-productbox style-{{ boxStyle }}{{ cssClass ? ' ' ~ cssClass }}"
+<article class="rct-productbox style-{{ boxStyle }} layout-{{ layout }}{{ cssClass ? ' ' ~ cssClass }}"
          style="--pb-color: {{ colorCss }};"
          {% if htmlId %}id="{{ htmlId }}"{% endif %}>
 
@@ -14,31 +16,62 @@
     <div class="rct-productbox-banner">{{ bannerText }}</div>
   {% endif %}
 
-  {% if imgSrc %}
-    <figure class="rct-productbox-image">
-      <img src="{{ imgSrc }}" alt="{{ imgAlt }}" loading="lazy">
+  {% if images|length > 0 %}
+    <figure class="rct-productbox-image"{% if images|length > 1 %} data-pb-slides data-speed="{{ slideSpeed }}"{% endif %}>
+      {% for img in images %}
+        <img src="{{ img }}" alt="{{ loop.first ? imgAlt : '' }}" loading="{{ loop.first ? 'eager' : 'lazy' }}" decoding="async"{% if loop.first %} class="is-active"{% endif %}>
+      {% endfor %}
     </figure>
   {% endif %}
 
-  <div class="rct-productbox-content">
-    {% if headline %}<h3 class="rct-productbox-headline">{{ headline }}</h3>{% endif %}
-    {% if subheadline %}<p class="rct-productbox-subheadline">{{ subheadline }}</p>{% endif %}
-    {% if text %}<div class="rct-productbox-text">{{ text|raw }}</div>{% endif %}
-  </div>
+  <div class="rct-productbox-body">
 
-  {% if priceExtra or price or btn %}
-    <div class="rct-productbox-foot">
-      {% if priceExtra %}<div class="rct-productbox-price-extra">{{ priceExtra }}</div>{% endif %}
-      {% if price %}
-        <div class="rct-productbox-price">
-          <span class="rct-productbox-price-value">{{ price }}</span>
-          {% if priceNote %}<span class="rct-productbox-price-note">{{ priceNote }}</span>{% endif %}
+    <div class="rct-productbox-content">
+      {% if stock %}
+        <div class="rct-productbox-stock is-{{ stock }}">
+          <span class="rct-productbox-stock-dot" aria-hidden="true"></span>
+          <span class="rct-productbox-stock-label">{{ stockLabel }}</span>
         </div>
       {% endif %}
-      {% if btn %}
-        <a href="{{ btn.url }}" class="rct-productbox-btn rct-btn rct-btn--{{ btn.style }}" target="{{ btn.target }}"{% if btn.target == '_blank' %} rel="noopener noreferrer"{% endif %}>{{ btn.label }}</a>
-      {% endif %}
+      {% if headline %}<h3 class="rct-productbox-headline">{{ headline }}</h3>{% endif %}
+      {% if subheadline %}<p class="rct-productbox-subheadline">{{ subheadline }}</p>{% endif %}
+      {% if text %}<div class="rct-productbox-text">{{ text|raw }}</div>{% endif %}
     </div>
-  {% endif %}
+
+    {% if priceExtra or price or priceOld or btn %}
+      <div class="rct-productbox-foot">
+        {% if priceExtra %}<div class="rct-productbox-price-extra">{{ priceExtra }}</div>{% endif %}
+        {% if price or priceOld %}
+          <div class="rct-productbox-price">
+            {% if priceOld %}<span class="rct-productbox-price-old">{{ priceOld }}</span>{% endif %}
+            {% if price %}<span class="rct-productbox-price-value">{{ price }}</span>{% endif %}
+            {% if priceNote %}<span class="rct-productbox-price-note">{{ priceNote }}</span>{% endif %}
+          </div>
+        {% endif %}
+        {% if btn %}
+          <a href="{{ btn.url }}" class="rct-productbox-btn rct-btn rct-btn--{{ btn.style }}" target="{{ btn.target }}"{% if btn.target == '_blank' %} rel="noopener noreferrer"{% endif %}>{{ btn.label }}</a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  </div>
 </article>
+
+{% if images|length > 1 %}
+<script>
+(function() {
+  document.querySelectorAll('[data-pb-slides]').forEach(function(wrap) {
+    var imgs = wrap.querySelectorAll('img');
+    if (imgs.length < 2) return;
+    var speed = parseInt(wrap.dataset.speed || '5', 10) * 1000;
+    var current = 0;
+    setInterval(function() {
+      imgs[current].classList.remove('is-active');
+      current = (current + 1) % imgs.length;
+      imgs[current].classList.add('is-active');
+    }, speed);
+  });
+})();
+</script>
+{% endif %}
 {% endblock %}

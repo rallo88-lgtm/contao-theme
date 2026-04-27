@@ -1610,7 +1610,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_icon'] = [
 // ============================================================
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_productbox'] =
-    '{type_legend},type;{productbox_legend},rct_productbox_banner,rct_productbox_color,rct_productbox_image,rct_productbox_image_alt,rct_productbox_headline,rct_productbox_subheadline,rct_productbox_text,rct_productbox_style;{productbox_price_legend},rct_productbox_price_extra,rct_productbox_price,rct_productbox_price_note;{productbox_btn_legend:hide},rct_productbox_btn_label,rct_productbox_btn_page,rct_productbox_btn_url,rct_productbox_btn_style,rct_productbox_btn_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{productbox_legend},rct_productbox_banner,rct_productbox_color,rct_productbox_layout,rct_productbox_style;{productbox_image_legend},rct_productbox_images,rct_productbox_image_alt,rct_productbox_slide_speed;{productbox_content_legend},rct_productbox_headline,rct_productbox_subheadline,rct_productbox_stock,rct_productbox_stock_label,rct_productbox_text;{productbox_price_legend},rct_productbox_price_extra,rct_productbox_price_old,rct_productbox_price,rct_productbox_price_note;{productbox_btn_legend:hide},rct_productbox_btn_label,rct_productbox_btn_page,rct_productbox_btn_url,rct_productbox_btn_style,rct_productbox_btn_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_banner'] = [
     'label'     => ['Banner-Text', 'Optional. Erscheint oben links als Akzent-Streifen (z.B. "TOP PREIS", "NEU", "AKTION"). Leer lassen für keinen Banner.'],
@@ -1635,11 +1635,61 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_color'] = [
     'sql'       => "varchar(16) NOT NULL default 'accent'",
 ];
 
+// Legacy single-image (nicht mehr in Palette, dient als Fallback)
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_image'] = [
-    'label'     => ['Produktbild', 'Bild oben in der Box'],
+    'label'     => ['Produktbild (legacy)', 'Wird nicht mehr in der Palette gezeigt — Fallback für vor v1.5'],
     'inputType' => 'fileTree',
     'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif,gif,svg', 'fieldType' => 'radio', 'tl_class' => 'clr'],
     'sql'       => "binary(16) NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_images'] = [
+    'label'     => ['Produktbilder', 'Ein oder mehrere Bilder. Bei mehreren: automatischer Fade-Wechsel auf der Karte.'],
+    'inputType' => 'fileTree',
+    'eval'      => ['multiple' => true, 'fieldType' => 'checkbox', 'filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif,gif,svg', 'orderField' => 'orderSRC', 'tl_class' => 'clr'],
+    'sql'       => "blob NULL",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_slide_speed'] = [
+    'label'     => ['Wechsel-Intervall (Sek.)', 'Nur bei mehreren Bildern. Default 5 Sekunden.'],
+    'inputType' => 'text',
+    'eval'      => ['rgxp' => 'natural', 'maxlength' => 3, 'tl_class' => 'w50'],
+    'sql'       => "smallint(5) unsigned NOT NULL default 5",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_layout'] = [
+    'label'     => ['Layout', 'Vertikal (Bild oben) oder horizontal (Bild links). Mobile fällt automatisch auf vertikal zurück.'],
+    'inputType' => 'select',
+    'options'   => ['vertical' => 'Vertikal (Bild oben)', 'horizontal' => 'Horizontal (Bild links)'],
+    'eval'      => ['tl_class' => 'w50'],
+    'sql'       => "varchar(12) NOT NULL default 'vertical'",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_stock'] = [
+    'label'     => ['Verfügbarkeits-Indikator', 'Optional. Färbt einen kleinen Punkt grün/orange/rot.'],
+    'inputType' => 'select',
+    'options'   => [
+        ''           => 'Kein Indikator',
+        'available'  => 'Verfügbar (grün, pulsiert)',
+        'low'        => 'Wenige verfügbar (orange)',
+        'sold_out'   => 'Ausverkauft (rot)',
+    ],
+    'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
+    'sql'       => "varchar(16) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_stock_label'] = [
+    'label'     => ['Verfügbarkeits-Text', 'Text neben dem Indikator-Punkt, z.B. "Auf Lager", "Wenige verfügbar", "Ausverkauft"'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
+    'sql'       => "varchar(64) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_price_old'] = [
+    'label'     => ['Vorheriger Preis (durchgestrichen)', 'Optional. z.B. "€ 149,90". Wird klein und durchgestrichen über dem aktuellen Preis angezeigt.'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
+    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_image_alt'] = [
