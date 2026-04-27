@@ -1551,7 +1551,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_total'] = [
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_segments'] = [
     'label'     => ['Segmente (Stepped)', 'Stepped (09): Anzahl Segmente — Default 6'],
     'inputType' => 'text',
-    'eval'      => ['rgxp' => 'natural', 'maxlength' => 2, 'tl_class' => 'w50'],
+    'eval'      => ['rgxp' => 'natural', 'maxlength' => 2, 'tl_class' => 'w50', 'default' => 6],
     'sql'       => "tinyint(2) unsigned NOT NULL default 6",
 ];
 

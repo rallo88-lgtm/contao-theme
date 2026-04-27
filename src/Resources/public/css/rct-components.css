@@ -5903,12 +5903,13 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   align-items: center;
   justify-content: center;
   color: var(--rct-accent);
-  font-size: 16px;
+  font-size: 48px;
   line-height: 1;
 }
 .rct-divider--marker .icon .rct-icon {
-  width: 16px;
-  height: 16px;
+  width: 48px;
+  height: 48px;
+  stroke-width: 1.25;
 }
 
 /* ── 08 · Bracket rail ── */
@@ -5917,10 +5918,10 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   align-items: center;
   gap: 10px;
   font-family: var(--rct-font-mono);
-  font-size: 11px;
+  font-size: 18px;
   font-weight: 500;
   letter-spacing: 0.12em;
-  color: var(--_rd-muted);
+  color: inherit;
 }
 .rct-divider--bracket .b {
   color: var(--rct-accent);
@@ -6074,7 +6075,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 /* ── 14 · Dotted rail ── */
 .rct-divider--dots {
   height: 6px;
-  background-image: radial-gradient(circle, var(--_rd-border-strong) 1px, transparent 1.2px);
+  background-image: radial-gradient(circle, var(--rct-accent) 1px, transparent 1.2px);
   background-size: 8px 6px;
   background-position: 0 50%;
   background-repeat: repeat-x;
