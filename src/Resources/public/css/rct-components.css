@@ -6113,10 +6113,10 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   transition: filter 0.25s ease;
 }
 .rct-productbox-frame.is-dark {
-  filter: drop-shadow(0 4px 10px color-mix(in oklab, var(--pb-color) 18%, transparent));
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.06));
 }
 .content-rct-productbox:hover .rct-productbox-frame.is-dark {
-  filter: drop-shadow(0 12px 24px color-mix(in oklab, var(--pb-color) 45%, transparent));
+  filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.18));
 }
 /* Akzent-Notch oben rechts (Triangle, in Akzentfarbe) */
 .rct-productbox.style-dark::after {
