@@ -1502,19 +1502,19 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_variant'] = [
     'label'     => ['Variante', '13 Trenner-Stile zur Auswahl'],
     'inputType' => 'select',
     'options'   => [
-        'fade'     => '02 — Fade (Akzent-Verlauf)',
-        'ticks'    => '03 — Tick Rail',
-        'labeled'  => '04 — Labeled (mit Mono-Label)',
-        'section'  => '05 — Section Starter (Akzentbalken)',
-        'coord'    => '06 — Coord (Vermessung)',
-        'marker'   => '07 — Marker (Diamond / Icon)',
-        'bracket'  => '08 — Bracket Rail',
-        'stepped'  => '09 — Stepped Accent',
-        'caption'  => '10 — Caption Rule',
-        'aurora'   => '11 — Aurora Gradient',
-        'ruler'    => '12 — Ruler (Skala)',
-        'counter'  => '13 — Counter (Pagination)',
-        'dots'     => '14 — Dotted Rail',
+        'fade'     => '01 — Fade (Akzent-Verlauf)',
+        'ticks'    => '02 — Tick Rail',
+        'labeled'  => '03 — Labeled (mit Mono-Label)',
+        'section'  => '04 — Section Starter (Akzentbalken)',
+        'coord'    => '05 — Coord (Vermessung)',
+        'marker'   => '06 — Marker (Diamond / Icon)',
+        'bracket'  => '07 — Bracket Rail',
+        'stepped'  => '08 — Stepped Accent',
+        'caption'  => '09 — Caption Rule',
+        'aurora'   => '10 — Aurora Gradient',
+        'ruler'    => '11 — Ruler (Skala)',
+        'counter'  => '12 — Counter (Pagination)',
+        'dots'     => '13 — Dotted Rail',
     ],
     'eval'      => ['tl_class' => 'w50', 'mandatory' => true],
     'sql'       => "varchar(16) NOT NULL default 'fade'",
@@ -1528,7 +1528,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_height'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_label'] = [
-    'label'     => ['Label / Titel', 'Labeled (04), Section (05), Caption (10)'],
+    'label'     => ['Label / Titel', 'Labeled (03), Section (04), Caption (09)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 128, 'tl_class' => 'w50'],
     'sql'       => "varchar(128) NOT NULL default ''",
@@ -1542,63 +1542,63 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_index'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_total'] = [
-    'label'     => ['Total (Counter)', 'Counter (13): "03 / 12" → hier "12" eintragen'],
+    'label'     => ['Total (Counter)', 'Counter (12): "03 / 12" → hier "12" eintragen'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 16, 'tl_class' => 'w50'],
     'sql'       => "varchar(16) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_segments'] = [
-    'label'     => ['Segmente (Stepped)', 'Stepped (09): Anzahl Segmente — Default 6'],
+    'label'     => ['Segmente (Stepped)', 'Stepped (08): Anzahl Segmente — Default 6'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'natural', 'maxlength' => 2, 'tl_class' => 'w50', 'default' => 6],
     'sql'       => "smallint(5) unsigned NOT NULL default 6",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_progress'] = [
-    'label'     => ['Fortschritt (Stepped)', 'Stepped (09): Wieviele Segmente sind "an" (Akzent)'],
+    'label'     => ['Fortschritt (Stepped)', 'Stepped (08): Wieviele Segmente sind "an" (Akzent)'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'natural', 'maxlength' => 2, 'tl_class' => 'w50'],
     'sql'       => "smallint(5) unsigned NOT NULL default 0",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_start'] = [
-    'label'     => ['Start-Label', 'Coord (06): "0,000" — Bracket (08): "BEGIN"'],
+    'label'     => ['Start-Label', 'Coord (05): "0,000" — Bracket (07): "BEGIN"'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
     'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_end'] = [
-    'label'     => ['End-Label', 'Coord (06): "1,440" — Bracket (08): "END"'],
+    'label'     => ['End-Label', 'Coord (05): "1,440" — Bracket (07): "END"'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
     'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_status'] = [
-    'label'     => ['Status-Text (Caption)', 'Caption (10): rechter Status, z.B. "Live"'],
+    'label'     => ['Status-Text (Caption)', 'Caption (09): rechter Status, z.B. "Live"'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
     'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_status_dot'] = [
-    'label'     => ['Status-Punkt', 'Caption (10): pulsierender Akzent-Punkt rechts'],
+    'label'     => ['Status-Punkt', 'Caption (09): pulsierender Akzent-Punkt rechts'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
     'sql'       => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_ruler_max'] = [
-    'label'     => ['Skala-Maximum (Ruler)', 'Ruler (12): höchster Wert der Skala — Default 1200, 7 Beschriftungen 0…max'],
+    'label'     => ['Skala-Maximum (Ruler)', 'Ruler (11): höchster Wert der Skala — Default 1200, 7 Beschriftungen 0…max'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'natural', 'maxlength' => 6, 'tl_class' => 'w50'],
     'sql'       => "mediumint(8) unsigned NOT NULL default 1200",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_icon'] = [
-    'label'     => ['Icon (Marker)', 'Marker (07): Emoji oder tabler:<slug>. Leer = klassische Diamond-Raute. Picker-Button öffnet die Icon-Auswahl.'],
+    'label'     => ['Icon (Marker)', 'Marker (06): Emoji oder tabler:<slug>. Leer = klassische Diamond-Raute. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],

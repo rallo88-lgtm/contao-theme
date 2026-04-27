@@ -5741,7 +5741,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   --_rd-border-strong: rgba(0,0,0,0.20);
 }
 
-/* ── 02 · Accent fade ── */
+/* ── 01 · Accent fade ── */
 .rct-divider--fade {
   height: var(--rd-h, 1px);
   background: linear-gradient(to right,
@@ -5753,7 +5753,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   opacity: 0.9;
 }
 
-/* ── 03 · Tick rail ── */
+/* ── 02 · Tick rail ── */
 .rct-divider--ticks {
   position: relative;
   height: 14px;
@@ -5775,7 +5775,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   background-position: 0 0;
 }
 
-/* ── 04 · Labeled rule ── */
+/* ── 03 · Labeled rule ── */
 .rct-divider--labeled {
   display: flex;
   align-items: center;
@@ -5803,7 +5803,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   font-weight: 500;
 }
 
-/* ── 05 · Section starter (left accent) ── */
+/* ── 04 · Section starter (left accent) ── */
 .rct-divider--section {
   display: flex;
   align-items: center;
@@ -5836,7 +5836,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   color: var(--_rd-muted);
 }
 
-/* ── 06 · Coordinate divider ── */
+/* ── 05 · Coordinate divider ── */
 .rct-divider--coord {
   display: flex;
   align-items: center;
@@ -5869,7 +5869,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 .rct-divider--coord .line::before { left: 0; }
 .rct-divider--coord .line::after  { right: 0; }
 
-/* ── 07 · Marker (Default = Diamond, optional Icon-Slot) ── */
+/* ── 06 · Marker (Default = Diamond, optional Icon-Slot) ── */
 .rct-divider--marker {
   display: flex;
   align-items: center;
@@ -5912,7 +5912,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   stroke-width: 1.25;
 }
 
-/* ── 08 · Bracket rail ── */
+/* ── 07 · Bracket rail ── */
 .rct-divider--bracket {
   display: flex;
   align-items: center;
@@ -5942,7 +5942,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
     var(--_rd-border-strong) 0 4px, transparent 4px 8px);
 }
 
-/* ── 09 · Stepped accent ── */
+/* ── 08 · Stepped accent ── */
 .rct-divider--stepped {
   display: flex;
   align-items: stretch;
@@ -5959,7 +5959,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   margin-left: 4px;
 }
 
-/* ── 10 · Mono caption rule (split 18% accent / rest border) ── */
+/* ── 09 · Mono caption rule (split 18% accent / rest border) ── */
 .rct-divider--caption {
   display: flex;
   flex-direction: column;
@@ -5999,7 +5999,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
     var(--_rd-border) 18%, var(--_rd-border) 100%);
 }
 
-/* ── 11 · Aurora gradient (Hero-Break, sparsam) ── */
+/* ── 10 · Aurora gradient (Hero-Break, sparsam) ── */
 .rct-divider--aurora {
   height: var(--rd-h, 1px);
   background: linear-gradient(to right,
@@ -6012,7 +6012,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   box-shadow: 0 0 24px color-mix(in oklab, var(--grad-1) 30%, transparent);
 }
 
-/* ── 12 · Ruler ── */
+/* ── 11 · Ruler ── */
 .rct-divider--ruler {
   position: relative;
   height: 18px;
@@ -6048,7 +6048,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   letter-spacing: 0.1em;
 }
 
-/* ── 13 · Counter divider ── */
+/* ── 12 · Counter divider ── */
 .rct-divider--counter {
   display: flex;
   align-items: center;
@@ -6072,11 +6072,11 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 }
 .rct-divider--counter .arrow {
   font-family: var(--rct-font-mono);
-  font-size: 16px;
+  font-size: 28px;
   color: var(--rct-accent);
 }
 
-/* ── 14 · Dotted rail ── */
+/* ── 13 · Dotted rail ── */
 .rct-divider--dots {
   height: 6px;
   background-image: radial-gradient(circle, var(--rct-accent) 1px, transparent 1.2px);
