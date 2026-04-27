@@ -78,7 +78,7 @@ class RctProductboxController extends AbstractContentElementController
         $template->imgAlt      = htmlspecialchars((string) $model->rct_productbox_image_alt, ENT_QUOTES, 'UTF-8');
         $template->headline    = htmlspecialchars((string) $model->rct_productbox_headline, ENT_QUOTES, 'UTF-8');
         $template->subheadline = htmlspecialchars((string) $model->rct_productbox_subheadline, ENT_QUOTES, 'UTF-8');
-        $template->text        = $model->rct_productbox_text ? nl2br(htmlspecialchars((string) $model->rct_productbox_text, ENT_QUOTES, 'UTF-8')) : '';
+        $template->text        = $this->sanitizeText((string) $model->rct_productbox_text);
         $template->stock       = $stock;
         $template->stockLabel  = htmlspecialchars((string) $model->rct_productbox_stock_label, ENT_QUOTES, 'UTF-8');
         $template->priceExtra  = htmlspecialchars((string) $model->rct_productbox_price_extra, ENT_QUOTES, 'UTF-8');
@@ -93,6 +93,22 @@ class RctProductboxController extends AbstractContentElementController
         $template->cssClass = $cssId[1] ?? '';
 
         return $template->getResponse();
+    }
+
+    /**
+     * Erlaubt nur eine Whitelist von Inline-Tags ohne Attribute.
+     * Verhindert XSS via on*-Attribute oder javascript:-URLs.
+     */
+    private function sanitizeText(string $raw): string
+    {
+        if ($raw === '') {
+            return '';
+        }
+        $allowed = '<strong><em><b><i><u><br><small>';
+        $clean   = strip_tags($raw, $allowed);
+        // Alle Attribute auf erlaubten Tags entfernen (z.B. onclick=, style=)
+        $clean   = preg_replace('/<(\w+)(\s+[^>]*)?>/i', '<$1>', $clean);
+        return nl2br($clean);
     }
 
     private function resolveUrl(int $pageId, string $manualUrl): string

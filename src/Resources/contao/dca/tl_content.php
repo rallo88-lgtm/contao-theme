@@ -1714,7 +1714,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_subheadline'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_text'] = [
-    'label'     => ['Beschreibungstext', 'Kurze Beschreibung. Einfaches HTML (<strong>, <em>) erlaubt.'],
+    'label'     => ['Beschreibungstext', 'Kurze Beschreibung. Erlaubte Tags: <strong>, <em>, <b>, <i>, <u>, <small>, <br>. Attribute werden entfernt.'],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:100px', 'tl_class' => 'clr'],
     'sql'       => "text NULL",
