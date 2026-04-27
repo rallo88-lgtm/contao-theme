@@ -2640,7 +2640,7 @@
   /* Eigenen Stacking-Context aufspannen, damit der fixed #gradient-canvas
      nicht durch den has-bg-*-Alpha durchschlägt, sobald #main unter 1024px
      z-index: unset bekommt. */
-  z-index: 10;
+  z-index: 20;
 }
 
 /* ── Centered ── */
@@ -5385,7 +5385,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   padding: 80px 0;
   overflow: hidden;
   /* Eigenen Stacking-Context — analog .rct-cta, siehe dort. */
-  z-index: 10;
+  z-index: 20;
 }
 
 /* BG-Override (rct_hero_bg_color gesetzt) — färbt direkt die Hero-Section.
