@@ -5788,7 +5788,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 }
 .rct-divider--labeled .lbl {
   font-family: var(--rct-font-mono);
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.22em;
@@ -5817,7 +5817,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 }
 .rct-divider--section .ttl {
   font-family: var(--rct-font-headline);
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.18em;
@@ -5830,7 +5830,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 }
 .rct-divider--section .idx {
   font-family: var(--rct-font-mono);
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.14em;
   color: var(--_rd-muted);
@@ -5841,7 +5841,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   display: flex;
   align-items: center;
   font-family: var(--rct-font-mono);
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -5918,7 +5918,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   align-items: center;
   gap: 10px;
   font-family: var(--rct-font-mono);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.12em;
   color: inherit;
@@ -5970,7 +5970,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   align-items: center;
   justify-content: space-between;
   font-family: var(--rct-font-mono);
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -6038,7 +6038,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   display: flex;
   justify-content: space-between;
   font-family: var(--rct-font-mono);
-  font-size: 8.5px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--_rd-muted);
   letter-spacing: 0.1em;
@@ -6052,7 +6052,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 }
 .rct-divider--counter .num {
   font-family: var(--rct-font-mono);
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--_rd-muted);
   letter-spacing: 0.14em;
@@ -6068,7 +6068,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 }
 .rct-divider--counter .arrow {
   font-family: var(--rct-font-mono);
-  font-size: 11px;
+  font-size: 16px;
   color: var(--rct-accent);
 }
 
