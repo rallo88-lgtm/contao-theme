@@ -1489,11 +1489,6 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   margin: 0;
   padding: 0;
 }
-/* Pseudo-Hover-Akzent von .mod_article::after wegnehmen (Underline-Effekt
-   passt nicht zu einem Hero/Cover-Article) */
-.mod_article.rct-fullwidth-article::after {
-  display: none;
-}
 /* Inhalte in der Fullwidth-Section gehen edge-to-edge.
    Wrapper-Chain (swiper, slide, content-image, figure) muss explizit
    100% breit sein, sonst stauchen sie sich auf img-intrinsic-Width. */

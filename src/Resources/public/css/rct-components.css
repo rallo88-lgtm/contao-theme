@@ -343,21 +343,6 @@
   padding: 60px;
 }
 
-/* Hover-Akzent-Linie links */
-.mod_article::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 0;
-  background: var(--rct-primary-light);
-  transition: height 0.3s ease;
-}
-.mod_article:hover::after {
-  height: 100%;
-}
-
 /* Karten-Label */
 .rct-card-label {
   font-family: var(--rct-font-headline);
@@ -6110,9 +6095,6 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   color: #1a1a1a;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
-.rct-productbox.style-light:hover {
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-}
 
 .rct-productbox.style-dark {
   background: color-mix(in srgb, var(--pb-color) 5%, var(--rct-shell-bg, #171717));
@@ -6148,6 +6130,7 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 
 .rct-productbox:hover {
   transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
 }
 
 /* Layout: horizontal (Bild links, Body rechts) */
