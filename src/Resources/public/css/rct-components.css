@@ -6406,7 +6406,6 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   display: flex;
   flex-direction: column;
   gap: 22px;
-  max-width: 560px;
   color: var(--rf-txt);
 }
 .ce_form.is-dark .formbody {
