@@ -102,11 +102,13 @@
     // Schließen-Button (Doppelpfeil innerhalb der Sidebar)
     if (closeBtnLeft) {
       closeBtnLeft.addEventListener('click', function () {
-        if (!isMobile()) {
+        if (body.classList.contains('rct-sidebar-open')) {
+          // Sidebar wurde via Toggle eingeblendet (Mobile / Topnav) → wieder ausblenden
+          body.classList.remove('rct-sidebar-open');
+        } else {
+          // Sidebar war Standard offen (Desktop, sidebar-Layouts) → schließen + persistieren
           body.classList.add('rct-sidebar-closed');
           localStorage.setItem('rct-sidebar-state', 'closed');
-        } else {
-          body.classList.remove('rct-sidebar-open');
         }
         document.dispatchEvent(new Event('rct:layout-change'));
       });
