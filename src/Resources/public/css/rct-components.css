@@ -5957,7 +5957,6 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: var(--_rd-muted);
 }
 .rct-divider--caption .row .end {
   display: inline-flex;
