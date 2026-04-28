@@ -84,116 +84,12 @@
 
 /* ------------------------------------------------------------
    2. CSS CUSTOM PROPERTIES
+   ------------------------------------------------------------
+   Single source of truth: rct-layout.css :root + theme-Blöcke.
    ------------------------------------------------------------ */
-:root {
-  /* Brand Colors */
-  --rct-primary:              #4a6700;
-  --rct-primary-light:        #8aba16;
-  --rct-primary-dim:          #a5d737;
-  --rct-primary-fixed:        #c0f452;
-  --rct-primary-container:    rgba(138,186,22,0.12);
-
-  --rct-secondary:            #704f98;
-  --rct-secondary-light:      #d4aeff;
-  --rct-secondary-container:  rgba(112,79,152,0.12);
-
-  --rct-error:                #ba1a1a;
-  --rct-error-container:      #ffdad6;
-
-  /* Surface */
-  --rct-bg:                   #fbf9f8;
-  --rct-surface:              #ffffff;
-  --rct-surface-low:          #f6f3f2;
-  --rct-surface-mid:          #f0eded;
-  --rct-surface-high:         #eae8e7;
-  --rct-surface-highest:      #e4e2e1;
-  --rct-surface-dim:          #dcd9d9;
-
-  /* Text */
-  --rct-text:                 #1b1c1c;
-  --rct-text-muted:           #434936;
-  --rct-text-faint:           #747a64;
-  --rct-outline:              #c3c9b1;
-
-  /* Dark Shell */
-  --rct-shell-bg:             #171717;
-  --rct-shell-border:         rgba(255,255,255,0.08);
-  --rct-shell-text:           #ffffff;
-  --rct-shell-muted:          #737373;
-  --rct-shell-hover:          rgba(255,255,255,0.06);
-
-  /* Typography */
-  --rct-font-headline:        'Space Grotesk', sans-serif;
-  --rct-font-body:            'Space Grotesk', sans-serif;
-  --rct-font-mono:            'DM Mono', monospace;
-
-  /* Spacing */
-  --rct-radius:               0.125rem;
-  --rct-radius-lg:            0.25rem;
-  --rct-radius-xl:            0.5rem;
-
-  /* Layout */
-  --rct-sidebar-width:        260px;
-  --rct-header-height:        64px;
-  --rct-footer-height:        50px;
-  --rct-max-width:            1280px;
-
-  /* Shadow */
-  --rct-shadow:               0 20px 40px rgba(27,28,28,0.06);
-  --rct-shadow-sm:            0 4px 12px rgba(27,28,28,0.05);
-  
-  --rct-accent: #27c4f4; /* Dein Standard-Blau */
-
-  --rct-transition-speed: 0.4s;  
-
-  /* Standard: Blue Night */
-  --rct-primary: #2951c7;
-  --rct-primary-light: #27c4f4;
-  --rct-bg-dots: rgba(255, 255, 255, 0.45);
-  
-  --grad-1: #27c4f4;
-  --grad-2: #2951c7;
-  --grad-3: #1d2db2;
-  --grad-4: #14054a;
-}
-[data-theme="lime"] {
-  --rct-primary: #4d8a12;
-  --rct-primary-light: #8aba16;
-  --rct-bg-dots: rgba(138, 186, 22, 0.5); /* Dein Grün mit Transparenz */
-
-  --grad-1: #8aba16;
-  --grad-2: #4d8a12;
-  --grad-3: #add633;
-  --grad-4: #164a1a;
-}
-
-[data-theme="purple"] {
-  --rct-primary: #4c1d95;
-  --rct-primary-light: #a855f7;
-  --rct-bg-dots: rgba(216, 180, 254, 0.5);
-
-  --grad-1: #2d1b4e;
-  --grad-2: #1c192e;
-  --grad-3: #4c1d95;
-  --grad-4: #1e1b4b;
-}
 
 
-/* --- BLITZSCHUTZ --- */
-html.rct-sidebar-initial-closed #left {
-  transform: translateX(-280px) !important; /* Breite deiner Sidebar */
-  transition: none !important; 
-}
-
-html.rct-sidebar-initial-closed #main,
-html.rct-sidebar-initial-closed #header,
-html.rct-sidebar-initial-closed #footer {
-  margin-left: 0 !important;
-  width: 100% !important;
-  transition: none !important;
-}
-
-
+/* Blitzschutz/FOUC für Sidebar-Initial-Closed → rct-layout.css */
 
 /* ------------------------------------------------------------
    5. PAGE LAYOUT
@@ -224,118 +120,15 @@ body.rct-layout-full #wrapper {
   position: relative;
 }
 /* ------------------------------------------------------------
-   7. DARK SHELL – SIDEBAR (#left)
-   ------------------------------------------------------------ */
-#left {
-  position: fixed;
-  z-index: 1000;
-  top: var(--rct-header-height);
-  left: 0;
-  bottom: 0;
-  margin-top: 1px;
-  width: var(--rct-sidebar-width);
-  height: calc(100vh - var(--rct-header-height) - var(--rct-footer-height) - 1px);
-  /* background: #1a1a1a; Dein Sidebar-Design */
-  background: var(--rct-shell-bg);
-  border-right: 1px solid var(--rct-shell-border);
-  padding: 10px 0;
-  overflow-y: auto;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ------------------------------------------------------------
- 6. MAIN CONTENT AREA (#main)
+   #main: Background bleibt hier (rct-layout.css setzt nur min-height/padding/overflow).
+   Sidebar-Toggle-Mechanik (margin-left/transform/Overlay) → rct-layout.css
    ------------------------------------------------------------ */
 #main {
-  flex: 1;
-  height: calc(100vh - var(--rct-header-height) - var(--rct-footer-height) );
-  min-width: 0;
   background-color: #0e0e18;
-  padding: 40px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  transition: margin-left var(--rct-transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-body.rct-sidebar-open #main  {
-  width: calc(100% - var(--rct-sidebar-width));
-    transition: width 0.4s ease;
 }
 
 
-.rct-content-inner {
-  position: relative;
-  z-index: 10; /* Sicher über den Canvas-Layern */
-  width: 100%;
-  flex-grow: 1;
-}
-
-
-/* --- DESKTOP LOGIK (> 1024px) --- */
-@media (min-width: 1025px) {
-  /* Startzustand Desktop: Sichtbar & Platz nehmend */
-  #left {
-    transform: translateX(0);
-  }
-  #main {
-    margin-left: var(--rct-sidebar-width);
-  }
-
-  /* Zustand Geschlossen (via Button) */
-  body.rct-sidebar-closed #left {
-    transform: translateX(calc(var(--rct-sidebar-width) * -1));
-  }
-  body.rct-sidebar-closed #main {
-    margin-left: 0;
-  }
-}
-
-/* --- MOBILE LOGIK (< 1024px) --- */
-@media (max-width: 1024px) {
-  /* Startzustand Mobile: Aus dem Bild geschoben */
-  #left {
-    transform: translateX(calc(var(--rct-sidebar-width) * -1));
-  }
-  #main {
-    margin-left: 0 !important;
-  }
-
-  /* Zustand Offen (via Button) */
-  body.rct-sidebar-open #left {
-    transform: translateX(0);
-  }
-
-  /* Scrim/Overlay */
-  body.rct-sidebar-open::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 900;
-    animation: fadeIn 0.4s ease;
-  }
-}
-
-/* --- MOBILE LOGIK (< 1024px) --- */
-@media (max-width: 1024px) {
-  /* Das Overlay liegt auf dem Body, wenn die Sidebar offen ist */
-  body.rct-sidebar-open::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Dein gewünschter Abdunklungs-Grad */
-    z-index: 900; /* Muss unter der Sidebar (#left), aber über dem Content liegen */
-    cursor: pointer;
-  }
-
-  #left {
-    z-index: 1000; /* Sidebar muss über dem Overlay liegen */
-  }
-}
-
+/* .rct-content-inner → rct-layout.css */
 
 
 @keyframes fadeIn {
@@ -374,89 +167,6 @@ body.rct-sidebar-open #main  {
 
 
 
-/* Sidebar brand */
-#left .rct-brand {
-  padding: 0 1.5rem 2.5rem;
-}
-
-#left .rct-brand h1,
-#left .rct-brand .rct-site-title {
-  color: var(--rct-shell-text);
-  font-family: var(--rct-font-headline);
-  font-size: 1rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  line-height: 1.2;
-}
-
-#left .rct-brand .rct-version {
-  font-family: var(--rct-font-headline);
-  font-size: 0.625rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--rct-shell-muted);
-  margin-top: 0.25rem;
-}
-
-/* Sidebar navigation */
-#left nav,
-#left .mod_navigation {
-  flex: 1;
-  padding: 0 1rem;
-}
-
-#left nav ul,
-#left .mod_navigation ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-#left nav ul li a,
-#left .mod_navigation ul li a {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 0.75rem;
-  font-family: var(--rct-font-headline);
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.15em;
-  font-weight: 400;
-  text-transform: uppercase;
-  color: var(--rct-shell-muted);
-  border-left: 4px solid transparent;
-  transition: background 0.15s var(--rct-transition-type), color 0.15s var(--rct-transition-type);
-  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
-}
-#left .mod_navigation ul.level_2 li a {
-  padding: 8px;
-  font-size: 13px;
-  border-top: 1px solid var(--rct-shell-border);
-}
-#left .mod_navigation ul.level_3 li a {
-  font-size: 12px;
-  padding: 6px 0 6px 8px;
-}
-
-#left nav ul li a:hover,
-#left .mod_navigation ul li a:hover {
-  background: var(--rct-shell-hover);
-  color: var(--rct-shell-text);
-}
-
-#left nav ul li.active strong.active,
-#left nav ul li.active > a,
-#left nav ul li.trail > a,
-#left .mod_navigation ul li.active > a,
-#left .mod_navigation ul li.trail > a {
-  color: var(--rct-primary-light);
-  border-left-color: var(--rct-primary-light);
-  background: rgba(255,255,255,0.04);
-}
-
-
 #headerTitle, #headerTitle h2, nav.mod_breadcrumb, nav.mod_breadcrumb ul li {
   float: left;
   margin-left: 5px;
@@ -467,32 +177,7 @@ nav.mod_breadcrumb ul li a {
 }
 
 
-/* Sidebar footer — Links nebeneinander via flex */
-#left .rct-sidebar-footer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px;
-  border-top: 1px solid var(--rct-shell-border);
-  margin-top: auto;
-}
-
-#left .rct-sidebar-footer a {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  font-family: var(--rct-font-headline);
-  font-size: 0.625rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--rct-shell-muted);
-  transition: color 0.15s var(--rct-transition-type);
-}
-
-#left .rct-sidebar-footer a:hover {
-  color: var(--rct-primary-light);
-}
+/* Sidebar footer styling: siehe rct-layout.css (single source of truth) */
 
 /* ------------------------------------------------------------
    7. DARK SHELL – TOP HEADER (#header)
@@ -615,12 +300,7 @@ nav.mod_breadcrumb ul li a {
 }
 
 
-/* CONTENT Innen */
-
-.rct-content-inner {
-  max-width: var(--rct-max-width);
-  margin: 0 auto;
-}
+/* CONTENT Innen → rct-layout.css */
 
 
 
@@ -724,17 +404,7 @@ nav.mod_breadcrumb ul li a {
 
 
 
-/* --- Link-Farben Logik --- */
-[data-theme="default"] {
-  --rct-accent: #8aba16;
-}
-[data-theme="lime"] {
-  --rct-accent: #8aba16;
-}
-
-[data-theme="purple"] {
-  --rct-accent: #704f98;
-}
+/* --- Link-Farben Logik (theme-accents in rct-layout.css) --- */
 #main a,
 #footer a {
   color: var(--rct-accent, #27c4f4);
@@ -977,11 +647,6 @@ body.rct-sidebar-open #rct-nav-toggle svg rect:nth-child(3) {
   z-index: 2;
 }
 
-/* Inhalts-Layer (Z-Index 10: Sicher über den Canvas) */
-.rct-content-inner {
-  position: relative;
-  z-index: 10;
-}
 
 /* WICHTIG: Die Artikel-Boxen - Transparenz für den Glow-Effekt */
 .mod_article {
@@ -1080,31 +745,7 @@ transition: opacity 2.0s ease-in-out !important;
 }
 
 /* Definition der Farben für den Wechsler */
-:root {
-  --grad-1: #27c4f4; --grad-2: #2951c7; --grad-3: #1d2db2; --grad-4: #14054a;
-  --rct-bg-dots: rgba(255, 255, 255, 0.45);
-}
-
-[data-theme="default"] {
-  --grad-1: #27c4f4; --grad-2: #2951c7; --grad-3: #1d2db2; --grad-4: #14054a;
-  --rct-bg-dots: rgba(255, 255, 255, 0.45);
-    --rct-primary-light: #8aba16;
-}
-
-[data-theme="lime"] {
-  --grad-1: #8aba16; --grad-2: #4d8a12; --grad-3: #add633; --grad-4: #164a1a;
-  --rct-bg-dots: rgba(138, 186, 22, 0.5);
-  --rct-primary-light: #8aba16;
-}
-
-[data-theme="purple"] {
-  --grad-1: #2d1b4e; --grad-2: #1c192e; --grad-3: #4c1d95; --grad-4: #1e1b4b;
-  --rct-bg-dots: rgba(216, 180, 254, 0.5);
-  --rct-primary-light: #a855f7;
-}
-
-
-
+/* CSS-Variablen (Grads, Theme-Farben) → rct-layout.css */
 
 #gradient-canvas.is-visible {
   opacity: 1;
@@ -1265,7 +906,7 @@ transition: opacity 2.0s ease-in-out !important;
   position: absolute;
   right: 0px; /* Abstand vom rechten Rand */
   
-  top: calc(((100vh - var(--rct-header-height) - var(--rct-footer-height) - 1px) / 2 ) - 34px);
+  top: calc(((100vh - var(--rct-header-height) - var(--rct-bottom-height) - 1px) / 2 ) - 34px);
   
   
   z-index: 1010; /* Über dem Inhalt der Sidebar */
@@ -1315,36 +956,4 @@ transition: opacity 2.0s ease-in-out !important;
   }
 }
 
-/* 1. INITIALER GUARD (Gegen das Blitzen) */
-/* Diese Regel greift am <html>, noch bevor der Body geladen ist */
-html.rct-sidebar-initial-closed #left {
-    transform: translateX(-260px) !important;
-    transition: none !important;
-}
-html.rct-sidebar-initial-closed #main {
-    margin-left: 0 !important;
-    transition: none !important;
-}
-
-/* 2. DESKTOP LAYOUT */
-@media (min-width: 1025px) {
-    /* Standard-Zustand: Sidebar ist OFFEN */
-    /* WICHTIG: Hier KEIN !important nutzen, sonst blockierst du dich selbst! */
-    #left {
-        transform: translateX(0);
-        transition: transform 0.3s ease-in-out;
-    }
-    #main {
-        margin-left: 260px; /* Deine Sidebar-Breite */
-        transition: margin-left 0.3s ease-in-out;
-    }
-
-    /* GESCHLOSSENER ZUSTAND (JS-Klasse) */
-    /* Diese Regel gewinnt, weil sie spezifischer ist als nur '#left' */
-    body.rct-sidebar-closed #left {
-        transform: translateX(-260px) !important;
-    }
-    body.rct-sidebar-closed #main {
-        margin-left: 0 !important;
-    }
-}
+/* Initialer Guard + Desktop Sidebar-Toggle → rct-layout.css */

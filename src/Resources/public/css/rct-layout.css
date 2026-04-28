@@ -1202,6 +1202,18 @@ position: sticky;
 [data-layout="topnav"] #rct-nav-toggle    { display: flex; }
 [data-layout="topnav"] #rct-right-toggle  { display: flex; }
 
+/* Topnav Push-Modus auf Desktop: wenn Sidebar reinkommt, schiebt #mainContainer
+   den Content via padding zur Seite (statt Overlay).
+   Animation-Transition liegt schon auf #mainContainer (siehe Desktop-@media). */
+@media (min-width: 1025px) {
+  [data-layout="topnav"] body.rct-sidebar-open #mainContainer {
+    padding-left: var(--rct-sidebar-left-width) !important;
+  }
+  [data-layout="topnav"] body.rct-right-open #mainContainer {
+    padding-right: var(--rct-sidebar-right-width) !important;
+  }
+}
+
 /* SIDEBAR RECHTS */
 /* #left bleibt im DOM und ist togglebar – standardmaessig geschlossen (rausgeschoben) */
 [data-layout="sidebar-right"] #left {
@@ -1586,7 +1598,7 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   height: calc(100vh - var(--rct-header-height) - var(--rct-bottom-height) - 1px);
   background: var(--rct-shell-bg);
   border-right: 1px solid var(--rct-shell-border);
-  padding: 20px 0;
+  padding: 10px 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -1686,15 +1698,17 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   position: relative;
 }
 
-nav ul li a,
-.mod_navigation ul li a {
+#left nav ul li a,
+#left .mod_navigation ul li a,
+#right nav ul li a,
+#right .mod_navigation ul li a {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1rem;
+  padding: 10px;
   font-family: var(--rct-font-headline);
   font-size: 16px;
   line-height: 24px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.15em;
   font-weight: 400;
   text-transform: uppercase;
   color: var(--rct-shell-muted);
@@ -1746,30 +1760,22 @@ nav ul li a,
 .mod_navigation li.submenu.is-open > ul {
     display: block;
 }
-/* Spezifische Einrückung/Schrift für Level 2 (Kompakt-Modus) */
-.mod_navigation ul.level_2 li a {
-      padding: 10px 0 10px 8px;
-      font-size: 13px;
-      border-top: 1px solid var(--rct-shell-border);
-}
-/* Spezifische Einrückung/Schrift für Level 3 (Kompakt-Modus) */
-.mod_navigation ul.level_3 li a {
-    font-size: 12px;
-    padding: 8px 0 8px 8px;
-}
-/* Spezifische Einrückung/Schrift für Level 4 (Kompakt-Modus) */
-.mod_navigation ul.level_4 li a {
-    font-size: 11px;
-    padding: 8px 0 8px 8px;
-}
+/* Spezifische Einrückung/Schrift für Sub-Level (Kompakt-Modus) */
+#left .mod_navigation ul.level_2 li a,
 #right .mod_navigation ul.level_2 li a {
-    padding: 10px 5px 5px 0;
+  padding: 9px;
+  font-size: 13px;
+  border-top: 1px solid var(--rct-shell-border);
 }
+#left .mod_navigation ul.level_3 li a,
 #right .mod_navigation ul.level_3 li a {
-    padding: 9px 4px 4px 0;
+  padding: 8px;
+  font-size: 12px;
 }
+#left .mod_navigation ul.level_4 li a,
 #right .mod_navigation ul.level_4 li a {
-    padding: 8px 3px 3px 0;
+  padding: 8px;
+  font-size: 11px;
 }
 
 
@@ -1830,16 +1836,23 @@ nav ul li a,
 
 
 
-/* Footer der linken Sidebar */
+/* Footer der linken Sidebar — Links nebeneinander via flex */
 #left .rct-sidebar-footer {
-  padding: 1.5rem 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
   border-top: 1px solid var(--rct-shell-border);
   margin-top: auto;
+}
+/* Alle Nicht-Anchor-Wrapper transparent — <a> sitzen direkt im Flex-Container */
+#left .rct-sidebar-footer :not(a) {
+  display: contents;
 }
 #left .rct-sidebar-footer a {
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 10px;
   font-family: var(--rct-font-headline);
   font-size: 0.625rem;
   font-weight: 500;
@@ -1907,21 +1920,14 @@ nav ul li a,
   margin-top: 0.25rem;
 }
 
-/* Navigation */
-
+/* Navigation — #right erbt Typografie/Padding von der konsolidierten Regel oben,
+   nur die Spiegel-Eigenschaften (Ausrichtung, Border) hier setzen */
 #right nav ul li a,
 #right .mod_navigation ul li a {
-  border-right-color: var(--rct-primary-light);
-  background: rgba(255,255,255,0.04);
-
   justify-content: flex-end;
   text-align: right;
-  padding: 0.75rem 1rem;
-  border-right: 4px solid;                   /* ← gespiegelt */
-    transition: background 0.15s var(--rct-transition-type), color 0.15s var(--rct-transition-type);
-  border-left: none;    border-right: 4px solid transparent;                   /* ← gespiegelt */
-    transition: background 0.15s var(--rct-transition-type), color 0.15s var(--rct-transition-type);
-  border-left: none;  
+  border-left: none;
+  border-right: 4px solid transparent;
 }
 
 #right nav ul li.active strong.active,
@@ -1952,10 +1958,13 @@ nav ul li a,
   border-top: 1px solid var(--rct-shell-border);
   margin-top: auto;
 }
+/* Alle Nicht-Anchor-Wrapper transparent — <a> sitzen direkt im Flex-Container */
+#right .rct-sidebar-footer :not(a) {
+  display: contents;
+}
 #right .rct-sidebar-footer a {
   display: flex;
-  justify-content: flex-end;
-  text-align: right;
+  align-items: center;
   padding: 10px;
   font-family: var(--rct-font-headline);
   font-size: 0.625rem;
