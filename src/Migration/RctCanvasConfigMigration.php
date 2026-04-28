@@ -17,6 +17,10 @@ class RctCanvasConfigMigration extends AbstractMigration
 
     public function shouldRun(): bool
     {
+        $tables = $this->db->createSchemaManager()->listTableNames();
+        if (!in_array('tl_rct_config', $tables)) {
+            return false;
+        }
         $columns = $this->db->createSchemaManager()->listTableColumns('tl_rct_config');
         return !isset($columns['rct_canvas_enabled']);
     }
