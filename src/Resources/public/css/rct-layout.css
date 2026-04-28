@@ -2210,12 +2210,12 @@ body.rct-right-open #right {
   align-items: center;
   flex-wrap: wrap;
   box-sizing: border-box;
-  padding: 1rem 2rem;
+  padding: 10px 20px;
   background: var(--rct-shell-bg);
   border-top: 1px solid var(--rct-shell-border);
   color: var(--rct-shell-muted);
   font-size: 0.625rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 
 }
@@ -2225,7 +2225,7 @@ body.rct-right-open #right {
   font-family: var(--rct-font-body);
   font-size: 0.625rem;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: var(--rct-shell-muted);
 }
 
