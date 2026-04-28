@@ -1880,7 +1880,7 @@ nav ul li a,
   height: calc(100vh - var(--rct-header-height) - var(--rct-bottom-height) - 1px);
   background: var(--rct-shell-bg);
   border-left: 1px solid var(--rct-shell-border);
-  padding: 20px 0;
+  padding: 10px 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -1942,9 +1942,13 @@ nav ul li a,
 #right .mod_navigation ul.level_4 { margin-right: 10px; }
 
 
-/* Footer der rechten Sidebar */
+/* Footer der rechten Sidebar — Links nebeneinander, rechtsbündig */
 #right .rct-sidebar-footer {
-  padding: 1.5rem 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px;
   border-top: 1px solid var(--rct-shell-border);
   margin-top: auto;
 }
@@ -1952,7 +1956,7 @@ nav ul li a,
   display: flex;
   justify-content: flex-end;
   text-align: right;
-  padding: 0.5rem 1rem;
+  padding: 10px;
   font-family: var(--rct-font-headline);
   font-size: 0.625rem;
   font-weight: 500;
@@ -1972,7 +1976,7 @@ nav ul li a,
 
 #left .rct-sidebar-logo,
 #right .rct-sidebar-logo {
-  padding: 1.25rem 1.25rem 1rem;
+  padding: 1rem;
   border-top: 1px solid var(--rct-shell-border);
   background-color: rgba(0,0,0,0.2);
   margin-top: auto;

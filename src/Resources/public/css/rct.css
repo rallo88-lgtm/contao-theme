@@ -238,7 +238,7 @@ body.rct-layout-full #wrapper {
   /* background: #1a1a1a; Dein Sidebar-Design */
   background: var(--rct-shell-bg);
   border-right: 1px solid var(--rct-shell-border);
-  padding: 20px 0;
+  padding: 10px 0;
   overflow-y: auto;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -467,9 +467,12 @@ nav.mod_breadcrumb ul li a {
 }
 
 
-/* Sidebar footer */
+/* Sidebar footer — Links nebeneinander via flex */
 #left .rct-sidebar-footer {
-  padding: 1.5rem 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
   border-top: 1px solid var(--rct-shell-border);
   margin-top: auto;
 }
@@ -477,14 +480,14 @@ nav.mod_breadcrumb ul li a {
 #left .rct-sidebar-footer a {
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 10px;
   font-family: var(--rct-font-headline);
   font-size: 0.625rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--rct-shell-muted);
-  transition: color 0.15s ease;
+  transition: color 0.15s var(--rct-transition-type);
 }
 
 #left .rct-sidebar-footer a:hover {
