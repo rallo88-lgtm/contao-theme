@@ -6682,6 +6682,9 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 .ce_form .rct-form-row > .rct-form-footer {
   justify-self: end;
 }
+@media (max-width: 540px) {
+  .ce_form .rct-form-row > .rct-form-footer { justify-self: start; }
+}
 
 /* ── Form-Header (Meta-Strip CE) ──
    Default = light (für weiße mod_articles).
