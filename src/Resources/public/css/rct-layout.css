@@ -1694,7 +1694,7 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.1rem;
   position: relative;
 }
 
