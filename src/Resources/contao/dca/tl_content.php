@@ -1235,11 +1235,11 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_tabs_style'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_pricing_table'] =
     '{type_legend},type;{pricing_legend},rct_pricing_data,rct_pricing_style;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+// rct_pricing_* ohne 'sql' → jsonData (RctPricingTableJsonStorageMigration)
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_pricing_data'] = [
     'label'     => ['Preistabelle', "Blöcke durch --- trennen. Zeile 1: Name|Preis|Zeitraum|highlight — dann Features mit + / - / neutral — dann > Button|/url"],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:220px; font-family:monospace', 'tl_class' => 'clr'],
-    'sql'       => "text NULL",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_pricing_style'] = [
@@ -1247,7 +1247,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_pricing_style'] = [
     'inputType' => 'select',
     'options'   => ['dark' => 'Dunkel', 'light' => 'Hell'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'dark'",
 ];
 
 // ============================================================
