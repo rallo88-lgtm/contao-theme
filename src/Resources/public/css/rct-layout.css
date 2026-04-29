@@ -2210,81 +2210,106 @@ body.rct-right-open #right {
    10. bottom (#bottom)
    ------------------------------------------------------------ */
 #bottom {
-  gap: 1rem;
   position: fixed;
-  z-index: 100;  
+  z-index: 100;
   bottom: 0;
+  left: 0;
   width: 100%;
   height: var(--rct-bottom-height);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-  padding: 10px 20px;
   background: var(--rct-shell-bg);
   border-top: 1px solid var(--rct-shell-border);
   color: var(--rct-shell-muted);
-  font-size: 0.625rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-
 }
 
-#bottom p,
-#bottom .rct-bottom-copy {
-  font-family: var(--rct-font-body);
-  font-size: 0.625rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--rct-shell-muted);
+#bottom > .inside {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
 }
 
-#bottom a,
-#bottom .rct-bottom-links a {
-  font-family: var(--rct-font-body);
-  transition: color 0.15s var(--rct-transition-type);
-}
-#bottom nav ul li a:hover,
-#bottom .rct-bottom-links a:hover {
-  color: var(--rct-primary-light);
-}
-
-
-/* Scroll-to-Top Button */
-#rct-scroll-top {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 200;
-  background: transparent;
-  border: 1px solid currentColor;
-  border-radius: 3px;
-  cursor: pointer;
-  padding: 2px;
-  width: 28px;
-  height: 28px;
+/* Linke + rechte Spalte — fix in Sidebar-Breite */
+#bottom_left,
+#bottom_right {
+  flex: 0 0 auto;
+  width: var(--rct-sidebar-left-width);
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: var(--rct-primary-light);
-  opacity: 0.5;
-  transition: opacity 0.25s ease, color 0.25s ease;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
-#rct-scroll-top:hover { opacity: 1; }
-#rct-scroll-top.is-at-top {
-  color: var(--rct-shell-muted);
-  opacity: 0.3;
-  pointer-events: none;
+#bottom_right {
+  width: var(--rct-sidebar-right-width);
+  justify-content: flex-end;
 }
 
-/* Privacy-Button — sitzt links neben Scroll-to-Top */
+/* Mittlere Spalte — folgt der Content-Lane (max-width zentriert) */
+#bottom_content {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: var(--rct-max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Copy-Block (links) */
+.bottom-copy,
+.bottom-copy p,
+.rct-footer-copy {
+  font-family: var(--rct-font-body);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--rct-shell-muted);
+  margin: 0;
+}
+.bottom-copy a,
+.rct-footer-copy a {
+  color: inherit;
+  transition: color 0.15s var(--rct-transition-type);
+}
+.bottom-copy a:hover,
+.rct-footer-copy a:hover {
+  color: var(--rct-primary-light);
+}
+
+/* Legal-Links (in bottom_content, linksbündig) */
+.bottom-legal-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.bottom-legal-links a {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-family: var(--rct-font-headline);
+  font-size: 0.625rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--rct-shell-muted);
+  transition: color 0.15s var(--rct-transition-type);
+}
+.bottom-legal-links a:hover {
+  color: var(--rct-primary-light);
+}
+
+/* Controls (in bottom_content, rechtsbündig) */
+.bottom-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Scroll-to-Top + Privacy Buttons — jetzt im Flow */
+#rct-scroll-top,
 #rct-privacy-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 200;
   background: transparent;
   border: 1px solid currentColor;
   border-radius: 3px;
@@ -2300,56 +2325,32 @@ body.rct-right-open #right {
   transition: opacity 0.25s ease, color 0.25s ease;
 }
 #rct-privacy-btn svg { width: 18px; height: 18px; }
-#rct-privacy-btn:hover { opacity: 1; color: var(--rct-accent); }
-
-#rct-scroll-top:not(.is-at-top):hover {
-  opacity: 1;
-}
-
-/* Legal-Links Slot — overlay innerhalb des #bottom-Bandes,
-   linksbündig zum Content (rechts der Sidebar) */
-#legal_links {
-  position: fixed;
-  z-index: 101;
-  bottom: 0;
-  left: var(--rct-sidebar-left-width);
-  height: var(--rct-bottom-height);
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
+#rct-scroll-top:hover,
+#rct-privacy-btn:hover { opacity: 1; }
+#rct-privacy-btn:hover { color: var(--rct-accent); }
+#rct-scroll-top.is-at-top {
+  color: var(--rct-shell-muted);
+  opacity: 0.3;
   pointer-events: none;
 }
-#legal_links :not(a) {
-  display: contents;
-}
-#legal_links a {
-  pointer-events: auto;
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  font-family: var(--rct-font-headline);
-  font-size: 0.625rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--rct-shell-muted);
-  transition: color 0.15s var(--rct-transition-type);
-}
-#legal_links a:hover {
-  color: var(--rct-primary-light);
+
+/* Topnav: keine fixen Sidebars → Seitenspalten kollabieren */
+[data-layout="topnav"] #bottom_left,
+[data-layout="topnav"] #bottom_right {
+  display: none;
 }
 
-/* Topnav: keine fixe linke Sidebar → Slot bei 0 + Padding */
-[data-layout="topnav"] #legal_links {
-  left: 0;
-  padding-left: 20px;
-}
-
-/* Mobile: Sidebar als Overlay → Slot rückt nach links */
+/* Mobile: Sidebars als Overlay → Seitenspalten kollabieren */
 @media (max-width: 1024px) {
-  #legal_links {
-    left: 0;
-    padding-left: 20px;
+  #bottom_left,
+  #bottom_right {
+    display: none;
+  }
+  #bottom_content {
+    padding: 0 16px;
+  }
+  .bottom-legal-links a {
+    padding: 10px 6px;
   }
 }
 

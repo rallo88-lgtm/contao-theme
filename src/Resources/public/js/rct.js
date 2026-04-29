@@ -887,82 +887,28 @@ window.applyLayout = function (layout) {
 
 
     /* ------------------------------------------------------------------
-       9. SCROLL-TO-TOP BUTTON
+       9. BOTTOM CONTROLS — Scroll-to-Top + Privacy
+       Buttons sind jetzt statisch im Bottom-Modul (siehe RCT Bottom Controls)
     ------------------------------------------------------------------ */
-    let bottomBar = document.getElementById('bottom');
-    if (!bottomBar) {
-      bottomBar = document.createElement('div');
-      bottomBar.id = 'bottom';
-      document.body.appendChild(bottomBar);
+    const scrollTopBtn = document.getElementById('rct-scroll-top');
+    const privacyBtn   = document.getElementById('rct-privacy-btn');
+
+    if (privacyBtn) {
+      privacyBtn.addEventListener('click', function () {
+        if (window.klaro) window.klaro.show();
+      });
     }
-    const scrollTopBtn = document.createElement('button');
-    scrollTopBtn.id = 'rct-scroll-top';
-    scrollTopBtn.setAttribute('aria-label', 'Zurück nach oben');
-    scrollTopBtn.innerHTML =
-      '<svg width="24" height="24" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-        '<polygon points="9,2 1,9.5 6,9.5 6,16 12,16 12,9.5 17,9.5"/>' +
-      '</svg>';
-    bottomBar.appendChild(scrollTopBtn);
 
-    // Privacy-Button (Klaro) direkt links neben Scroll-to-Top
-    const privacyBtn = document.createElement('button');
-    privacyBtn.id = 'rct-privacy-btn';
-    privacyBtn.setAttribute('aria-label', 'Datenschutzeinstellungen');
-    privacyBtn.setAttribute('title', 'Datenschutzeinstellungen');
-    privacyBtn.innerHTML =
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-        '<path d="M12 2L4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6l-8-4z"/>' +
-      '</svg>';
-    privacyBtn.addEventListener('click', function () {
-      if (window.klaro) window.klaro.show();
-    });
-    bottomBar.appendChild(privacyBtn);
-
-    function alignScrollTopBtn() {
-      const cssVars   = getComputedStyle(document.documentElement);
-      const maxWidth  = parseFloat(cssVars.getPropertyValue('--rct-max-width'))          || 1280;
-      const sbLeft    = parseFloat(cssVars.getPropertyValue('--rct-sidebar-left-width'))  || 260;
-      const sbRight   = parseFloat(cssVars.getPropertyValue('--rct-sidebar-right-width')) || 260;
-      const layout    = document.documentElement.getAttribute('data-layout') || 'sidebar';
-
-      // Wie viel Platz nehmen die Sidebars vom Viewport weg?
-      let padLeft  = 0;
-      let padRight = 0;
-
-      if (layout === 'sidebar' || layout === 'sidebar-right') {
-        if (!body.classList.contains('rct-sidebar-closed')) padLeft = sbLeft;
-      }
-      if (layout === 'sidebar-right') {
-        if (!body.classList.contains('rct-right-closed'))   padRight = sbRight;
-      } else if (layout !== 'topnav') {
-        if (body.classList.contains('rct-right-open'))      padRight = sbRight;
-      }
-
-      // Breite von #mainContainer → #main (flex:1, padding 40px je Seite)
-      const mainInner = window.innerWidth - padLeft - padRight - 80; // 2×40px #main padding
-
-      // rct-content-inner: max-width zentriert → ggf. Zentrierung
-      const centering = Math.max(0, (mainInner - maxWidth) / 2);
-
-      // right = rechte Sidebar + #main-padding-right + Zentrierung + content-inner-padding-right
-      let rightPos = padRight + 40 + centering + 20;
-      if (layout === 'classic') rightPos += 10;
-      scrollTopBtn.style.right = rightPos + 'px';
-      privacyBtn.style.right   = (rightPos + 34) + 'px'; // 28px Btn + 6px Gap
+    if (scrollTopBtn) {
+      scrollTopBtn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      const updateScrollTop = function () {
+        scrollTopBtn.classList.toggle('is-at-top', window.scrollY < 40);
+      };
+      updateScrollTop();
+      window.addEventListener('scroll', updateScrollTop, { passive: true });
     }
-    alignScrollTopBtn();
-    window.addEventListener('resize', alignScrollTopBtn, { passive: true });
-    document.addEventListener('rct:layout-change', alignScrollTopBtn);
-
-    function updateScrollTop() {
-      scrollTopBtn.classList.toggle('is-at-top', window.scrollY < 40);
-    }
-    updateScrollTop();
-    window.addEventListener('scroll', updateScrollTop, { passive: true });
-
-    scrollTopBtn.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
 
   }); // Ende DOMContentLoaded
 

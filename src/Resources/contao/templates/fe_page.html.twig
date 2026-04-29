@@ -104,11 +104,15 @@
 
       {# --------------------------------------------------------
          BOTTOM – fix am Boden, immer sichtbar
+         Drei-Spalten: bottom_left (Sidebar-Breite) | bottom_content (Content-Center) | bottom_right (Sidebar-Breite)
       -------------------------------------------------------- #}
-      {{ contao_section('bottom') }}
-
-      {# Legal-Links Slot — overlay über #bottom, linksbündig zum Content #}
-      {{ contao_section('legal_links') }}
+      <div id="bottom" role="contentinfo">
+        <div class="inside">
+          {{ contao_section('bottom_left') }}
+          {{ contao_section('bottom_content') }}
+          {{ contao_section('bottom_right') }}
+        </div>
+      </div>
 
   </div>{# /#wrapper #}
   {% endblock %}{# wrapper #}

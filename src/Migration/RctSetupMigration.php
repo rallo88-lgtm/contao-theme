@@ -193,11 +193,13 @@ class RctSetupMigration extends AbstractMigration
             ['title' => 'Navbar',               'id' => 'navbar',       'template' => 'block_section', 'position' => 'manual'],
             ['title' => 'Logo Links',           'id' => 'left_logo',    'template' => 'block_section', 'position' => 'manual'],
             ['title' => 'Logo Rechts',          'id' => 'right_logo',   'template' => 'block_section', 'position' => 'manual'],
-            ['title' => 'Sidebar Footer Links', 'id' => 'left_bottom',  'template' => 'block_section', 'position' => 'manual'],
-            ['title' => 'Sidebar Footer Rechts','id' => 'right_bottom', 'template' => 'block_section', 'position' => 'manual'],
-            ['title' => 'Header Links',         'id' => 'header_left',  'template' => 'block_section', 'position' => 'manual'],
-            ['title' => 'Header Rechts',        'id' => 'header_right', 'template' => 'block_section', 'position' => 'manual'],
-            ['title' => 'Legal Links',          'id' => 'legal_links',  'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Sidebar Footer Links', 'id' => 'left_bottom',    'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Sidebar Footer Rechts','id' => 'right_bottom',   'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Header Links',         'id' => 'header_left',    'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Header Rechts',        'id' => 'header_right',   'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Bottom Links',         'id' => 'bottom_left',    'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Bottom Mitte',         'id' => 'bottom_content', 'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Bottom Rechts',        'id' => 'bottom_right',   'template' => 'block_section', 'position' => 'manual'],
         ]);
     }
 }
