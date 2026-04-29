@@ -2263,6 +2263,7 @@ body.rct-right-open #right {
 #bottom_content > .inside {
   justify-content: space-between;
   gap: 20px;
+  padding: 0 20px;
 }
 #bottom_right > .inside {
   justify-content: flex-end;
@@ -2273,7 +2274,7 @@ body.rct-right-open #right {
 .bottom-copy p,
 .rct-footer-copy {
   font-family: var(--rct-font-body);
-  font-size: 0.625rem;
+  font-size: 0.58rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--rct-shell-muted);
