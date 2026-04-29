@@ -1495,6 +1495,8 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_stats'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_divider'] =
     '{type_legend},type;{divider_legend},rct_divider_variant,rct_divider_height;{divider_data_legend:hide},rct_divider_label,rct_divider_index,rct_divider_total,rct_divider_segments,rct_divider_progress,rct_divider_start,rct_divider_end,rct_divider_status,rct_divider_status_dot,rct_divider_ruler_max,rct_divider_icon;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+// rct_divider_* Felder ohne 'sql' — Werte landen in tl_content.jsonData
+// (Contao 5.7+ JSON-Storage). Daten-Migration: RctDividerJsonStorageMigration (v1.5.5).
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_variant'] = [
     'label'     => ['Variante', '13 Trenner-Stile zur Auswahl'],
     'inputType' => 'select',
@@ -1514,84 +1516,72 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_variant'] = [
         'dots'     => '13 — Dotted Rail',
     ],
     'eval'      => ['tl_class' => 'w50', 'mandatory' => true],
-    'sql'       => "varchar(16) NOT NULL default 'fade'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_height'] = [
     'label'     => ['Höhe (px)', 'Nur für Fade & Aurora — leer = 1px Hairline'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'natural', 'maxlength' => 4, 'tl_class' => 'w50'],
-    'sql'       => "smallint(5) unsigned NOT NULL default 0",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_label'] = [
     'label'     => ['Label / Titel', 'Labeled (03), Section (04), Caption (09)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 128, 'tl_class' => 'w50'],
-    'sql'       => "varchar(128) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_index'] = [
     'label'     => ['Index / Nummer', 'Labeled "02", Section "§ 04", Counter "03" — fettgedruckt im Akzent'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 16, 'tl_class' => 'w50'],
-    'sql'       => "varchar(16) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_total'] = [
     'label'     => ['Total (Counter)', 'Counter (12): "03 / 12" → hier "12" eintragen'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 16, 'tl_class' => 'w50'],
-    'sql'       => "varchar(16) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_segments'] = [
     'label'     => ['Segmente (Stepped)', 'Stepped (08): Anzahl Segmente — Default 6'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'natural', 'maxlength' => 2, 'tl_class' => 'w50', 'default' => 6],
-    'sql'       => "smallint(5) unsigned NOT NULL default 6",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_progress'] = [
     'label'     => ['Fortschritt (Stepped)', 'Stepped (08): Wieviele Segmente sind "an" (Akzent)'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'natural', 'maxlength' => 2, 'tl_class' => 'w50'],
-    'sql'       => "smallint(5) unsigned NOT NULL default 0",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_start'] = [
     'label'     => ['Start-Label', 'Coord (05): "0,000" — Bracket (07): "BEGIN"'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_end'] = [
     'label'     => ['End-Label', 'Coord (05): "1,440" — Bracket (07): "END"'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_status'] = [
     'label'     => ['Status-Text (Caption)', 'Caption (09): rechter Status, z.B. "Live"'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_status_dot'] = [
     'label'     => ['Status-Punkt', 'Caption (09): pulsierender Akzent-Punkt rechts'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_ruler_max'] = [
     'label'     => ['Skala-Maximum (Ruler)', 'Ruler (11): höchster Wert der Skala — Default 1200, 7 Beschriftungen 0…max'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'natural', 'maxlength' => 6, 'tl_class' => 'w50'],
-    'sql'       => "mediumint(8) unsigned NOT NULL default 1200",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_icon'] = [
@@ -1599,7 +1589,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_icon'] = [
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 // ============================================================
