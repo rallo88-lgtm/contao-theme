@@ -2618,15 +2618,8 @@ body.rct-right-open #right {
     max-width: 100%;
 
   }
-  .mod_breadcrumb { 
-    display: none; 
-  }
-
-  #bottom nav ul,
-  #bottom .rct-bottom-links {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
+  .mod_breadcrumb {
+    display: none;
   }
 
   #main {padding: 10px;}
