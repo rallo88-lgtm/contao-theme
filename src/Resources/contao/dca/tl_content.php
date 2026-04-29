@@ -192,12 +192,13 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_gallery_folder'] = [
     'sql'       => "binary(16) NULL",
 ];
 
+// rct_gallery_layout/cols/sortby/filter/lightbox ohne 'sql' → jsonData
+// (RctGalleryJsonStorageMigration). images + folder bleiben als fileTree-Spalten.
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_gallery_layout'] = [
     'label'     => ['Layout', 'Anordnung der Bilder'],
     'inputType' => 'select',
     'options'   => ['masonry' => 'Masonry (dynamisch)', 'fitrows' => 'Gleichmäßiges Raster'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(16) NOT NULL default 'masonry'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_gallery_cols'] = [
@@ -205,7 +206,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_gallery_cols'] = [
     'inputType' => 'select',
     'options'   => ['2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(2) NOT NULL default '3'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_gallery_sortby'] = [
@@ -217,21 +217,18 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_gallery_sortby'] = [
         'random'    => 'Zufällig',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(16) NOT NULL default 'name_asc'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_gallery_filter'] = [
     'label'     => ['Filter-Buttons', 'Unterordner als Filterkategorien anzeigen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_gallery_lightbox'] = [
     'label'     => ['Lightbox', 'Bilder in Lightbox öffnen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default '1'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_map'] =
