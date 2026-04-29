@@ -1019,11 +1019,11 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_timeline_style'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_chart_bars'] =
     '{type_legend},type;{chart_legend},rct_chart_bars_data,rct_chart_orientation,rct_chart_color,rct_chart_show_values,rct_content_color;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+// rct_chart_* ohne 'sql' → jsonData (RctChartBarsJsonStorageMigration)
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_chart_bars_data'] = [
     'label'     => ['Balken-Daten', 'Eine Zeile pro Balken: Label|Wert (0–100). Zeilen mit # werden ignoriert.'],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:140px; font-family:monospace', 'tl_class' => 'clr'],
-    'sql'       => "text NULL",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_chart_orientation'] = [
@@ -1036,7 +1036,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_chart_orientation'] = [
         'donut'      => 'Donut-Diagramm',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'vertical'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_chart_color'] = [
@@ -1049,14 +1048,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_chart_color'] = [
         'warn'    => 'Warnfarbe / Orange',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'accent'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_chart_show_values'] = [
     'label'     => ['Prozentzahl anzeigen', 'Wert als hochzählende Zahl neben dem Label anzeigen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default '1'",
 ];
 
 // ============================================================
