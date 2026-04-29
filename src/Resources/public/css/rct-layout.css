@@ -2271,7 +2271,7 @@ body.rct-right-open #right {
 .bottom-copy p,
 .rct-footer-copy {
   font-family: var(--rct-font-body);
-  font-size: 0.58rem;
+  font-size: 0.575rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--rct-shell-muted);
