@@ -2233,14 +2233,11 @@ body.rct-right-open #right {
 #bottom_right {
   flex: 0 0 auto;
   width: var(--rct-sidebar-left-width);
-  display: flex;
-  align-items: center;
   padding: 0 20px;
   box-sizing: border-box;
 }
 #bottom_right {
   width: var(--rct-sidebar-right-width);
-  justify-content: flex-end;
 }
 
 /* Mittlere Spalte — folgt der Content-Lane (max-width zentriert) */
@@ -2251,10 +2248,24 @@ body.rct-right-open #right {
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
+}
+
+/* Contao block_section wrappt Module in <div class="inside"> —
+   dort muss das flex-Layout greifen, nicht auf der Section selbst */
+#bottom_left > .inside,
+#bottom_content > .inside,
+#bottom_right > .inside {
   display: flex;
   align-items: center;
+  width: 100%;
+  height: 100%;
+}
+#bottom_content > .inside {
   justify-content: space-between;
   gap: 20px;
+}
+#bottom_right > .inside {
+  justify-content: flex-end;
 }
 
 /* Copy-Block (links) */
