@@ -243,18 +243,17 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_gallery_lightbox'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_map'] =
     '{type_legend},type;{map_legend},rct_map_address,rct_map_marker,rct_map_zoom,rct_map_height;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+// rct_map_* ohne 'sql' → jsonData (RctMapJsonStorageMigration)
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_map_address'] = [
     'label'     => ['Adresse', 'Vollständige Adresse (Straße, PLZ, Ort)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_map_marker'] = [
     'label'     => ['Marker-Text', 'Text im Popup-Fenster des Kartenmarkers (optional)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'long'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_map_zoom'] = [
@@ -262,7 +261,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_map_zoom'] = [
     'inputType' => 'select',
     'options'   => ['10' => '10 – Stadtebene', '12' => '12 – Stadtteil', '14' => '14 – Straße (Standard)', '16' => '16 – Gebäude', '18' => '18 – Maximum'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(2) NOT NULL default '14'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_map_height'] = [
@@ -270,7 +268,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_map_height'] = [
     'inputType' => 'select',
     'options'   => ['250px' => '250px', '300px' => '300px', '400px' => '400px (Standard)', '500px' => '500px', '600px' => '600px'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(6) NOT NULL default '400px'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_parallax_start'] =
