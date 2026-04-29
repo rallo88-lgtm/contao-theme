@@ -337,11 +337,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_image'] = [
     'sql'       => "binary(16) NULL",
 ];
 
+// rct_sb_* ohne 'sql' → jsonData (RctSliderBoxJsonStorageMigration).
+// rct_sb_image (fileTree) + rct_sb_link_page/link2_page (pageTree-relations) bleiben als Spalten.
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_image_alt'] = [
     'label'     => ['Alt-Text', 'Bildbeschreibung (Barrierefreiheit)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_bg_position'] = [
@@ -359,7 +360,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_bg_position'] = [
         'bottom right'  => 'Unten rechts',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(16) NOT NULL default 'center'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_overlay'] = [
@@ -367,35 +367,30 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_overlay'] = [
     'inputType' => 'select',
     'options'   => ['' => 'Kein Overlay', '20' => '20%', '30' => '30%', '40' => '40%', '50' => '50%', '60' => '60%', '70' => '70%', '80' => '80%'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(3) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_min_height'] = [
     'label'     => ['Mindesthöhe', 'z.B. 500px, 70vh, 100vh'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 16, 'tl_class' => 'w50', 'rgxp' => 'alnum'],
-    'sql'       => "varchar(16) NOT NULL default '500px'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_overline'] = [
     'label'     => ['Overline', 'Kleiner Text über der Headline (z.B. Kategorie, Eyebrow)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 128, 'tl_class' => 'long clr'],
-    'sql'       => "varchar(128) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_headline'] = [
     'label'     => ['Headline', 'Hauptüberschrift (H2)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_text'] = [
     'label'     => ['Text', 'Body-Text unter der Headline'],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:120px', 'tl_class' => 'clr'],
-    'sql'       => "text NULL",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_align'] = [
@@ -403,9 +398,9 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_align'] = [
     'inputType' => 'select',
     'options'   => ['left' => 'Links', 'center' => 'Mittig', 'right' => 'Rechts'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'center'",
 ];
 
+// pageTree mit relation → bleibt als Spalte
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_page'] = [
     'label'      => ['Interne Seite', 'Contao-Seite als CTA-Ziel (Vorrang vor URL)'],
     'inputType'  => 'pageTree',
@@ -419,21 +414,18 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_url'] = [
     'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_label'] = [
     'label'     => ['Link-Text', 'Beschriftung des CTA-Buttons (Standard: „Mehr erfahren")'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_target'] = [
     'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_style'] = [
@@ -441,9 +433,9 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link_style'] = [
     'inputType' => 'select',
     'options'   => ['primary' => 'Primary (gefüllt)', 'outline' => 'Outline (Rahmen)', 'ghost' => 'Ghost (transparent)'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'primary'",
 ];
 
+// pageTree mit relation → bleibt als Spalte
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link2_page'] = [
     'label'      => ['Zweiter Button — Interne Seite', 'Optionaler zweiter CTA-Button'],
     'inputType'  => 'pageTree',
@@ -457,14 +449,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link2_url'] = [
     'label'     => ['Zweiter Button — Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link2_label'] = [
     'label'     => ['Zweiter Button — Text', 'Beschriftung; leer = Button wird nicht angezeigt'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link2_style'] = [
@@ -472,14 +462,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link2_style'] = [
     'inputType' => 'select',
     'options'   => ['primary' => 'Primary (gefüllt)', 'outline' => 'Outline (Rahmen)', 'ghost' => 'Ghost (transparent)'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'outline'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_sb_link2_target'] = [
     'label'     => ['Zweiter Button — Neues Tab', 'Link in neuem Tab öffnen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_icon_reference'] =
