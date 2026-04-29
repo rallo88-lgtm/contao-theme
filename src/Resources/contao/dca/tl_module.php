@@ -30,11 +30,12 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_fullscreen_toggle'] =
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_language_switcher'] =
     '{title_legend},name,headline,type;{languages_legend},rct_languages;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
+// RCT-Felder in tl_module ohne 'sql' → jsonData (RctModuleFieldsJsonStorageMigration).
+// rct_logo_image + rct_logo_image_mobile (fileTree) bleiben als Spalten.
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_languages'] = [
     'label'     => ['Sprachen', "Eine Zeile pro Sprache: CODE|Bezeichnung|/url\nBeispiel: DE|Deutsch|/"],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:80px; font-family: monospace', 'tl_class' => 'clr'],
-    'sql'       => 'text NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_logo'] =
@@ -45,7 +46,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_style'] = [
     'inputType' => 'select',
     'options'   => ['sidebar' => 'Sidebar', 'header' => 'Header'],
     'eval'      => ['tl_class' => 'w50 clr'],
-    'sql'       => "varchar(16) NOT NULL default 'sidebar'",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_image'] = [
@@ -66,21 +66,18 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_url'] = [
     'label'     => ['Logo-Link', 'URL auf die das Logo verlinkt. Standard: /'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'url', 'decodeEntities' => true, 'tl_class' => 'w50', 'maxlength' => 255],
-    'sql'       => "varchar(255) NOT NULL default '/'",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_alt'] = [
     'label'     => ['Alt-Text / Aria-Label', 'Beschreibung des Logos für Screenreader.'],
     'inputType' => 'text',
     'eval'      => ['tl_class' => 'w50', 'maxlength' => 255],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_hide_mobile'] = [
     'label'     => ['Auf Mobile ausblenden', 'Logo auf kleinen Bildschirmen nicht anzeigen.'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'clr m12'],
-    'sql'       => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_visibility'] = [
@@ -88,5 +85,4 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['rct_visibility'] = [
     'inputType' => 'select',
     'options'   => ['' => 'Immer anzeigen', 'mobile' => 'Nur Mobile (≤768px)', 'tablet' => 'Mobil + Tablet (≤1024px)', 'desktop' => 'Nur Desktop (>1024px)'],
     'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
-    'sql'       => "varchar(10) NOT NULL default ''",
 ];

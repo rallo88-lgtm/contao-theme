@@ -7,6 +7,7 @@ PaletteManipulator::create()
     ->addField(['rct_article_bg_color', 'rct_article_bg_alpha', 'rct_article_blur'], 'rct_article_legend', PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('default', 'tl_article');
 
+// rct_article_* ohne 'sql' → jsonData (RctArticleBgJsonStorageMigration)
 $GLOBALS['TL_DCA']['tl_article']['fields']['rct_article_bg_color'] = [
     'label'     => ['Hintergrundfarbe', 'Basis-Farbe des Artikel-Hintergrunds'],
     'inputType' => 'select',
@@ -17,7 +18,6 @@ $GLOBALS['TL_DCA']['tl_article']['fields']['rct_article_bg_color'] = [
         'accent' => 'Akzentfarbe (Cyan)',
     ],
     'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
-    'sql'       => "varchar(12) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_article']['fields']['rct_article_bg_alpha'] = [
@@ -39,7 +39,6 @@ $GLOBALS['TL_DCA']['tl_article']['fields']['rct_article_bg_alpha'] = [
         '100' => '100% (deckend)',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(4) NOT NULL default '100'",
 ];
 
 $GLOBALS['TL_DCA']['tl_article']['fields']['rct_article_blur'] = [
@@ -53,5 +52,4 @@ $GLOBALS['TL_DCA']['tl_article']['fields']['rct_article_blur'] = [
         '20' => 'Sehr stark (20px)',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(4) NOT NULL default '0'",
 ];
