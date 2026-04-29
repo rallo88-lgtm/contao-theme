@@ -197,6 +197,7 @@ class RctSetupMigration extends AbstractMigration
             ['title' => 'Sidebar Footer Rechts','id' => 'right_bottom', 'template' => 'block_section', 'position' => 'manual'],
             ['title' => 'Header Links',         'id' => 'header_left',  'template' => 'block_section', 'position' => 'manual'],
             ['title' => 'Header Rechts',        'id' => 'header_right', 'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Legal Links',          'id' => 'legal_links',  'template' => 'block_section', 'position' => 'manual'],
         ]);
     }
 }

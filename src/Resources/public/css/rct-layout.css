@@ -1840,7 +1840,6 @@ html[data-layout="classic"] #left .rct-header-logo-link {
 #left .rct-sidebar-footer {
   display: flex;
   align-items: center;
-  gap: 8px;
   padding: 10px;
   border-top: 1px solid var(--rct-shell-border);
   margin-top: auto;
@@ -1855,9 +1854,9 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   padding: 10px;
   font-family: var(--rct-font-headline);
   font-size: 0.625rem;
-  font-weight: 500;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: var(--rct-shell-muted);
   transition: color 0.15s var(--rct-transition-type);
 }
@@ -1953,7 +1952,6 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
   padding: 10px;
   border-top: 1px solid var(--rct-shell-border);
   margin-top: auto;
@@ -1968,9 +1966,9 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   padding: 10px;
   font-family: var(--rct-font-headline);
   font-size: 0.625rem;
-  font-weight: 500;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: var(--rct-shell-muted);
   transition: color 0.15s var(--rct-transition-type);
 }
@@ -2306,6 +2304,53 @@ body.rct-right-open #right {
 
 #rct-scroll-top:not(.is-at-top):hover {
   opacity: 1;
+}
+
+/* Legal-Links Slot — overlay innerhalb des #bottom-Bandes,
+   linksbündig zum Content (rechts der Sidebar) */
+#legal_links {
+  position: fixed;
+  z-index: 101;
+  bottom: 0;
+  left: var(--rct-sidebar-left-width);
+  height: var(--rct-bottom-height);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  pointer-events: none;
+}
+#legal_links :not(a) {
+  display: contents;
+}
+#legal_links a {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-family: var(--rct-font-headline);
+  font-size: 0.625rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--rct-shell-muted);
+  transition: color 0.15s var(--rct-transition-type);
+}
+#legal_links a:hover {
+  color: var(--rct-primary-light);
+}
+
+/* Topnav: keine fixe linke Sidebar → Slot bei 0 + Padding */
+[data-layout="topnav"] #legal_links {
+  left: 0;
+  padding-left: 20px;
+}
+
+/* Mobile: Sidebar als Overlay → Slot rückt nach links */
+@media (max-width: 1024px) {
+  #legal_links {
+    left: 0;
+    padding-left: 20px;
+  }
 }
 
 
