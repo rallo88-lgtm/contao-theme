@@ -251,3 +251,23 @@ $GLOBALS['TL_LANG']['CTE']['rct_form_header']                      = ['RCT Form-
 $GLOBALS['TL_LANG']['tl_content']['form_header_legend']            = 'Meta-Strip';
 $GLOBALS['TL_LANG']['tl_content']['rct_form_header_items']         = ['Items', 'Eine Zeile pro Item. Erste Zeile = Akzentfarbe.'];
 $GLOBALS['TL_LANG']['tl_content']['rct_form_header_style']         = ['Stil', 'Hell (für weiße Surfaces) oder Dunkel (für Shell-/Aurora-BG)'];
+
+// Emitter (Particle-Effekt)
+$GLOBALS['TL_LANG']['CTE']['rct_emitter']                          = ['RCT Emitter', 'Particle-Effekt: Schnee, Blätter, Konfetti, Funken … auf einen Ziel-Container.'];
+$GLOBALS['TL_LANG']['tl_content']['emitter_legend']                = 'Emitter';
+$GLOBALS['TL_LANG']['tl_content']['emitter_custom_legend']         = 'Custom-Overrides (Preset-Felder selektiv überschreiben)';
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_preset']            = ['Preset', 'Voreinstellung der Partikel-Optik'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_target']            = ['Ziel-Selector', 'CSS-Selector des Ziel-Containers. Leer = umschließender Article'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_shapes']            = ['Shapes', 'Komma-getrennte Emojis/Symbole'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_colors']            = ['Farben', 'Komma-getrennte Hex-/CSS-Farben'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_direction']         = ['Richtung', 'Bewegungsrichtung'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_min_size']          = ['Min Size (px)', 'Minimale Partikelgröße'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_max_size']          = ['Max Size (px)', 'Maximale Partikelgröße'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_speed']             = ['Speed', '1 = sehr langsam, 50 = sehr schnell'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_rotation']          = ['Rotation', 'Partikel rotieren'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_rotation_speed']    = ['Rotation Speed', 'Sekunden pro Umdrehung'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_natural_fall']      = ['Natürlicher Fall', 'Sway-Effekt'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_natural_start']     = ['Natürlicher Start', 'Start verstreuen'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_fadeout']           = ['Fadeout', 'Partikel werden transparent'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_new_on']            = ['Spawn-Intervall (ms)', 'Niedrig = dichter Effekt'];
+$GLOBALS['TL_LANG']['tl_content']['rct_emitter_pool_size']         = ['Pool Size', 'Max. gleichzeitig sichtbare Partikel'];

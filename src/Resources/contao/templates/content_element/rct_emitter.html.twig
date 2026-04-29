@@ -1,0 +1,38 @@
+{#
+  RCT – rct_emitter
+  Particle-Emitter (Schnee, Blätter, Konfetti, …) auf einen Ziel-Container.
+  Rendert nur ein <script>-Snippet — kein sichtbares Element.
+
+  Aufruf:
+    - emitterTarget gesetzt: Selector aus dem BE-Feld
+    - emitterTarget leer:    nächster .mod_article-Vorfahre des <script>-Tags
+                              (so wirkt der Emitter "auf das Element wo er liegt")
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<script id="{{ emitterId }}">
+(function(){
+  function boot() {
+    if (typeof RalloEmitter === 'undefined') {
+      return setTimeout(boot, 50);
+    }
+    var script = document.getElementById('{{ emitterId }}');
+    var target = {{ emitterTarget ? ('"' ~ emitterTarget|e('js') ~ '"')|raw : 'null' }};
+    var host;
+    if (target) {
+      host = document.querySelector(target);
+    } else if (script) {
+      host = script.closest('.mod_article') || script.parentElement;
+    }
+    if (!host) return;
+    new RalloEmitter(host, {{ emitterOptions|raw }});
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+</script>
+{% endblock %}

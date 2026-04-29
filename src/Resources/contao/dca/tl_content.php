@@ -1689,3 +1689,118 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_form_header_style'] = [
     'options'   => ['light' => 'Hell', 'dark' => 'Dunkel'],
     'eval'      => ['tl_class' => 'w50'],
 ];
+
+// ============================================================
+// RCT Emitter (Particle-Effekt: Schnee, Blätter, Konfetti, …)
+// ============================================================
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_emitter'] =
+    '{type_legend},type;'
+    . '{emitter_legend},rct_emitter_preset,rct_emitter_target;'
+    . '{emitter_custom_legend:hide},rct_emitter_shapes,rct_emitter_colors,rct_emitter_direction,rct_emitter_min_size,rct_emitter_max_size,rct_emitter_speed,rct_emitter_rotation,rct_emitter_rotation_speed,rct_emitter_natural_fall,rct_emitter_natural_start,rct_emitter_fadeout,rct_emitter_new_on,rct_emitter_pool_size;'
+    . '{expert_legend:hide},cssID;'
+    . '{invisible_legend:hide},invisible,start,stop';
+
+// rct_emitter_* Felder ohne 'sql' → tl_content.jsonData (Contao 5.7+ JSON-Storage)
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_preset'] = [
+    'label'     => ['Preset', 'Voreinstellung — alle weiteren Felder sind optionale Overrides'],
+    'inputType' => 'select',
+    'options'   => [
+        'snow'     => '❄ Schnee',
+        'leaves'   => '🍂 Herbstlaub',
+        'petals'   => '🌸 Blütenblätter',
+        'confetti' => '🎉 Konfetti',
+        'sparks'   => '✨ Funken (steigen)',
+        'hearts'   => '❤ Herzen (steigen)',
+        'bubbles'  => '○ Bubbles (steigen)',
+        'custom'   => '⚙ Custom (alles selbst)',
+    ],
+    'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_target'] = [
+    'label'     => ['Ziel-Selector', 'CSS-Selector des Ziel-Containers (z.B. #meinHero, .my-section). Leer lassen → wirkt auf den umschließenden Article'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+];
+
+// ── Custom-Override-Felder (alle optional) ──
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_shapes'] = [
+    'label'     => ['Shapes', 'Komma-getrennte Liste: Emojis, Symbole, Buchstaben. Leer = Preset-Default'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'long'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_colors'] = [
+    'label'     => ['Farben', 'Komma-getrennte Hex-/CSS-Farben (z.B. #fff,#27c4f4). Leer = Preset-Default'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'long'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_direction'] = [
+    'label'     => ['Richtung', 'Bewegungsrichtung der Partikel'],
+    'inputType' => 'select',
+    'options'   => ['' => '— Preset-Default —', 'down' => 'Down', 'up' => 'Up', 'left' => 'Left', 'right' => 'Right'],
+    'eval'      => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_min_size'] = [
+    'label'     => ['Min Size (px)', 'Minimale Partikelgröße. Leer = Preset-Default'],
+    'inputType' => 'text',
+    'eval'      => ['rgxp' => 'digit', 'maxlength' => 4, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_max_size'] = [
+    'label'     => ['Max Size (px)', 'Maximale Partikelgröße. Leer = Preset-Default'],
+    'inputType' => 'text',
+    'eval'      => ['rgxp' => 'digit', 'maxlength' => 4, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_speed'] = [
+    'label'     => ['Speed', '1 = sehr langsam, 50 = sehr schnell. Leer = Preset-Default'],
+    'inputType' => 'text',
+    'eval'      => ['rgxp' => 'digit', 'maxlength' => 3, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_rotation'] = [
+    'label'     => ['Rotation', 'Partikel rotieren während des Falls'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_rotation_speed'] = [
+    'label'     => ['Rotation Speed', 'Sekunden pro Umdrehung'],
+    'inputType' => 'text',
+    'eval'      => ['rgxp' => 'digit', 'maxlength' => 4, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_natural_fall'] = [
+    'label'     => ['Natürlicher Fall', 'Sway-Effekt + leichte Streuung horizontal'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_natural_start'] = [
+    'label'     => ['Natürlicher Start', 'Start-Positionen werden zusätzlich verstreut'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_fadeout'] = [
+    'label'     => ['Fadeout', 'Partikel werden während des Flugs transparent'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_new_on'] = [
+    'label'     => ['Spawn-Intervall (ms)', 'Wie oft ein neuer Partikel kommt. Niedrig = dichter Effekt'],
+    'inputType' => 'text',
+    'eval'      => ['rgxp' => 'digit', 'maxlength' => 5, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_pool_size'] = [
+    'label'     => ['Pool Size', 'Maximal gleichzeitig sichtbare Partikel'],
+    'inputType' => 'text',
+    'eval'      => ['rgxp' => 'digit', 'maxlength' => 4, 'tl_class' => 'w50'],
+];
