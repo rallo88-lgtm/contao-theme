@@ -1330,7 +1330,9 @@ window.applyLayout = function (layout) {
     }
 
     function bindNeural() {
-      document.querySelectorAll('#left .mod_navigation a, #right .mod_navigation a').forEach(function(link) {
+      var sel = '#left .mod_navigation a, #right .mod_navigation a, '
+              + '#left .bottom-legal-links a, #right .bottom-legal-links a';
+      document.querySelectorAll(sel).forEach(function(link) {
         link.addEventListener('mouseenter', function() {
           var logo = this.closest('#left, #right').querySelector('.rct-sidebar-logo');
           if (logo) fireNeural(logo);
