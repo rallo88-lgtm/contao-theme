@@ -1218,11 +1218,11 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_alert_style'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_tabs'] =
     '{type_legend},type;{tabs_legend},rct_tabs_data,rct_tabs_color,rct_tabs_style;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+// rct_tabs_* ohne 'sql' → jsonData (RctTabsJsonStorageMigration)
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_tabs_data'] = [
     'label'     => ['Tab-Inhalte', "Ein Tab pro Block, getrennt durch ---\nErste Zeile = Tab-Titel, dann Inhalt.\nEmoji möglich: 🚀 Tab-Titel"],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:200px; font-family: monospace;', 'tl_class' => 'clr'],
-    'sql'       => "text NULL",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_tabs_color'] = [
@@ -1239,7 +1239,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_tabs_color'] = [
         'red'       => 'Rot',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'accent'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_tabs_style'] = [
@@ -1247,7 +1246,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_tabs_style'] = [
     'inputType' => 'select',
     'options'   => ['dark' => 'Dunkel (Standard)', 'light' => 'Hell'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'dark'",
 ];
 
 // ============================================================
