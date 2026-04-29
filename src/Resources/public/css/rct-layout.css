@@ -1548,9 +1548,6 @@ html[data-layout="classic"] #left .rct-header-logo-link {
 [data-layout="classic"] #bottom.rct-classic-bottom a:hover {
   color: var(--rct-accent);
 }
-[data-layout="classic"] #bottom .rct-classic-bottom-content {
-  padding: 0 20px;
-}
 
 /* FULLSCREEN */
 [data-layout="full"] #header          { display: none; }

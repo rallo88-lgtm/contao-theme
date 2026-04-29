@@ -60,15 +60,13 @@
       </footer>
     </main>
 
-    {# Klassischer Footer-Bereich (nicht sticky), eigene CSS-Klasse für Custom Styling #}
-    <div id="bottom" class="rct-classic-bottom">
-      <div class="rct-content-inner rct-classic-bottom-inner">
-        <div class="rct-classic-bottom-content">
-          {{ contao_section('classic_bottom') }}
-        </div>
-        <div class="rct-classic-bottom-logo">
-          {{ contao_section('classic_bottom_logo') }}
-        </div>
+    {# Bottom – gleiche Drei-Spalten-Struktur wie fe_page.html.twig,
+       Klasse rct-classic-bottom triggert hellen Look #}
+    <div id="bottom" class="rct-classic-bottom" role="contentinfo">
+      <div class="inside">
+        {{ contao_section('bottom_left') }}
+        {{ contao_section('bottom_content') }}
+        {{ contao_section('bottom_right') }}
       </div>
     </div>
 
