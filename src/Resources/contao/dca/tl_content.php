@@ -1513,11 +1513,13 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_icon'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_productbox'] =
     '{type_legend},type;{productbox_legend},rct_productbox_banner,rct_productbox_color,rct_productbox_layout,rct_productbox_style;{productbox_image_legend},rct_productbox_images,rct_productbox_image_alt,rct_productbox_slide_speed;{productbox_content_legend},rct_productbox_headline,rct_productbox_subheadline,rct_productbox_stock,rct_productbox_stock_label,rct_productbox_text;{productbox_price_legend},rct_productbox_price_extra,rct_productbox_price_old,rct_productbox_price,rct_productbox_price_note;{productbox_btn_legend:hide},rct_productbox_btn_label,rct_productbox_btn_page,rct_productbox_btn_url,rct_productbox_btn_style,rct_productbox_btn_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+// rct_productbox_* ohne 'sql' → jsonData (RctProductboxJsonStorageMigration).
+// rct_productbox_image (legacy fileTree) + _images (multi-fileTree) +
+// _btn_page (pageTree-relation) bleiben als Spalten.
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_banner'] = [
     'label'     => ['Banner-Text', 'Optional. Erscheint oben links als Akzent-Streifen (z.B. "TOP PREIS", "NEU", "AKTION"). Leer lassen für keinen Banner.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_color'] = [
@@ -1533,7 +1535,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_color'] = [
         'purple'    => 'Lila',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(16) NOT NULL default 'accent'",
 ];
 
 // Legacy single-image (nicht mehr in Palette, dient als Fallback)
@@ -1555,7 +1556,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_slide_speed'] = [
     'label'     => ['Wechsel-Intervall (Sek.)', 'Nur bei mehreren Bildern. Default 5 Sekunden.'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'natural', 'maxlength' => 3, 'tl_class' => 'w50'],
-    'sql'       => "smallint(5) unsigned NOT NULL default 5",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_layout'] = [
@@ -1563,7 +1563,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_layout'] = [
     'inputType' => 'select',
     'options'   => ['vertical' => 'Vertikal (Bild oben)', 'horizontal' => 'Horizontal (Bild links)'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'vertical'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_stock'] = [
@@ -1576,49 +1575,42 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_stock'] = [
         'sold_out'   => 'Ausverkauft (rot)',
     ],
     'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
-    'sql'       => "varchar(16) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_stock_label'] = [
     'label'     => ['Verfügbarkeits-Text', 'Text neben dem Indikator-Punkt, z.B. "Auf Lager", "Wenige verfügbar", "Ausverkauft"'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_price_old'] = [
     'label'     => ['Vorheriger Preis (durchgestrichen)', 'Optional. z.B. "€ 149,90". Wird klein und durchgestrichen über dem aktuellen Preis angezeigt.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_image_alt'] = [
     'label'     => ['Alt-Text', 'Alternativtext für das Produktbild (Barrierefreiheit)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_headline'] = [
     'label'     => ['Produktname / Überschrift', 'z.B. "Propangas-Alukaufflasche 11 KG"'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_subheadline'] = [
     'label'     => ['Subheadline', 'Kleine Mono-Zeile in Akzentfarbe direkt unter der Headline (z.B. Verfügbarkeit, Verkaufsort)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_text'] = [
     'label'     => ['Beschreibungstext', 'Kurze Beschreibung. Erlaubte Tags: <strong>, <em>, <b>, <i>, <u>, <small>, <br>. Attribute werden entfernt.'],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:100px', 'tl_class' => 'clr'],
-    'sql'       => "text NULL",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_style'] = [
@@ -1626,37 +1618,33 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_style'] = [
     'inputType' => 'select',
     'options'   => ['light' => 'Hell', 'dark' => 'Dunkel (Shell-Look)'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'light'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_price_extra'] = [
     'label'     => ['Preis-Hinweis (oben)', 'Optional. Kleine Zeile über dem Preis (z.B. "Solange der Vorrat reicht", "Jetzt nur")'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'long clr'],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_price'] = [
     'label'     => ['Preis', 'Großer Preis-Wert in Akzentfarbe, z.B. "€ 124,90". Leer lassen für keinen Preis.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_price_note'] = [
     'label'     => ['MwSt-Hinweis', 'Kleine Zeile unter dem Preis, z.B. "inkl. 19% MwSt." oder "zzgl. Versand"'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_label'] = [
     'label'     => ['Button-Text', 'Optional. Leer = kein Button. Beschriftung des CTA-Buttons unten.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
+// pageTree mit relation → bleibt als Spalte
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_page'] = [
     'label'      => ['Interne Seite', 'Contao-Seite als Ziel (Vorrang vor URL)'],
     'inputType'  => 'pageTree',
@@ -1670,7 +1658,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_url'] = [
     'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_style'] = [
@@ -1678,14 +1665,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_style'] = [
     'inputType' => 'select',
     'options'   => ['primary' => 'Primary (gefüllt)', 'outline' => 'Outline', 'ghost' => 'Ghost (Pfeil)'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(16) NOT NULL default 'primary'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_btn_target'] = [
     'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default ''",
 ];
 
 // ============================================================
