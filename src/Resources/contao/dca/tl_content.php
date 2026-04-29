@@ -113,33 +113,31 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_text_align'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_people_box'] =
     '{type_legend},type;{people_legend},rct_person_name,rct_person_role,rct_person_image,size,rct_person_bio,rct_people_box_style;{contact_legend:hide},rct_person_email,rct_person_phone,rct_person_link,rct_person_link_text;{invisible_legend:hide},invisible,start,stop';
 
+// rct_people_box_* + rct_person_* ohne 'sql' → jsonData (RctPeopleBoxJsonStorageMigration).
+// rct_person_image (fileTree) bleibt als Spalte.
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_people_box_style'] = [
     'label'     => ['Stil', 'Hell (Standard) oder Dunkel (Shell-Look)'],
     'inputType' => 'select',
     'options'   => ['light' => 'Hell (Standard)', 'dark' => 'Dunkel (Shell-Look)'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'light'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_person_name'] = [
     'label'     => ['Name', 'Vollständiger Name der Person'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 128, 'tl_class' => 'w50'],
-    'sql'       => "varchar(128) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_person_role'] = [
     'label'     => ['Rolle / Position', 'Berufsbezeichnung oder Funktion'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 128, 'tl_class' => 'w50'],
-    'sql'       => "varchar(128) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_person_bio'] = [
     'label'     => ['Kurzbiografie', 'Kurzer Beschreibungstext'],
     'inputType' => 'textarea',
     'eval'      => ['rte' => '', 'tl_class' => 'clr'],
-    'sql'       => "text NULL",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_person_image'] = [
@@ -153,28 +151,24 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_person_email'] = [
     'label'     => ['E-Mail', 'E-Mail-Adresse'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'rgxp' => 'email', 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_person_phone'] = [
     'label'     => ['Telefon', 'Telefonnummer'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_person_link'] = [
     'label'     => ['Link (URL)', 'z.B. LinkedIn-Profil oder Website'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'rgxp' => 'url', 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_person_link_text'] = [
     'label'     => ['Link-Text', 'Anzeigetext für den Link'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 128, 'tl_class' => 'w50'],
-    'sql'       => "varchar(128) NOT NULL default ''",
 ];
 
 // ============================================================
