@@ -910,6 +910,44 @@ window.applyLayout = function (layout) {
       window.addEventListener('scroll', updateScrollTop, { passive: true });
     }
 
+    /* ------------------------------------------------------------------
+       10. VIDEO-PARALLAX
+       Bilder nutzen background-attachment: fixed (CSS-only). Videos
+       brauchen JS-Translate. Range +/-15% der Container-Höhe damit das
+       Video (130% hoch) nie aus dem Container rutscht.
+    ------------------------------------------------------------------ */
+    const parallaxItems = [];
+    document.querySelectorAll('.rct-parallax--video').forEach(function (el) {
+      const video = el.querySelector('.rct-parallax-video');
+      if (video) parallaxItems.push({ el: el, video: video });
+    });
+
+    if (parallaxItems.length) {
+      let parallaxTicking = false;
+      const updateParallax = function () {
+        const vh = window.innerHeight;
+        parallaxItems.forEach(function (item) {
+          const rect = item.el.getBoundingClientRect();
+          if (rect.bottom < 0 || rect.top > vh) return;
+          const containerCenter = rect.top + rect.height / 2;
+          const progress = (containerCenter - vh / 2) / ((vh + rect.height) / 2);
+          const clamped = Math.max(-1, Math.min(1, progress));
+          const offset = -clamped * (rect.height * 0.15);
+          item.video.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
+        });
+        parallaxTicking = false;
+      };
+      const onParallaxScroll = function () {
+        if (!parallaxTicking) {
+          requestAnimationFrame(updateParallax);
+          parallaxTicking = true;
+        }
+      };
+      window.addEventListener('scroll', onParallaxScroll, { passive: true });
+      window.addEventListener('resize', onParallaxScroll, { passive: true });
+      updateParallax();
+    }
+
   }); // Ende DOMContentLoaded
 
 
