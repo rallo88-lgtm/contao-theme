@@ -966,11 +966,11 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_accordion_style'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_timeline'] =
     '{type_legend},type;{timeline_legend},rct_timeline_data,rct_timeline_color,rct_timeline_variant,rct_timeline_show_line,rct_timeline_style;{invisible_legend:hide},invisible,start,stop';
 
+// rct_timeline_* ohne 'sql' → jsonData (RctTimelineJsonStorageMigration)
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_timeline_data'] = [
     'label'     => ['Timeline-Einträge', "Einträge durch '---' trennen.\nZeile 1: Datum|Titel|Farbe|Icon\nZeile 2+: Beschreibungstext"],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:220px; font-family:monospace', 'tl_class' => 'clr'],
-    'sql'       => "mediumtext NULL",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_timeline_color'] = [
@@ -987,7 +987,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_timeline_color'] = [
         'red'       => 'Rot',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'accent'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_timeline_variant'] = [
@@ -998,14 +997,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_timeline_variant'] = [
         'single'    => 'Einspaltig (immer links)',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'alternate'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_timeline_show_line'] = [
     'label'     => ['Verbindungslinie anzeigen', 'Vertikale Linie zwischen den Einträgen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default '1'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_timeline_style'] = [
@@ -1013,7 +1010,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_timeline_style'] = [
     'inputType' => 'select',
     'options'   => ['dark' => 'Dunkel (Standard)', 'light' => 'Hell'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'dark'",
 ];
 
 // ============================================================
