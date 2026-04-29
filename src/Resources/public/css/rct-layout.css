@@ -1986,8 +1986,6 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   padding: 1rem;
   border-top: 1px solid var(--rct-shell-border);
   background-color: rgba(0,0,0,0.2);
-  margin-top: auto;
-  margin-bottom: auto;
 }
 
 #left .rct-sidebar-logo .rct-logo-link,
