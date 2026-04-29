@@ -726,18 +726,18 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_size'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_cta'] =
     '{type_legend},type;{cta_legend},rct_cta_headline,rct_cta_text,rct_cta_icon,rct_cta_color,rct_cta_layout,rct_cta_style;{cta_bg_legend:hide},rct_cta_bg_color,rct_cta_bg_alpha,rct_cta_blur;{cta_btn1_legend},rct_cta_btn1_label,rct_cta_btn1_page,rct_cta_btn1_url,rct_cta_btn1_style,rct_cta_btn1_target;{cta_btn2_legend:hide},rct_cta_btn2_label,rct_cta_btn2_page,rct_cta_btn2_url,rct_cta_btn2_style,rct_cta_btn2_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+// rct_cta_* ohne 'sql' → jsonData (RctCtaJsonStorageMigration).
+// rct_cta_btn1_page + rct_cta_btn2_page (pageTree-relations) bleiben als Spalten.
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_headline'] = [
     'label'     => ['Überschrift', 'Hauptaussage des CTA'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_text'] = [
     'label'     => ['Text', 'Kurzer Begleittext (optional)'],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:80px', 'tl_class' => 'clr'],
-    'sql'       => "text NULL",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_icon'] = [
@@ -745,7 +745,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_icon'] = [
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_color'] = [
@@ -762,7 +761,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_color'] = [
         'red'       => 'Rot',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'accent'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_layout'] = [
@@ -774,7 +772,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_layout'] = [
         'card'     => 'Karte (mit Border und Glow)',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'centered'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_style'] = [
@@ -785,7 +782,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_style'] = [
         'dark'  => 'Dunkel (Shell-Look)',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'light'",
 ];
 
 // CTA Hintergrund (überschreibt den Stil-Default wenn gesetzt)
@@ -799,7 +795,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_bg_color'] = [
         'accent' => 'Akzentfarbe (Cyan)',
     ],
     'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
-    'sql'       => "varchar(12) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_bg_alpha'] = [
@@ -821,7 +816,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_bg_alpha'] = [
         '100' => '100% (deckend)',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(4) NOT NULL default '100'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_blur'] = [
@@ -835,7 +829,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_blur'] = [
         '20' => 'Sehr stark (20px)',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(4) NOT NULL default '0'",
 ];
 
 // Button 1
@@ -843,9 +836,9 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn1_label'] = [
     'label'     => ['Button-Text', 'Beschriftung des primären Buttons'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
+// pageTree mit relation → bleibt als Spalte
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn1_page'] = [
     'label'      => ['Interne Seite', 'Contao-Seite als Ziel (hat Vorrang vor URL-Feld)'],
     'inputType'  => 'pageTree',
@@ -859,7 +852,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn1_url'] = [
     'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn eine Seite gewählt ist)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn1_style'] = [
@@ -867,14 +859,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn1_style'] = [
     'inputType' => 'select',
     'options'   => ['primary' => 'Gefüllt (Primary)', 'outline' => 'Outline', 'ghost' => 'Ghost'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'primary'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn1_target'] = [
     'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default ''",
 ];
 
 // Button 2
@@ -882,9 +872,9 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn2_label'] = [
     'label'     => ['Button 2 Text', 'Beschriftung des sekundären Buttons (optional)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
+// pageTree mit relation → bleibt als Spalte
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn2_page'] = [
     'label'      => ['Interne Seite', 'Contao-Seite als Ziel (hat Vorrang vor URL-Feld)'],
     'inputType'  => 'pageTree',
@@ -898,7 +888,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn2_url'] = [
     'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn eine Seite gewählt ist)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn2_style'] = [
@@ -906,14 +895,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn2_style'] = [
     'inputType' => 'select',
     'options'   => ['primary' => 'Gefüllt (Primary)', 'outline' => 'Outline', 'ghost' => 'Ghost'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'outline'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn2_target'] = [
     'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default ''",
 ];
 
 // rct_accordion_style — wird vom nativen Contao-Akkordeon (accordion) genutzt.
