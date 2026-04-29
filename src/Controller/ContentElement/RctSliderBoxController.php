@@ -34,7 +34,7 @@ class RctSliderBoxController extends AbstractContentElementController
         $template->headline       = htmlspecialchars((string) $model->rct_sb_headline, ENT_QUOTES, 'UTF-8');
         $template->text           = $model->rct_sb_text ? nl2br(htmlspecialchars((string) $model->rct_sb_text, ENT_QUOTES, 'UTF-8')) : '';
         $template->align          = $model->rct_sb_align ?: 'center';
-        $template->contentColor   = trim((string) $model->rct_content_color);
+        $template->contentColor   = $this->normalizeColor((string) $model->rct_content_color);
 
         $template->linkUrl    = $this->resolveUrl((int) $model->rct_sb_link_page, (string) $model->rct_sb_link_url);
         $template->linkLabel  = htmlspecialchars((string) ($model->rct_sb_link_label ?: 'Mehr erfahren'), ENT_QUOTES, 'UTF-8');
@@ -62,5 +62,20 @@ class RctSliderBoxController extends AbstractContentElementController
             }
         }
         return $manualUrl ? htmlspecialchars($manualUrl, ENT_QUOTES, 'UTF-8') : '';
+    }
+
+    private function normalizeColor(string $raw): string
+    {
+        $raw = trim($raw);
+        if ($raw === '') {
+            return '';
+        }
+        if (str_starts_with($raw, 'var(')) {
+            return $raw;
+        }
+        if (preg_match('/^#?[0-9a-fA-F]{3,8}$/', $raw)) {
+            return '#' . ltrim($raw, '#');
+        }
+        return '';
     }
 }
