@@ -1741,10 +1741,10 @@
 
 .rct-parallax-video {
   position: absolute;
-  top: -15%;
+  top: -25%;
   left: 0;
   width: 100%;
-  height: 130%;
+  height: 150%;
   object-fit: cover;
   will-change: transform;
   object-position: center;

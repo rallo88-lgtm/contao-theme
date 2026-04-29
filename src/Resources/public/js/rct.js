@@ -932,7 +932,7 @@ window.applyLayout = function (layout) {
           const containerCenter = rect.top + rect.height / 2;
           const progress = (containerCenter - vh / 2) / ((vh + rect.height) / 2);
           const clamped = Math.max(-1, Math.min(1, progress));
-          const offset = -clamped * (rect.height * 0.15);
+          const offset = -clamped * (rect.height * 0.25);
           item.video.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
         });
         parallaxTicking = false;
