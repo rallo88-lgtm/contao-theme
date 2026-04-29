@@ -61,6 +61,7 @@ class RctSetupMigration extends AbstractMigration
         $rightT = $this->insertModule($themePid, $now, 'RCT Right Toggle',     'rct_right_toggle',      $headline);
         $layS   = $this->insertModule($themePid, $now, 'RCT Layout Switcher',  'rct_layout_switcher',   $headline);
         $themeS = $this->insertModule($themePid, $now, 'RCT Theme Switcher',   'rct_theme_switcher',    $headline);
+        $btmCtl = $this->insertModule($themePid, $now, 'RCT Bottom Controls',  'rct_bottom_controls',   $headline);
 
         // Header-Right module set (Reihenfolge wie auf rct.)
         $headerRight = [
@@ -94,6 +95,7 @@ class RctSetupMigration extends AbstractMigration
                 ['mod' => $logoR,  'col' => 'right_logo',  'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'left_bottom', 'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'right_bottom','enable' => '1'],
+                ['mod' => $btmCtl, 'col' => 'bottom_content','enable' => '1'],
             ],
             $headerLeft, $headerRight
         ), $sections);
@@ -110,6 +112,7 @@ class RctSetupMigration extends AbstractMigration
                 ['mod' => $logoR,  'col' => 'right_logo',  'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'left_bottom', 'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'right_bottom','enable' => '1'],
+                ['mod' => $btmCtl, 'col' => 'bottom_content','enable' => '1'],
             ],
             $headerLeft, $headerRight
         ), $sections);
@@ -126,6 +129,7 @@ class RctSetupMigration extends AbstractMigration
                 ['mod' => $logoR,  'col' => 'right_logo',  'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'left_bottom', 'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'right_bottom','enable' => '1'],
+                ['mod' => $btmCtl, 'col' => 'bottom_content','enable' => '1'],
             ],
             $headerLeft, $headerRight
         ), $sections);
@@ -141,6 +145,7 @@ class RctSetupMigration extends AbstractMigration
                 ['mod' => $logoR,  'col' => 'right_logo',  'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'left_bottom', 'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'right_bottom','enable' => '1'],
+                ['mod' => $btmCtl, 'col' => 'bottom_content','enable' => '1'],
             ],
             $headerLeft, $headerRight
         ), $sections);
