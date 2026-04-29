@@ -6,6 +6,7 @@ use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Twig\FragmentTemplate;
+use Contao\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -126,7 +127,9 @@ class RctEmitterController extends AbstractContentElementController
             $base = array_merge($base, $this->customOverrides($model, true));
         }
 
-        $target = trim((string) $model->rct_emitter_target);
+        // Contao encodet '#', '<', '>' etc. in text-Feldern als HTML-Entities (&#35; etc.).
+        // decodeEntities() macht das rückgängig — sonst landet im JS-Output literal "&#35;id-oskar".
+        $target = StringUtil::decodeEntities(trim((string) $model->rct_emitter_target));
 
         $template->emitterId         = 'rct-emitter-' . (int) $model->id;
         $template->emitterTargetExpr = $target !== ''
@@ -153,14 +156,14 @@ class RctEmitterController extends AbstractContentElementController
     {
         $out = [];
 
-        $shapes = trim((string) $model->rct_emitter_shapes);
+        $shapes = StringUtil::decodeEntities(trim((string) $model->rct_emitter_shapes));
         if ($shapes !== '') {
             $out['particleShape'] = array_values(array_filter(array_map('trim', explode(',', $shapes)), 'strlen'));
         } elseif (!$onlyIfSet) {
             // Custom-Modus mit leerem Feld → Default belassen
         }
 
-        $colors = trim((string) $model->rct_emitter_colors);
+        $colors = StringUtil::decodeEntities(trim((string) $model->rct_emitter_colors));
         if ($colors !== '') {
             $out['particleColor'] = array_values(array_filter(array_map('trim', explode(',', $colors)), 'strlen'));
         }

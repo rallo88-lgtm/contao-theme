@@ -1721,7 +1721,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_preset'] = [
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_target'] = [
     'label'     => ['Ziel-Selector', 'CSS-Selector des Ziel-Containers (z.B. #meinHero, .my-section). Leer lassen → wirkt auf den umschließenden Article'],
     'inputType' => 'text',
-    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+    'eval'      => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
 ];
 
 // ── Custom-Override-Felder (alle optional) ──
@@ -1729,13 +1729,13 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_target'] = [
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_shapes'] = [
     'label'     => ['Shapes', 'Komma-getrennte Liste: Emojis, Symbole, Buchstaben. Leer = Preset-Default'],
     'inputType' => 'text',
-    'eval'      => ['maxlength' => 255, 'tl_class' => 'long'],
+    'eval'      => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'long'],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_colors'] = [
     'label'     => ['Farben', 'Komma-getrennte Hex-/CSS-Farben (z.B. #fff,#27c4f4). Leer = Preset-Default'],
     'inputType' => 'text',
-    'eval'      => ['maxlength' => 255, 'tl_class' => 'long'],
+    'eval'      => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'long'],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_direction'] = [
