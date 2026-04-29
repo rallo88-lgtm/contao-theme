@@ -29,18 +29,17 @@ PaletteManipulator::create()
     ->addField('rct_slider_effect', 'rct_slider_max_height_mobile', PaletteManipulator::POSITION_AFTER)
     ->applyToPalette('swiper', 'tl_content');
 
+// Standard-CE-Mods ohne 'sql' → jsonData (RctStandardModsJsonStorageMigration)
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_slider_max_height'] = [
     'label'     => ['Slide-Höhe (Desktop)', 'Max-Höhe der Slides ab 1025px (z.B. 400px, 50vh). Inhalt wird vertikal zentriert, Überstand abgeschnitten.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 16, 'tl_class' => 'w50', 'rgxp' => 'alnum'],
-    'sql'       => "varchar(16) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_slider_max_height_mobile'] = [
     'label'     => ['Slide-Höhe (Mobile)', 'Max-Höhe der Slides ≤1024px (z.B. 300px, 60vh). Leer = Desktop-Wert wird verwendet.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 16, 'tl_class' => 'w50', 'rgxp' => 'alnum'],
-    'sql'       => "varchar(16) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_slider_effect'] = [
@@ -48,7 +47,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_slider_effect'] = [
     'inputType' => 'select',
     'options'   => ['' => 'Slide (Standard)', 'fade' => 'Fade (Cross-Fade)'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default ''",
 ];
 
 // Stil-Feld zu Download + Downloads hinzufügen
@@ -65,7 +63,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_download_style'] = [
     'inputType' => 'select',
     'options'   => ['dark' => 'Dunkel (Terminal)', 'light' => 'Hell (Standard)'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default ''",
 ];
 
 // Schriftart + Textfarbe für Listen
@@ -92,14 +89,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hl_font'] = [
     'inputType'        => 'select',
     'options_callback' => [RctFontOptionsCallback::class, 'getHeadlineFonts'],
     'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => false],
-    'sql'              => "varchar(128) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_content_color'] = [
     'label'     => ['Textfarbe', 'Optionale Farbe für Text/Überschrift. Hex (#27c4f4) oder leer lassen.'],
     'inputType' => 'text',
     'eval'      => ['colorpicker' => true, 'isHexColor' => true, 'tl_class' => 'w50 wizard', 'maxlength' => 64],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_text_align'] = [
@@ -107,7 +102,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_text_align'] = [
     'inputType' => 'select',
     'options'   => ['' => '– Standard –', 'left' => 'Links', 'center' => 'Zentriert', 'right' => 'Rechts'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_people_box'] =
