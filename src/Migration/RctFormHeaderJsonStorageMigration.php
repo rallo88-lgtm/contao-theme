@@ -50,13 +50,14 @@ class RctFormHeaderJsonStorageMigration extends AbstractMigration
             return $hasElements > 0;
         }
 
-        // jsonData existiert: prüfe Zielzustand — sind alle rct_form_header-Elemente
-        // bereits in jsonData mit dem items-Key abgelegt? Dann fertig (auch wenn die
-        // alten Spalten physisch noch da sind — Schema-Sync räumt erst danach auf).
+        // jsonData existiert: prüfe Zielzustand via JSON_EXTRACT — sind alle
+        // rct_form_header-Elemente bereits in jsonData mit dem items-Key abgelegt?
+        // Dann fertig (auch wenn die alten Spalten physisch noch da sind —
+        // Schema-Sync räumt erst NACH allen Migrationen auf).
         $unmigrated = (int) $this->db->fetchOne(
             "SELECT COUNT(*) FROM tl_content
              WHERE type = 'rct_form_header'
-             AND (jsonData IS NULL OR jsonData NOT LIKE '%\"rct_form_header_items\"%')"
+             AND (jsonData IS NULL OR JSON_EXTRACT(jsonData, '$.rct_form_header_items') IS NULL)"
         );
         return $unmigrated > 0;
     }
