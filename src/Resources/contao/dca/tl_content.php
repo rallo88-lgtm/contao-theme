@@ -692,39 +692,35 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_align'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_stat_box'] =
     '{type_legend},type;{stat_legend},rct_stat_value,rct_stat_prefix,rct_stat_unit,rct_stat_label,rct_stat_sublabel,rct_stat_icon,rct_stat_color,rct_stat_size;{invisible_legend:hide},invisible,start,stop';
 
+// rct_stat_* ohne 'sql' → jsonData (RctStatBoxJsonStorageMigration)
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_value'] = [
     'label'     => ['Wert', 'Die Kennzahl (Ganzzahl oder Dezimalzahl, z.B. 1250 oder 98.6)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_prefix'] = [
     'label'     => ['Präfix', 'Zeichen vor der Zahl, z.B. ">" oder "ca." oder "+"'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 16, 'tl_class' => 'w50'],
-    'sql'       => "varchar(16) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_unit'] = [
     'label'     => ['Einheit', 'Einheit hinter der Zahl, z.B. "%" oder "€" oder "Mitglieder"'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50'],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_label'] = [
     'label'     => ['Label', 'Beschriftung unter der Zahl'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 128, 'tl_class' => 'w50'],
-    'sql'       => "varchar(128) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_sublabel'] = [
     'label'     => ['Zweite Zeile', 'Optionaler Zusatztext unter dem Label (kleiner, gedimmt)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'clr long'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_icon'] = [
@@ -732,7 +728,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_icon'] = [
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_color'] = [
@@ -749,7 +744,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_color'] = [
         'red'       => 'Rot',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'accent'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_size'] = [
@@ -757,7 +751,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_size'] = [
     'inputType' => 'select',
     'options'   => ['sm' => 'Klein', 'md' => 'Mittel (Standard)', 'lg' => 'Groß'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(4) NOT NULL default 'md'",
 ];
 
 // ============================================================
