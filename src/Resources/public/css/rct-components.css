@@ -337,6 +337,15 @@
   margin-top: 2rem;
 }
 
+/* Schlagschatten-Override pro Artikel (tl_article.rct_article_shadow).
+   Doppelklasse (0,2,0) schlägt Default-.mod_article (0,1,0) und
+   classic-Override (0,1,1). Für rct-fullwidth-article wird die
+   :not()-Klausel in rct-layout.css erweitert, damit diese Regel
+   auch dort greift. */
+.mod_article.rct-article-shadow-none   { box-shadow: none; }
+.mod_article.rct-article-shadow-soft   { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10); }
+.mod_article.rct-article-shadow-strong { box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45); }
+
 /* Variante: Featured (etwas mehr Padding) */
 .mod_article.rct-card-featured {
   padding: 60px;

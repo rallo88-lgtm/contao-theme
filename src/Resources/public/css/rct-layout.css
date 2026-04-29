@@ -1492,8 +1492,11 @@ html[data-layout="classic"] #left .rct-header-logo-link {
 }
 /* Default-Reset (kein RCT-BG aktiv): edge-to-edge ohne BG/Shadow/Radius/Padding.
    Mit RCT-BG greifen padding 1.5rem + border-radius var(--rct-radius-lg) + bg
-   aus [class*="rct-article-bg-"] / .rct-article-bg-{white,dark,accent}. */
-.mod_article.rct-fullwidth-article:not([class*="rct-article-bg-"]) {
+   aus [class*="rct-article-bg-"] / .rct-article-bg-{white,dark,accent}.
+   :not([class*="rct-article-shadow-"]) lässt die explizite tl_article-Auswahl
+   (none/soft/strong) durchschlagen — sonst würde diese Regel (0,4,0) die
+   .mod_article.rct-article-shadow-*-Regel (0,2,0) übersteuern. */
+.mod_article.rct-fullwidth-article:not([class*="rct-article-bg-"]):not([class*="rct-article-shadow-"]) {
   padding: 0;
   border-radius: 0;
   background: none;

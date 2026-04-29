@@ -17,19 +17,31 @@ class RctArticleBgListener
 
         $article = ArticleModel::findById($template->id);
 
-        if (!$article || !$article->rct_article_bg_color) {
+        if (!$article) {
             return;
         }
 
-        $alpha = max(0, min(100, (int) ($article->rct_article_bg_alpha ?: 100)));
-        $blur  = max(0, (int) $article->rct_article_blur);
+        $classes = [];
 
-        $template->class = 'rct-article-bg-' . $article->rct_article_bg_color . ($template->class ? ' ' . $template->class : '');
+        if ($article->rct_article_bg_color) {
+            $classes[] = 'rct-article-bg-' . $article->rct_article_bg_color;
 
-        $style = '--rct-article-alpha:' . round($alpha / 100, 2) . ';';
-        if ($blur > 0) {
-            $style .= "backdrop-filter:blur({$blur}px);-webkit-backdrop-filter:blur({$blur}px);";
+            $alpha = max(0, min(100, (int) ($article->rct_article_bg_alpha ?: 100)));
+            $blur  = max(0, (int) $article->rct_article_blur);
+
+            $style = '--rct-article-alpha:' . round($alpha / 100, 2) . ';';
+            if ($blur > 0) {
+                $style .= "backdrop-filter:blur({$blur}px);-webkit-backdrop-filter:blur({$blur}px);";
+            }
+            $template->style = $style . ($template->style ?? '');
         }
-        $template->style = $style . ($template->style ?? '');
+
+        if (in_array($article->rct_article_shadow, ['none', 'soft', 'strong'], true)) {
+            $classes[] = 'rct-article-shadow-' . $article->rct_article_shadow;
+        }
+
+        if ($classes) {
+            $template->class = implode(' ', $classes) . ($template->class ? ' ' . $template->class : '');
+        }
     }
 }

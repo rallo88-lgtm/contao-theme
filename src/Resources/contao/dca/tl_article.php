@@ -4,7 +4,7 @@ use Contao\CoreBundle\DataContainer\PaletteManipulator;
 
 PaletteManipulator::create()
     ->addLegend('rct_article_legend', 'title_legend', PaletteManipulator::POSITION_AFTER, true)
-    ->addField(['rct_article_bg_color', 'rct_article_bg_alpha', 'rct_article_blur'], 'rct_article_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField(['rct_article_bg_color', 'rct_article_bg_alpha', 'rct_article_blur', 'rct_article_shadow'], 'rct_article_legend', PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('default', 'tl_article');
 
 // rct_article_* ohne 'sql' → jsonData (RctArticleBgJsonStorageMigration)
@@ -52,4 +52,16 @@ $GLOBALS['TL_DCA']['tl_article']['fields']['rct_article_blur'] = [
         '20' => 'Sehr stark (20px)',
     ],
     'eval'      => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_article']['fields']['rct_article_shadow'] = [
+    'label'     => ['Schlagschatten', 'Standard = Layout-Default (Shadow für normale, keiner für Fullwidth)'],
+    'inputType' => 'select',
+    'options'   => [
+        ''       => 'Standard (Layout-Default)',
+        'none'   => 'Aus (freischwebend)',
+        'soft'   => 'Sanft (glassy)',
+        'strong' => 'Stark (dramatisch)',
+    ],
+    'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
 ];
