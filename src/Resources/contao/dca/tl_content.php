@@ -502,11 +502,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_image'] = [
     'sql'       => "binary(16) NULL",
 ];
 
+// rct_itb_* ohne 'sql' → jsonData (RctTextboxJsonStorageMigration).
+// rct_itb_image (fileTree) + rct_itb_link_page (pageTree-relation) bleiben als Spalten.
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_image_alt'] = [
     'label'     => ['Alt-Text', 'Alternativtext für das Bild (Barrierefreiheit)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_icon'] = [
@@ -514,21 +515,18 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_icon'] = [
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_headline'] = [
     'label'     => ['Überschrift', 'Titel der Box'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_text'] = [
     'label'     => ['Text', 'Beschreibungstext'],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:100px', 'tl_class' => 'clr'],
-    'sql'       => "text NULL",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_style'] = [
@@ -536,9 +534,9 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_style'] = [
     'inputType' => 'select',
     'options'   => ['light' => 'Hell', 'dark' => 'Dunkel (Shell-Look)'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'light'",
 ];
 
+// pageTree mit relation → bleibt als Spalte (Doctrine-Lazy-Load via tl_page)
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_link_page'] = [
     'label'      => ['Interne Seite', 'Contao-Seite als Ziel (Vorrang vor URL)'],
     'inputType'  => 'pageTree',
@@ -552,21 +550,18 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_link_url'] = [
     'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_link_label'] = [
     'label'     => ['Link-Text', 'Beschriftung des Links (Standard: „Mehr erfahren")'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_link_target'] = [
     'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default ''",
 ];
 
 // ============================================================
