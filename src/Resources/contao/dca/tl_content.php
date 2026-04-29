@@ -577,11 +577,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_image'] = [
     'sql'       => "binary(16) NULL",
 ];
 
+// rct_fb_* ohne 'sql' → jsonData (RctFunBoxJsonStorageMigration).
+// rct_fb_image (fileTree) + rct_fb_link_page (pageTree-relation) bleiben als Spalten.
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_image_alt'] = [
     'label'     => ['Alt-Text', 'Alternativtext für das Bild (Barrierefreiheit)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_icon'] = [
@@ -589,21 +590,18 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_icon'] = [
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],
-    'sql'       => "varchar(32) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_headline'] = [
     'label'     => ['Überschrift', 'Immer sichtbar'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'long clr'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_text'] = [
     'label'     => ['Text', 'Erscheint erst beim Hover'],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:100px', 'tl_class' => 'clr'],
-    'sql'       => "text NULL",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_color'] = [
@@ -620,9 +618,9 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_color'] = [
         'red'       => 'Rot',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'accent'",
 ];
 
+// pageTree mit relation → bleibt als Spalte
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_link_page'] = [
     'label'      => ['Interne Seite', 'Contao-Seite als Ziel (Vorrang vor URL)'],
     'inputType'  => 'pageTree',
@@ -636,21 +634,18 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_link_url'] = [
     'label'     => ['Externe URL', 'Manuelle URL (wird ignoriert wenn Seite gewählt ist)'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_link_label'] = [
     'label'     => ['Link-Text', 'Text neben dem Pfeil (Standard: „Mehr erfahren")'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
-    'sql'       => "varchar(64) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_link_target'] = [
     'label'     => ['Neues Tab', 'Link in neuem Tab öffnen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default ''",
 ];
 
 // rct_columns / rct_gap / rct_align ohne 'sql' — Werte landen in
