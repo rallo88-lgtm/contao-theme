@@ -18,7 +18,7 @@
       return setTimeout(boot, 50);
     }
     var script = document.getElementById('{{ emitterId }}');
-    var target = {{ emitterTarget ? ('"' ~ emitterTarget|e('js') ~ '"')|raw : 'null' }};
+    var target = {{ emitterTargetExpr|raw }};
     var host;
     if (target) {
       host = document.querySelector(target);

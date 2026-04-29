@@ -126,9 +126,13 @@ class RctEmitterController extends AbstractContentElementController
             $base = array_merge($base, $this->customOverrides($model, true));
         }
 
-        $template->emitterId      = 'rct-emitter-' . (int) $model->id;
-        $template->emitterTarget  = trim((string) $model->rct_emitter_target);
-        $template->emitterOptions = json_encode($base, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        $target = trim((string) $model->rct_emitter_target);
+
+        $template->emitterId         = 'rct-emitter-' . (int) $model->id;
+        $template->emitterTargetExpr = $target !== ''
+            ? json_encode($target, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT)
+            : 'null';
+        $template->emitterOptions    = json_encode($base, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 
         // Lazy-Load der Emitter-Lib — string-key dedupliziert über mehrere CEs auf einer Seite
         $GLOBALS['TL_BODY']['rct-emitter-lib'] = '<script src="bundles/rct/js/rallos-emitter.js" defer></script>';
