@@ -950,13 +950,13 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_btn2_target'] = [
     'sql'       => "char(1) NOT NULL default ''",
 ];
 
-// rct_accordion_style — wird vom nativen Contao-Akkordeon (accordion) genutzt
+// rct_accordion_style — wird vom nativen Contao-Akkordeon (accordion) genutzt.
+// Ohne 'sql' → jsonData (RctAccordionStyleJsonStorageMigration).
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_accordion_style'] = [
     'label'     => ['Stil', 'Dunkel (Standard) oder Hell'],
     'inputType' => 'select',
     'options'   => ['dark' => 'Dunkel (Classified Archive)', 'light' => 'Hell (Editorial)'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'dark'",
 ];
 
 // ============================================================
