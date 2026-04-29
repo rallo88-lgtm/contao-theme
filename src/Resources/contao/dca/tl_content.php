@@ -293,12 +293,13 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_parallax_video'] = [
     'sql'       => "blob NULL",
 ];
 
+// String-Felder ohne 'sql' → jsonData. fileTree-Felder oben behalten 'sql'
+// (BINARY UUIDs lassen sich nicht sauber als JSON serialisieren).
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_parallax_height'] = [
     'label'     => ['Mindesthöhe', 'Minimale Höhe des Bereichs'],
     'inputType' => 'select',
     'options'   => ['' => 'Auto (Inhalt bestimmt Höhe)', '200px' => '200px', '300px' => '300px', '50vh' => '50vh', '100vh' => 'Fullscreen (100vh)'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(10) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_parallax_overlay'] = [
@@ -306,7 +307,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_parallax_overlay'] = [
     'inputType' => 'select',
     'options'   => ['' => 'Kein Overlay', '20' => '20%', '40' => '40%', '60' => '60%', '80' => '80%'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(3) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_grid_start'] =
