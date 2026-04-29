@@ -1173,6 +1173,8 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_icon_box_link_target'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_alert'] =
     '{type_legend},type;{alert_legend},rct_alert_type,rct_alert_title,rct_alert_text,rct_alert_dismissible,rct_alert_style;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
+// rct_alert_* Felder ohne 'sql' — Werte landen in tl_content.jsonData
+// (Contao 5.7+ JSON-Storage). Daten-Migration: RctAlertJsonStorageMigration (v1.5.4).
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_alert_type'] = [
     'label'     => ['Typ', 'Art der Meldung'],
     'inputType' => 'select',
@@ -1183,28 +1185,24 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_alert_type'] = [
         'error'   => 'Fehler',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(12) NOT NULL default 'info'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_alert_title'] = [
     'label'     => ['Titel', 'Optionale Überschrift der Meldung'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 255, 'tl_class' => 'long'],
-    'sql'       => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_alert_text'] = [
     'label'     => ['Text', 'Inhalt der Meldung'],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:80px', 'tl_class' => 'clr'],
-    'sql'       => "text NULL",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_alert_dismissible'] = [
     'label'     => ['Schließbar', 'Schließen-Button anzeigen'],
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_alert_style'] = [
@@ -1212,7 +1210,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_alert_style'] = [
     'inputType' => 'select',
     'options'   => ['dark' => 'Dunkel (Standard)', 'light' => 'Hell'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(8) NOT NULL default 'dark'",
 ];
 
 // ============================================================
