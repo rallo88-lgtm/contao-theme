@@ -36,7 +36,29 @@ class RctFormHeaderJsonStorageMigration extends AbstractMigration
             return false;
         }
         $columns = $this->db->createSchemaManager()->listTableColumns('tl_content');
-        return isset($columns['rct_form_header_items']) || isset($columns['rct_form_header_style']);
+
+        // Wenn beide alte Spalten schon weg sind: fertig (Doctrine hat sie gedroppt)
+        if (!isset($columns['rct_form_header_items']) && !isset($columns['rct_form_header_style'])) {
+            return false;
+        }
+
+        // jsonData fehlt + es gibt Elemente zum Migrieren → run
+        if (!isset($columns['jsondata'])) {
+            $hasElements = (int) $this->db->fetchOne(
+                "SELECT COUNT(*) FROM tl_content WHERE type = 'rct_form_header'"
+            );
+            return $hasElements > 0;
+        }
+
+        // jsonData existiert: prüfe Zielzustand — sind alle rct_form_header-Elemente
+        // bereits in jsonData mit dem items-Key abgelegt? Dann fertig (auch wenn die
+        // alten Spalten physisch noch da sind — Schema-Sync räumt erst danach auf).
+        $unmigrated = (int) $this->db->fetchOne(
+            "SELECT COUNT(*) FROM tl_content
+             WHERE type = 'rct_form_header'
+             AND (jsonData IS NULL OR jsonData NOT LIKE '%\"rct_form_header_items\"%')"
+        );
+        return $unmigrated > 0;
     }
 
     public function run(): MigrationResult
