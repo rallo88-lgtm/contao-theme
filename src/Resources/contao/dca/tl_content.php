@@ -658,12 +658,13 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_link_target'] = [
     'sql'       => "char(1) NOT NULL default ''",
 ];
 
+// rct_columns / rct_gap / rct_align ohne 'sql' — Werte landen in
+// tl_content.jsonData. Daten-Migration: RctGridJsonStorageMigration.
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_columns'] = [
     'label'     => ['Spalten', 'Anzahl der Spalten'],
     'inputType' => 'select',
     'options'   => ['2' => '2 Spalten', '3' => '3 Spalten', '4' => '4 Spalten'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(2) NOT NULL default '3'",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_gap'] = [
@@ -671,7 +672,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_gap'] = [
     'inputType' => 'select',
     'options'   => ['' => 'Normal', 'rct-gap--sm' => 'Klein', 'rct-gap--lg' => 'Groß'],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(20) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_align'] = [
@@ -683,7 +683,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_align'] = [
         'rct-flex--align-center' => 'Mitte',
     ],
     'eval'      => ['tl_class' => 'w50'],
-    'sql'       => "varchar(30) NOT NULL default ''",
 ];
 
 // ============================================================
