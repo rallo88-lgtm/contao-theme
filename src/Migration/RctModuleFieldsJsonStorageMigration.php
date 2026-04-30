@@ -113,8 +113,15 @@ class RctModuleFieldsJsonStorageMigration extends AbstractMigration
             if (!is_array($existing)) {
                 $existing = [];
             }
-            foreach ($existingFields as $f) {
-                $existing[$f] = (string) ($row[$f] ?? '');
+            // Alle FIELDS mit Default '' setzen, auch wenn keine Source-Spalte existiert.
+            // Sonst bleibt shouldRun immer true (z.B. rct_visibility hat keine Spalte → wird
+            // nie ins jsonData geschrieben → JSON_EXTRACT IS NULL → Endlos-Loop).
+            foreach (self::FIELDS as $f) {
+                if (in_array($f, $existingFields, true)) {
+                    $existing[$f] = (string) ($row[$f] ?? '');
+                } elseif (!isset($existing[$f])) {
+                    $existing[$f] = '';
+                }
             }
 
             $this->db->executeStatement(
