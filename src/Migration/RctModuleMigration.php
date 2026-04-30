@@ -61,6 +61,15 @@ class RctModuleMigration extends AbstractMigration
         $now     = time();
         $themeId = (int) $this->db->fetchOne("SELECT id FROM tl_theme WHERE name = 'RCT Theme'");
 
+        // Schema-Race vermeiden: PHP-Migrations laufen vor Doctrine-Schema-Sync.
+        // Wenn die DCA-Spalte rct_logo_style noch nicht existiert, hier nachziehen.
+        $columns = array_keys($this->db->createSchemaManager()->listTableColumns('tl_module'));
+        if (!in_array('rct_logo_style', $columns, true)) {
+            $this->db->executeStatement(
+                "ALTER TABLE tl_module ADD COLUMN rct_logo_style VARCHAR(32) NOT NULL DEFAULT ''"
+            );
+        }
+
         $headline  = fn(string $v = '') => serialize(['unit' => 'h2', 'value' => $v]);
         $cssId     = fn(string $id = '', string $cls = '') => serialize([$id, $cls]);
         $emptySize = serialize(['', '', '']);
