@@ -38,9 +38,21 @@ class RctThemeMigration extends AbstractMigration
         $themeId = (int) $this->db->lastInsertId();
 
         $emptySize     = serialize(['unit' => '', 'value' => '']);
+        // Alle Custom Sections die RCT-FE-Module + Bottom-Refactor + Header-Controls brauchen.
+        // Modul-Zuordnungen kommen aus RctModuleMigration + RctBottomLayoutMigration —
+        // hier nur die Section-Definitionen.
         $defaultSections = serialize([
-            ['title' => 'Bottom', 'id' => 'bottom',  'template' => 'block_section', 'position' => 'main'],
-            ['title' => 'Navbar', 'id' => 'navbar',  'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Bottom',                'id' => 'bottom',         'template' => 'block_section', 'position' => 'main'],
+            ['title' => 'Navbar',                'id' => 'navbar',         'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Logo Links',            'id' => 'left_logo',      'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Logo Rechts',           'id' => 'right_logo',     'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Sidebar Footer Links',  'id' => 'left_bottom',    'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Sidebar Footer Rechts', 'id' => 'right_bottom',   'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Header Links',          'id' => 'header_left',    'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Header Rechts',         'id' => 'header_right',   'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Bottom Links',          'id' => 'bottom_left',    'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Bottom Mitte',          'id' => 'bottom_content', 'template' => 'block_section', 'position' => 'manual'],
+            ['title' => 'Bottom Rechts',         'id' => 'bottom_right',   'template' => 'block_section', 'position' => 'manual'],
         ]);
         $defaultModules = serialize([
             ['mod' => '0', 'col' => 'main', 'enable' => '1'],
