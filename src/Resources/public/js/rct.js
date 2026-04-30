@@ -894,9 +894,15 @@ window.applyLayout = function (layout) {
     const privacyBtn   = document.getElementById('rct-privacy-btn');
 
     if (privacyBtn) {
-      privacyBtn.addEventListener('click', function () {
-        if (window.klaro) window.klaro.show();
-      });
+      // Klaro nicht da (kein YouTube/Map-CE auf Seite UND rct_klaro_global=0)
+      // → Button verstecken statt klick-toter Zombie
+      if (typeof window.klaro === 'undefined') {
+        privacyBtn.hidden = true;
+      } else {
+        privacyBtn.addEventListener('click', function () {
+          window.klaro.show();
+        });
+      }
     }
 
     if (scrollTopBtn) {
