@@ -25,5 +25,6 @@ $GLOBALS['TL_DCA']['tl_rct_config'] = [
         'rct_canvas_enabled'     => ['sql' => "char(1) NOT NULL default '1'"],
         'rct_dots_enabled'       => ['sql' => "char(1) NOT NULL default '1'"],
         'rct_aurora_speed'       => ['sql' => "varchar(5) NOT NULL default '1.0'"],
+        'rct_klaro_global'       => ['sql' => "char(1) NOT NULL default '0'"],
     ],
 ];

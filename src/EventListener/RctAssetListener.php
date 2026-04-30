@@ -21,41 +21,52 @@ class RctAssetListener
 
     public function __invoke(PageModel $page, LayoutModel $layout, PageRegular $pageRegular): void
     {
+        $config = $this->loadConfig();
+
         $GLOBALS['TL_CSS'][] = 'bundles/rct/css/rct-layout.css||static';
         $GLOBALS['TL_CSS'][] = 'bundles/rct/css/rct-utilities.css||static';
         $GLOBALS['TL_CSS'][] = 'bundles/rct/css/rct-components.css||static';
         $GLOBALS['TL_CSS'][] = 'bundles/rct/css/rct-customize.css||static';
-        $GLOBALS['TL_CSS'][] = 'bundles/rct/css/klaro.min.css||static';
 
-        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/vendor/imagesloaded.pkgd.min.js||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/vendor/isotope.pkgd.min.js||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/klaro-config.js||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/klaro.min.js||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-baker-sky.js||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-baker.js||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-canvas-config.js||static';
-        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/gl-bg-animation.js||static';
+        // imagesloaded + isotope werden nur vom rct_gallery CE gebraucht und dort
+        // per `{% add ... to body %}` lazy geladen (siehe rct_gallery.html.twig).
+        // Klaro (CSS+JS+Config) wird nur von youtube + rct_map CEs gebraucht und
+        // ist dort entsprechend lazy eingebunden (oder global per Toggle, s.u.).
+
+        // Canvas-Stack (~100 KB) nur laden, wenn Aurora oder Dots aktiviert sind.
+        // Default bei fehlender Config = an (entspricht DCA-Defaults).
+        $canvasOn = !$config
+            || ($config['rct_canvas_enabled'] ?? '1') === '1'
+            || ($config['rct_dots_enabled']   ?? '1') === '1';
+        if ($canvasOn) {
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-baker-sky.js||static';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-baker.js||static';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-canvas-config.js||static';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/gl-bg-animation.js||static';
+        }
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct.js||static';
 
-        $this->injectThemeConfig();
+        if ($config) {
+            $this->applyThemeConfig($config);
+        }
     }
 
-    private function injectThemeConfig(): void
+    private function loadConfig(): ?array
     {
         try {
             $tables = $this->db->createSchemaManager()->listTableNames();
             if (!in_array('tl_rct_config', $tables)) {
-                return;
+                return null;
             }
-            $config = $this->db->fetchAssociative("SELECT * FROM tl_rct_config LIMIT 1");
+            $row = $this->db->fetchAssociative("SELECT * FROM tl_rct_config LIMIT 1");
         } catch (\Throwable) {
-            return;
+            return null;
         }
+        return $row ?: null;
+    }
 
-        if (!$config) {
-            return;
-        }
-
+    private function applyThemeConfig(array $config): void
+    {
         $css = $this->buildFontFaceDeclarations($config);
         $css .= ":root {\n";
         $css .= "  --rct-font-body: '" . $this->escape($config['rct_font_body']) . "', sans-serif;\n";
@@ -88,6 +99,22 @@ class RctAssetListener
 
         $this->injectAllowedThemes($config);
         $this->injectCanvasConfig($config);
+        $this->injectKlaroIfGlobal($config);
+    }
+
+    /**
+     * Lädt Klaro auf jeder Seite, wenn rct_klaro_global aktiviert ist.
+     * Verwendet die gleichen Block-Keys wie youtube/rct_map.html.twig, damit
+     * auf Seiten mit diesen CEs nicht doppelt geladen wird.
+     */
+    private function injectKlaroIfGlobal(array $config): void
+    {
+        if (($config['rct_klaro_global'] ?? '0') !== '1') {
+            return;
+        }
+        $GLOBALS['TL_HEAD']['klaro_css']    = '<link rel="stylesheet" href="/bundles/rct/css/klaro.min.css">';
+        $GLOBALS['TL_BODY']['klaro_config'] = '<script src="/bundles/rct/js/klaro-config.js" defer></script>';
+        $GLOBALS['TL_BODY']['klaro_js']     = '<script src="/bundles/rct/js/klaro.min.js" defer></script>';
     }
 
     private function injectAllowedThemes(array $config): void

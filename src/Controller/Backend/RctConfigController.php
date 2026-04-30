@@ -47,6 +47,7 @@ class RctConfigController extends AbstractBackendController
         'rct_canvas_enabled'     => '1',
         'rct_dots_enabled'       => '1',
         'rct_aurora_speed'       => '1.0',
+        'rct_klaro_global'       => '0',
     ];
 
     public function __construct(private readonly Connection $db) {}
@@ -92,7 +93,7 @@ class RctConfigController extends AbstractBackendController
                 continue;
             }
             // Checkbox fields
-            if (in_array($field, ['rct_canvas_enabled', 'rct_dots_enabled'])) {
+            if (in_array($field, ['rct_canvas_enabled', 'rct_dots_enabled', 'rct_klaro_global'])) {
                 $data[$field] = $request->request->has($field) ? '1' : '0';
                 continue;
             }

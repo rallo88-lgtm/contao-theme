@@ -192,6 +192,17 @@
     </div>
   </div>
 
+  {# ── Datenschutz / Cookie-Consent ───────────────────────── #}
+  <div class="rct-config-section" style="margin-bottom: 24px;">
+    <h2>Datenschutz / Cookie-Consent</h2>
+    <div class="rct-toggle-row">
+      <input type="checkbox" name="rct_klaro_global" id="rct_klaro_global" value="1"
+        {{ config.rct_klaro_global == '1' ? 'checked' }}>
+      <label for="rct_klaro_global">Klaro global laden</label>
+      <span>Standard: Klaro lädt nur auf Seiten mit YouTube- oder Map-CE. Aktivieren, wenn weitere externe Dienste (Tracking, andere Embeds) auf beliebigen Seiten Consent brauchen.</span>
+    </div>
+  </div>
+
     <div class="rct-save-bar">
       <button type="submit" class="tl_submit">Einstellungen speichern</button>
       <button type="button" class="rct-reset-btn" id="rct-reset-btn">Auf Standardwerte zurücksetzen</button>

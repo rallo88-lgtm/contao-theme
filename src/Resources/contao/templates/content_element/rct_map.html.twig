@@ -1,4 +1,14 @@
 {% if address %}
+{% add 'klaro_css' to head %}
+  <link rel="stylesheet" href="/bundles/rct/css/klaro.min.css">
+{% endadd %}
+{% add 'klaro_config' to body %}
+  <script src="/bundles/rct/js/klaro-config.js" defer></script>
+{% endadd %}
+{% add 'klaro_js' to body %}
+  <script src="/bundles/rct/js/klaro.min.js" defer></script>
+{% endadd %}
+
 <div class="rct-map-wrap{{ cssClass ? ' ' ~ cssClass }}" style="height:{{ height }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
   <div id="{{ mapId }}" class="rct-map-canvas rct-map-placeholder">
     <p class="rct-map-consent-hint">
