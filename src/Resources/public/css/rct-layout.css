@@ -2226,17 +2226,19 @@ body.rct-right-open #right {
   height: 100%;
 }
 
-/* Linke + rechte Spalte — fix in Sidebar-Breite */
+/* Linke + rechte Spalte — Breiten folgen der aktuellen Sidebar-Sichtbarkeit
+   (Vars werden weiter unten je Layout/Body-Klasse gesetzt). Damit nimmt
+   #bottom_content immer dieselbe Lane ein wie #main .rct-content-inner. */
 #bottom_left,
 #bottom_right {
   flex: 0 0 auto;
-  width: var(--rct-sidebar-left-width);
   padding: 0 20px;
   box-sizing: border-box;
+  overflow: hidden;
+  transition: width var(--rct-transition-speed) var(--rct-transition-type);
 }
-#bottom_right {
-  width: var(--rct-sidebar-right-width);
-}
+#bottom_left  { width: var(--rct-sidebar-left-current); }
+#bottom_right { width: var(--rct-sidebar-right-current); }
 
 /* Mittlere Spalte — folgt der Content-Lane (max-width zentriert) */
 #bottom_content {
@@ -2344,17 +2346,48 @@ body.rct-right-open #right {
   pointer-events: none;
 }
 
-/* Topnav: keine fixen Sidebars → Seitenspalten kollabieren */
-[data-layout="topnav"] #bottom_left,
-[data-layout="topnav"] #bottom_right {
-  display: none;
+/* Sidebar-Visibility-Vars — spiegeln den aktuellen Sidebar-Zustand auf body,
+   so dass #bottom_left/right ihre Breite synchron mit #mainContainer's
+   padding ändern. Die Selektoren folgen exakt dem #mainContainer-Padding-
+   Schema; damit ist die Bottom-Lane immer kongruent zur Main-Lane. */
+
+/* Layout-Defaults (außerhalb Media-Queries — matchen die data-layout
+   #mainContainer-Padding-Regeln, die ebenfalls layout-übergreifend wirken). */
+[data-layout="topnav"] body {
+  --rct-sidebar-left-current:  0px;
+  --rct-sidebar-right-current: 0px;
+}
+[data-layout="sidebar-right"] body {
+  --rct-sidebar-left-current:  0px;
+  --rct-sidebar-right-current: var(--rct-sidebar-right-width);
+}
+[data-layout="classic"] body {
+  --rct-sidebar-left-current:  0px;
+  --rct-sidebar-right-current: 0px;
+}
+/* sidebar-right Toggle gilt auch auf Mobile (matched #mainContainer ohne Media-Wrapper) */
+[data-layout="sidebar-right"] body:not(.rct-sidebar-closed) { --rct-sidebar-left-current:  var(--rct-sidebar-left-width); }
+[data-layout="sidebar-right"] body.rct-right-closed         { --rct-sidebar-right-current: 0px; }
+
+/* Desktop: Default-Layout (sidebar) + Body-Class-Toggles */
+@media (min-width: 1025px) {
+  body {
+    --rct-sidebar-left-current:  var(--rct-sidebar-left-width);
+    --rct-sidebar-right-current: 0px;
+  }
+  body.rct-sidebar-closed { --rct-sidebar-left-current:  0px; }
+  body.rct-right-open     { --rct-sidebar-right-current: var(--rct-sidebar-right-width); }
+
+  /* Topnav-Push-Modus: nur auf Desktop, Sidebars schieben Content via padding */
+  [data-layout="topnav"] body.rct-sidebar-open { --rct-sidebar-left-current:  var(--rct-sidebar-left-width); }
+  [data-layout="topnav"] body.rct-right-open   { --rct-sidebar-right-current: var(--rct-sidebar-right-width); }
 }
 
-/* Mobile: Sidebars als Overlay → Seitenspalten kollabieren */
+/* Mobile/Tablet: Default-Layout = beide Spalten kollabieren (Sidebars sind Overlays) */
 @media (max-width: 1024px) {
-  #bottom_left,
-  #bottom_right {
-    display: none;
+  body {
+    --rct-sidebar-left-current:  0px;
+    --rct-sidebar-right-current: 0px;
   }
   #bottom_content {
     padding: 0 16px;
