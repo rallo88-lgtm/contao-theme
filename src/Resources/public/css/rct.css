@@ -141,14 +141,6 @@ body.rct-layout-full #wrapper {
   transition: none !important;
 }
 
-
-
-
-/* Wenn aktiv (durch JS Klasse am Body oder Sidebar) 
-.rct-left-open #left {
-    transform: translateX(0);
-}*/
-
 /* Animation für den Button selbst (Hamburger zu X) */
 #rct-nav-toggle.is-active .line-mid { opacity: 0; }
 #rct-nav-toggle.is-active .line-top { transform: translateY(6px) rotate(45deg); transform-origin: center; }
@@ -483,44 +475,6 @@ h1, h2, h3, h4, h5, h6 {
         background: var(--rct-shell-bg);
     }
   
-	/* 3. Die Sidebar muss absolut/fest positioniert sein */
-	aside#leftXXX {
-		display: block !important; /* Sicherstellen, dass sie nicht auf 'none' steht */
-		position: fixed !important;
-		top: 0 !important;
-		left: 0 !important;
-		width: 280px !important;
-		height: 100vh !important;
-		z-index: 2000 !important; /* Über den Inhalt legen */    
-		/* Startposition: Links aus dem Bildschirm geschoben */
-		transform: translateX(-100%) !important;
-		transition: transform 0.3s ease-in-out !important;    
-		/* Ein Schatten hilft, sie vom Content abzuheben */
-		box-shadow: 5px 0 15px rgba(0,0,0,0.1);
-	}
-
-	/* 4. Die Klasse .open muss sie reinholen
-	aside#left.open {
-		transform: translateX(0) !important;
-	} */
-
-	body.rct-left-openXXX::after {
-		content: "";
-		position: fixed;
-		top: 0; left: 0;
-		width: 100vw; height: 100vh;
-		background: rgba(0,0,0,0.4); /* Dunkelt den Rest ab */
-		z-index: 999; /* Direkt unter der Sidebar (1000) */
-		backdrop-filter: blur(2px); /* Schicker Unschärfe-Effekt (Material 3) */
-	}
-
-  /*
-	.rct-mobile-nav a.active,
-	.rct-mobile-nav a:hover {
-    color: var(--rct-primary-light);
-  }
-  */
-
 } /* < 1024 px  Ende */
 
 
@@ -592,17 +546,6 @@ body.rct-left-open #rct-nav-toggle svg rect:nth-child(3) {
   overflow: hidden;
   -webkit-tap-highlight-color: transparent; /* Verhindert den blauen Standard-Flash auf Android */
 }
-
-/* Diese Regel greift SOFORT beim ersten Paint 
-.rct-left-initial-closed #left {
-  transform: translateX(calc(var(--rct-sidebar-width) * -1)) !important;
-}
-
-.rct-left-initial-closed #main {
-  margin-left: 0 !important;
-}
-*/
-
 
 /* Die Welle selbst */
 .rct-ripple {

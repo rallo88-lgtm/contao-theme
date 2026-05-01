@@ -1654,17 +1654,6 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   z-index: 1;
 }
 
-/* Mess-Klasse: alle Submenus gleichzeitig unsichtbar aufklappen zum Messen */
-#left .inside.sitenavigation.rct-measuring .submenu > ul,
-#right .inside.sitenavigation.rct-measuring .submenu > ul {
-  display: block !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-  height: auto !important;
-  overflow: visible !important;
-  opacity: 0 !important;
-}
-
 #left nav, #right nav,
 #left .mod_navigation {
   padding: 0 10px 0 10px;
