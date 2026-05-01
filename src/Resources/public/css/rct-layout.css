@@ -1919,6 +1919,16 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   border-right: 4px solid transparent;
 }
 
+#left nav ul li.active strong.active,
+#left nav ul li.active > a,
+#left nav ul li.trail > a,
+#left .mod_navigation ul li.active > a,
+#left .mod_navigation ul li.trail > a {
+  color: var(--rct-primary-light);
+  border-left-color: var(--rct-primary-light);
+  background: rgba(255,255,255,0.04);
+}
+
 #right nav ul li.active strong.active,
 #right nav ul li.active > a,
 #right nav ul li.trail > a,
