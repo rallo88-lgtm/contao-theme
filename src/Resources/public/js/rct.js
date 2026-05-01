@@ -522,24 +522,12 @@
       const dotDisplay  = document.querySelector('.current-theme-dot');
 
       if (nameDisplay) {
-        const labels = {
-          default:             'Standard',
-          lime:                'Lime Tech',
-          purple:              'Deep Purple',
-          'dark-cherry-bloom': 'Baccara Rose',
-          'dark-cherry':       'Dark Cherry',
-          'honey-moon':        'Honey Moon',
-          'candy-chaos':       'Candy Chaos',
-          'sparta':            'Sparta',
-          'sparta2':           'Sparta II',
-          'toxic-green':       'Toxic Green',
-          'claudy-sky':        'Claudy Sky',
-          'glass-tank':        'Glass Tank',
-          'neon-grid':         'Neon Grid',
-          'magnetic-field':    'Magnetic Field',
-          'baker-street':      'Baker Street',
-        };
-        nameDisplay.textContent = labels[theme] || 'Standard';
+        // Label aus dem gerenderten Switcher-DOM lesen (Single Source of
+        // Truth = RctConfigController::ALL_THEMES, vom Twig ausgespielt).
+        // Faellt auf 'Standard' zurueck wenn der Switcher nicht im DOM ist.
+        const optBtn = document.querySelector('.theme-opt-btn[data-set-theme="' + (theme || 'default') + '"]');
+        const lbl = optBtn ? optBtn.querySelector('.opt-label') : null;
+        nameDisplay.textContent = lbl ? lbl.textContent : 'Standard';
       }
 
       if (dotDisplay) {

@@ -8,21 +8,9 @@
     </button>
     <div class="theme-dropdown">
         <ul class="theme-list">
-            <li><button class="theme-opt-btn" data-set-theme="default"><span class="opt-dot default"></span><span class="opt-label">Light Blue</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="lime"><span class="opt-dot lime"></span><span class="opt-label">Lime Tech</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="purple"><span class="opt-dot purple"></span><span class="opt-label">Deep Purple</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="dark-cherry-bloom"><span class="opt-dot dark-cherry-bloom"></span><span class="opt-label">Baccara Rose</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="dark-cherry"><span class="opt-dot dark-cherry"></span><span class="opt-label">Dark Cherry</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="honey-moon"><span class="opt-dot honey-moon"></span><span class="opt-label">Honey Moon</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="candy-chaos"><span class="opt-dot candy-chaos"></span><span class="opt-label">Candy Chaos</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="sparta"><span class="opt-dot sparta"></span><span class="opt-label">Sparta</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="sparta2"><span class="opt-dot sparta2"></span><span class="opt-label">Sparta II</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="toxic-green"><span class="opt-dot toxic-green"></span><span class="opt-label">Toxic Green</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="claudy-sky"><span class="opt-dot claudy-sky"></span><span class="opt-label">Claudy Sky</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="glass-tank"><span class="opt-dot glass-tank"></span><span class="opt-label">Glass Tank</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="neon-grid"><span class="opt-dot neon-grid"></span><span class="opt-label">Neon Grid</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="magnetic-field"><span class="opt-dot magnetic-field"></span><span class="opt-label">Magnetic Field</span></button></li>
-            <li><button class="theme-opt-btn" data-set-theme="baker-street"><span class="opt-dot baker-street"></span><span class="opt-label">Baker Street</span></button></li>
+            {% for slug, label in rct_themes() %}
+            <li><button class="theme-opt-btn" data-set-theme="{{ slug }}"><span class="opt-dot {{ slug }}"></span><span class="opt-label">{{ label }}</span></button></li>
+            {% endfor %}
         </ul>
         <div class="theme-footer">
             <label class="save-toggle">
