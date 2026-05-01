@@ -1779,20 +1779,20 @@ html[data-layout="classic"] #left .rct-header-logo-link {
     opacity: 1;
 }
 
+/* Pfeil-Rotation: nur is-open dreht (Click-Akkordeon).
+   Hover-Trigger auf Sidebar entfernt — fuehrte zu mouseleave-Niemandsland-
+   Bug (Submenu klappt zu, Layout shrinkt, Maus verliert Anker). */
 .mod_navigation li.submenu.is-open > a::before,
 .mod_navigation li.submenu.is-open > span::before,
 .mod_navigation li.submenu.is-open > a::after,
-.mod_navigation li.submenu.is-open > span::after,
-#left .mod_navigation li.submenu:hover > a::after,
-#left .mod_navigation li.submenu:hover > span::after,
-#right .mod_navigation li.submenu:hover > a::before,
-#right .mod_navigation li.submenu:hover > span::before {
+.mod_navigation li.submenu.is-open > span::after {
     transform: rotate(90deg);
     color: var(--rct-primary);
 }
 
 
-/* Sidebar Navigation — Submenus im normalen Flow */
+/* Sidebar Navigation — Submenus im normalen Flow.
+   Sichtbar nur ueber is-open (Click-Akkordeon, Single-Open per Level). */
 #left .mod_navigation li.submenu ul,
 #right .mod_navigation li.submenu ul {
   display: none !important;
@@ -1803,9 +1803,7 @@ html[data-layout="classic"] #left .rct-header-logo-link {
 }
 
 #left .mod_navigation li.submenu.is-open > ul,
-#right .mod_navigation li.submenu.is-open > ul,
-#left .mod_navigation li.submenu:hover > ul,
-#right .mod_navigation li.submenu:hover > ul {
+#right .mod_navigation li.submenu.is-open > ul {
   display: block !important;
   visibility: visible;
   opacity: 1;

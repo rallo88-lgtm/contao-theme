@@ -205,6 +205,25 @@
     const initNavigation = () => {
       const submenus = document.querySelectorAll('#left .mod_navigation li.submenu, #right .mod_navigation li.submenu');
 
+      // Single-Open-Akkordeon: oeffnet das angeklickte Submenu und schliesst
+      // andere offene Siblings auf gleicher Ebene. Kein Hover-Trigger.
+      // Erster Klick auf echten Link oeffnet (preventDefault), zweiter
+      // Klick auf bereits geoeffneten Link navigiert dann normal.
+      function toggleAccordion(li) {
+        const wasOpen = li.classList.contains('is-open');
+        const parentUl = li.parentElement;
+        if (parentUl) {
+          parentUl.querySelectorAll(':scope > li.submenu.is-open').forEach(function(sib) {
+            if (sib !== li) sib.classList.remove('is-open');
+          });
+        }
+        if (wasOpen) {
+          li.classList.remove('is-open');
+        } else {
+          li.classList.add('is-open');
+        }
+      }
+
       submenus.forEach(li => {
         const trigger = li.querySelector(':scope > a, :scope > span');
 
@@ -213,13 +232,14 @@
             const isNoNav = this.tagName === 'SPAN' || this.getAttribute('href') === '#' || (this.getAttribute('href') || '').includes('javascript:void(0)');
             if (isNoNav) {
               e.preventDefault();
-              li.classList.toggle('is-open');
+              toggleAccordion(li);
               return;
             }
-            // Mobile: erster Tap öffnet Submenu, zweiter Tap navigiert
-            if (window.matchMedia('(max-width: 900px)').matches && !li.classList.contains('is-open')) {
+            // Echter Link: erster Klick oeffnet (preventDefault), zweiter
+            // Klick auf bereits offenen Link navigiert.
+            if (!li.classList.contains('is-open')) {
               e.preventDefault();
-              li.classList.add('is-open');
+              toggleAccordion(li);
             }
           });
         }
@@ -1359,21 +1379,34 @@ window.applyLayout = function (layout) {
 
 
   /* ------------------------------------------------------------------
-     SIDEBAR NAV-HÖHE RESERVIEREN
-     Klappt alle Submenus unsichtbar auf, misst scrollHeight,
-     setzt FESTE height auf .inside.sitenavigation.
-     Submenus können danach overflow:visible nach unten wachsen —
-     Logo sitzt fest darunter, springt nie.
+     SIDEBAR NAV-HÖHE RESERVIEREN (Single-Open-Akkordeon)
+     Mit Single-Open ist immer nur EIN L1-Submenu auf einmal offen.
+     Worst-Case-Hoehe: Basis (alle zu) + groesster L1-Zweig (mit allen
+     seinen nested Subs aufgeklappt). Damit sitzt das Logo fest unter
+     diesem Worst-Case und springt nie — aber ohne Multi-Open-Overshoot.
   ------------------------------------------------------------------ */
   (function initSidebarNavReserve() {
 
-    function measureMaxNavHeight(nav) {
-      // Alle Submenus über CSS-Klasse unsichtbar aufklappen
-      nav.classList.add('rct-measuring');
-      // Reflow erzwingen
-      var h = nav.scrollHeight;
-      nav.classList.remove('rct-measuring');
-      return h;
+    function measureWorstCaseHeight(nav) {
+      // Aktuellen Open-State sichern, alle schliessen fuer saubere Messung
+      var savedOpen = Array.from(nav.querySelectorAll('li.submenu.is-open'));
+      savedOpen.forEach(function(li) { li.classList.remove('is-open'); });
+
+      var maxH = nav.scrollHeight; // Basis: alle zu
+
+      // Pro L1-Submenu: oeffnen + alle nested submenus oeffnen, scrollHeight messen
+      var l1Items = nav.querySelectorAll('ul.level_1 > li.submenu');
+      l1Items.forEach(function(l1) {
+        var allInBranch = [l1].concat(Array.from(l1.querySelectorAll('li.submenu')));
+        allInBranch.forEach(function(li) { li.classList.add('is-open'); });
+        var h = nav.scrollHeight;
+        if (h > maxH) maxH = h;
+        allInBranch.forEach(function(li) { li.classList.remove('is-open'); });
+      });
+
+      // Original-State wiederherstellen
+      savedOpen.forEach(function(li) { li.classList.add('is-open'); });
+      return maxH;
     }
 
     function reserveNavHeight() {
@@ -1383,9 +1416,8 @@ window.applyLayout = function (layout) {
         var nav = sidebar.querySelector('.inside.sitenavigation');
         if (!nav) return;
 
-        // Höhe zurücksetzen für saubere Messung
         nav.style.height = '';
-        var h = measureMaxNavHeight(nav);
+        var h = measureWorstCaseHeight(nav);
         if (h > 0) nav.style.height = h + 'px';
       });
     }
