@@ -112,7 +112,7 @@ class RctClassicLayoutMigration extends AbstractMigration
         if ($classicBtm)$modules[] = ['mod' => $classicBtm, 'col' => 'classic_bottom',        'enable' => '1'];
 
         $this->db->executeStatement(
-            "INSERT INTO tl_layout (pid, tstamp, name, `rows`, cols, template, viewport, sections, modules) VALUES (?, ?, ?, '3rw', '2cll', 'fe_page', 'width=device-width,initial-scale=1.0,shrink-to-fit=no', ?, ?)",
+            "INSERT INTO tl_layout (pid, tstamp, name, `rows`, cols, template, viewport, sections, modules) VALUES (?, ?, ?, '3rw', '2cll', 'fe_page_classic', 'width=device-width,initial-scale=1.0,shrink-to-fit=no', ?, ?)",
             [$themeId, $now, 'RCT - Classic', $sections, serialize($modules)]
         );
 

@@ -127,6 +127,7 @@ class RctSetupMigration extends AbstractMigration
             ],
             $headerLeft, $headerRight, $sidebarFooters, $bottomBar
         ), $stdSections);
+        // ^ Standard nutzt fe_page (Default).
 
         // Nav Left
         $this->insertLayout($themePid, $now, 'RCT - Nav Left', '3cl', array_merge(
@@ -138,7 +139,7 @@ class RctSetupMigration extends AbstractMigration
                 ['mod' => $navTop, 'col' => 'navbar','enable' => '1'],
             ],
             $headerLeft, $headerRight, $sidebarFooters, $bottomBar
-        ), $stdSections);
+        ), $stdSections, 'fe_page_nav_left');
 
         // Nav Right
         $this->insertLayout($themePid, $now, 'RCT - Nav Right', '3cl', array_merge(
@@ -150,7 +151,7 @@ class RctSetupMigration extends AbstractMigration
                 ['mod' => $navTop, 'col' => 'navbar','enable' => '1'],
             ],
             $headerLeft, $headerRight, $sidebarFooters, $bottomBar
-        ), $stdSections);
+        ), $stdSections, 'fe_page_nav_right');
 
         // Nav Top
         $this->insertLayout($themePid, $now, 'RCT - Nav Top', '2cll', array_merge(
@@ -161,7 +162,7 @@ class RctSetupMigration extends AbstractMigration
                 ['mod' => $navTop, 'col' => 'navbar','enable' => '1'],
             ],
             $headerLeft, $headerRight, $sidebarFooters, $bottomBar
-        ), $stdSections);
+        ), $stdSections, 'fe_page_nav_top');
 
         // Classic (mobile-drawer + edge-to-edge Navbar)
         $this->insertLayout($themePid, $now, 'RCT - Classic', '2cll', [
@@ -179,7 +180,7 @@ class RctSetupMigration extends AbstractMigration
             ['mod' => $btmCtl,     'col' => 'bottom_content',        'enable' => '1'],
             ['mod' => $btmRight,   'col' => 'bottom_right',          'enable' => '1'],
             ['mod' => $classicBtm, 'col' => 'classic_bottom',        'enable' => '1'],
-        ], $classicSections);
+        ], $classicSections, 'fe_page_classic');
 
         return $this->createResult(true, 'RCT default modules and layouts created successfully (5 Layouts incl. Classic).');
     }
@@ -226,11 +227,11 @@ class RctSetupMigration extends AbstractMigration
         return (string) $this->db->lastInsertId();
     }
 
-    private function insertLayout(int $pid, int $now, string $name, string $cols, array $modules, string $sections): void
+    private function insertLayout(int $pid, int $now, string $name, string $cols, array $modules, string $sections, string $template = 'fe_page'): void
     {
         $this->db->executeStatement(
-            "INSERT INTO tl_layout (pid, tstamp, name, `rows`, cols, template, viewport, sections, modules) VALUES (?, ?, ?, '3rw', ?, 'fe_page', 'width=device-width,initial-scale=1.0,shrink-to-fit=no', ?, ?)",
-            [$pid, $now, $name, $cols, $sections, serialize($modules)]
+            "INSERT INTO tl_layout (pid, tstamp, name, `rows`, cols, template, viewport, sections, modules) VALUES (?, ?, ?, '3rw', ?, ?, 'width=device-width,initial-scale=1.0,shrink-to-fit=no', ?, ?)",
+            [$pid, $now, $name, $cols, $template, $sections, serialize($modules)]
         );
     }
 
