@@ -3488,6 +3488,40 @@
   transform: translateY(-2px);
 }
 
+/* Layout-Direction: Bild links/rechts vom Text (Desktop).
+   40/60-Verhaeltnis (Bild schmaler, Text breiter), aspect-ratio
+   ueberschrieben damit das Bild die Gesamthoehe der Karte ausfuellt.
+   Auf Mobile (<=768px) faellt alles zurueck zu column (Bild oben). */
+.rct-itb--layout-left {
+  flex-direction: row;
+}
+.rct-itb--layout-right {
+  flex-direction: row-reverse;
+}
+.rct-itb--layout-left  > .rct-itb-media,
+.rct-itb--layout-right > .rct-itb-media {
+  flex: 0 0 40%;
+  aspect-ratio: auto;
+  align-self: stretch;
+}
+.rct-itb--layout-left  > .rct-itb-body,
+.rct-itb--layout-right > .rct-itb-body {
+  flex: 1 1 60%;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .rct-itb--layout-left,
+  .rct-itb--layout-right {
+    flex-direction: column;
+  }
+  .rct-itb--layout-left  > .rct-itb-media,
+  .rct-itb--layout-right > .rct-itb-media {
+    flex: 0 0 auto;
+    aspect-ratio: 16 / 10;
+  }
+}
+
 /* Clippath-Ecken nur bei dark */
 .rct-itb.style-dark {
   clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));

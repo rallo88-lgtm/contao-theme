@@ -460,7 +460,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_icon_reference'] =
 // ============================================================
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_image_textbox'] =
-    '{type_legend},type;{content_legend},rct_itb_image,rct_itb_image_alt,rct_itb_headline,rct_itb_text,rct_itb_style;{link_legend:hide},rct_itb_link_page,rct_itb_link_url,rct_itb_link_label,rct_itb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{content_legend},rct_itb_image,rct_itb_image_alt,rct_itb_headline,rct_itb_text,rct_itb_style,rct_itb_layout;{link_legend:hide},rct_itb_link_page,rct_itb_link_url,rct_itb_link_label,rct_itb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_icon_textbox'] =
     '{type_legend},type;{content_legend},rct_itb_icon,rct_itb_headline,rct_itb_text,rct_itb_style;{link_legend:hide},rct_itb_link_page,rct_itb_link_url,rct_itb_link_label,rct_itb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
@@ -503,6 +503,14 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_style'] = [
     'label'     => ['Stil', 'Hell oder dunkel'],
     'inputType' => 'select',
     'options'   => ['light' => 'Hell', 'dark' => 'Dunkel (Shell-Look)'],
+    'eval'      => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_layout'] = [
+    'label'     => ['Layout', 'Anordnung von Bild und Text'],
+    'inputType' => 'select',
+    'options'   => ['top' => 'Bild oben (Standard)', 'left' => 'Bild links', 'right' => 'Bild rechts'],
+    'default'   => 'top',
     'eval'      => ['tl_class' => 'w50'],
 ];
 

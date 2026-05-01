@@ -6,7 +6,7 @@
 {% extends '@Contao/content_element/_base.html.twig' %}
 
 {% block content %}
-<div class="rct-itb rct-itb--image style-{{ boxStyle }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+<div class="rct-itb rct-itb--image rct-itb--layout-{{ boxLayout }} style-{{ boxStyle }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
   {% if imgSrc %}
     <figure class="rct-itb-media">
       <img src="{{ imgSrc }}" alt="{{ imgAlt }}" loading="lazy">
