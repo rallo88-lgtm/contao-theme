@@ -2208,33 +2208,21 @@ body.rct-right-open #right {
   align-items: stretch;
   width: 100%;
   height: 100%;
-  /* Padding aus den Sidebar-Vars getrieben — analog #mainContainer.
-     Vorteil: reserviert den Platz auch wenn #bottom_left/right gar nicht
-     im DOM sind (Contao rendert leere Custom-Sections nicht immer). */
-  padding-left:  var(--rct-sidebar-left-current);
-  padding-right: var(--rct-sidebar-right-current);
-  box-sizing: border-box;
-  transition:
-    padding-left  var(--rct-transition-speed) var(--rct-transition-type),
-    padding-right var(--rct-transition-speed) var(--rct-transition-type);
 }
 
-/* Linke + rechte Spalte als absolut positionierte Layer ueber dem
-   reservierten Padding-Bereich. Existieren die Sections im DOM, sitzen
-   ihre Inhalte da; fehlen sie, ist nur das Padding aktiv und alles
-   bleibt korrekt ausgerichtet. */
+/* Linke + rechte Spalte — Breiten folgen der aktuellen Sidebar-Sichtbarkeit
+   (Vars werden weiter unten je Layout/Body-Klasse gesetzt). Damit nimmt
+   #bottom_content immer dieselbe Lane ein wie #main .rct-content-inner. */
 #bottom_left,
 #bottom_right {
-  position: absolute;
-  top: 0;
-  bottom: 0;
+  flex: 0 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
   overflow: hidden;
   transition: width var(--rct-transition-speed) var(--rct-transition-type);
 }
-#bottom_left  { left:  0; width: var(--rct-sidebar-left-current,  0px); }
-#bottom_right { right: 0; width: var(--rct-sidebar-right-current, 0px); }
+#bottom_left  { width: var(--rct-sidebar-left-current,  0px); }
+#bottom_right { width: var(--rct-sidebar-right-current, 0px); }
 
 /* Mittlere Spalte — folgt der Content-Lane (max-width zentriert) */
 #bottom_content {
