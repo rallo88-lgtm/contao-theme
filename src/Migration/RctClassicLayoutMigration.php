@@ -59,11 +59,17 @@ class RctClassicLayoutMigration extends AbstractMigration
 
         $legalHtml = '<div class="bottom-legal-links"><a href="/datenschutz">Datenschutz</a><a href="/impressum">Impressum</a><a href="/kontakt">Kontakt</a></div>';
 
-        // 1. Classic-spezifische Module anlegen (alle vier neu)
-        $logoCl    = $this->insertLogoModule($themeId, $now, 'Logo Classic',        'sidebar', $headline);
-        $logoClM   = $this->insertLogoModule($themeId, $now, 'Logo Classic - Menu', 'sidebar', $headline);
-        $classicST = $this->insertModule($themeId, $now, 'RCT Classic Suche Toggle', 'rct_search_toggle', $headline);
-        $classicBtm = $this->insertHtmlModule($themeId, $now, 'RCT Classic Bottom-Links', 'html', $headline, $legalHtml);
+        // 1. Classic-spezifische Module find-or-create. Auf rct-showcase
+        //    z.B. legt das Build-Skript diese Module manchmal vor — dann
+        //    duerfen wir sie nicht doppelt anlegen, sondern die existing IDs nutzen.
+        $logoCl    = $this->findModuleId($themeId, 'rct_logo',          'Logo Classic')
+                  ?: $this->insertLogoModule($themeId, $now, 'Logo Classic', 'sidebar', $headline);
+        $logoClM   = $this->findModuleId($themeId, 'rct_logo',          'Logo Classic - Menu')
+                  ?: $this->insertLogoModule($themeId, $now, 'Logo Classic - Menu', 'sidebar', $headline);
+        $classicST = $this->findModuleId($themeId, 'rct_search_toggle', 'RCT Classic Suche Toggle')
+                  ?: $this->insertModule($themeId, $now, 'RCT Classic Suche Toggle', 'rct_search_toggle', $headline);
+        $classicBtm = $this->findModuleId($themeId, 'html',             'RCT Classic Bottom-Links')
+                  ?: $this->insertHtmlModule($themeId, $now, 'RCT Classic Bottom-Links', 'html', $headline, $legalHtml);
 
         // 2. Existing Module per Name+Type finden (von Setup/BottomLayoutMig)
         $nav        = $this->findModuleId($themeId, 'navigation',          'RCT Sidebar-Navigation');
