@@ -88,12 +88,15 @@
         const layout   = currentLayout();
         const defaults = getLayoutDefaults(layout);
 
-        if (layout === 'topnav') {
-          // topnav: keine Persistenz, beide Sidebars zu beim Reload (default)
+        // topnav + classic: keine Sidebars zum Reservieren → fixed defaults,
+        // kein localStorage-Lookup. Sonst zieht ein 'open'-State aus einer
+        // anderen Layout-Session ungewollt das Sidebar-Padding rein und
+        // die Bottom-Lane springt nach JS-Ready um Sidebar-Width zur Seite.
+        if (layout === 'topnav' || layout === 'classic') {
           setLeftState(defaults.left);
           setRightState(defaults.right);
         } else {
-          // Andere Layouts: localStorage hat Vorrang, sonst layout-default
+          // Sidebar-Layouts: localStorage hat Vorrang, sonst layout-default
           const leftSaved  = localStorage.getItem('rct-sidebar-state');
           const rightSaved = localStorage.getItem('rct-sidebar-right-state');
           const leftOpen  = leftSaved  ? leftSaved  === 'open' : defaults.left;
