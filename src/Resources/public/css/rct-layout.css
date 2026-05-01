@@ -1189,48 +1189,32 @@ position: sticky;
 /* Standard = Sidebar Links, Navbar versteckt */
 #navbar { display: none; }
 
-/* TOPNAV */
+/* TOPNAV
+   Layout-Eigenheit: Navbar oben sichtbar, beide Sidebars per default
+   raus-translatiert. Push-Modus (Sidebar schiebt Content) ergibt sich
+   automatisch ueber das Var-System — siehe Var-Block in Section 10. */
 [data-layout="topnav"] #navbar        { display: flex; }
 [data-layout="topnav"] #left          { transform: translateX(calc(var(--rct-sidebar-left-width) * -1)); }
 [data-layout="topnav"] #right         { transform: translateX(var(--rct-sidebar-right-width)); }
-[data-layout="topnav"] #mainContainer { padding-left: 0 !important; padding-right: 0 !important; top: -40px;}
+[data-layout="topnav"] #mainContainer { top: -40px; }
 [data-layout="topnav"] #mainContainer .rct-content-inner { padding-top: 20px; padding-bottom: 15px;}
 
-/* Topnav: Sidebars temporär einblendbar per Toggle – kein Storage-Einfluss */
-[data-layout="topnav"] body.rct-sidebar-open #left   { transform: translateX(0); }
+/* Topnav: Sidebars temporaer einblendbar per Toggle – kein Storage-Einfluss */
+[data-layout="topnav"] body.rct-left-open #left   { transform: translateX(0); }
 [data-layout="topnav"] body.rct-right-open #right    { transform: translateX(0); }
 [data-layout="topnav"] #rct-nav-toggle    { display: flex; }
 [data-layout="topnav"] #rct-right-toggle  { display: flex; }
 
-/* Topnav Push-Modus auf Desktop: wenn Sidebar reinkommt, schiebt #mainContainer
-   den Content via padding zur Seite (statt Overlay).
-   Animation-Transition liegt schon auf #mainContainer (siehe Desktop-@media). */
-@media (min-width: 1025px) {
-  [data-layout="topnav"] body.rct-sidebar-open #mainContainer {
-    padding-left: var(--rct-sidebar-left-width) !important;
-  }
-  [data-layout="topnav"] body.rct-right-open #mainContainer {
-    padding-right: var(--rct-sidebar-right-width) !important;
-  }
-}
-
-/* SIDEBAR RECHTS */
-/* #left bleibt im DOM und ist togglebar – standardmaessig geschlossen (rausgeschoben) */
+/* SIDEBAR RECHTS
+   Layout-Eigenheit: linke Sidebar default raus, rechte default rein.
+   #mainContainer-Padding folgt automatisch den Vars (open=W, closed=0). */
 [data-layout="sidebar-right"] #left {
   transform: translateX(calc(var(--rct-sidebar-left-width) * -1));
 }
-/* #left oeffnen: rct-sidebar-closed ENTFERNEN (normales open-toggle) */
-[data-layout="sidebar-right"] body:not(.rct-sidebar-closed) #left {
+[data-layout="sidebar-right"] body.rct-left-open #left {
   transform: translateX(0);
 }
-[data-layout="sidebar-right"] body:not(.rct-sidebar-closed) #mainContainer {
-  padding-left: var(--rct-sidebar-left-width) !important;
-}
 [data-layout="sidebar-right"] #right  { transform: translateX(0); }
-[data-layout="sidebar-right"] #mainContainer {
-  padding-left: 0 !important;
-  padding-right: var(--rct-sidebar-right-width) !important;
-}
 
 /* CLASSIC – kein Sidebar, edge-to-edge Navbar, optionaler leerer Header */
 html[data-layout="classic"] #header {
@@ -1423,7 +1407,7 @@ html[data-layout="classic"] #left .rct-header-logo-link {
 }
 /* #left in Classic: nur Mobile-Drawer (Desktop weggeschoben).
    Existing #left-Styling (position:fixed, transform-Animation) greift dann
-   per body.rct-sidebar-open Toggle wie in den anderen Layouts. */
+   per body.rct-left-open Toggle wie in den anderen Layouts. */
 @media (min-width: 1025px) {
   [data-layout="classic"] #left { display: none; }
   /* Hamburger-Button in Classic auf Desktop überflüssig */
@@ -1435,7 +1419,7 @@ html[data-layout="classic"] #left .rct-header-logo-link {
     top: 0;
     height: 100vh;
   }
-  [data-layout="classic"] body.rct-sidebar-open #left {
+  [data-layout="classic"] body.rct-left-open #left {
     transform: translateX(0);
   }
   [data-layout="classic"] #rct-nav-toggle { display: flex; }
@@ -1560,15 +1544,11 @@ html[data-layout="classic"] #left .rct-header-logo-link {
 [data-layout="full"] #bottom          { display: none; }
 [data-layout="full"] #mainContainer   { padding: 0 !important; }
 
-/* Erzwungenes Ausblenden für die rechte Sidebar im Rechts-Layout */
+/* Erzwungenes Ausblenden fuer die rechte Sidebar im Rechts-Layout
+   (#mainContainer-Padding folgt automatisch dem Var-System) */
 [data-layout="sidebar-right"] body.rct-right-closed #right {
     transform: translateX(100%) !important;
     display: block; /* Sicherstellen, dass es nicht auf display:none steht */
-}
-
-/* Platz im MainContainer freigeben, wenn rechts zu ist */
-[data-layout="sidebar-right"] body.rct-right-closed #mainContainer {
-    padding-right: 0 !important;
 }
 
 /* Mobile Fix: Sicherstellen, dass sie standardmäßig zu ist, außer die Open-Klasse ist da */
@@ -1584,7 +1564,7 @@ html[data-layout="classic"] #left .rct-header-logo-link {
 
 /* ------------------------------------------------------------
    6. SIDEBAR LINKS (#left)
-   JS-Klassen: body.rct-sidebar-open (Mobile) | body.rct-sidebar-closed (Desktop)
+   JS-Klassen: body.rct-left-open (Mobile) | body.rct-left-closed (Desktop)
    ------------------------------------------------------------ */
 
 #left {
@@ -2127,9 +2107,13 @@ body.rct-right-open #right {
 
 
 
-/* Mobile: Rechts komplett ausblenden wie gewünscht */
+/* Mobile: Rechte Sidebar + Toggle + Layout-Switcher ausblenden.
+   Auf Mobile gibt es nur Default-Layout mit Hamburger-Drawer — Layout-Wechsel
+   und rechte Sidebar ergeben dort keinen Sinn (Sidebars sind immer Overlays). */
 @media (max-width: 1024px) {
-    #right, #rct-right-toggle {
+    #right,
+    #rct-right-toggle,
+    .rct-layout-switcher {
         display: none !important;
     }
 }
@@ -2237,8 +2221,8 @@ body.rct-right-open #right {
   overflow: hidden;
   transition: width var(--rct-transition-speed) var(--rct-transition-type);
 }
-#bottom_left  { width: var(--rct-sidebar-left-current); }
-#bottom_right { width: var(--rct-sidebar-right-current); }
+#bottom_left  { width: var(--rct-sidebar-left-current,  0px); }
+#bottom_right { width: var(--rct-sidebar-right-current, 0px); }
 
 /* Mittlere Spalte — folgt der Content-Lane (max-width zentriert) */
 #bottom_content {
@@ -2346,49 +2330,27 @@ body.rct-right-open #right {
   pointer-events: none;
 }
 
-/* Sidebar-Visibility-Vars — spiegeln den aktuellen Sidebar-Zustand auf body,
-   so dass #bottom_left/right ihre Breite synchron mit #mainContainer's
-   padding ändern. Die Selektoren folgen exakt dem #mainContainer-Padding-
-   Schema; damit ist die Bottom-Lane immer kongruent zur Main-Lane. */
+/* Sidebar-Visibility-Vars — Single Source of Truth fuer alle layout-
+   getriebenen Breiten/Paddings. JS garantiert dass body IMMER eine Klasse
+   pro Sidebar hat (rct-left-open|rct-left-closed, rct-right-open|rct-right-closed).
+   Die Vars werden hier ausschliesslich ueber die "open"-Klassen gesetzt,
+   "closed" faellt auf den :root-Default 0px zurueck.
+   Konsumenten: #mainContainer (padding) und #bottom_left/right (width). */
 
-/* Layout-Defaults (außerhalb Media-Queries — matchen die data-layout
-   #mainContainer-Padding-Regeln, die ebenfalls layout-übergreifend wirken). */
-[data-layout="topnav"] body {
+:root {
   --rct-sidebar-left-current:  0px;
   --rct-sidebar-right-current: 0px;
 }
-[data-layout="sidebar-right"] body {
-  --rct-sidebar-left-current:  0px;
-  --rct-sidebar-right-current: var(--rct-sidebar-right-width);
-}
-[data-layout="classic"] body {
-  --rct-sidebar-left-current:  0px;
-  --rct-sidebar-right-current: 0px;
-}
-/* sidebar-right Toggle gilt auch auf Mobile (matched #mainContainer ohne Media-Wrapper) */
-[data-layout="sidebar-right"] body:not(.rct-sidebar-closed) { --rct-sidebar-left-current:  var(--rct-sidebar-left-width); }
-[data-layout="sidebar-right"] body.rct-right-closed         { --rct-sidebar-right-current: 0px; }
 
-/* Desktop: Default-Layout (sidebar) + Body-Class-Toggles */
+/* Desktop: Sidebar-Klassen schalten die Vars auf die volle Sidebar-Breite.
+   Auf Mobile bleiben die Vars 0 — Sidebars sind dort Overlays, nehmen
+   keinen Platz im Layout, und #mainContainer/#bottom kollabieren entsprechend. */
 @media (min-width: 1025px) {
-  body {
-    --rct-sidebar-left-current:  var(--rct-sidebar-left-width);
-    --rct-sidebar-right-current: 0px;
-  }
-  body.rct-sidebar-closed { --rct-sidebar-left-current:  0px; }
-  body.rct-right-open     { --rct-sidebar-right-current: var(--rct-sidebar-right-width); }
-
-  /* Topnav-Push-Modus: nur auf Desktop, Sidebars schieben Content via padding */
-  [data-layout="topnav"] body.rct-sidebar-open { --rct-sidebar-left-current:  var(--rct-sidebar-left-width); }
-  [data-layout="topnav"] body.rct-right-open   { --rct-sidebar-right-current: var(--rct-sidebar-right-width); }
+  body.rct-left-open  { --rct-sidebar-left-current:  var(--rct-sidebar-left-width); }
+  body.rct-right-open { --rct-sidebar-right-current: var(--rct-sidebar-right-width); }
 }
 
-/* Mobile/Tablet: Default-Layout = beide Spalten kollabieren (Sidebars sind Overlays) */
 @media (max-width: 1024px) {
-  body {
-    --rct-sidebar-left-current:  0px;
-    --rct-sidebar-right-current: 0px;
-  }
   #bottom_content {
     padding: 0 16px;
   }
@@ -2518,12 +2480,12 @@ body.rct-right-open #right {
     z-index: 30;
   }
 
-  /* Einziger Animationspunkt für die Breitenänderung.
-     padding drückt den Content seitlich weg ohne Layout-Reflow
-     auf #main → kein backdrop-filter-Rebuild, kein Ruckeln. */
+  /* Einziger Animationspunkt fuer die Breitenaenderung. Padding aus den
+     sidebar-current-Vars getrieben (siehe Var-Block oben) — Single Source
+     of Truth fuer alle Layout-Zustaende, kein Layout-spezifisches Override. */
   #mainContainer {
-    padding-left: var(--rct-sidebar-left-width);
-    padding-right: 0;
+    padding-left:  var(--rct-sidebar-left-current);
+    padding-right: var(--rct-sidebar-right-current);
     box-sizing: border-box;
     transition:
       padding-left  var(--rct-transition-speed) var(--rct-transition-type),
@@ -2531,11 +2493,8 @@ body.rct-right-open #right {
   }
 
   /* Linke Sidebar – geschlossen */
-  body.rct-sidebar-closed #left {
+  body.rct-left-closed #left {
     transform: translateX(calc(var(--rct-sidebar-left-width) * -1));
-  }
-  body.rct-sidebar-closed #mainContainer {
-    padding-left: 0;
   }
 
   /* Rechte Sidebar – Standard: ausgeblendet */
@@ -2545,9 +2504,6 @@ body.rct-right-open #right {
   }
   body.rct-right-open #right {
     transform: translateX(0);
-  }
-  body.rct-right-open #mainContainer {
-    padding-right: var(--rct-sidebar-right-width);
   }
 
 }
@@ -2586,11 +2542,11 @@ body.rct-right-open #right {
   }
 
   /* Linke Sidebar – offen */
-  body.rct-sidebar-open #left {
+  body.rct-left-open #left {
     transform: translateX(0);
   }
   /* Overlay für linke Sidebar */
-  body.rct-sidebar-open::after {
+  body.rct-left-open::after {
     content: "";
     position: fixed;
     inset: 0;
@@ -2695,9 +2651,9 @@ body.rct-right-open #right {
 }
 
 /* Zustand: OFFEN (rect-basierter Hamburger) */
-body.rct-sidebar-open #rct-nav-toggle svg rect:nth-child(1) { transform: translateY(7px)  rotate(45deg);  }
-body.rct-sidebar-open #rct-nav-toggle svg rect:nth-child(2) { opacity: 0; }
-body.rct-sidebar-open #rct-nav-toggle svg rect:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+body.rct-left-open #rct-nav-toggle svg rect:nth-child(1) { transform: translateY(7px)  rotate(45deg);  }
+body.rct-left-open #rct-nav-toggle svg rect:nth-child(2) { opacity: 0; }
+body.rct-left-open #rct-nav-toggle svg rect:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* Zustand: OFFEN (line-basierter Hamburger) */
 #rct-nav-toggle.is-active .line-mid { opacity: 0; }
@@ -3180,56 +3136,55 @@ body.logged-in #rct-nav-login svg path:last-child {
 
 /* ------------------------------------------------------------
    16. BLITZSCHUTZ / FOUC-GUARD
-   Greift am <html>-Element, bevor der Body gerendert wird.
-   JS (rct.js) entfernt die Klasse sobald der State geladen ist.
+   Twig-Inline-Script im <head> setzt vor First-Paint:
+     - data-layout (falls != sidebar)
+     - rct-left-initial-closed (wenn localStorage left = closed)
+     - rct-right-initial-open  (wenn localStorage right = open + nicht topnav)
+   JS (rct.js) ersetzt die html-Init-Klassen durch body-Klassen und setzt
+   rct-js-ready, sobald geladen.
+
+   Strategie: html-Init-Klassen schalten direkt die Sidebar-Vars um —
+   damit greift dieselbe Var-Cascade wie spaeter durch die body-Klassen.
+   Keine doppelten padding-/transform-Overrides mehr.
    ------------------------------------------------------------ */
 
+/* Default-Vars fuer den FOUC-Zeitraum, layout-spezifisch.
+   (Body-Klassen vom JS uebernehmen, sobald rct-js-ready gesetzt ist.) */
+html:not(.rct-js-ready) {
+  --rct-sidebar-left-current:  var(--rct-sidebar-left-width); /* sidebar layout default: links auf */
+  --rct-sidebar-right-current: 0px;
+}
+html[data-layout="sidebar-right"]:not(.rct-js-ready) {
+  --rct-sidebar-left-current:  0px;
+  --rct-sidebar-right-current: var(--rct-sidebar-right-width);
+}
+html[data-layout="topnav"]:not(.rct-js-ready),
+html[data-layout="classic"]:not(.rct-js-ready) {
+  --rct-sidebar-left-current:  0px;
+  --rct-sidebar-right-current: 0px;
+}
+/* localStorage-getriebene Override-Klassen */
+html.rct-left-initial-closed:not(.rct-js-ready) { --rct-sidebar-left-current:  0px; }
+html.rct-right-initial-open:not(.rct-js-ready)  { --rct-sidebar-right-current: var(--rct-sidebar-right-width); }
 
-html.rct-sidebar-initial-closed #left {
+/* Sidebar-Transforms sofort auf den richtigen Stand, ohne Animation */
+html.rct-left-initial-closed:not(.rct-js-ready) #left {
   transform: translateX(calc(var(--rct-sidebar-left-width) * -1)) !important;
   transition: none !important;
 }
-html.rct-sidebar-initial-closed #main {
-  margin-left: 0 !important;
-  transition: none !important;
-}
-html.rct-sidebar-initial-closed #header,
-html.rct-sidebar-initial-closed #bottom {
-  width: 100% !important;
-  transition: none !important;
-}
-html.rct-right-initial-open #right {
-  transform: translateX(0) !important;
-  transition: none !important;
-}
-html.rct-right-initial-open #mainContainer {
-  padding-right: var(--rct-sidebar-right-width) !important;
-  transition: none !important;
-}
-/* FOUC-Guard fuer sidebar-right Layout:
-   data-layout wird im <head> gesetzt, bevor JS die Body-Klassen setzt.
-   Greift nur bis JS bereit ist (rct-js-ready), danach uebernimmt JS vollstaendig. */
-
-/* sidebar-right: linke Sidebar sofort geschlossen */
 html[data-layout="sidebar-right"]:not(.rct-js-ready) #left {
   transform: translateX(calc(var(--rct-sidebar-left-width) * -1)) !important;
   transition: none !important;
 }
-
-/* sidebar-right: rechte Sidebar sofort offen, kein padding-left */
+html.rct-right-initial-open:not(.rct-js-ready) #right,
 html[data-layout="sidebar-right"]:not(.rct-js-ready) #right {
   transform: translateX(0) !important;
   transition: none !important;
 }
-html[data-layout="sidebar-right"]:not(.rct-js-ready) #mainContainer {
-  padding-left: 0 !important;
-  padding-right: var(--rct-sidebar-right-width) !important;
-  transition: none !important;
-}
-
-/* sidebar (links): rechte Sidebar sofort geschlossen */
 html:not([data-layout]):not(.rct-js-ready) #right,
 html[data-layout="sidebar"]:not(.rct-js-ready) #right {
   transform: translateX(100%) !important;
   transition: none !important;
 }
+/* mainContainer-Transition unterdruecken bis JS bereit (kein animiertes Snap) */
+html:not(.rct-js-ready) #mainContainer { transition: none !important; }

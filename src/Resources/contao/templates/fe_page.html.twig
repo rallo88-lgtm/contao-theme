@@ -11,7 +11,7 @@
   <script>
     (function() {
       if (window.innerWidth > 1024 && localStorage.getItem('rct-sidebar-state') === 'closed') {
-        document.documentElement.classList.add('rct-sidebar-initial-closed');
+        document.documentElement.classList.add('rct-left-initial-closed');
       }
       var t = localStorage.getItem('user-theme');
       if (t && t !== 'default') {

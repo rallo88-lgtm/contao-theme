@@ -1,15 +1,19 @@
 /**
  * RCT – Rallos Contao Toolbox
- * Theme JavaScript v2.7.0 - "Layout-Switcher Edition"
+ * Theme JavaScript v2.8.0 - "Symmetric State Machine"
  *
  * v2.5: Sidebar-State nach Seitenwechsel korrekt synchronisieren.
  * v2.6: Rechte Sidebar persistiert. Beide FOUC-Guards sauber entfernt.
  * v2.7: Layout-Switcher. Gemeinsamer Dropdown-Listener. Kein Race-Condition.
+ * v2.8: Symmetrische Body-Class-Logik fuer beide Sidebars:
+ *       Pro Sidebar IMMER genau eine Klasse aus {rct-left-open, rct-left-closed}
+ *       bzw. {rct-right-open, rct-right-closed}. Nie beide, nie keine. Damit
+ *       sind Mischzustaende ueber Layout-Switches hinweg unmoeglich.
  */
 (function () {
   'use strict';
 
-  /* Hilfsfunktion */
+  /* Hilfsfunktionen */
   function isMobile() {
     return window.innerWidth <= 1024;
   }
@@ -23,15 +27,42 @@
     }
   }
 
+  // Sidebar-State-Helper. Setzen IMMER genau eine Klasse pro Sidebar
+  // (open XOR closed). Damit kein Mischzustand moeglich.
+  function setLeftState(open) {
+    const b = document.body;
+    b.classList.toggle('rct-left-open',   !!open);
+    b.classList.toggle('rct-left-closed', !open);
+  }
+  function setRightState(open) {
+    const b = document.body;
+    b.classList.toggle('rct-right-open',   !!open);
+    b.classList.toggle('rct-right-closed', !open);
+  }
+
+  // Default-Sidebar-State je Layout. Single Source of Truth.
+  function getLayoutDefaults(layout) {
+    switch (layout) {
+      case 'sidebar-right': return { left: false, right: true  };
+      case 'topnav':        return { left: false, right: false };
+      case 'classic':       return { left: false, right: false };
+      case 'sidebar':
+      default:              return { left: true,  right: false };
+    }
+  }
+
+  function currentLayout() {
+    return document.documentElement.getAttribute('data-layout') || 'sidebar';
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
 
     /* ------------------------------------------------------------------
-       1. LINKE SIDEBAR (#left)
-       State-Logik:
-         Desktop: body.rct-sidebar-closed  = Sidebar weg
-                  (kein Klassenname)        = Sidebar sichtbar (default)
-         Mobile:  body.rct-sidebar-open    = Sidebar eingeflogen
-                  (kein Klassenname)        = Sidebar weg (default)
+       1. SIDEBAR-STATE-INIT
+       State-Logik (symmetrisch fuer beide Sidebars):
+         body.rct-left-open    XOR  body.rct-left-closed   (immer genau eine)
+         body.rct-right-open   XOR  body.rct-right-closed  (immer genau eine)
+       Mobile: beide immer closed (Sidebars sind Overlays, kein Layout-Platz).
     ------------------------------------------------------------------ */
 
     const sidebarLeft   = document.getElementById('left');
@@ -39,79 +70,64 @@
     const closeBtnLeft  = document.querySelector('.rct-sidebar-close-btn');
     const body          = document.body;
 
-    function syncSidebarLeft() {
-      // Alle FOUC-Guards entfernen – JS übernimmt jetzt den Zustand
-      document.documentElement.classList.remove('rct-sidebar-initial-closed');
-      document.documentElement.classList.remove('rct-right-initial-open');
-      document.documentElement.classList.add('rct-js-ready');
+    function syncSidebarState() {
+      // 1) Body-Klassen setzen (decken die Vars ab)
+      // 2) DANACH FOUC-Klassen ablegen — Reihenfolge wichtig, sonst gibt es
+      //    einen kurzen Moment ohne matching CSS-Regel (Var-Snap auf 0).
+      const html = document.documentElement;
 
       if (isMobile()) {
-        // Mobile: keine Persistenz, immer geschlossen beim Laden
-        body.classList.remove('rct-sidebar-closed');
-        body.classList.remove('rct-sidebar-open');
-        // Layout nur zurücksetzen wenn die Seite KEIN data-fixed hat
-        // (sonst killt das per-Seite Templates wie classic/topnav/nav-left/right)
-        if (!document.documentElement.hasAttribute('data-fixed')) {
-          document.documentElement.removeAttribute('data-layout');
+        // Mobile: keine Persistenz, beide Sidebars closed beim Laden
+        setLeftState(false);
+        setRightState(false);
+        // Layout nur zurueck wenn KEIN data-fixed (sonst killt das fixed Templates)
+        if (!html.hasAttribute('data-fixed')) {
+          html.removeAttribute('data-layout');
         }
-        return;
-      }
-
-      // Desktop: temporaere Toggle-Klassen sind nie persistent — beim Reload weg.
-      // (rct-sidebar-open + rct-right-open in topnav, rct-sidebar-open in mobile.)
-      body.classList.remove('rct-sidebar-open');
-
-      // Linke Sidebar
-      const savedState = localStorage.getItem('rct-sidebar-state');
-      if (savedState === 'closed') {
-        body.classList.add('rct-sidebar-closed');
       } else {
-        body.classList.remove('rct-sidebar-closed');
+        const layout   = currentLayout();
+        const defaults = getLayoutDefaults(layout);
+
+        if (layout === 'topnav') {
+          // topnav: keine Persistenz, beide Sidebars zu beim Reload (default)
+          setLeftState(defaults.left);
+          setRightState(defaults.right);
+        } else {
+          // Andere Layouts: localStorage hat Vorrang, sonst layout-default
+          const leftSaved  = localStorage.getItem('rct-sidebar-state');
+          const rightSaved = localStorage.getItem('rct-sidebar-right-state');
+          const leftOpen  = leftSaved  ? leftSaved  === 'open' : defaults.left;
+          const rightOpen = rightSaved ? rightSaved === 'open' : defaults.right;
+          setLeftState(leftOpen);
+          setRightState(rightOpen);
+        }
       }
 
-      // Rechte Sidebar – nicht bei topnav
-      const currentLyt = localStorage.getItem('rct-layout') || 'sidebar';
-      if (currentLyt !== 'topnav' && localStorage.getItem('rct-sidebar-right-state') === 'open') {
-        body.classList.add('rct-right-open');
-      } else {
-        body.classList.remove('rct-right-open');
-      }
-    }
-
-    // Hilfsfunktion: aktuelles Layout abfragen
-    function currentLayout() {
-      return document.documentElement.getAttribute('data-layout') || 'sidebar';
+      // FOUC-Guards weg, rct-js-ready setzen — Body-Klassen sind jetzt aktiv
+      html.classList.remove('rct-left-initial-closed');
+      html.classList.remove('rct-right-initial-open');
+      html.classList.add('rct-js-ready');
     }
 
     // Toggle-Button (Hamburger im Header)
     if (toggleBtnLeft) {
       toggleBtnLeft.addEventListener('click', function (e) {
         e.preventDefault();
-
-        if (isMobile()) {
-          body.classList.toggle('rct-sidebar-open');
-        } else if (currentLayout() === 'topnav') {
-          // Topnav: Sidebar temporär einblenden via rct-sidebar-open, kein Storage
-          body.classList.toggle('rct-sidebar-open');
-        } else {
-          const isClosed = body.classList.toggle('rct-sidebar-closed');
-          localStorage.setItem('rct-sidebar-state', isClosed ? 'closed' : 'open');
+        const willOpen = !body.classList.contains('rct-left-open');
+        setLeftState(willOpen);
+        // Persistenz: nur Desktop in nicht-topnav
+        if (!isMobile() && currentLayout() !== 'topnav') {
+          localStorage.setItem('rct-sidebar-state', willOpen ? 'open' : 'closed');
         }
         document.dispatchEvent(new Event('rct:layout-change'));
       });
     }
 
-
-
-    // Schließen-Button (Doppelpfeil innerhalb der Sidebar)
+    // Schliessen-Button (Doppelpfeil innerhalb der Sidebar)
     if (closeBtnLeft) {
       closeBtnLeft.addEventListener('click', function () {
-        if (body.classList.contains('rct-sidebar-open')) {
-          // Sidebar wurde via Toggle eingeblendet (Mobile / Topnav) → wieder ausblenden
-          body.classList.remove('rct-sidebar-open');
-        } else {
-          // Sidebar war Standard offen (Desktop, sidebar-Layouts) → schließen + persistieren
-          body.classList.add('rct-sidebar-closed');
+        setLeftState(false);
+        if (!isMobile() && currentLayout() !== 'topnav') {
           localStorage.setItem('rct-sidebar-state', 'closed');
         }
         document.dispatchEvent(new Event('rct:layout-change'));
@@ -119,13 +135,13 @@
     }
 
     // pageshow feuert auch bei bfcache (Browser-Back) – wichtig!
-    window.addEventListener('pageshow', syncSidebarLeft);
-    syncSidebarLeft();
+    window.addEventListener('pageshow', syncSidebarState);
+    syncSidebarState();
 
 
     /* ------------------------------------------------------------------
-       2. RECHTE SIDEBAR (#right)
-       JS-Klasse: body.rct-right-open
+       2. RECHTE SIDEBAR (#right) — Toggle
+       Auf Mobile per CSS ausgeblendet, Click-Handler greift dort nicht.
     ------------------------------------------------------------------ */
 
     const sidebarRight       = document.getElementById('right');
@@ -133,17 +149,11 @@
     const toggleBtnMenuRight = document.getElementById('rct-menu-right-toggle');
 
     function toggleRight() {
-      // Im sidebar-right Layout ist #right per CSS standardmäßig offen.
-      // Schließen läuft dort über body.rct-right-closed (nicht rct-right-open).
-      if (currentLayout() === 'sidebar-right') {
-        const isClosed = body.classList.toggle('rct-right-closed');
-        localStorage.setItem('rct-sidebar-right-state', isClosed ? 'closed' : 'open');
-      } else if (currentLayout() === 'topnav') {
-        // Topnav: rechte Sidebar temporär einblenden, kein Storage-Schreiben
-        body.classList.toggle('rct-right-open');
-      } else {
-        const isOpen = body.classList.toggle('rct-right-open');
-        localStorage.setItem('rct-sidebar-right-state', isOpen ? 'open' : 'closed');
+      const willOpen = !body.classList.contains('rct-right-open');
+      setRightState(willOpen);
+      // Persistenz: nicht in topnav (temporaer)
+      if (currentLayout() !== 'topnav') {
+        localStorage.setItem('rct-sidebar-right-state', willOpen ? 'open' : 'closed');
       }
       document.dispatchEvent(new Event('rct:layout-change'));
     }
@@ -164,13 +174,13 @@
 
 
     /* ------------------------------------------------------------------
-       3. OVERLAY-KLICK (schließt offene Sidebars auf Mobile)
+       3. OVERLAY-KLICK (schliesst offene Sidebars auf Mobile)
     ------------------------------------------------------------------ */
 
     document.addEventListener('click', function (e) {
       if (!isMobile()) return;
 
-      const leftOpen  = body.classList.contains('rct-sidebar-open');
+      const leftOpen  = body.classList.contains('rct-left-open');
       const rightOpen = body.classList.contains('rct-right-open');
       if (!leftOpen && !rightOpen) return;
 
@@ -181,8 +191,8 @@
 
       if (!clickedInsideLeft && !clickedInsideRight &&
           !clickedToggleLeft && !clickedToggleRight) {
-        body.classList.remove('rct-sidebar-open');
-        body.classList.remove('rct-right-open');
+        if (leftOpen)  setLeftState(false);
+        if (rightOpen) setRightState(false);
       }
     });
 
@@ -788,35 +798,21 @@ window.applyLayout = function (layout) {
     document.documentElement.removeAttribute('data-layout');
   }
 
-  // JS-States synchronisieren
-  const body = document.body;
+  // Sidebar-State explizit aus Layout-Defaults setzen.
+  // setLeftState/setRightState garantieren genau eine Klasse pro Sidebar.
+  const defaults = getLayoutDefaults(layout || 'sidebar');
+  setLeftState(defaults.left);
+  setRightState(defaults.right);
 
-  // Beim Layout-Wechsel ALLE Sidebar-Klassen sauber zuruecksetzen.
-  // rct-sidebar-open und rct-right-open sind die "temporaeren" Klassen aus
-  // den Toggles (mobile/topnav) — wenn die nicht mit weg sind, schleppen
-  // sie sich ueber Layout-Wechsel hinweg und produzieren Mischzustaende
-  // wie "rct-sidebar-closed rct-sidebar-open" gleichzeitig.
-  body.classList.remove(
-    'rct-right-open', 'rct-right-closed',
-    'rct-sidebar-closed', 'rct-sidebar-open'
-  );
-
-  if (layout === 'sidebar-right') {
-    // Nur rechte Sidebar offen, linke zu
-    body.classList.add('rct-sidebar-closed');
-    localStorage.setItem('rct-sidebar-state', 'closed');
-    localStorage.setItem('rct-sidebar-right-state', 'open');
-  } else if (layout === 'sidebar') {
-    // Nur linke Sidebar offen, rechte zu
-    body.classList.add('rct-right-closed');
-    localStorage.setItem('rct-sidebar-state', 'open');
-    localStorage.setItem('rct-sidebar-right-state', 'closed');
-  } else if (layout === 'topnav') {
-    // Beide Sidebars zu – Toggles können sie temporär öffnen ohne Storage
-    body.classList.add('rct-sidebar-closed');
+  // Persistenz: Sidebar-Defaults in localStorage spiegeln, damit ein Reload
+  // im selben Layout den gleichen State wiederherstellt.
+  // topnav: keine Persistenz (Sidebars sind temporaer-toggelbar).
+  // classic: per-Seite Template, kein User-Preference.
+  if (layout !== 'topnav' && layout !== 'classic') {
+    localStorage.setItem('rct-sidebar-state',       defaults.left  ? 'open' : 'closed');
+    localStorage.setItem('rct-sidebar-right-state', defaults.right ? 'open' : 'closed');
   }
 
-  // 'classic' ist ein per-Seite Template, keine User-Preference → nicht persistieren
   if (layout !== 'classic') {
     localStorage.setItem('rct-layout', layout || 'sidebar');
   }

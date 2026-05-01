@@ -145,7 +145,7 @@ body.rct-layout-full #wrapper {
 
 
 /* Wenn aktiv (durch JS Klasse am Body oder Sidebar) 
-.rct-sidebar-open #left {
+.rct-left-open #left {
     transform: translateX(0);
 }*/
 
@@ -504,7 +504,7 @@ h1, h2, h3, h4, h5, h6 {
 		transform: translateX(0) !important;
 	} */
 
-	body.rct-sidebar-openXXX::after {
+	body.rct-left-openXXX::after {
 		content: "";
 		position: fixed;
 		top: 0; left: 0;
@@ -573,17 +573,17 @@ h1, h2, h3, h4, h5, h6 {
 /* --- Zustand: OFFEN (X-Form) --- */
 
 /* 1. Oberer Strich: Nach unten schieben und 45 Grad drehen */
-body.rct-sidebar-open #rct-nav-toggle svg rect:nth-child(1) {
+body.rct-left-open #rct-nav-toggle svg rect:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
 
 /* 2. Mittlerer Strich: Einfach ausblenden */
-body.rct-sidebar-open #rct-nav-toggle svg rect:nth-child(2) {
+body.rct-left-open #rct-nav-toggle svg rect:nth-child(2) {
   opacity: 0;
 }
 
 /* 3. Unterer Strich: Nach oben schieben und -45 Grad drehen */
-body.rct-sidebar-open #rct-nav-toggle svg rect:nth-child(3) {
+body.rct-left-open #rct-nav-toggle svg rect:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
 
@@ -594,11 +594,11 @@ body.rct-sidebar-open #rct-nav-toggle svg rect:nth-child(3) {
 }
 
 /* Diese Regel greift SOFORT beim ersten Paint 
-.rct-sidebar-initial-closed #left {
+.rct-left-initial-closed #left {
   transform: translateX(calc(var(--rct-sidebar-width) * -1)) !important;
 }
 
-.rct-sidebar-initial-closed #main {
+.rct-left-initial-closed #main {
   margin-left: 0 !important;
 }
 */
