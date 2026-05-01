@@ -2318,11 +2318,14 @@ body.rct-right-open #right {
   color: var(--rct-primary-light);
 }
 
-/* Controls (in bottom_content, rechtsbündig) */
+/* Controls (in bottom_content, rechtsbündig) — symmetrisch zu
+   .bottom-legal-links's padding-left:40px fuers gleiche 60px-Stack-Match
+   mit Main (#main 40 + .rct-content-inner 20). */
 .bottom-controls {
   display: flex;
   align-items: center;
   gap: 6px;
+  padding-right: 40px;
 }
 
 /* Scroll-to-Top + Privacy Buttons — jetzt im Flow */
@@ -2374,8 +2377,8 @@ body.rct-right-open #right {
 
 @media (max-width: 1024px) {
   /* Mobile: Padding auf .inside reduzieren (matched main mobile: 0 + 20 = 20)
-     und legal-links extra-padding zuruecknehmen — auf Mobile soll bottom
-     enger sein als die 60px Desktop-Einrueckung. */
+     und legal-links/controls extra-padding zuruecknehmen — auf Mobile soll
+     bottom enger sein als die 60px Desktop-Einrueckung. */
   #bottom_left > .inside,
   #bottom_content > .inside,
   #bottom_right > .inside {
@@ -2384,8 +2387,15 @@ body.rct-right-open #right {
   .bottom-legal-links {
     padding-left: 0;
   }
+  .bottom-controls {
+    padding-right: 0;
+  }
   .bottom-legal-links a {
     padding: 10px 6px;
+  }
+  /* Copy auf Mobile ausblenden — Bottom-Bar zu schmal fuers Copyright */
+  .bottom-copy {
+    display: none;
   }
 }
 
