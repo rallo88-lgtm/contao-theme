@@ -30,11 +30,8 @@ class RctSetupMigration extends AbstractMigration
         if (!in_array('tl_module', $tables) || !in_array('tl_layout', $tables)) {
             return false;
         }
-        // Wait until schema migration has added RCT columns
-        $columns = array_keys($this->db->createSchemaManager()->listTableColumns('tl_module'));
-        if (!in_array('rct_logo_style', $columns)) {
-            return false;
-        }
+        // Idempotenz-Marker: rct_nav_toggle ist eindeutig RCT-spezifisch und
+        // wird ausschliesslich von dieser Migration angelegt.
         return (int) $this->db->fetchOne("SELECT COUNT(*) FROM tl_module WHERE type = 'rct_nav_toggle'") === 0;
     }
 
@@ -219,9 +216,12 @@ class RctSetupMigration extends AbstractMigration
 
     private function insertLogoModule(int $pid, int $now, string $name, string $style, string $headline): string
     {
+        // rct_logo_style ist seit dem JSON-Storage-Rollout (v1.5.6) keine
+        // Spalte mehr, sondern lebt in jsonData. Daher direkt dort ablegen.
+        $jsonData = json_encode(['rct_logo_style' => $style], JSON_UNESCAPED_UNICODE);
         $this->db->executeStatement(
-            "INSERT INTO tl_module (pid, tstamp, name, type, headline, rct_logo_style) VALUES (?, ?, ?, 'rct_logo', ?, ?)",
-            [$pid, $now, $name, $headline, $style]
+            "INSERT INTO tl_module (pid, tstamp, name, type, headline, jsonData) VALUES (?, ?, ?, 'rct_logo', ?, ?)",
+            [$pid, $now, $name, $headline, $jsonData]
         );
         return (string) $this->db->lastInsertId();
     }

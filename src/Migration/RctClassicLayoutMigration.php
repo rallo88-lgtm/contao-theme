@@ -145,9 +145,12 @@ class RctClassicLayoutMigration extends AbstractMigration
 
     private function insertLogoModule(int $pid, int $now, string $name, string $style, string $headline): string
     {
+        // rct_logo_style ist seit dem JSON-Storage-Rollout (v1.5.6) keine
+        // Spalte mehr, sondern lebt in jsonData. Daher direkt dort ablegen.
+        $jsonData = json_encode(['rct_logo_style' => $style], JSON_UNESCAPED_UNICODE);
         $this->db->executeStatement(
-            "INSERT INTO tl_module (pid, tstamp, name, type, headline, rct_logo_style) VALUES (?, ?, ?, 'rct_logo', ?, ?)",
-            [$pid, $now, $name, $headline, $style]
+            "INSERT INTO tl_module (pid, tstamp, name, type, headline, jsonData) VALUES (?, ?, ?, 'rct_logo', ?, ?)",
+            [$pid, $now, $name, $headline, $jsonData]
         );
         return (string) $this->db->lastInsertId();
     }
