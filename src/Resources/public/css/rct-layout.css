@@ -2290,6 +2290,7 @@ body.rct-right-open #right {
   display: flex;
   align-items: center;
   gap: 4px;
+  padding-left: 40px;
 }
 .bottom-legal-links a {
   display: flex;
