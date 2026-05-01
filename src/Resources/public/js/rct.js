@@ -57,6 +57,10 @@
         return;
       }
 
+      // Desktop: temporaere Toggle-Klassen sind nie persistent — beim Reload weg.
+      // (rct-sidebar-open + rct-right-open in topnav, rct-sidebar-open in mobile.)
+      body.classList.remove('rct-sidebar-open');
+
       // Linke Sidebar
       const savedState = localStorage.getItem('rct-sidebar-state');
       if (savedState === 'closed') {
@@ -787,26 +791,29 @@ window.applyLayout = function (layout) {
   // JS-States synchronisieren
   const body = document.body;
 
-  // Beim Layout-Wechsel immer alle Sidebar-Klassen sauber zuruecksetzen
-  body.classList.remove('rct-right-open', 'rct-right-closed', 'rct-sidebar-closed');
+  // Beim Layout-Wechsel ALLE Sidebar-Klassen sauber zuruecksetzen.
+  // rct-sidebar-open und rct-right-open sind die "temporaeren" Klassen aus
+  // den Toggles (mobile/topnav) — wenn die nicht mit weg sind, schleppen
+  // sie sich ueber Layout-Wechsel hinweg und produzieren Mischzustaende
+  // wie "rct-sidebar-closed rct-sidebar-open" gleichzeitig.
+  body.classList.remove(
+    'rct-right-open', 'rct-right-closed',
+    'rct-sidebar-closed', 'rct-sidebar-open'
+  );
 
   if (layout === 'sidebar-right') {
     // Nur rechte Sidebar offen, linke zu
     body.classList.add('rct-sidebar-closed');
-    body.classList.remove('rct-right-closed');
     localStorage.setItem('rct-sidebar-state', 'closed');
     localStorage.setItem('rct-sidebar-right-state', 'open');
   } else if (layout === 'sidebar') {
     // Nur linke Sidebar offen, rechte zu
-    body.classList.remove('rct-sidebar-closed');
     body.classList.add('rct-right-closed');
     localStorage.setItem('rct-sidebar-state', 'open');
     localStorage.setItem('rct-sidebar-right-state', 'closed');
   } else if (layout === 'topnav') {
     // Beide Sidebars zu – Toggles können sie temporär öffnen ohne Storage
     body.classList.add('rct-sidebar-closed');
-    body.classList.remove('rct-sidebar-open');
-    body.classList.remove('rct-right-open');
   }
 
   // 'classic' ist ein per-Seite Template, keine User-Preference → nicht persistieren
