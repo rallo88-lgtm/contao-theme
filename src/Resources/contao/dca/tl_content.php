@@ -4,10 +4,11 @@ use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Rallo\ContaoTheme\DCA\RctFontOptionsCallback;
 use Rallo\ContaoTheme\DCA\IconPickerWizard;
 
-// Stil-Feld + Experteneinstellungen zur nativen Contao-Akkordeon-Palette hinzufügen
+// Stil-Feld zur nativen Contao-Akkordeon-Palette hinzufügen.
+// (cssID ist im Contao-5-Standard schon in der expert_legend — kein
+// zusaetzliches addField noetig, sonst rendert es doppelt im BE.)
 PaletteManipulator::create()
     ->addField('rct_accordion_style', 'closeAll', PaletteManipulator::POSITION_AFTER)
-    ->addField('cssID', 'expert_legend', PaletteManipulator::POSITION_APPEND, 'legend')
     ->applyToPalette('accordion', 'tl_content');
 
 $GLOBALS['TL_DCA']['tl_content']['config']['onload_callback'][] = static function (): void {
