@@ -2210,13 +2210,14 @@ body.rct-right-open #right {
   height: 100%;
 }
 
-/* Linke + rechte Spalte — Breiten folgen der aktuellen Sidebar-Sichtbarkeit
-   (Vars werden weiter unten je Layout/Body-Klasse gesetzt). Damit nimmt
-   #bottom_content immer dieselbe Lane ein wie #main .rct-content-inner. */
+/* Linke + rechte Spalte — Breite folgt der Sidebar-Sichtbarkeit (Vars).
+   Padding kommt NICHT hier, sondern in EINER zentralen Schicht weiter
+   unten auf .inside (Contao-block_section-Wrapper). Damit kein
+   Padding-Stack ueber Spalte + Wrapper, der state-abhaengige Versaetze
+   produziert. */
 #bottom_left,
 #bottom_right {
   flex: 0 0 auto;
-  padding: 0 20px;
   box-sizing: border-box;
   overflow: hidden;
   transition: width var(--rct-transition-speed) var(--rct-transition-type);
@@ -2230,12 +2231,12 @@ body.rct-right-open #right {
   min-width: 0;
   max-width: var(--rct-max-width);
   margin: 0 auto;
-  padding: 0 20px;
   box-sizing: border-box;
 }
 
-/* Contao block_section wrappt Module in <div class="inside"> —
-   dort muss das flex-Layout greifen, nicht auf der Section selbst */
+/* EINZIGE Padding-Schicht im Bottom, auf .inside (Contao-block_section
+   Wrapper). 20px ergibt zusammen mit .bottom-legal-links padding-left
+   genau den 60px-Stack des Mains (#main 40 + .rct-content-inner 20). */
 #bottom_left > .inside,
 #bottom_content > .inside,
 #bottom_right > .inside {
@@ -2243,11 +2244,11 @@ body.rct-right-open #right {
   align-items: center;
   width: 100%;
   height: 100%;
+  padding: 0 20px;
 }
 #bottom_content > .inside {
   justify-content: space-between;
   gap: 20px;
-  padding: 0 20px;
 }
 #bottom_right > .inside {
   justify-content: flex-end;
@@ -2372,8 +2373,16 @@ body.rct-right-open #right {
 }
 
 @media (max-width: 1024px) {
-  #bottom_content {
+  /* Mobile: Padding auf .inside reduzieren (matched main mobile: 0 + 20 = 20)
+     und legal-links extra-padding zuruecknehmen — auf Mobile soll bottom
+     enger sein als die 60px Desktop-Einrueckung. */
+  #bottom_left > .inside,
+  #bottom_content > .inside,
+  #bottom_right > .inside {
     padding: 0 16px;
+  }
+  .bottom-legal-links {
+    padding-left: 0;
   }
   .bottom-legal-links a {
     padding: 10px 6px;
