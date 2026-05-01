@@ -3488,10 +3488,11 @@
   transform: translateY(-2px);
 }
 
-/* Layout-Direction: Bild links/rechts vom Text (Desktop).
-   40/60-Verhaeltnis (Bild schmaler, Text breiter), aspect-ratio
-   ueberschrieben damit das Bild die Gesamthoehe der Karte ausfuellt.
-   Auf Mobile (<=768px) faellt alles zurueck zu column (Bild oben). */
+/* Layout-Direction: Bild/Icon links/rechts vom Text (Desktop).
+   40/60-Verhaeltnis. Bei Image-Variante aspect-ratio aufgehoben damit
+   das Bild die Gesamthoehe der Karte ausfuellt; bei Icon-Variante
+   bleibt das Icon vertikal+horizontal zentriert in seiner 40%-Spalte.
+   Auf Mobile (<=768px) faellt alles zurueck zu column (Bild/Icon oben). */
 .rct-itb--layout-left {
   flex-direction: row;
 }
@@ -3499,10 +3500,15 @@
   flex-direction: row-reverse;
 }
 .rct-itb--layout-left  > .rct-itb-media,
-.rct-itb--layout-right > .rct-itb-media {
+.rct-itb--layout-right > .rct-itb-media,
+.rct-itb--layout-left  > .rct-itb-iconwrap,
+.rct-itb--layout-right > .rct-itb-iconwrap {
   flex: 0 0 40%;
-  aspect-ratio: auto;
   align-self: stretch;
+}
+.rct-itb--layout-left  > .rct-itb-media,
+.rct-itb--layout-right > .rct-itb-media {
+  aspect-ratio: auto;
 }
 .rct-itb--layout-left  > .rct-itb-body,
 .rct-itb--layout-right > .rct-itb-body {
@@ -3519,6 +3525,10 @@
   .rct-itb--layout-right > .rct-itb-media {
     flex: 0 0 auto;
     aspect-ratio: 16 / 10;
+  }
+  .rct-itb--layout-left  > .rct-itb-iconwrap,
+  .rct-itb--layout-right > .rct-itb-iconwrap {
+    flex: 0 0 auto;
   }
 }
 

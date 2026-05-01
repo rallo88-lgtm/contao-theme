@@ -463,7 +463,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_image_textbox'] =
     '{type_legend},type;{content_legend},rct_itb_image,rct_itb_image_alt,rct_itb_headline,rct_itb_text,rct_itb_style,rct_itb_layout;{link_legend:hide},rct_itb_link_page,rct_itb_link_url,rct_itb_link_label,rct_itb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_icon_textbox'] =
-    '{type_legend},type;{content_legend},rct_itb_icon,rct_itb_headline,rct_itb_text,rct_itb_style;{link_legend:hide},rct_itb_link_page,rct_itb_link_url,rct_itb_link_label,rct_itb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{content_legend},rct_itb_icon,rct_itb_headline,rct_itb_text,rct_itb_style,rct_itb_layout;{link_legend:hide},rct_itb_link_page,rct_itb_link_url,rct_itb_link_label,rct_itb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_image'] = [
     'label'     => ['Bild', 'Bild oben in der Box'],

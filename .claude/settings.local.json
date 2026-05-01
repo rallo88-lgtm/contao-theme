@@ -56,7 +56,23 @@
       "WebFetch(domain:eclipse.premium-contao-themes.com)",
       "Bash(curl *)",
       "Read(//tmp/**)",
-      "WebFetch(domain:raabe-gas.de)"
+      "WebFetch(domain:raabe-gas.de)",
+      "Bash(unzip *)",
+      "Bash(awk '/<table name=\"tl_module\"/,/<\\\\/table>/')",
+      "Bash(awk '/<table name=\"tl_layout\"/,/<\\\\/table>/')",
+      "WebFetch(domain:hypatia-cmp.de)",
+      "WebFetch(domain:www.ideen-afflerbach.com)",
+      "Bash(gh pr *)",
+      "WebFetch(domain:github.com)",
+      "Bash(php -l src/Controller/ContentElement/RctEmitterController.php)",
+      "Bash(php -l src/Resources/contao/dca/tl_content.php)",
+      "Bash(php -l src/Resources/contao/languages/de/tl_content.php)",
+      "Read(//d/kunden/rct-showcase/**)",
+      "Read(//d/kunden/rct-showcase/RctShowcaseMigration/**)",
+      "Bash(python -c \"import sys,re; html=sys.stdin.read\\(\\); main=re.search\\(r'<main[^>]*>\\(.*?\\)</main>',html,re.S\\); print\\(main.group\\(1\\)[:8000] if main else 'no main'\\)\")",
+      "Bash(node -c d:/kunden/rct-bundle/src/Resources/public/js/rct.js)",
+      "Bash(php -l d:/kunden/rct-bundle/src/Resources/contao/dca/tl_content.php)",
+      "Bash(php -l d:/kunden/rct-bundle/src/Controller/ContentElement/RctImageTextboxController.php)"
     ]
   }
 }

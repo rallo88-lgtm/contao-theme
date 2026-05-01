@@ -21,6 +21,10 @@ class RctIconTextboxController extends AbstractContentElementController
         $template->text       = $model->rct_itb_text ? nl2br(htmlspecialchars((string) $model->rct_itb_text, ENT_QUOTES, 'UTF-8')) : '';
         $template->boxStyle   = $model->rct_itb_style ?: 'light';
 
+        // Layout-Direction: top (Default, Icon oben) | left | right
+        $layout = $model->rct_itb_layout ?: 'top';
+        $template->boxLayout = in_array($layout, ['top', 'left', 'right'], true) ? $layout : 'top';
+
         $linkUrl = $this->resolveUrl((int) $model->rct_itb_link_page, (string) $model->rct_itb_link_url);
         $template->linkUrl    = $linkUrl;
         $template->linkLabel  = htmlspecialchars((string) ($model->rct_itb_link_label ?: 'Mehr erfahren'), ENT_QUOTES, 'UTF-8');

@@ -6,7 +6,7 @@
 {% extends '@Contao/content_element/_base.html.twig' %}
 
 {% block content %}
-<div class="rct-itb rct-itb--icon style-{{ boxStyle }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+<div class="rct-itb rct-itb--icon rct-itb--layout-{{ boxLayout }} style-{{ boxStyle }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
   {% if icon %}
     <div class="rct-itb-iconwrap" aria-hidden="true">{{ icon|rct_icon }}</div>
   {% endif %}
