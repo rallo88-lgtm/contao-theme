@@ -2399,6 +2399,17 @@ body.rct-right-open #right {
   }
 }
 
+/* Classic-Override: #main hat hier padding:0 (statt 40px in den anderen
+   Layouts). Damit ist der Main-Padding-Stack nur 20px (.rct-content-inner)
+   statt 60px. Bottom-Stack analog reduzieren — die zusaetzlichen 40px auf
+   .bottom-legal-links und .bottom-controls zuruecknehmen. */
+[data-layout="classic"] .bottom-legal-links {
+  padding-left: 0;
+}
+[data-layout="classic"] .bottom-controls {
+  padding-right: 0;
+}
+
 
 /* ------------------------------------------------------------
    10. HINTERGRUND-ANIMATIONEN
