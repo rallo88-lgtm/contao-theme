@@ -63,6 +63,16 @@ class RctSetupMigration extends AbstractMigration
         $themeS = $this->insertModule($themePid, $now, 'RCT Theme Switcher',   'rct_theme_switcher',    $headline);
         $btmCtl = $this->insertModule($themePid, $now, 'RCT Bottom Controls',  'rct_bottom_controls',   $headline);
 
+        // 5. Bottom-Right Spacer-Modul: leerer HTML-Block damit die
+        //    bottom_right-Section auch ohne Content im DOM rendert. Sonst
+        //    haette die Bottom-Lane keinen rechten Anker und #bottom_content
+        //    waere asymmetrisch zur Main-Lane.
+        $btmRight = $this->insertHtmlModule(
+            $themePid, $now,
+            'RCT Bottom Right', 'html', $headline,
+            '<div class="bottom-right">&nbsp;</div>'
+        );
+
         // Header-Right module set (Reihenfolge wie auf rct.)
         $headerRight = [
             ['mod' => $lang,   'col' => 'header_right', 'enable' => '1'],
@@ -95,7 +105,8 @@ class RctSetupMigration extends AbstractMigration
                 ['mod' => $logoR,  'col' => 'right_logo',  'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'left_bottom', 'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'right_bottom','enable' => '1'],
-                ['mod' => $btmCtl, 'col' => 'bottom_content','enable' => '1'],
+                ['mod' => $btmCtl,   'col' => 'bottom_content','enable' => '1'],
+                ['mod' => $btmRight, 'col' => 'bottom_right',  'enable' => '1'],
             ],
             $headerLeft, $headerRight
         ), $sections);
@@ -112,7 +123,8 @@ class RctSetupMigration extends AbstractMigration
                 ['mod' => $logoR,  'col' => 'right_logo',  'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'left_bottom', 'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'right_bottom','enable' => '1'],
-                ['mod' => $btmCtl, 'col' => 'bottom_content','enable' => '1'],
+                ['mod' => $btmCtl,   'col' => 'bottom_content','enable' => '1'],
+                ['mod' => $btmRight, 'col' => 'bottom_right',  'enable' => '1'],
             ],
             $headerLeft, $headerRight
         ), $sections);
@@ -129,7 +141,8 @@ class RctSetupMigration extends AbstractMigration
                 ['mod' => $logoR,  'col' => 'right_logo',  'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'left_bottom', 'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'right_bottom','enable' => '1'],
-                ['mod' => $btmCtl, 'col' => 'bottom_content','enable' => '1'],
+                ['mod' => $btmCtl,   'col' => 'bottom_content','enable' => '1'],
+                ['mod' => $btmRight, 'col' => 'bottom_right',  'enable' => '1'],
             ],
             $headerLeft, $headerRight
         ), $sections);
@@ -145,7 +158,8 @@ class RctSetupMigration extends AbstractMigration
                 ['mod' => $logoR,  'col' => 'right_logo',  'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'left_bottom', 'enable' => '1'],
                 ['mod' => $sfooter,'col' => 'right_bottom','enable' => '1'],
-                ['mod' => $btmCtl, 'col' => 'bottom_content','enable' => '1'],
+                ['mod' => $btmCtl,   'col' => 'bottom_content','enable' => '1'],
+                ['mod' => $btmRight, 'col' => 'bottom_right',  'enable' => '1'],
             ],
             $headerLeft, $headerRight
         ), $sections);
@@ -170,6 +184,15 @@ class RctSetupMigration extends AbstractMigration
         $this->db->executeStatement(
             "INSERT INTO tl_module (pid, tstamp, name, type, headline) VALUES (?, ?, ?, ?, ?)",
             [$pid, $now, $name, $type, $headline]
+        );
+        return (string) $this->db->lastInsertId();
+    }
+
+    private function insertHtmlModule(int $pid, int $now, string $name, string $type, string $headline, string $html): string
+    {
+        $this->db->executeStatement(
+            "INSERT INTO tl_module (pid, tstamp, name, type, headline, html) VALUES (?, ?, ?, ?, ?, ?)",
+            [$pid, $now, $name, $type, $headline, $html]
         );
         return (string) $this->db->lastInsertId();
     }
