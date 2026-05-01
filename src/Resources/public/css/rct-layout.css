@@ -2253,7 +2253,18 @@ body.rct-right-open #right {
   justify-content: flex-end;
 }
 
-/* Copy-Block (links) */
+/* Copy-Block (links) — absolut positioniert auf #bottom (containing block,
+   weil #bottom position:fixed ist). Bleibt damit fix in der linken unteren
+   Ecke, unabhaengig davon ob #bottom_left collapsed ist (Sidebar zu) oder
+   gar keine Module enthaelt. overflow:hidden auf #bottom_left clippt das
+   absolute child nicht, weil #bottom_left position:static ist und somit
+   kein containing block fuer absolute descendants. */
+.bottom-copy {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
 .bottom-copy,
 .bottom-copy p,
 .rct-footer-copy {
