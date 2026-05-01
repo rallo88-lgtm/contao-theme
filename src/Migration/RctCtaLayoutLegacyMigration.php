@@ -42,7 +42,7 @@ class RctCtaLayoutLegacyMigration extends AbstractMigration
         $count = (int) $this->db->fetchOne(
             "SELECT COUNT(*) FROM tl_content
              WHERE type = 'rct_cta'
-               AND JSON_EXTRACT(jsonData, '$.rct_cta_layout') = 'horizontal'"
+               AND JSON_UNQUOTE(JSON_EXTRACT(jsonData, '$.rct_cta_layout')) = 'horizontal'"
         );
         return $count > 0;
     }
@@ -54,7 +54,7 @@ class RctCtaLayoutLegacyMigration extends AbstractMigration
              SET jsonData = JSON_SET(jsonData, '$.rct_cta_layout', 'centered'),
                  tstamp = ?
              WHERE type = 'rct_cta'
-               AND JSON_EXTRACT(jsonData, '$.rct_cta_layout') = 'horizontal'",
+               AND JSON_UNQUOTE(JSON_EXTRACT(jsonData, '$.rct_cta_layout')) = 'horizontal'",
             [time()]
         );
 
