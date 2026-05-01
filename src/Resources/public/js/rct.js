@@ -229,7 +229,13 @@
 
         if (trigger) {
           trigger.addEventListener('click', function(e) {
-            const isNoNav = this.tagName === 'SPAN' || this.getAttribute('href') === '#' || (this.getAttribute('href') || '').includes('javascript:void(0)');
+            // Pure "Menu-Container"-Pages: tagName=SPAN, href="#",
+            // javascript:void(0), oder explizite class avoid-click auf
+            // dem li (Contao Page-Setting "CSS-Klasse").
+            const isNoNav = this.tagName === 'SPAN'
+                         || this.getAttribute('href') === '#'
+                         || (this.getAttribute('href') || '').includes('javascript:void(0)')
+                         || li.classList.contains('avoid-click');
             if (isNoNav) {
               e.preventDefault();
               toggleAccordion(li);

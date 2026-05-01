@@ -1779,13 +1779,25 @@ html[data-layout="classic"] #left .rct-header-logo-link {
     opacity: 1;
 }
 
-/* Pfeil-Rotation: nur is-open dreht (Click-Akkordeon).
-   Hover-Trigger auf Sidebar entfernt — fuehrte zu mouseleave-Niemandsland-
-   Bug (Submenu klappt zu, Layout shrinkt, Maus verliert Anker). */
-.mod_navigation li.submenu.is-open > a::before,
-.mod_navigation li.submenu.is-open > span::before,
-.mod_navigation li.submenu.is-open > a::after,
-.mod_navigation li.submenu.is-open > span::after {
+/* Pfeil-Rotation: bei Hover (Visual-Affordance) UND is-open zeigt der
+   Pfeil nach unten. Submenu-Display wird NICHT von Hover getriggert —
+   das war das mouseleave-Niemandsland-Problem. Hover dreht nur den Pfeil
+   als "klick mich, klappt nach unten auf"-Hint.
+
+   Sidebar-asymmetrie: #left hat "←" als ::after (rechte Seite), #right hat
+   "→" als ::before (linke Seite). Damit beide zu "↓" werden, muss #left
+   gegen den Uhrzeigersinn (-90deg) und #right im Uhrzeigersinn (90deg). */
+#left .mod_navigation li.submenu.is-open > a::after,
+#left .mod_navigation li.submenu.is-open > span::after,
+#left .mod_navigation li.submenu:hover > a::after,
+#left .mod_navigation li.submenu:hover > span::after {
+    transform: rotate(-90deg);
+    color: var(--rct-primary);
+}
+#right .mod_navigation li.submenu.is-open > a::before,
+#right .mod_navigation li.submenu.is-open > span::before,
+#right .mod_navigation li.submenu:hover > a::before,
+#right .mod_navigation li.submenu:hover > span::before {
     transform: rotate(90deg);
     color: var(--rct-primary);
 }
