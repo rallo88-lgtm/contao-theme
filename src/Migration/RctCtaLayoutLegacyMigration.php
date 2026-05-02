@@ -39,10 +39,13 @@ class RctCtaLayoutLegacyMigration extends AbstractMigration
             return false;
         }
 
+        // Bound parameters — sauberer als Inline-Strings, vermeidet Quoting-
+        // Stolperfallen mit dem $-Zeichen im JSON-Pfad.
         $count = (int) $this->db->fetchOne(
             "SELECT COUNT(*) FROM tl_content
-             WHERE type = 'rct_cta'
-               AND JSON_UNQUOTE(JSON_EXTRACT(jsonData, '$.rct_cta_layout')) = 'horizontal'"
+             WHERE type = ?
+               AND JSON_UNQUOTE(JSON_EXTRACT(jsonData, ?)) = ?",
+            ['rct_cta', '$.rct_cta_layout', 'horizontal']
         );
         return $count > 0;
     }
@@ -51,11 +54,11 @@ class RctCtaLayoutLegacyMigration extends AbstractMigration
     {
         $affected = $this->db->executeStatement(
             "UPDATE tl_content
-             SET jsonData = JSON_SET(jsonData, '$.rct_cta_layout', 'centered'),
+             SET jsonData = JSON_SET(jsonData, ?, ?),
                  tstamp = ?
-             WHERE type = 'rct_cta'
-               AND JSON_UNQUOTE(JSON_EXTRACT(jsonData, '$.rct_cta_layout')) = 'horizontal'",
-            [time()]
+             WHERE type = ?
+               AND JSON_UNQUOTE(JSON_EXTRACT(jsonData, ?)) = ?",
+            ['$.rct_cta_layout', 'centered', time(), 'rct_cta', '$.rct_cta_layout', 'horizontal']
         );
 
         return $this->createResult(
