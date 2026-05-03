@@ -9,9 +9,14 @@ use Doctrine\DBAL\Connection;
 /**
  * v1.5.8 — Classic-Layout fuer bestehende Instanzen nachziehen.
  *
- * RctSetupMigration legt seit v1.5.8 das 5. Layout "RCT - Classic" + 4
- * Classic-spezifische Module mit an. Bestehende Instanzen, deren Setup
- * vor v1.5.8 lief, haben das nicht — diese Migration zieht es nach:
+ * @deprecated Seit v1.6.1 ist die konsolidierte RctSetupMigration die Single
+ * Source of Truth fuer das Classic-Layout. Diese Migration bleibt als
+ * Backwards-Compat-Bruecke fuer Bestandsinstanzen die noch v<1.5.8 hatten;
+ * auf neuen/aktualisierten Instanzen returns shouldRun() false weil das
+ * Classic-Layout bereits durch RctSetup angelegt wurde. In v1.7 entfernen.
+ *
+ * Bestehende Instanzen, deren Setup vor v1.5.8 lief, haben das Classic-
+ * Layout nicht — diese Migration zieht es nach:
  *  - 4 Module (Logo Classic, Logo Classic - Menu, RCT Classic Bottom-
  *    Links, RCT Classic Suche Toggle)
  *  - Layout "RCT - Classic" mit allen Custom-Sections + Mappings
@@ -56,6 +61,17 @@ class RctClassicLayoutMigration extends AbstractMigration
         $now      = time();
         $themeId  = (int) $this->db->fetchOne("SELECT id FROM tl_theme WHERE name = 'RCT Theme'");
         $headline = serialize(['unit' => 'h2', 'value' => '']);
+
+        // Self-Repair: jsonData-Spalte ggf. anlegen, weil insertLogoModule()
+        // dort hineinschreibt. Auf Frischinstall ist die Spalte zu diesem
+        // Zeitpunkt evtl. noch nicht da (Doctrine legt sie erst beim finalen
+        // --with-deletes-Pass an).
+        $columns = array_keys($this->db->createSchemaManager()->listTableColumns('tl_module'));
+        if (!in_array('jsondata', array_map('strtolower', $columns), true)) {
+            $this->db->executeStatement(
+                "ALTER TABLE tl_module ADD COLUMN jsonData LONGTEXT NULL DEFAULT NULL"
+            );
+        }
 
         $legalHtml = '<div class="bottom-legal-links"><a href="/datenschutz">Datenschutz</a><a href="/impressum">Impressum</a><a href="/kontakt">Kontakt</a></div>';
 
