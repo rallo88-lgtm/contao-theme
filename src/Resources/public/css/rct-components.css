@@ -6772,3 +6772,62 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 .rct-form-meta .acc {
   color: var(--rct-accent);
 }
+
+
+/* ------------------------------------------------------------
+   16. NEWSREADER (.mod_newsreader)
+   Frontend-Detail-Ansicht einer News. Pro CE 20px margin-bottom,
+   damit nichts klebt. Headlines ausgenommen — sie tragen ihren
+   eigenen vertikalen Rhythm. figcaption nutzt --rct-caption-color
+   (default = --rct-text-faint, pro Theme override-bar).
+   ------------------------------------------------------------ */
+
+.mod_newsreader .ce_text,
+.mod_newsreader .ce_image,
+.mod_newsreader .ce_list,
+.mod_newsreader .ce_table,
+.mod_newsreader .ce_player,
+.mod_newsreader .ce_youtube,
+.mod_newsreader .ce_vimeo,
+.mod_newsreader .ce_hyperlink,
+.mod_newsreader .ce_download,
+.mod_newsreader .ce_downloads,
+.mod_newsreader .ce_gallery,
+.mod_newsreader .ce_accordion,
+.mod_newsreader .ce_code {
+  margin-bottom: 20px;
+}
+
+.mod_newsreader .ce_image figure {
+  margin: 0;
+}
+
+.mod_newsreader .ce_image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.mod_newsreader figcaption {
+  margin-top: 6px;
+  padding: 0 4px;
+  font-size: 0.875rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--rct-caption-color);
+}
+
+.mod_newsreader .ce_list ul,
+.mod_newsreader .ce_list ol {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+.mod_newsreader .ce_list ul { list-style: disc; }
+.mod_newsreader .ce_list ol { list-style: decimal; }
+.mod_newsreader .ce_list li {
+  margin-bottom: 0.4rem;
+}
+.mod_newsreader .ce_list li:last-child {
+  margin-bottom: 0;
+}

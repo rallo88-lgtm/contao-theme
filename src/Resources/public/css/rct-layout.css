@@ -92,6 +92,7 @@
   --rct-text:                     #1b1c1c;
   --rct-text-muted:               #434936;
   --rct-text-faint:               #747a64;
+  --rct-caption-color:            var(--rct-text-faint);
   --rct-outline:                  #c3c9b1;
 
   /*  2b. Standard-Theme: Blue Night --- */
@@ -2155,6 +2156,15 @@ body.rct-right-open #right {
 }
 .rct-content-inner:last-of-type {
   margin-bottom: 40px;
+}
+
+/* Newsreader auf Mobile: horizontales Padding raus, damit der Reader
+   die volle Breite nutzt. Wirkt nur wenn .mod_newsreader im Container
+   gerendert ist (= News-Detail-Page). */
+@media (max-width: 767px) {
+  .rct-content-inner:has(.mod_newsreader) {
+    padding: 20px 0;
+  }
 }
 
 
