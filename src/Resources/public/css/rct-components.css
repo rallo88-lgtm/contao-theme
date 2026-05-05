@@ -6776,33 +6776,36 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 
 /* ------------------------------------------------------------
    16. NEWSREADER (.mod_newsreader)
-   Frontend-Detail-Ansicht einer News. Pro CE 20px margin-bottom,
-   damit nichts klebt. Headlines ausgenommen — sie tragen ihren
-   eigenen vertikalen Rhythm. figcaption nutzt --rct-caption-color
-   (default = --rct-text-faint, pro Theme override-bar).
+   Frontend-Detail-Ansicht einer News. Contao 5 nutzt im Newsreader
+   Twig-Render-Klassen (.content-text, .content-image, ...) statt der
+   alten .ce_* PHP-Wrapper, plus h1-h6 mit .content-headline direkt
+   am Tag. Wir greifen ueber den Layout-Wrapper .layout_full auf alle
+   direkten Kinder zu — deckt auch <p class="info">, <p class="back">
+   und unbekannte CE-Typen ab.
+
+   figcaption nutzt --rct-caption-color (default = --rct-text-faint,
+   pro Theme override-bar).
    ------------------------------------------------------------ */
 
-.mod_newsreader .ce_text,
-.mod_newsreader .ce_image,
-.mod_newsreader .ce_list,
-.mod_newsreader .ce_table,
-.mod_newsreader .ce_player,
-.mod_newsreader .ce_youtube,
-.mod_newsreader .ce_vimeo,
-.mod_newsreader .ce_hyperlink,
-.mod_newsreader .ce_download,
-.mod_newsreader .ce_downloads,
-.mod_newsreader .ce_gallery,
-.mod_newsreader .ce_accordion,
-.mod_newsreader .ce_code {
+.mod_newsreader .layout_full > * {
   margin-bottom: 20px;
 }
-
-.mod_newsreader .ce_image figure {
-  margin: 0;
+.mod_newsreader .layout_full > h1,
+.mod_newsreader .layout_full > h2,
+.mod_newsreader .layout_full > h3,
+.mod_newsreader .layout_full > h4,
+.mod_newsreader .layout_full > h5,
+.mod_newsreader .layout_full > h6 {
+  margin-bottom: 0; /* Headlines tragen ihren eigenen Rhythm */
+}
+.mod_newsreader .layout_full > *:last-child {
+  margin-bottom: 0;
 }
 
-.mod_newsreader .ce_image img {
+.mod_newsreader .content-image figure {
+  margin: 0;
+}
+.mod_newsreader .content-image img {
   display: block;
   width: 100%;
   height: auto;
@@ -6818,16 +6821,16 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   color: var(--rct-caption-color);
 }
 
-.mod_newsreader .ce_list ul,
-.mod_newsreader .ce_list ol {
+.mod_newsreader .content-list ul,
+.mod_newsreader .content-list ol {
   margin: 0;
   padding-left: 1.5rem;
 }
-.mod_newsreader .ce_list ul { list-style: disc; }
-.mod_newsreader .ce_list ol { list-style: decimal; }
-.mod_newsreader .ce_list li {
+.mod_newsreader .content-list ul { list-style: disc; }
+.mod_newsreader .content-list ol { list-style: decimal; }
+.mod_newsreader .content-list li {
   margin-bottom: 0.4rem;
 }
-.mod_newsreader .ce_list li:last-child {
+.mod_newsreader .content-list li:last-child {
   margin-bottom: 0;
 }
