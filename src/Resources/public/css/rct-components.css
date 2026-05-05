@@ -6804,10 +6804,10 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 
 .mod_newsreader .content-image figure {
   margin: 0;
+  text-align: center; /* zentriert kleine Bilder (Icons/QR-Codes) im breiten Spaltenfluss */
 }
 .mod_newsreader .content-image img {
-  display: block;
-  width: 100%;
+  max-width: 100%;    /* nur grosse Bilder auf Container-Breite kappen, kleine in intrinsic Groesse */
   height: auto;
   border-radius: 4px;
 }
