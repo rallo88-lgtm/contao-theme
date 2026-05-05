@@ -6834,3 +6834,48 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 .mod_newsreader .content-list li:last-child {
   margin-bottom: 0;
 }
+
+/* Multi-Column-Infografik (gallery-CE mit cssClass rct-infografik):
+   Auf Desktop nahtlos nebeneinander (sieht aus wie Original-PDF),
+   auf Mobile <768px gestackt damit jede Sub-Spalte voll lesbar ist. */
+.mod_newsreader .content-gallery.rct-infografik > ul,
+.mod_newsreader .content-gallery.rct-infografik > div {
+  display: grid;
+  grid-template-columns: repeat(var(--rct-cols, 3), 1fr);
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.mod_newsreader .content-gallery.rct-infografik li,
+.mod_newsreader .content-gallery.rct-infografik figure {
+  margin: 0;
+  padding: 0;
+  text-align: initial;
+}
+.mod_newsreader .content-gallery.rct-infografik img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+}
+.mod_newsreader .content-gallery.rct-infografik figcaption {
+  /* gallery rendert ggf. einzelne figcaptions pro Bild — die unterdruecken,
+     die echte Gesamt-Caption kommt ueber das content-gallery-eigene caption */
+  display: none;
+}
+.mod_newsreader .content-gallery.rct-infografik > .caption,
+.mod_newsreader .content-gallery.rct-infografik > p.caption {
+  margin-top: 6px;
+  padding: 0 4px;
+  font-size: 0.875rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--rct-caption-color);
+}
+@media (max-width: 767px) {
+  .mod_newsreader .content-gallery.rct-infografik > ul,
+  .mod_newsreader .content-gallery.rct-infografik > div {
+    grid-template-columns: 1fr;
+  }
+}
