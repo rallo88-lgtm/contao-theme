@@ -6873,6 +6873,25 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   line-height: 1.45;
   color: var(--rct-caption-color);
 }
+
+/* Separate Caption fuer rct-infografik-Gallery: Contao rendert
+   tl_content.caption beim gallery-CE nicht, daher hat
+   contao-pdf-import nach jeder Gallery ein eigenes text-CE mit dieser
+   Klasse. Look = figcaption. Direkter Geschwister-Selektor zum
+   gallery-CE haelt den engen Margin (kein doppelter Abstand zu Block
+   davor). */
+.mod_newsreader .content-gallery.rct-infografik + .content-text.rct-infografik-caption,
+.mod_newsreader .content-text.rct-infografik-caption {
+  margin-top: 6px;
+  padding: 0 4px;
+  font-size: 0.875rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--rct-caption-color);
+}
+.mod_newsreader .content-text.rct-infografik-caption p {
+  margin: 0;
+}
 @media (max-width: 767px) {
   .mod_newsreader .content-gallery.rct-infografik > ul,
   .mod_newsreader .content-gallery.rct-infografik > div {
