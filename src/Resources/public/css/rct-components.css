@@ -6837,7 +6837,14 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 
 /* Multi-Column-Infografik (gallery-CE mit cssClass rct-infografik):
    Auf Desktop nahtlos nebeneinander (sieht aus wie Original-PDF),
-   auf Mobile <768px gestackt damit jede Sub-Spalte voll lesbar ist. */
+   auf Mobile <768px gestackt damit jede Sub-Spalte voll lesbar ist.
+   BG-Color matcht typische Magazin-Infografik-Hintergrundfarbe und
+   kaschiert leichten Pixel-Versatz zwischen Sub-Crops. CSS-Var
+   ueberschreibbar pro Theme/Page falls eine Ausgabe abweichende
+   BG-Color nutzt. */
+.mod_newsreader .content-gallery.rct-infografik {
+  background-color: var(--rct-infografik-bg, #f9f9f9);
+}
 .mod_newsreader .content-gallery.rct-infografik > ul,
 .mod_newsreader .content-gallery.rct-infografik > div {
   display: grid;
