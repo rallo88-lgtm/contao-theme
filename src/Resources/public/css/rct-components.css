@@ -6899,6 +6899,13 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 .mod_newsreader .content-text.rct-infografik-caption p {
   margin: 0;
 }
+
+/* Zurueck-Link am Ende der Newsreader-Detail-Page: Abstand zum letzten
+   Content-Block, sonst klebt der Button am Text. */
+.mod_newsreader .back {
+  margin-top: 20px;
+}
+
 @media (max-width: 767px) {
   .mod_newsreader .content-gallery.rct-infografik > ul,
   .mod_newsreader .content-gallery.rct-infografik > div {
