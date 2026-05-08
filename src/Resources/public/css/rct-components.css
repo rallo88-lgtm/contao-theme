@@ -2986,6 +2986,20 @@
   opacity: 0.9;
 }
 
+.rct-timeline-rubrik {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rct-accent, #27c4f4);
+  margin-bottom: 0.4rem;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
 .rct-timeline-title {
   font-size: 1rem;
   font-weight: 700;

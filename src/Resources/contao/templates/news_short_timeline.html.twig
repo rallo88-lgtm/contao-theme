@@ -14,6 +14,10 @@
       {% if author %}<span class="rct-tl-author"> · {{ author }}</span>{% endif %}
     </div>
 
+    {% if subheadline is defined and subheadline %}
+      <div class="rct-timeline-rubrik">{{ subheadline }}</div>
+    {% endif %}
+
     <h2 class="rct-timeline-title">
       {{- linkHeadline|sanitize_html('contao') -}}
     </h2>
