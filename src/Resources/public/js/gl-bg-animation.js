@@ -1094,9 +1094,9 @@ void main() {
     float xfuel = 1.0 - abs(2.0 * xpart - 1.0);
     xfuel = smoothstep(0.0, 0.4, xfuel);  // schärfere Mitte
 
-    // Y-Intensität: stark unten, fade nach oben
+    // Y-Intensität: stark unten, schneller fade nach oben (pow 2.8 → niedriger Flamme)
     float yInt = 1.0 - ypart;
-    yInt = pow(max(yInt, 0.0), 1.5);
+    yInt = pow(max(yInt, 0.0), 2.8);
 
     // Noise mit vertikalem Drift (Flammen steigen) — fbm mit time
     vec2 nCoord = vec2(fc.x * 0.012, fc.y * 0.018 - t * 6.0);
