@@ -341,10 +341,11 @@
   opacity: 1.0;
 }
 
-/* Neon Grid + Magnetic Field + Lotus: Maske deaktivieren — Vollbild-Shader */
+/* Neon Grid + Magnetic Field + Lotus + Plasma: Maske deaktivieren — Vollbild-Shader */
 [data-theme="neon-grid"] #gradient-canvas,
 [data-theme="magnetic-field"] #gradient-canvas,
-[data-theme="lotus"] #gradient-canvas {
+[data-theme="lotus"] #gradient-canvas,
+[data-theme="plasma"] #gradient-canvas {
   mask-image: none;
   -webkit-mask-image: none;
   opacity: 1.0;
@@ -2522,6 +2523,21 @@ body.rct-right-open #right {
   --grad-2: #2a0840;
   --grad-3: #14052a;
   --grad-4: #050010;
+}
+
+/* --- Theme: Plasma (iterative domain-warping, lava-flow with magenta accents) --- */
+[data-theme="plasma"] {
+  --rct-primary:       #c41840;
+  --rct-primary-light: #ff7d3c;
+  --rct-accent:        #ff7d3c;
+  --rct-primary-container: rgba(196, 24, 64, 0.12);
+  --rct-sidebar-alpha:     0.6;
+  --rct-main-alpha:        0.3;
+  --rct-bg-dots:           rgba(255, 180, 100, 0.45);
+  --grad-1: #180828;
+  --grad-2: #3a0a30;
+  --grad-3: #1a0418;
+  --grad-4: #08020c;
 }
 
 #rct-baker-bg {

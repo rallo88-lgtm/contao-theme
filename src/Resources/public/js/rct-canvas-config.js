@@ -269,6 +269,26 @@ const RCT_CANVAS_CONFIG = {
     fragmentShader_slimeMode:  1.0,
   },
 
+  // Plasma — iterative Domain-Warping, fließende Lavalampen-Optik
+  plasma: {
+    vertexShader_amp:          0,
+    vertexShader_seed:         0,
+    vertexShader_freqX:        0,
+    vertexShader_freqY:        0,
+    vertexShader_freqDelta:    0,
+    vertexShader_timeSpeed:    0,
+    vertexShader_density:      [0.06, 0.16],
+    vertexShader_activeColors: [1, 1, 1, 1],
+    vertexShader_bgColor:      '#180828',   // tiefes Plasma-Violett
+    fragmentWithVertex:        false,
+    shaderMode:                13,
+    fragmentShader_lineCount:  1,
+    fragmentShader_lineWidth:  1.0,
+    fragmentShader_lineSpeed:  0.5,
+    fragmentShader_lineColor:  '#ff7d3c',    // warmes Lava-Orange als Akzent
+    frameSkip:                 2,            // 15fps — Plasma fließt langsam
+  },
+
   // Lotus — Polar-Vortex/Kaleidoskop, statisch (kein Aurora-Background)
   lotus: {
     vertexShader_amp:          0,

@@ -168,6 +168,8 @@
 .opt-dot.baker-street { background: radial-gradient(circle at 40% 35%, #c87828 0%, #3d1a08 55%, #08060a 100%); }
 .current-theme-dot.lotus,
 .opt-dot.lotus { background: radial-gradient(circle, #d8b4fe 30%, #0a0612 100%); }
+.current-theme-dot.plasma,
+.opt-dot.plasma { background: radial-gradient(circle at 35% 35%, #ff7d3c 0%, #c41840 50%, #180828 100%); }
 
 
 /* ------------------------------------------------------------

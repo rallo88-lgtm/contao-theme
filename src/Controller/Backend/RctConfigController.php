@@ -28,6 +28,7 @@ class RctConfigController extends AbstractBackendController
         'magnetic-field'  => 'Magnetic Field',
         'baker-street'    => 'Baker Street',
         'lotus'           => 'Lotus',
+        'plasma'          => 'Plasma',
     ];
 
     private const DEFAULTS = [

@@ -959,6 +959,52 @@ void main() {
     return;
   }
 
+  // Modus 13: Plasma — iterative Domain-Warping (40 Loops, GLSL-Folklore-Pattern)
+  // Eigene Implementierung des klassischen iquilezles-Pattern: pro Iteration wird
+  // p durch sin-Modulation der jeweils anderen Achse verschoben. Resultat ist ein
+  // chaotisch-fließendes Vektorfeld (Lavalampen-Optik). 4 cos-Range-Oszillatoren
+  // halten die Distortion permanent organisch. Theme-Tint via u_line_color.
+  if (u_line_mode > 12.5 && u_line_mode < 13.5) {
+    vec2 res = resolution.xy;
+    vec2 p   = (gl_FragCoord.xy * 2.0 - res) / res.y;
+    p.x     /= max(res.x / res.y, 1.0);  // Mode-7-Aspect-Pattern: u quadratisch
+    p *= 2.5;
+    float t = u_time * u_line_speed * 0.15;
+
+    // 4 unabhängige cos-Oszillatoren halten das Warping organisch
+    float ct     = 0.50 + 0.30 * cos(t * 0.13);
+    float xBoost =        0.30 * cos(t * 0.31);
+    float yBoost =        0.30 * cos(t * 0.27);
+    float fScale = 1.05 + 0.20 * cos(t * 0.21);
+
+    // Iteratives Domain-Warping
+    for (int i = 1; i < 40; i++) {
+      float fi  = float(i);
+      vec2 newp = p;
+      newp.x   += 0.25 / fi * sin(fi * p.y + t * ct) * fScale + xBoost;
+      newp.y   += 0.25 / fi * cos(fi * p.x + t * ct) * fScale + yBoost;
+      p = newp;
+    }
+
+    // Color aus warped position: drei phasenversetzte Sinus-Werte
+    vec3 plasma = vec3(
+      0.5 * sin(3.0 * p.x) + 0.5,
+      0.5 * sin(3.0 * p.y) + 0.5,
+      sin(p.x + p.y)
+    );
+
+    // Theme-Tint: sanft multiplikativ
+    plasma *= vec3(0.5) + u_line_color * 0.5;
+
+    // Sanfte Vignette für Tiefenwirkung
+    vec2 vUV = (gl_FragCoord.xy / res - 0.5) * 2.0;
+    plasma *= 1.0 - dot(vUV, vUV) * 0.25;
+
+    color = plasma;
+    gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
+    return;
+  }
+
   gl_FragColor = vec4(color, 1.0);
 }
 `;
