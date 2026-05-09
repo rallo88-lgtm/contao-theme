@@ -1087,6 +1087,15 @@ void main() {
     vec2 fc  = gl_FragCoord.xy;
     float t  = u_time * u_line_speed;
 
+    // Footer-Cutoff: untersten 25px schwarz (Feuer-Math beginnt 25px ueber Display-Boden)
+    float footerH = 25.0;
+    if (fc.y < footerH) {
+      gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+      return;
+    }
+    fc.y -= footerH;
+    res.y -= footerH;
+
     float xpart = fc.x / res.x;
     float ypart = fc.y / res.y;
 
@@ -1159,8 +1168,6 @@ void main() {
     }
 
     color = clamp(max(fire, sparks) + smoke, 0.0, 1.0);
-    // Footer-Fade: untersten 50px smooth ins schwarze Footer-Bottom auslaufen
-    color *= smoothstep(15.0, 50.0, gl_FragCoord.y);
     gl_FragColor = vec4(color, 1.0);
     return;
   }
