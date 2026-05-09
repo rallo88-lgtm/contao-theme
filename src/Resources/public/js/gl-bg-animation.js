@@ -307,6 +307,58 @@ vec2 rct_tanh2(vec2 x) {
   return sign(x) * (1.0 - e) / (1.0 + e);
 }
 
+// Wave-Renderer (extrahiert für 2x2 Supersampling in Mode 17)
+vec3 rct_render_wave(vec2 fc, vec2 res, float t, float spec) {
+  vec2 uv = (fc - 0.5 * res) / min(res.y, res.x);
+  vec3 col = vec3(0.0);
+  vec3 ro = vec3(0.0, 2.475, -3.3);
+  vec3 lk = vec3(0.0, 2.0, 0.0);
+  vec3 fwd = normalize(lk - ro);
+  vec3 rgt = normalize(cross(vec3(0.0, 1.0, 0.0), fwd));
+  vec3 rd  = normalize(fwd * 0.9 + uv.x * rgt + uv.y * cross(fwd, rgt));
+
+  float dO = 0.0;
+  bool hit = false;
+  vec3 p = ro;
+  float tPln = -(ro.y - 1.86) / rd.y;
+  if (tPln > 0.0) {
+    dO += tPln;
+    for (int i = 0; i < 80; i++) {
+      p = ro + rd * dO;
+      float d = rct_wave_map(p, t);
+      dO += d;
+      if (abs(d) < 0.005 || i > 78) { hit = true; break; }
+      if (dO > 35.0) { dO = 35.0; break; }
+    }
+  }
+
+  vec3 skyrd = rct_sky(rd, res, t, spec);
+  if (hit) {
+    vec3 n   = rct_wave_norm(p, t);
+    vec3 rfl = reflect(rd, n); rfl.y = abs(rfl.y);
+    vec3 rf  = refract(rd, n, 1.0 / 1.33);
+    float fres = clamp(pow(1.0 - max(0.0, dot(-n, rd)), 5.0), 0.0, 1.0);
+    vec2 sunrot = vec2(-0.55, -0.25);
+    vec3 sunDir = vec3(0.0, 0.15, 1.0);
+    sunDir.xz *= rct_rot2(-sunrot.x);
+    col += rct_sky(rfl, res, t, spec) * fres * 0.9;
+    float subRefract = pow(max(0.0, dot(rf, sunDir)), 35.0);
+    col += pow(rct_spc(spec - 0.1, 0.5), vec3(2.2)) * subRefract * 2.5;
+    vec3 rd2 = rd; rd2.xz *= rct_rot2(sunrot.x);
+    vec3 waterCol = clamp(rct_spc(spec - 0.1, 0.4), 0.0, 1.0)
+                    * (0.4 * pow(min(p.y * 0.7 + 0.9, 1.8), 4.0)
+                       * length(skyrd) * (rd2.z * 0.15 + 0.85));
+    col += waterCol * 0.17;
+    col = mix(col, skyrd, dO / 35.0);
+  } else {
+    col += skyrd;
+  }
+  col = clamp(col, 0.0, 1.0);
+  col = pow(col, vec3(0.87));
+  col *= 1.0 - 0.8 * pow(length(uv * vec2(0.8, 1.0)), 2.7);
+  return col;
+}
+
 void main() {
   vec3 color = v_color;
 
