@@ -1087,6 +1087,15 @@ void main() {
     vec2 fc  = gl_FragCoord.xy;
     float t  = u_time * u_line_speed;
 
+    // Footer-Cutoff: die untersten 50px sind der fixed #bottom — schwarz lassen
+    float footerH = 50.0;
+    if (fc.y < footerH) {
+      gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+      return;
+    }
+    fc.y -= footerH;
+    res.y -= footerH;
+
     float xpart = fc.x / res.x;
     float ypart = fc.y / res.y;
 
