@@ -1113,21 +1113,27 @@ void main() {
     // Color: R schnell, G mittel, B nur Spitzen → klassisches Feuer-Profil
     vec3 fire = vec3(flame, flame * flame * 0.7, flame * flame * flame * 0.3);
 
-    // Sparks: hexagonales Grid mit Lifecycle (gridSize 0.08 → halb so viele Cells)
-    float gridSize = min(res.x, res.y) * 0.08;
+    // Sparks: hexagonales Grid, aber nur ~35% der Cells aktiv (sRand > 0.65)
+    // + zeitlich rotierender Offset innerhalb der Cell bricht die Grid-Optik
+    float gridSize = min(res.x, res.y) * 0.06;
     vec2  sparkCoord = fc - vec2(0.0, 180.0 * t);
     if (mod(sparkCoord.y / gridSize, 2.0) < 1.0) sparkCoord.x += 0.5 * gridSize;
     vec2  gridIdx = floor(sparkCoord / gridSize);
     float sRand   = rct_hash(gridIdx);
-    float sLife   = clamp(1.0 - (gridIdx.y + 180.0 * t / gridSize)
-                          / (24.0 - 20.0 * sRand), 0.0, 1.0);
 
     vec3 sparks = vec3(0.0);
-    if (sLife > 0.0 && xfuel > 0.1) {
-      float sSize  = xfuel * sRand * 0.12;
-      vec2  sMod   = mod(sparkCoord, gridSize) - 0.5 * vec2(gridSize);
-      float sLen   = length(sMod);
-      float sGray  = max(0.0, 1.0 - sLen / (sSize * gridSize));
+    if (sRand > 0.65 && xfuel > 0.15) {
+      // Random rotierende Position innerhalb der Cell
+      float sRadians = 999.0 * sRand + 2.0 * t;
+      vec2  sCirc    = vec2(sin(sRadians), cos(sRadians));
+      vec2  sOffset  = 0.3 * gridSize * sCirc;
+      vec2  sMod     = mod(sparkCoord + sOffset, gridSize) - 0.5 * vec2(gridSize);
+      // Variable Größe: remap sRand [0.65..1] auf [0..1]
+      float sSize    = xfuel * (sRand - 0.65) / 0.35 * 0.18;
+      float sLen     = length(sMod);
+      float sGray    = max(0.0, 1.0 - sLen / (sSize * gridSize + 0.5));
+      float sLife    = clamp(1.0 - (gridIdx.y + 180.0 * t / gridSize)
+                             / (24.0 - 20.0 * sRand), 0.0, 1.0);
       sparks = sLife * sGray * u_line_color * 1.8;
     }
 
