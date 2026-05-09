@@ -975,20 +975,23 @@ void main() {
     float fScale = 1.05 + 0.20 * cos(t * 0.21);
     p += 0.25 * vec2(cos(t * 0.31), sin(t * 0.27));  // sin/cos-Mix: keine Diagonal-Bias
 
-    // Iteratives Domain-Warping (40 Loops, pro Iteration nur 0.25/fi → smooth)
+    // Iteratives Domain-Warping (40 Loops). Asymmetrische Frequenz + Phase
+    // brechen die Diagonal-Invariante: ohne den 1.13-Faktor und +1.7-Offset wären
+    // Pixel mit p.x == p.y mathematisch invariant → sichtbarer 45°-Trennstrich.
     for (int i = 1; i < 40; i++) {
       float fi  = float(i);
       vec2 newp = p;
-      newp.x   += 0.25 / fi * sin(fi * p.y + t * ct) * fScale;
-      newp.y   += 0.25 / fi * sin(fi * p.x + t * ct) * fScale;
+      newp.x   += 0.25 / fi * sin(fi * p.y        + t * ct       ) * fScale;
+      newp.y   += 0.25 / fi * sin(fi * p.x * 1.13 + t * ct + 1.7 ) * fScale;
       p = newp;
     }
 
-    // Color aus warped position: drei phasenversetzte Sinus-Werte
+    // Color aus warped position: asymmetrische Achsenmischung im B-Channel
+    // (sin(p.x+p.y) hätte Diagonal-Bias gehabt, daher 1.3/0.7-Mix + Phase)
     vec3 plasma = vec3(
-      0.5 * sin(3.0 * p.x) + 0.5,
-      0.5 * sin(3.0 * p.y) + 0.5,
-      sin(p.x + p.y)
+      0.5 * sin(3.0 * p.x                        ) + 0.5,
+      0.5 * sin(3.0 * p.y + 1.0                  ) + 0.5,
+      0.5 * sin(p.x * 1.3 + p.y * 0.7 + 0.8      ) + 0.5
     );
 
     // Theme-Tint: sanft multiplikativ
