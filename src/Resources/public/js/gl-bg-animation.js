@@ -938,6 +938,7 @@ void main() {
     // Pixel-isotrope Normierung via max(w,h) — Pixel-Distanz vom Center → konstanter
     // u-Schritt, egal ob Landscape oder Portrait. Vortex bleibt visuell rund.
     vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / max(res.x, res.y);
+    u *= 2.0;  // Zoom-out: Lotus-Blüte erscheint halb so groß im Display
     float c  = length(u + u);
     // Polar-Twist: Radius + Winkel via Magic-Matrix verschraubt (Spirale)
     vec2 polar = vec2(c, atan(u.y, u.x));
