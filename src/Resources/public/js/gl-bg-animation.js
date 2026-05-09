@@ -1453,8 +1453,10 @@ void main() {
       hp += d * ray;
     }
 
-    // Sky-BG: dunkel mit minimalem Center-Glow
-    vec3 sky = vec3(0.04, 0.04, 0.08) + dot(st, st) * 0.04;
+    // Sky-BG: dunkelviolett mit warmem rosig-glow im Center (Sakura-Dämmerung)
+    vec3 skyBase = vec3(0.05, 0.03, 0.08);
+    vec3 skyGlow = vec3(0.12, 0.07, 0.08);
+    vec3 sky = mix(skyGlow, skyBase, clamp(dot(st, st) * 1.8, 0.0, 1.0));
     vec3 col = sky;
 
     if (hit) {
@@ -1463,20 +1465,20 @@ void main() {
       vec3 ld  = normalize(vec3(0.0, 1.0, -0.1));
 
       if (hit_m == 1) {
-        // Blüten = sanfter farbiger Glow (additive auf sky, wrap-light statt diffuse)
+        // Blüten = Sakura-Pastel: rosé/peach/lavendel/cremeweiß per spawn-id
         float colorPhase = fract(sin(hit_id * 0.5483) * 43758.5453);
         vec3 glowCol = rct_pal(colorPhase,
-                               vec3(0.55, 0.45, 0.55),
-                               vec3(0.55, 0.55, 0.50),
+                               vec3(0.80, 0.70, 0.75),    // hell-pastel mid
+                               vec3(0.20, 0.25, 0.20),    // sanfte amp (kein Saturated)
                                vec3(1.0, 0.8, 0.9),
-                               vec3(0.0, 0.20, 0.40));
-        glowCol *= 1.4;
-        float wrap = 0.5 + 0.5 * dot(nrm, ld);  // wrap-light = keine harten Schatten
+                               vec3(0.0, 0.15, 0.35));    // peach/rose/lavender phase-shift
+        glowCol *= 1.1;
+        float wrap = 0.5 + 0.5 * dot(nrm, ld);
         col = sky + glowCol * (0.4 + wrap * 0.5);
       } else {
-        // Stems + Blätter = Glas: Fresnel-Edges in hellblau, plus minimaler Tint
+        // Stems + Blätter = Glas in hellgrün (Sakura-Stems)
         float fresnel = pow(1.0 - abs(dot(nrm, viewDir)), 2.0);
-        vec3 glassCol = vec3(0.5, 0.85, 1.0);
+        vec3 glassCol = vec3(0.55, 0.85, 0.65);
         col = sky + glassCol * 0.05 + glassCol * fresnel * 0.45;
       }
 
