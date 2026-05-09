@@ -123,6 +123,11 @@ float rct_fbm(vec2 p) {
   }
   return v;
 }
+// Pseudo-3D-Noise im Fragment-Shader (snoise ist nur im Vertex-Shader prepended).
+// Range [-1,1] für snoise-Kompatibilität. Z-Achse als phase-shift auf 2D-Noise.
+float rct_vnoise3(vec3 p) {
+  return rct_vnoise(p.xy + vec2(p.z * 1.3, p.z * 0.7)) * 2.0 - 1.0;
+}
 
 // 3×5 Pixel-Digit Bitmap (bit = row*3+col, row0=top)
 // 0=31599 1=29850 2=29671 3=31207 4=18925 5=31183 6=31695 7=9511 8=31727 9=31215
@@ -1104,15 +1109,15 @@ void main() {
     // Domain-Distortion: 2-octave Noise-Stack auf 2 Achsen (für displace3)
     vec3 dPos  = vec3(1.0, 0.5, 1.0) * 2.4 * position + t * vec3(0.01, -0.7, 1.3);
     vec3 dPosB = dPos + vec3(3984.293, 423.21, 5235.19);
-    float dispA = (1.0 + mix(snoise(dPos),  snoise(dPos  * 2.0), 0.4)) * 0.5;
-    float dispB = (1.0 + mix(snoise(dPosB), snoise(dPosB * 2.0), 0.4)) * 0.5;
+    float dispA = (1.0 + mix(rct_vnoise3(dPos),  rct_vnoise3(dPos  * 2.0), 0.4)) * 0.5;
+    float dispB = (1.0 + mix(rct_vnoise3(dPosB), rct_vnoise3(dPosB * 2.0), 0.4)) * 0.5;
     vec3 displace = vec3(dispA, dispB, 0.0);
 
     // Fire-Noise: 3-octave Stack mit Falloff 0.4
     vec3 noiseCoord = vec3(2.0, 1.0, 1.0) * position + timing + 0.4 * displace;
-    float n0 = snoise(noiseCoord);
-    float n1 = snoise(noiseCoord * 2.0);
-    float n2 = snoise(noiseCoord * 4.0);
+    float n0 = rct_vnoise3(noiseCoord);
+    float n1 = rct_vnoise3(noiseCoord * 2.0);
+    float n2 = rct_vnoise3(noiseCoord * 4.0);
     float fireNoise = (1.0 + mix(mix(n0, n1, 0.4), n2, 0.16)) * 0.5;
 
     // Flammen-Profil: Y × Noise, gepowert mit xfuel (mehr fuel = schärfere Flammen)
@@ -1122,7 +1127,7 @@ void main() {
     vec3 fire    = 1.5 * vec3(f, fff, fff * fff);  // R schnell, G mittel, B langsam → orange
 
     // Rauch (Smoke): grayscale-Layer in oberer Bildhälfte
-    float smokeNoise = 0.5 + snoise(0.4 * position + timing * vec3(1.0, 1.0, 0.2)) * 0.5;
+    float smokeNoise = 0.5 + rct_vnoise3(0.4 * position + timing * vec3(1.0, 1.0, 0.2)) * 0.5;
     vec3 smoke = vec3(0.3 * pow(xfuel, 3.0) * pow(ypart, 2.0)
                       * (smokeNoise + 0.4 * (1.0 - fireNoise)));
 
