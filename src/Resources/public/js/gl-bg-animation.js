@@ -935,11 +935,12 @@ void main() {
   // RCT-Adaption: WebGL1-tauglich (tanh-Polyfill, scalar atan), Theme-Tint via u_line_color
   if (u_line_mode > 11.5 && u_line_mode < 12.5) {
     vec2 res = resolution.xy;
-    // Pixel-isotrope Normierung via max(w,h): u-Schritt pro Pixel-Distanz ist
-    // konstant — Form ist auflösungs- und aspect-unabhängig. Was variiert ist
-    // ausschließlich der vom Display sichtbare u-Range (= maximale Gesamtgröße).
-    vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / max(res.x, res.y);
-    u *= 2.8;  // Zoom-out: globaler Skalierungsfaktor, gleichermaßen auf beide Achsen
+    // Mode-7-Pattern (Baccara-Rose): u.x mit Aspect-Ratio stauchen damit u quadratisch
+    // wird (Landscape: u.x-Range = u.y-Range). Damit operiert die mat2-Twist-Math auf
+    // einem visuell symmetrischen u-Frame, der Vortex ist auf jedem Aspect echt rund.
+    vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / res.y;
+    u.x     /= max(res.x / res.y, 1.0);
+    u *= 2.8;  // Zoom-out
     float c  = length(u + u);
     // Polar-Twist: Radius + Winkel via Magic-Matrix verschraubt (Spirale)
     vec2 polar = vec2(c, atan(u.y, u.x));
