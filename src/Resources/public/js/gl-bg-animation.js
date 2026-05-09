@@ -968,21 +968,19 @@ void main() {
     vec2 res = resolution.xy;
     vec2 p   = (gl_FragCoord.xy * 2.0 - res) / res.y;
     p.x     /= max(res.x / res.y, 1.0);  // Mode-7-Aspect-Pattern: u quadratisch
-    p *= 2.5;
     float t = u_time * u_line_speed * 0.15;
 
-    // 4 unabhängige cos-Oszillatoren halten das Warping organisch
+    // Langsame globale Drift VOR der Loop (sonst akkumuliert sie 40× = Gitter-Look)
     float ct     = 0.50 + 0.30 * cos(t * 0.13);
-    float xBoost =        0.30 * cos(t * 0.31);
-    float yBoost =        0.30 * cos(t * 0.27);
     float fScale = 1.05 + 0.20 * cos(t * 0.21);
+    p += 0.25 * vec2(cos(t * 0.31), cos(t * 0.27));
 
-    // Iteratives Domain-Warping
+    // Iteratives Domain-Warping (40 Loops, pro Iteration nur 0.25/fi → smooth)
     for (int i = 1; i < 40; i++) {
       float fi  = float(i);
       vec2 newp = p;
-      newp.x   += 0.25 / fi * sin(fi * p.y + t * ct) * fScale + xBoost;
-      newp.y   += 0.25 / fi * cos(fi * p.x + t * ct) * fScale + yBoost;
+      newp.x   += 0.25 / fi * sin(fi * p.y + t * ct) * fScale;
+      newp.y   += 0.25 / fi * sin(fi * p.x + t * ct) * fScale;
       p = newp;
     }
 
