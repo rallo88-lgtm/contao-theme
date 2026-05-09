@@ -309,6 +309,26 @@ const RCT_CANVAS_CONFIG = {
     frameSkip:                 2,            // 15fps — heavy noise
   },
 
+  // Flower — Fraktale Spirale aus Blüten/Blättern (rotiert um Y-Achse)
+  flower: {
+    vertexShader_amp:          0,
+    vertexShader_seed:         0,
+    vertexShader_freqX:        0,
+    vertexShader_freqY:        0,
+    vertexShader_freqDelta:    0,
+    vertexShader_timeSpeed:    0,
+    vertexShader_density:      [0.06, 0.16],
+    vertexShader_activeColors: [1, 1, 1, 1],
+    vertexShader_bgColor:      '#f0f5f0',   // cremig-mint
+    fragmentWithVertex:        false,
+    shaderMode:                18,
+    fragmentShader_lineCount:  1,
+    fragmentShader_lineWidth:  1.0,
+    fragmentShader_lineSpeed:  0.5,
+    fragmentShader_lineColor:  '#a5c8e8',    // sanftes hellblau als zusätzlicher Tint
+    frameSkip:                 2,            // 15fps
+  },
+
   // Wave — Prozeduraler Ozean mit Sonne, hellblau (heavy raymarch)
   wave: {
     vertexShader_amp:          0,

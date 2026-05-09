@@ -341,14 +341,15 @@
   opacity: 1.0;
 }
 
-/* Neon Grid + Magnetic Field + Lotus + Plasma + Inversion + Fire + Wave: Maske aus */
+/* Neon Grid + Magnetic Field + Lotus + Plasma + Inversion + Fire + Wave + Flower: Maske aus */
 [data-theme="neon-grid"] #gradient-canvas,
 [data-theme="magnetic-field"] #gradient-canvas,
 [data-theme="lotus"] #gradient-canvas,
 [data-theme="plasma"] #gradient-canvas,
 [data-theme="inversion"] #gradient-canvas,
 [data-theme="fire"] #gradient-canvas,
-[data-theme="wave"] #gradient-canvas {
+[data-theme="wave"] #gradient-canvas,
+[data-theme="flower"] #gradient-canvas {
   mask-image: none;
   -webkit-mask-image: none;
   opacity: 1.0;
@@ -356,6 +357,7 @@
 [data-theme="neon-grid"] #rct-dots-canvas { display: none; }
 [data-theme="fire"] #rct-dots-canvas { display: none; }
 [data-theme="wave"] #rct-dots-canvas { display: none; }
+[data-theme="flower"] #rct-dots-canvas { display: none; }
 
 /* Toxic Green: Canvas Hintergrundbild + Maske deaktivieren */
 [data-theme="toxic-green"] #gradient-canvas {
@@ -2573,6 +2575,21 @@ body.rct-right-open #right {
   --grad-2: #2a0808;
   --grad-3: #1a0404;
   --grad-4: #050100;
+}
+
+/* --- Theme: Flower Power (fraktale Spirale aus Blüten, pastel-bunt) --- */
+[data-theme="flower"] {
+  --rct-primary:       #c74872;
+  --rct-primary-light: #e8a5b8;
+  --rct-accent:        #c74872;
+  --rct-primary-container: rgba(199, 72, 114, 0.12);
+  --rct-sidebar-alpha:     0.6;
+  --rct-main-alpha:        0.3;
+  --rct-bg-dots:           rgba(165, 200, 232, 0.45);
+  --grad-1: #f0f5f0;
+  --grad-2: #d8e8ec;
+  --grad-3: #ecd8e0;
+  --grad-4: #f5f0f5;
 }
 
 /* --- Theme: Wave (prozeduraler Ozean, hellblau ocean accents) --- */
