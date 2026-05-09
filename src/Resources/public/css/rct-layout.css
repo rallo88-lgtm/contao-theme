@@ -2577,19 +2577,19 @@ body.rct-right-open #right {
   --grad-4: #050100;
 }
 
-/* --- Theme: Flower Power (fraktale Spirale aus Blüten, pastel-bunt) --- */
+/* --- Theme: Flower Power Sakura (Pastel-Blüten + Glas-Stems + Dämmerungs-Sky) --- */
 [data-theme="flower"] {
-  --rct-primary:       #c74872;
-  --rct-primary-light: #e8a5b8;
-  --rct-accent:        #c74872;
-  --rct-primary-container: rgba(199, 72, 114, 0.12);
+  --rct-primary:       #d96687;
+  --rct-primary-light: #f4c2d4;
+  --rct-accent:        #f4c2d4;
+  --rct-primary-container: rgba(217, 102, 135, 0.12);
   --rct-sidebar-alpha:     0.6;
   --rct-main-alpha:        0.3;
-  --rct-bg-dots:           rgba(165, 200, 232, 0.45);
-  --grad-1: #f0f5f0;
-  --grad-2: #d8e8ec;
-  --grad-3: #ecd8e0;
-  --grad-4: #f5f0f5;
+  --rct-bg-dots:           rgba(244, 194, 212, 0.45);
+  --grad-1: #0a0510;
+  --grad-2: #1f0a18;
+  --grad-3: #14081a;
+  --grad-4: #050308;
 }
 
 /* --- Theme: Wave (prozeduraler Ozean, hellblau ocean accents) --- */

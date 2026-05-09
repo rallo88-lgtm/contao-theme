@@ -319,13 +319,13 @@ const RCT_CANVAS_CONFIG = {
     vertexShader_timeSpeed:    0,
     vertexShader_density:      [0.06, 0.16],
     vertexShader_activeColors: [1, 1, 1, 1],
-    vertexShader_bgColor:      '#f0f5f0',   // cremig-mint
+    vertexShader_bgColor:      '#0a0510',   // dunkelviolett (Sakura-Dämmerung)
     fragmentWithVertex:        false,
     shaderMode:                18,
     fragmentShader_lineCount:  1,
     fragmentShader_lineWidth:  1.0,
-    fragmentShader_lineSpeed:  0.08,
-    fragmentShader_lineColor:  '#a5c8e8',    // sanftes hellblau als zusätzlicher Tint
+    fragmentShader_lineSpeed:  0.05,
+    fragmentShader_lineColor:  '#f4c2d4',    // pastel-rosé als Theme-Tint
     frameSkip:                 2,            // 15fps
   },
 
