@@ -304,7 +304,7 @@ const RCT_CANVAS_CONFIG = {
     shaderMode:                16,
     fragmentShader_lineCount:  1,
     fragmentShader_lineWidth:  1.0,
-    fragmentShader_lineSpeed:  0.035,
+    fragmentShader_lineSpeed:  0.025,
     fragmentShader_lineColor:  '#ffaa44',    // warm-gelb für Sparks
     frameSkip:                 2,            // 15fps — heavy noise
   },

@@ -1094,9 +1094,9 @@ void main() {
     float xfuel = 1.0 - abs(2.0 * xpart - 1.0);
     xfuel = smoothstep(0.0, 0.4, xfuel);  // schärfere Mitte
 
-    // Y-Intensität: stark unten, schneller fade nach oben (pow 2.8 → niedriger Flamme)
+    // Y-Intensität: stark unten, schneller fade nach oben (pow 3.5 → niedriger Flamme)
     float yInt = 1.0 - ypart;
-    yInt = pow(max(yInt, 0.0), 2.8);
+    yInt = pow(max(yInt, 0.0), 3.5);
 
     // Noise mit vertikalem Drift (Flammen steigen) — fbm mit time
     vec2 nCoord = vec2(fc.x * 0.012, fc.y * 0.018 - t * 6.0);
@@ -1113,8 +1113,8 @@ void main() {
     // Color: R schnell, G mittel, B nur Spitzen → klassisches Feuer-Profil
     vec3 fire = vec3(flame, flame * flame * 0.7, flame * flame * flame * 0.3);
 
-    // Sparks: hexagonales Grid mit Lifecycle
-    float gridSize = min(res.x, res.y) * 0.04;
+    // Sparks: hexagonales Grid mit Lifecycle (gridSize 0.08 → halb so viele Cells)
+    float gridSize = min(res.x, res.y) * 0.08;
     vec2  sparkCoord = fc - vec2(0.0, 180.0 * t);
     if (mod(sparkCoord.y / gridSize, 2.0) < 1.0) sparkCoord.x += 0.5 * gridSize;
     vec2  gridIdx = floor(sparkCoord / gridSize);
