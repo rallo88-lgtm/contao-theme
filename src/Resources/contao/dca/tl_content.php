@@ -1813,3 +1813,71 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_pool_size'] = [
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'digit', 'maxlength' => 4, 'tl_class' => 'w50'],
 ];
+
+// =====================================================================
+// RCT Glow Card — animated conic-gradient border (CSS @property + animation)
+// rct_glow_card_* ohne 'sql' → jsonData. link_page bleibt int-Spalte für Lazy-Load.
+// =====================================================================
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_glow_card'] =
+    '{type_legend},type;{glow_card_legend},rct_glow_card_headline,rct_glow_card_text,rct_glow_card_style,rct_glow_card_speed;{glow_card_link_legend:hide},rct_glow_card_link_page,rct_glow_card_link_url,rct_glow_card_link_label,rct_glow_card_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_headline'] = [
+    'label'     => ['Überschrift', 'Titel der Glow-Card'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'long'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_text'] = [
+    'label'     => ['Text', 'Beschreibungstext'],
+    'inputType' => 'textarea',
+    'eval'      => ['style' => 'height:120px', 'tl_class' => 'clr'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_style'] = [
+    'label'     => ['Glow-Stil', 'Animations-Stil des leuchtenden Borders'],
+    'inputType' => 'select',
+    'options'   => [
+        'rainbow' => 'Rainbow (alle Farben)',
+        'accent'  => 'Akzentfarbe (sanft pulsierend)',
+        'dual'    => 'Dual (Akzent + Primary)',
+    ],
+    'eval'      => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_speed'] = [
+    'label'     => ['Geschwindigkeit', 'Wie schnell der Glow um die Card rotiert'],
+    'inputType' => 'select',
+    'options'   => [
+        'slow'   => 'Langsam (8s)',
+        'normal' => 'Normal (4s)',
+        'fast'   => 'Schnell (2s)',
+    ],
+    'eval'      => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_link_page'] = [
+    'label'      => ['Interne Seite', 'Contao-Seite als Link-Ziel (Vorrang vor URL)'],
+    'inputType'  => 'pageTree',
+    'foreignKey' => 'tl_page.title',
+    'eval'       => ['fieldType' => 'radio', 'tl_class' => 'clr'],
+    'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
+    'sql'        => "int(10) unsigned NOT NULL default 0",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_link_url'] = [
+    'label'     => ['Externe URL', 'Manuelle URL (ignoriert wenn Seite gewählt)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_link_label'] = [
+    'label'     => ['Link-Text', 'Beschriftung des Links (Standard: „Mehr erfahren")'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_link_target'] = [
+    'label'     => ['Neues Fenster', 'Link in neuem Tab öffnen'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
