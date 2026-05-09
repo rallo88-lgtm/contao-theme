@@ -284,7 +284,7 @@ const RCT_CANVAS_CONFIG = {
     shaderMode:                13,
     fragmentShader_lineCount:  1,
     fragmentShader_lineWidth:  1.0,
-    fragmentShader_lineSpeed:  0.2,
+    fragmentShader_lineSpeed:  0.1,
     fragmentShader_lineColor:  '#ff7d3c',    // warmes Lava-Orange als Akzent
     frameSkip:                 2,            // 15fps — Plasma fließt langsam
   },

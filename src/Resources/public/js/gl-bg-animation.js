@@ -973,7 +973,7 @@ void main() {
     // Langsame globale Drift VOR der Loop (sonst akkumuliert sie 40× = Gitter-Look)
     float ct     = 0.50 + 0.30 * cos(t * 0.13);
     float fScale = 1.05 + 0.20 * cos(t * 0.21);
-    p += 0.25 * vec2(cos(t * 0.31), cos(t * 0.27));
+    p += 0.25 * vec2(cos(t * 0.31), sin(t * 0.27));  // sin/cos-Mix: keine Diagonal-Bias
 
     // Iteratives Domain-Warping (40 Loops, pro Iteration nur 0.25/fi → smooth)
     for (int i = 1; i < 40; i++) {
