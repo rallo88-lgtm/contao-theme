@@ -123,28 +123,16 @@ float rct_fbm(vec2 p) {
   }
   return v;
 }
-// Echter 3D Value-Noise im Fragment-Shader (snoise ist nur im Vertex-Shader
-// prepended). 8-Corner-Trilinear-Interpolation mit Z-Offset als 2D-hash-shift.
-// Range [-1, 1] für snoise-Kompatibilität.
+// Pseudo-3D-Noise via z-Layer-Interpolation: zwei rct_vnoise(XY) mit
+// asymmetrischen z-shifts, smoothstep-interpoliert in z. Range [-1, 1].
+// Saubere Animation in z ohne Hash-Kollisionen die der 8-Corner-Variante hatte.
 float rct_vnoise3(vec3 p) {
-  vec3 i = floor(p);
-  vec3 f = fract(p);
-  vec3 u = f * f * (3.0 - 2.0 * f);
-  vec2 z0 = vec2(i.z * 17.13);
-  vec2 z1 = vec2((i.z + 1.0) * 17.13);
-  float n000 = rct_hash(i.xy                    + z0);
-  float n100 = rct_hash(i.xy + vec2(1.0, 0.0)   + z0);
-  float n010 = rct_hash(i.xy + vec2(0.0, 1.0)   + z0);
-  float n110 = rct_hash(i.xy + vec2(1.0, 1.0)   + z0);
-  float n001 = rct_hash(i.xy                    + z1);
-  float n101 = rct_hash(i.xy + vec2(1.0, 0.0)   + z1);
-  float n011 = rct_hash(i.xy + vec2(0.0, 1.0)   + z1);
-  float n111 = rct_hash(i.xy + vec2(1.0, 1.0)   + z1);
-  float v = mix(
-    mix(mix(n000, n100, u.x), mix(n010, n110, u.x), u.y),
-    mix(mix(n001, n101, u.x), mix(n011, n111, u.x), u.y),
-    u.z);
-  return v * 2.0 - 1.0;
+  float zf = fract(p.z);
+  float zs = floor(p.z);
+  float u  = zf * zf * (3.0 - 2.0 * zf);
+  float a  = rct_vnoise(p.xy + vec2(zs       * 7.13, zs       * 3.71));
+  float b  = rct_vnoise(p.xy + vec2((zs+1.0) * 7.13, (zs+1.0) * 3.71));
+  return mix(a, b, u) * 2.0 - 1.0;
 }
 
 // 3×5 Pixel-Digit Bitmap (bit = row*3+col, row0=top)
