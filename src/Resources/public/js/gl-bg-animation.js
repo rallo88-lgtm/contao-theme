@@ -236,7 +236,7 @@ vec2 rct_wavedx(vec2 wavPos, int iters, float t) {
     wavPos -= wavDir * result * 0.9;
     wavWeight *= 0.8;
   }
-  float wavSum = -(pow(0.8, float(iters)) - 1.0) * 2.5;
+  float wavSum = -(pow(0.8, float(iters)) - 1.0) * 3.5;
   return dx / pow(wavSum, 0.35);
 }
 
@@ -259,7 +259,7 @@ float rct_wave_h(vec2 wavPos, int iters, float t) {
     wavPos -= wavDir * wv * 0.9 * cos(x);
     wavWeight *= 0.8;
   }
-  float wavSum = -(pow(0.8, float(iters)) - 1.0) * 2.5;
+  float wavSum = -(pow(0.8, float(iters)) - 1.0) * 3.5;
   return wav / wavSum;
 }
 
