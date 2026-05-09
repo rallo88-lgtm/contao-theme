@@ -935,9 +935,9 @@ void main() {
   // RCT-Adaption: WebGL1-tauglich (tanh-Polyfill, scalar atan), Theme-Tint via u_line_color
   if (u_line_mode > 11.5 && u_line_mode < 12.5) {
     vec2 res = resolution.xy;
-    // Aspect-Ratio-aware: durch min(w,h) normalisieren → Vortex bleibt rund auf
-    // jedem Container (Original Shadertoy-Code /u.y wirkt sonst hochkant in Portrait)
-    vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / min(res.x, res.y);
+    // Pixel-isotrope Normierung via max(w,h) — Pixel-Distanz vom Center → konstanter
+    // u-Schritt, egal ob Landscape oder Portrait. Vortex bleibt visuell rund.
+    vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / max(res.x, res.y);
     float c  = length(u + u);
     // Polar-Twist: Radius + Winkel via Magic-Matrix verschraubt (Spirale)
     vec2 polar = vec2(c, atan(u.y, u.x));

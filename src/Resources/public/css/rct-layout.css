@@ -2509,6 +2509,21 @@ body.rct-right-open #right {
 [data-theme="baker-street"] #gradient-canvas,
 [data-theme="baker-street"] #rct-dots-canvas { display: none !important; }
 
+/* --- Theme: Lotus (Polar-Vortex, magenta-violet bloom, warm-gold core) --- */
+[data-theme="lotus"] {
+  --rct-primary:       #b833e8;
+  --rct-primary-light: #e0a5ff;
+  --rct-accent:        #d8b4fe;
+  --rct-primary-container: rgba(184, 51, 232, 0.12);
+  --rct-sidebar-alpha:     0.6;
+  --rct-main-alpha:        0.3;
+  --rct-bg-dots:           rgba(255, 218, 130, 0.45);
+  --grad-1: #0a0612;
+  --grad-2: #2a0840;
+  --grad-3: #14052a;
+  --grad-4: #050010;
+}
+
 #rct-baker-bg {
   position: fixed;
   top: 0; left: 0;
