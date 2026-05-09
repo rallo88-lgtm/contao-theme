@@ -270,9 +270,9 @@ vec3  rct_wave_norm(vec3 p, float t) { vec2 w = -rct_wavedx(p.xz, 20, t); return
 vec3 rct_sky(vec3 rd, vec2 res, float t, float spec) {
   float px = 1.5 / min(res.x, res.y);
   vec3 rdo = rd;
-  float rad = 0.075;
+  float rad = 0.05;  // Sonnen-Radius (kleiner)
   vec3 col = vec3(0.0);
-  vec2 sunrot = vec2(-0.3, -0.25);
+  vec2 sunrot = vec2(-0.55, -0.25);  // weiter nach rechts
   rd.yz *= rct_rot2(sunrot.y);
   rd.xz *= rct_rot2(sunrot.x);
   float sFade = 2.5 / min(res.x, res.y);
@@ -1309,7 +1309,7 @@ void main() {
       vec3 rf  = refract(rd, n, 1.0 / 1.33);
       float fres = clamp(pow(1.0 - max(0.0, dot(-n, rd)), 5.0), 0.0, 1.0);
 
-      vec2 sunrot = vec2(-0.3, -0.25);
+      vec2 sunrot = vec2(-0.55, -0.25);  // sync zu rct_sky()
       vec3 sunDir = vec3(0.0, 0.15, 1.0);
       sunDir.xz *= rct_rot2(-sunrot.x);
       col += rct_sky(rfl, res, t, spec) * fres * 0.9;
