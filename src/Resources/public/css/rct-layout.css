@@ -341,13 +341,14 @@
   opacity: 1.0;
 }
 
-/* Neon Grid + Magnetic Field + Lotus + Plasma + Inversion + Fire: Maske aus — Vollbild-Shader */
+/* Neon Grid + Magnetic Field + Lotus + Plasma + Inversion + Fire + Wave: Maske aus */
 [data-theme="neon-grid"] #gradient-canvas,
 [data-theme="magnetic-field"] #gradient-canvas,
 [data-theme="lotus"] #gradient-canvas,
 [data-theme="plasma"] #gradient-canvas,
 [data-theme="inversion"] #gradient-canvas,
-[data-theme="fire"] #gradient-canvas {
+[data-theme="fire"] #gradient-canvas,
+[data-theme="wave"] #gradient-canvas {
   mask-image: none;
   -webkit-mask-image: none;
   opacity: 1.0;
@@ -2571,6 +2572,21 @@ body.rct-right-open #right {
   --grad-2: #2a0808;
   --grad-3: #1a0404;
   --grad-4: #050100;
+}
+
+/* --- Theme: Wave (prozeduraler Ozean, hellblau ocean accents) --- */
+[data-theme="wave"] {
+  --rct-primary:       #1e88c5;
+  --rct-primary-light: #4fc3f7;
+  --rct-accent:        #4fc3f7;
+  --rct-primary-container: rgba(30, 136, 197, 0.12);
+  --rct-sidebar-alpha:     0.6;
+  --rct-main-alpha:        0.3;
+  --rct-bg-dots:           rgba(180, 230, 255, 0.45);
+  --grad-1: #062035;
+  --grad-2: #0a3855;
+  --grad-3: #04182a;
+  --grad-4: #021018;
 }
 
 #rct-baker-bg {

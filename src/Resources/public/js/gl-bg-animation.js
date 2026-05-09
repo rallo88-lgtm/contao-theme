@@ -205,6 +205,102 @@ vec4 rct_tanh4(vec4 x) {
   return sign(x) * (1.0 - e) / (1.0 + e);
 }
 
+// === Wave Theme (Mode 17) Helpers ===
+mat2 rct_rot2(float a) { return mat2(cos(a), sin(a), -sin(a), cos(a)); }
+
+vec3 rct_pal(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
+  return a + b * cos(6.2831853 * (c * t + d));
+}
+vec3 rct_spc(float n, float bright) {
+  return rct_pal(n, vec3(bright), vec3(0.5), vec3(1.0), vec3(0.0, 0.33, 0.67));
+}
+
+// Wave-Displacement (gestackte exp(sin)*cos-Wellen mit drag + rotation)
+vec2 rct_wavedx(vec2 wavPos, int iters, float t) {
+  vec2 dx = vec2(0.0);
+  vec2 wavDir = vec2(1.0, 0.0);
+  float wavWeight = 1.0;
+  wavPos += t * 1.5 * vec2(1.0, 1.0);
+  wavPos *= 1.1;
+  float wavFreq = 0.6;
+  float wavTime = 1.4 * t;
+  for (int i = 0; i < 20; i++) {
+    if (i >= iters) break;
+    wavDir *= rct_rot2(1.21);
+    float x = dot(wavDir, wavPos) * wavFreq + wavTime;
+    float result = exp(sin(x) - 1.0) * cos(x);
+    result *= wavWeight;
+    dx += result * wavDir / pow(wavWeight, 0.65);
+    wavFreq *= 1.2;
+    wavTime *= 1.095;
+    wavPos -= wavDir * result * 0.9;
+    wavWeight *= 0.8;
+  }
+  float wavSum = -(pow(0.8, float(iters)) - 1.0) * 2.5;
+  return dx / pow(wavSum, 0.35);
+}
+
+float rct_wave_h(vec2 wavPos, int iters, float t) {
+  float wav = 0.0;
+  vec2 wavDir = vec2(1.0, 0.0);
+  float wavWeight = 1.0;
+  wavPos += t * 1.5 * vec2(1.0, 1.0);
+  wavPos *= 1.1;
+  float wavFreq = 0.6;
+  float wavTime = 1.4 * t;
+  for (int i = 0; i < 20; i++) {
+    if (i >= iters) break;
+    wavDir *= rct_rot2(1.21);
+    float x = dot(wavDir, wavPos) * wavFreq + wavTime;
+    float wv = exp(sin(x) - 1.0) * wavWeight;
+    wav += wv;
+    wavFreq *= 1.2;
+    wavTime *= 1.095;
+    wavPos -= wavDir * wv * 0.9 * cos(x);
+    wavWeight *= 0.8;
+  }
+  float wavSum = -(pow(0.8, float(iters)) - 1.0) * 2.5;
+  return wav / wavSum;
+}
+
+float rct_wave_map(vec3 p, float t)  { return p.y - rct_wave_h(p.xz, 9, t); }
+vec3  rct_wave_norm(vec3 p, float t) { vec2 w = -rct_wavedx(p.xz, 20, t); return normalize(vec3(w.x, 1.0, w.y)); }
+
+// Sky mit Sonne + Wolken (variabler Loop-Bound auf WebGL1-fix mit break umgebaut)
+vec3 rct_sky(vec3 rd, vec2 res, float t, float spec) {
+  float px = 1.5 / min(res.x, res.y);
+  vec3 rdo = rd;
+  float rad = 0.075;
+  vec3 col = vec3(0.0);
+  vec2 sunrot = vec2(-0.3, -0.25);
+  rd.yz *= rct_rot2(sunrot.y);
+  rd.xz *= rct_rot2(sunrot.x);
+  float sFade = 2.5 / min(res.x, res.y);
+  float zFade = rd.z * 0.5 + 0.5;
+  vec3 sc = rct_spc(spec - 0.1, 0.6) * 0.85;
+  float a = length(rd.xy);
+  vec3 sun = smoothstep(a - px - sFade, a + px + sFade, rad) * sc * zFade * 2.0;
+  col += sun;
+  col += rad / (rad + pow(a, 1.7)) * sc * zFade;
+  col = col + mix(col, rct_spc(spec + 0.1, 0.8), clamp(1.0 - length(col), 0.0, 1.0)) * 0.2;
+  // Clouds — variable s-loop, WebGL1-fix
+  float e = 0.0;
+  vec3 p = rdo;
+  p.xz *= 0.4;
+  p.x += t * 0.007;
+  float s = 200.0;
+  for (int i = 0; i < 32; i++) {
+    if (s <= 10.0) break;
+    p.xz *= rct_rot2(s);
+    p += vec3(s);
+    e += abs(dot(sin(p * s + t * 0.02) / s, vec3(1.65)));
+    s *= 0.8;
+  }
+  e *= smoothstep(0.5, 0.4, e - 0.095);
+  col += e * smoothstep(-0.02, 0.3, rdo.y) * 0.8 * (1.0 - sun * 3.75) * mix(sc, vec3(1.0), 0.4);
+  return col;
+}
+
 // rct_tanh2: gleiche Polyfill-Logik für vec2 (Inversion-Shader)
 vec2 rct_tanh2(vec2 x) {
   vec2 e = exp(-2.0 * abs(x));
@@ -1168,6 +1264,76 @@ void main() {
     }
 
     color = clamp(max(fire, sparks) + smoke, 0.0, 1.0);
+    gl_FragColor = vec4(color, 1.0);
+    return;
+  }
+
+  // Modus 17: Wave — prozeduraler Ozean (Raymarched Wave-Surface + Sky + Sun)
+  // Quelle: Shadertoy Wave-Pattern (gestackte exp(sin)*cos-Wellen, Folklore).
+  // 80-step Raymarch, 9-iter Wave-Tracing, 20-iter Normal. Reflection + Refraction
+  // + Sub-surface-Scattering. spec=0.45 → hellblaues Color-Profil.
+  if (u_line_mode > 16.5 && u_line_mode < 17.5) {
+    vec2 res = resolution.xy;
+    vec2 fc  = gl_FragCoord.xy;
+    float t  = u_time * u_line_speed;
+    float spec = 0.45;  // hellblau-Palette via rct_spc()
+
+    vec2 uv = (fc - 0.5 * res) / min(res.y, res.x);
+    vec3 col = vec3(0.0);
+    vec3 ro = vec3(0.0, 2.475, -3.3);  // statische Kamera (vec3(0,2.25,-3) * 1.1)
+    vec3 lk = vec3(0.0, 2.0, 0.0);
+    vec3 fwd = normalize(lk - ro);
+    vec3 rgt = normalize(cross(vec3(0.0, 1.0, 0.0), fwd));
+    vec3 rd  = normalize(fwd * 0.9 + uv.x * rgt + uv.y * cross(fwd, rgt));
+
+    float dO = 0.0;
+    bool hit = false;
+    vec3 p = ro;
+
+    float tPln = -(ro.y - 1.86) / rd.y;
+    if (tPln > 0.0) {
+      dO += tPln;
+      for (int i = 0; i < 80; i++) {
+        p = ro + rd * dO;
+        float d = rct_wave_map(p, t);
+        dO += d;
+        if (abs(d) < 0.005 || i > 78) { hit = true; break; }
+        if (dO > 35.0) { dO = 35.0; break; }
+      }
+    }
+
+    vec3 skyrd = rct_sky(rd, res, t, spec);
+    if (hit) {
+      vec3 n   = rct_wave_norm(p, t);
+      vec3 rfl = reflect(rd, n); rfl.y = abs(rfl.y);
+      vec3 rf  = refract(rd, n, 1.0 / 1.33);
+      float fres = clamp(pow(1.0 - max(0.0, dot(-n, rd)), 5.0), 0.0, 1.0);
+
+      vec2 sunrot = vec2(-0.3, -0.25);
+      vec3 sunDir = vec3(0.0, 0.15, 1.0);
+      sunDir.xz *= rct_rot2(-sunrot.x);
+      col += rct_sky(rfl, res, t, spec) * fres * 0.9;
+      float subRefract = pow(max(0.0, dot(rf, sunDir)), 35.0);
+      col += pow(rct_spc(spec - 0.1, 0.5), vec3(2.2)) * subRefract * 2.5;
+
+      vec3 rd2 = rd; rd2.xz *= rct_rot2(sunrot.x);
+      vec3 waterCol = clamp(rct_spc(spec - 0.1, 0.4), 0.0, 1.0)
+                      * (0.4 * pow(min(p.y * 0.7 + 0.9, 1.8), 4.0)
+                         * length(skyrd) * (rd2.z * 0.15 + 0.85));
+      col += waterCol * 0.17;
+      col = mix(col, skyrd, dO / 35.0);
+    } else {
+      col += skyrd;
+    }
+
+    col = clamp(col, 0.0, 1.0);
+    col = pow(col, vec3(0.87));  // gamma
+    col *= 1.0 - 0.8 * pow(length(uv * vec2(0.8, 1.0)), 2.7);  // vignette
+
+    // Sanfter Theme-Tint via u_line_color (additiv, klein gehalten)
+    col = mix(col, col * (vec3(0.5) + u_line_color * 0.5), 0.25);
+
+    color = clamp(col, 0.0, 1.0);
     gl_FragColor = vec4(color, 1.0);
     return;
   }

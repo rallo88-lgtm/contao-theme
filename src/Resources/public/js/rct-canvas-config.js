@@ -309,6 +309,26 @@ const RCT_CANVAS_CONFIG = {
     frameSkip:                 2,            // 15fps — heavy noise
   },
 
+  // Wave — Prozeduraler Ozean mit Sonne, hellblau (heavy raymarch)
+  wave: {
+    vertexShader_amp:          0,
+    vertexShader_seed:         0,
+    vertexShader_freqX:        0,
+    vertexShader_freqY:        0,
+    vertexShader_freqDelta:    0,
+    vertexShader_timeSpeed:    0,
+    vertexShader_density:      [0.06, 0.16],
+    vertexShader_activeColors: [1, 1, 1, 1],
+    vertexShader_bgColor:      '#062035',   // tiefes Marineblau
+    fragmentWithVertex:        false,
+    shaderMode:                17,
+    fragmentShader_lineCount:  1,
+    fragmentShader_lineWidth:  1.0,
+    fragmentShader_lineSpeed:  0.3,
+    fragmentShader_lineColor:  '#4fc3f7',    // hellblau als zusätzlicher Tint
+    frameSkip:                 2,            // 15fps, hohe Settings
+  },
+
   // Inversion — Möbius-Inversion + Mat2-Rotation, fraktal-galaktischer Look
   inversion: {
     vertexShader_amp:          0,
