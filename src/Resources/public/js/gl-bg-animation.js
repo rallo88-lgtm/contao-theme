@@ -935,10 +935,12 @@ void main() {
   // RCT-Adaption: WebGL1-tauglich (tanh-Polyfill, scalar atan), Theme-Tint via u_line_color
   if (u_line_mode > 11.5 && u_line_mode < 12.5) {
     vec2 res = resolution.xy;
-    // Pixel-isotrope Normierung via max(w,h) — Pixel-Distanz vom Center → konstanter
-    // u-Schritt, egal ob Landscape oder Portrait. Vortex bleibt visuell rund.
-    vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / max(res.x, res.y);
-    u *= 1.67;  // Zoom-out: Lotus ~60% der Display-Größe (Mitte zw. 1.33 und 2.0)
+    // Mode-7-Pattern (Baccara-Rose): /res.y normieren, dann u.x mit Aspect-Ratio
+    // stauchen damit der Vortex auf Landscape u.x = ±1 hat (statt ±AR). u quadratisch
+    // → Vortex echt rund, ohne u.y-Boost (kein Stauchen, kein Stretchen).
+    vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / res.y;
+    u.x     /= max(res.x / res.y, 1.0);
+    u *= 2.39;  // Zoom-out: 30% kleiner als vorheriger Stand (1.67 / 0.7)
     float c  = length(u + u);
     // Polar-Twist: Radius + Winkel via Magic-Matrix verschraubt (Spirale)
     vec2 polar = vec2(c, atan(u.y, u.x));
