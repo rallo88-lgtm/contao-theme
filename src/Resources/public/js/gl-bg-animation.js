@@ -369,7 +369,7 @@ float rct_flower_df(vec3 pp, float t, out int m_out, out float spawn_id) {
     float i_layer = mod(floor(f_shifted / l) + gf, 3.0);
     float f = mod(f_shifted, l) - l * 0.5;
     float d = (length(vec2(e, pp2.z)) - 0.015 / r) * r;
-    bool j = i_layer == 0.0;
+    bool j = i_layer != 2.0;  // 2 von 3 Layers werden Blüten (mehr Blümchen)
     dd = rct_opSU(dd, d, 0.1);
     float ff = rct_flower_petal(vec3(e, f, pp2.z + 0.06) / fsz, smoothstep(-1.0, 1.0, r * r) * (j ? 5.0 : 2.0), smoothstep(1.0, -0.0, r * r), t) * fsz * r;
     if (ff < ee) {
