@@ -344,7 +344,7 @@ float rct_flower_petal(vec3 p, float aIt, float m, float t) {
 
 float rct_flower_df(vec3 pp, float t, out int m_out) {
   pp.y = -pp.y;
-  pp.xz *= rct_rot2(1.016 + t * 0.05);  // langsame Y-Achsen-Drehung
+  pp.xz *= rct_rot2(1.016);  // fixe Orientierung (keine Drehung)
   pp.xy *= rct_rot2(-0.640);
 
   float dd = 1e9, ee = 1e9;
