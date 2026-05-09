@@ -940,7 +940,7 @@ void main() {
     // einem visuell symmetrischen u-Frame, der Vortex ist auf jedem Aspect echt rund.
     vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / res.y;
     u.x     /= max(res.x / res.y, 1.0);
-    u *= 1.87;  // Zoom-in 50% (1.5× größer)
+    u *= 1.7;  // Zoom-in (~10% größer als 1.87)
     float c  = length(u + u);
     // Polar-Twist: Radius + Winkel via Magic-Matrix verschraubt (Spirale)
     vec2 polar = vec2(c, atan(u.y, u.x));
