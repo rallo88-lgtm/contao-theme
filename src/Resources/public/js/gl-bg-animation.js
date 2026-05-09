@@ -1459,27 +1459,27 @@ void main() {
 
     if (hit) {
       vec3 nrm = rct_flower_normal(hp, t);
+      vec3 viewDir = -ray;
       vec3 ld  = normalize(vec3(0.0, 1.0, -0.1));
-      float diff = max(0.0, dot(nrm, ld));
-      // Dark ambient, helles Light — mehr Kontrast für leuchtende Blumen
-      vec3 baseLit = mix(vec3(0.08, 0.10, 0.15), vec3(1.1), diff);
 
-      vec3 tintCol;
       if (hit_m == 1) {
-        // Petalen: stable spawn-color, höhere Sättigung
+        // Blüten = sanfter farbiger Glow (additive auf sky, wrap-light statt diffuse)
         float colorPhase = fract(sin(hit_id * 0.5483) * 43758.5453);
-        tintCol = rct_pal(colorPhase,
-                          vec3(0.55, 0.45, 0.55),
-                          vec3(0.55, 0.55, 0.50),     // amplitude höher
-                          vec3(1.0, 0.8, 0.9),
-                          vec3(0.0, 0.20, 0.40));
-        tintCol *= 1.5;  // stärker boost
+        vec3 glowCol = rct_pal(colorPhase,
+                               vec3(0.55, 0.45, 0.55),
+                               vec3(0.55, 0.55, 0.50),
+                               vec3(1.0, 0.8, 0.9),
+                               vec3(0.0, 0.20, 0.40));
+        glowCol *= 1.4;
+        float wrap = 0.5 + 0.5 * dot(nrm, ld);  // wrap-light = keine harten Schatten
+        col = sky + glowCol * (0.4 + wrap * 0.5);
       } else {
-        // Stems + Blätter: kräftiges Grün
-        tintCol = vec3(0.45, 0.85, 0.55);
+        // Stems + Blätter = Glas: Fresnel-Edges in hellblau, Mitte transparent
+        float fresnel = pow(1.0 - abs(dot(nrm, viewDir)), 3.0);
+        vec3 glassCol = vec3(0.5, 0.85, 1.0);
+        col = sky + glassCol * fresnel * 0.55;
       }
 
-      col = baseLit * tintCol;
       col = mix(col, sky, smoothstep(20.0, 25.0, distance(hp, cam)));
       col = mix(col, sky, smoothstep(0.5, 3.0, dot(st, st) * 10.0));
     }
