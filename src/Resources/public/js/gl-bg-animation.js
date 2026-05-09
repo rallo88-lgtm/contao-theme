@@ -188,6 +188,12 @@ vec3 rct_bubble(vec2 p, vec2 c, float r, float stretch, vec3 col) {
   return col * (rim + inner + cst) + vec3(hl * 0.9, hl * 1.0, hl * 0.85);
 }
 
+// rct_tanh4: WebGL1-Polyfill für tanh(vec4) — stabil auch für große Werte
+vec4 rct_tanh4(vec4 x) {
+  vec4 e = exp(-2.0 * abs(x));
+  return sign(x) * (1.0 - e) / (1.0 + e);
+}
+
 void main() {
   vec3 color = v_color;
 
@@ -921,6 +927,30 @@ void main() {
 
     color = clamp(color, 0.0, 1.0);
     gl_FragColor = vec4(color, 1.0);
+    return;
+  }
+
+  // Modus 12: Lotus — Polar-Vortex/Kaleidoskop, lizenzfreier Code-Golf-Shader
+  // Original: Shadertoy Polar Domain Distortion (6-Zeilen Image-Pass, lizenzfrei)
+  // RCT-Adaption: WebGL1-tauglich (tanh-Polyfill, scalar atan), Theme-Tint via u_line_color
+  if (u_line_mode > 11.5 && u_line_mode < 12.5) {
+    vec2 res = resolution.xy;
+    vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / res.y;
+    float c  = length(u + u);
+    // Polar-Twist: Radius + Winkel via Magic-Matrix verschraubt (Spirale)
+    vec2 polar = vec2(c, atan(u.y, u.x));
+    u = polar * mat2(9.0, 0.0, 7.0, 3.0);
+    float t = u_time * u_line_speed * 0.18;
+    // Vortex: tan-Singularitäten geben scharfe Blütenblatt-Streifen,
+    // sin(c+phase) mischt 3 phasenversetzte RGB-Werte zum sanften Verlauf
+    vec4 O = rct_tanh4(
+      sin(c + vec4(1.0, 2.0, 0.0, 0.0)) /
+      length(tan(u - t) / (c * c * c) - c * c)
+    );
+    // Theme-Tint: u_line_color als multiplikativer Akzent über die Blüte
+    vec3 lotus = O.rgb * (vec3(0.55) + u_line_color * 0.55);
+    color = lotus;
+    gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
     return;
   }
 

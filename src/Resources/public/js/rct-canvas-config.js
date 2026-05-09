@@ -269,4 +269,24 @@ const RCT_CANVAS_CONFIG = {
     fragmentShader_slimeMode:  1.0,
   },
 
+  // Lotus — Polar-Vortex/Kaleidoskop, statisch (kein Aurora-Background)
+  lotus: {
+    vertexShader_amp:          0,
+    vertexShader_seed:         0,
+    vertexShader_freqX:        0,
+    vertexShader_freqY:        0,
+    vertexShader_freqDelta:    0,
+    vertexShader_timeSpeed:    0,
+    vertexShader_density:      [0.06, 0.16],
+    vertexShader_activeColors: [1, 1, 1, 1],
+    vertexShader_bgColor:      '#0a0612',   // tiefes Nachtviolett
+    fragmentWithVertex:        false,        // statischer BG, kein Aurora
+    shaderMode:                12,
+    fragmentShader_lineCount:  1,            // unbenutzt im Lotus-Mode
+    fragmentShader_lineWidth:  1.0,          // unbenutzt
+    fragmentShader_lineSpeed:  0.5,          // ruhig pulsierende Vortex-Geschwindigkeit
+    fragmentShader_lineColor:  '#d8b4fe',    // Lavendel-Akzent als Blütenblatt-Tint
+    frameSkip:                 2,            // 15fps — Vortex bewegt sich langsam
+  },
+
 };

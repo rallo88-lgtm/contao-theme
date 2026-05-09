@@ -27,6 +27,7 @@ class RctConfigController extends AbstractBackendController
         'neon-grid'       => 'Neon Grid',
         'magnetic-field'  => 'Magnetic Field',
         'baker-street'    => 'Baker Street',
+        'lotus'           => 'Lotus',
     ];
 
     private const DEFAULTS = [
