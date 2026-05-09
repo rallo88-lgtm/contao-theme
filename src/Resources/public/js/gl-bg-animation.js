@@ -1078,10 +1078,10 @@ void main() {
     return;
   }
 
-  // Modus 16: Fire — Flammen + Funken (vereinfachtes Pattern)
-  // Vertikal aufsteigender 2D-fbm-Noise mit Y-Intensität-Falloff. Flammen-Y-Profil
-  // gepaart mit horizontaler X-Glocke (xfuel). Sparks als hexagonales Grid mit
-  // Pro-Cell-Lifecycle. Theme-tinted Sparks via u_line_color.
+  // Modus 16: Fire — Original-Pattern adaptiert (cinematischer Bodenflammen-Look)
+  // Klassische Math: ypartClipped × Noise als flames, pow(1 - flames^3, 8) für
+  // scharfe Spitzen, ypartClippedFalloff für vertikalen Fade. Smoke prominent
+  // in oberer Hälfte. Sparks selektiv mit rotierender Cell-Position. 2D-fbm.
   if (u_line_mode > 15.5 && u_line_mode < 16.5) {
     vec2 res = resolution.xy;
     vec2 fc  = gl_FragCoord.xy;
@@ -1090,53 +1090,75 @@ void main() {
     float xpart = fc.x / res.x;
     float ypart = fc.y / res.y;
 
-    // Fuel-Glockenkurve über X (max Mitte, 0 an Rändern), enger zusammengeschoben
+    // Aspect-aware Clip: 30% der kürzeren Dim (klassisch wie Original)
+    float clip = min(res.x, res.y) * 0.3;
+    float ypartClip = fc.y / clip;
+    float ypartClippedFalloff = clamp(2.0 - ypartClip, 0.0, 1.0);
+    float ypartClipped  = min(ypartClip, 1.0);
+    float ypartClippedn = 1.0 - ypartClipped;
+
+    // Fuel-Glocke linear (sanfter Übergang nach außen, keine smoothstep)
     float xfuel = 1.0 - abs(2.0 * xpart - 1.0);
-    xfuel = smoothstep(0.0, 0.65, xfuel);
 
-    // Y-Intensität: stark unten, fade nach oben (pow 2.8 → leicht höhere Flamme)
-    float yInt = 1.0 - ypart;
-    yInt = pow(max(yInt, 0.0), 2.8);
+    // Coordinates für Noise (kleine Magic-Offsets für num. Stabilität)
+    vec2 pos = 0.012 * fc + vec2(12.23, 64.34);
 
-    // Noise mit vertikalem Drift (Flammen steigen) — fbm mit time
-    vec2 nCoord = vec2(fc.x * 0.012, fc.y * 0.018 - t * 6.0);
+    // Flow: seitlicher Drift + vertikales Aufsteigen unten in der Mitte
+    vec2 flow = vec2(4.1 * (0.5 - xpart) * pow(ypartClippedn, 4.0),
+                     -2.0 * xfuel * pow(ypartClippedn, 64.0));
+    vec2 timing = t * vec2(0.0, -1.7) + flow;
+
+    // Domain-Distortion: 2 Layer fbm-Noise als Verschiebungs-Vektor
+    vec2 dPos  = pos * 2.4 + t * vec2(0.01, -0.7);
+    vec2 dPosB = dPos + vec2(39.84, 4.23);
+    float dA0 = rct_vnoise(dPos);
+    float dA1 = rct_vnoise(dPos * 2.0);
+    float dispA = mix(dA0, dA1, 0.4);
+    float dB0 = rct_vnoise(dPosB);
+    float dB1 = rct_vnoise(dPosB * 2.0);
+    float dispB = mix(dB0, dB1, 0.4);
+
+    // Fire-Noise: 3-octave fbm
+    vec2 nCoord = pos * vec2(2.0, 1.0) + timing + 0.4 * vec2(dispA, dispB);
     float n0 = rct_vnoise(nCoord);
-    float n1 = rct_vnoise(nCoord * 2.13 + vec2(t * 1.3, t * 2.7));
-    float n2 = rct_vnoise(nCoord * 4.27 + vec2(-t * 0.7, t * 4.1));
-    float fbmNoise = n0 * 0.5 + n1 * 0.3 + n2 * 0.2;
+    float n1 = rct_vnoise(nCoord * 2.0);
+    float n2 = rct_vnoise(nCoord * 4.0);
+    float noise = mix(mix(n0, n1, 0.4), n2, 0.16);
 
-    // Flammen-Form: Noise × Y-Falloff × X-Glocke, dann Steepness via pow
-    float flameRaw = fbmNoise * yInt * xfuel;
-    float flame    = pow(flameRaw, 1.3);
-    flame *= 2.5;  // Boost
+    // Original-Flame-Math: scharfe Spitzen via pow(1 - flames^3, 8)
+    float flames = pow(ypartClipped, 0.3 * xfuel) * pow(noise, 0.3 * xfuel);
+    float f      = ypartClippedFalloff * pow(1.0 - flames * flames * flames, 8.0);
+    float fff    = f * f * f;
+    vec3 fire    = 1.5 * vec3(f, fff, fff * fff);
 
-    // Color: R schnell, G mittel, B nur Spitzen → klassisches Feuer-Profil
-    vec3 fire = vec3(flame, flame * flame * 0.7, flame * flame * flame * 0.3);
+    // Smoke: prominent in oberer Hälfte (ypart^2 als Maske)
+    float smokeN = rct_vnoise(0.4 * pos + timing);
+    vec3 smoke = vec3(0.35 * pow(xfuel, 1.5) * pow(ypart, 2.0)
+                      * (smokeN + 0.4 * (1.0 - noise)));
 
-    // Sparks: hexagonales Grid, nur ~15% der Cells aktiv (sRand > 0.85), schneller
-    float gridSize = min(res.x, res.y) * 0.06;
-    vec2  sparkCoord = fc - vec2(0.0, 350.0 * t);  // schnellerer vertikaler Drift
+    // Sparks: hexagonales Grid, ~40% Cells aktiv, rotierende Cell-Position
+    float gridSize = min(res.x, res.y) * 0.05;
+    vec2  sparkCoord = fc - vec2(0.0, 280.0 * t);
+    sparkCoord -= 25.0 * vec2(dispA, dispB);
     if (mod(sparkCoord.y / gridSize, 2.0) < 1.0) sparkCoord.x += 0.5 * gridSize;
     vec2  gridIdx = floor(sparkCoord / gridSize);
     float sRand   = rct_hash(gridIdx);
 
     vec3 sparks = vec3(0.0);
-    if (sRand > 0.85 && xfuel > 0.15) {
-      // Random rotierende Position innerhalb der Cell bricht die Grid-Optik
+    if (sRand > 0.6 && xfuel > 0.1) {
       float sRadians = 999.0 * sRand + 2.0 * t;
       vec2  sCirc    = vec2(sin(sRadians), cos(sRadians));
-      vec2  sOffset  = 0.3 * gridSize * sCirc;
+      vec2  sOffset  = (0.5 - 0.08) * gridSize * sCirc;
       vec2  sMod     = mod(sparkCoord + sOffset, gridSize) - 0.5 * vec2(gridSize);
-      // Variable Größe: remap sRand [0.85..1] auf [0..1]
-      float sSize    = xfuel * (sRand - 0.85) / 0.15 * 0.18;
+      float sSize    = xfuel * xfuel * sRand * 0.08;
       float sLen     = length(sMod);
-      float sGray    = max(0.0, 1.0 - sLen / (sSize * gridSize + 0.5));
-      float sLife    = clamp(1.0 - (gridIdx.y + 350.0 * t / gridSize)
+      float sGray    = max(0.0, 1.0 - sLen / max(sSize * gridSize, 0.5));
+      float sLife    = clamp(1.0 - (gridIdx.y + 280.0 * t / gridSize)
                              / (24.0 - 20.0 * sRand), 0.0, 1.0);
-      sparks = sLife * sGray * u_line_color * 1.8;
+      sparks = sLife * sGray * u_line_color * 1.5;
     }
 
-    color = clamp(fire + sparks, 0.0, 1.0);
+    color = clamp(max(fire, sparks) + smoke, 0.0, 1.0);
     gl_FragColor = vec4(color, 1.0);
     return;
   }
