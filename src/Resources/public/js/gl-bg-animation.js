@@ -194,6 +194,12 @@ vec4 rct_tanh4(vec4 x) {
   return sign(x) * (1.0 - e) / (1.0 + e);
 }
 
+// rct_tanh2: gleiche Polyfill-Logik für vec2 (Inversion-Shader)
+vec2 rct_tanh2(vec2 x) {
+  vec2 e = exp(-2.0 * abs(x));
+  return sign(x) * (1.0 - e) / (1.0 + e);
+}
+
 void main() {
   vec3 color = v_color;
 
@@ -1002,6 +1008,61 @@ void main() {
     plasma *= 1.0 - dot(vUV, vUV) * 0.25;
 
     color = plasma;
+    gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
+    return;
+  }
+
+  // Modus 14: Inversion — Möbius-Inversion + Mat2-Rotation (lizenzfrei, "golfers welcome")
+  // 19-Loop Fragment-Shader. Schlüssel-Trick: 1.5*u/(.5-dot(u,u)) stülpt das Innere
+  // nach außen (Möbius-Inversion). Pro Iteration: Mat2-Rotation + tanh-Modulation +
+  // fraktale Color-Akkumulation. Reinhard-Tonemap am Ende. WebGL1 via rct_tanh2.
+  if (u_line_mode > 13.5 && u_line_mode < 14.5) {
+    vec2 res = resolution.xy;
+    vec2 u = 0.2 * (gl_FragCoord.xy + gl_FragCoord.xy - res) / res.y;
+    u.x /= max(res.x / res.y, 1.0);  // Mode-7-Aspect-Pattern
+
+    vec4 z = vec4(1.0, 2.0, 3.0, 0.0);
+    vec4 o = z;                        // Akkumulator startet bei z
+    vec2 v = vec2(0.0);
+    float t = u_time * u_line_speed * 0.5;
+    float a = 0.5;
+
+    for (int i = 1; i < 19; i++) {
+      float fi = float(i);
+
+      // Body: v + u updates
+      a += 0.03;
+      t += 1.0;
+      v = cos(t - 7.0 * u * pow(a, fi)) - 5.0 * u;
+
+      // Mat2-Rotation auf u (vec4 → mat2 Konstruktor)
+      vec4 cosArg = cos(fi + 0.02 * t - z.wxzw * 11.0);
+      mat2 rot = mat2(cosArg.x, cosArg.y, cosArg.z, cosArg.w);
+      u = u * rot;
+
+      // tanh-modulierte Verschiebung (clamp + rct_tanh2 gegen Mobile-NaN-Artefakte)
+      float du = dot(u, u);
+      vec2 tanhArg = clamp(40.0 * du * cos(100.0 * u.yx + t), -40.0, 40.0);
+      vec2 tanhRes = rct_tanh2(tanhArg);
+      float scalarT = cos(4.0 / exp(dot(o, o) / 100.0) + t) / 300.0;
+      u += tanhRes / 200.0 + 0.2 * a * u + vec2(scalarT);
+
+      // Möbius-Inversion mit Singularitäts-Safety (denom kann 0 werden)
+      float denom = 0.5 - dot(u, u);
+      vec2 mobius = 1.5 * u / (sign(denom) * max(abs(denom), 1e-3));
+      vec2 inner  = (1.0 + fi * dot(v, v)) * sin(mobius - 9.0 * u.yx + t);
+      float lenInv = 1.0 / max(length(inner), 1e-6);
+      o += (1.0 + cos(z + t)) * lenInv;
+    }
+
+    // Reinhard-style Tonemap + Vignette
+    o = 25.6 / (min(o, vec4(13.0)) + 164.0 / max(o, vec4(1e-3))) - dot(u, u) / 250.0;
+
+    // Theme-Tint
+    vec3 inv = clamp(o.rgb, 0.0, 1.0);
+    inv *= vec3(0.5) + u_line_color * 0.5;
+
+    color = inv;
     gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
     return;
   }

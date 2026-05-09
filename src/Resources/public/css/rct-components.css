@@ -170,6 +170,8 @@
 .opt-dot.lotus { background: radial-gradient(circle, #d8b4fe 30%, #0a0612 100%); }
 .current-theme-dot.plasma,
 .opt-dot.plasma { background: radial-gradient(circle at 35% 35%, #ff7d3c 0%, #c41840 50%, #180828 100%); }
+.current-theme-dot.inversion,
+.opt-dot.inversion { background: radial-gradient(circle, #5fcfff 0%, #2080d0 50%, #040814 100%); }
 
 
 /* ------------------------------------------------------------

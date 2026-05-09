@@ -289,6 +289,26 @@ const RCT_CANVAS_CONFIG = {
     frameSkip:                 2,            // 15fps — Plasma fließt langsam
   },
 
+  // Inversion — Möbius-Inversion + Mat2-Rotation, fraktal-galaktischer Look
+  inversion: {
+    vertexShader_amp:          0,
+    vertexShader_seed:         0,
+    vertexShader_freqX:        0,
+    vertexShader_freqY:        0,
+    vertexShader_freqDelta:    0,
+    vertexShader_timeSpeed:    0,
+    vertexShader_density:      [0.06, 0.16],
+    vertexShader_activeColors: [1, 1, 1, 1],
+    vertexShader_bgColor:      '#040814',   // Tiefschwarz mit Blau-Tönung
+    fragmentWithVertex:        false,
+    shaderMode:                14,
+    fragmentShader_lineCount:  1,
+    fragmentShader_lineWidth:  1.0,
+    fragmentShader_lineSpeed:  0.1,
+    fragmentShader_lineColor:  '#5fcfff',    // helles Cyan als Akzent
+    frameSkip:                 2,            // 15fps — heavy Math
+  },
+
   // Lotus — Polar-Vortex/Kaleidoskop, statisch (kein Aurora-Background)
   lotus: {
     vertexShader_amp:          0,

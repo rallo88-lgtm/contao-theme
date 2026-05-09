@@ -341,11 +341,12 @@
   opacity: 1.0;
 }
 
-/* Neon Grid + Magnetic Field + Lotus + Plasma: Maske deaktivieren — Vollbild-Shader */
+/* Neon Grid + Magnetic Field + Lotus + Plasma + Inversion: Maske aus — Vollbild-Shader */
 [data-theme="neon-grid"] #gradient-canvas,
 [data-theme="magnetic-field"] #gradient-canvas,
 [data-theme="lotus"] #gradient-canvas,
-[data-theme="plasma"] #gradient-canvas {
+[data-theme="plasma"] #gradient-canvas,
+[data-theme="inversion"] #gradient-canvas {
   mask-image: none;
   -webkit-mask-image: none;
   opacity: 1.0;
@@ -2538,6 +2539,21 @@ body.rct-right-open #right {
   --grad-2: #3a0a30;
   --grad-3: #1a0418;
   --grad-4: #08020c;
+}
+
+/* --- Theme: Inversion (Möbius-Inversion, fraktal-galaktisch, cyan accents) --- */
+[data-theme="inversion"] {
+  --rct-primary:       #2080d0;
+  --rct-primary-light: #5fcfff;
+  --rct-accent:        #5fcfff;
+  --rct-primary-container: rgba(32, 128, 208, 0.12);
+  --rct-sidebar-alpha:     0.6;
+  --rct-main-alpha:        0.3;
+  --rct-bg-dots:           rgba(180, 220, 255, 0.45);
+  --grad-1: #040814;
+  --grad-2: #0a1830;
+  --grad-3: #04081a;
+  --grad-4: #02040a;
 }
 
 #rct-baker-bg {
