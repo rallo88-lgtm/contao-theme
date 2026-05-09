@@ -1268,71 +1268,19 @@ void main() {
     return;
   }
 
-  // Modus 17: Wave — prozeduraler Ozean (Raymarched Wave-Surface + Sky + Sun)
-  // Quelle: Shadertoy Wave-Pattern (gestackte exp(sin)*cos-Wellen, Folklore).
-  // 80-step Raymarch, 9-iter Wave-Tracing, 20-iter Normal. Reflection + Refraction
-  // + Sub-surface-Scattering. spec=0.45 → hellblaues Color-Profil.
+  // Modus 17: Wave — prozeduraler Ozean mit 2x2 Supersampling-AA
+  // Renderer ist als rct_render_wave() extrahiert, hier 4× aufgerufen mit
+  // Sub-Pixel-Offsets für Anti-Aliasing der Wellen-Highlights.
   if (u_line_mode > 16.5 && u_line_mode < 17.5) {
     vec2 res = resolution.xy;
     vec2 fc  = gl_FragCoord.xy;
     float t  = u_time * u_line_speed;
-    float spec = 0.45;  // hellblau-Palette via rct_spc()
-
-    vec2 uv = (fc - 0.5 * res) / min(res.y, res.x);
-    vec3 col = vec3(0.0);
-    vec3 ro = vec3(0.0, 2.475, -3.3);  // statische Kamera (vec3(0,2.25,-3) * 1.1)
-    vec3 lk = vec3(0.0, 2.0, 0.0);
-    vec3 fwd = normalize(lk - ro);
-    vec3 rgt = normalize(cross(vec3(0.0, 1.0, 0.0), fwd));
-    vec3 rd  = normalize(fwd * 0.9 + uv.x * rgt + uv.y * cross(fwd, rgt));
-
-    float dO = 0.0;
-    bool hit = false;
-    vec3 p = ro;
-
-    float tPln = -(ro.y - 1.86) / rd.y;
-    if (tPln > 0.0) {
-      dO += tPln;
-      for (int i = 0; i < 80; i++) {
-        p = ro + rd * dO;
-        float d = rct_wave_map(p, t);
-        dO += d;
-        if (abs(d) < 0.005 || i > 78) { hit = true; break; }
-        if (dO > 35.0) { dO = 35.0; break; }
-      }
-    }
-
-    vec3 skyrd = rct_sky(rd, res, t, spec);
-    if (hit) {
-      vec3 n   = rct_wave_norm(p, t);
-      vec3 rfl = reflect(rd, n); rfl.y = abs(rfl.y);
-      vec3 rf  = refract(rd, n, 1.0 / 1.33);
-      float fres = clamp(pow(1.0 - max(0.0, dot(-n, rd)), 5.0), 0.0, 1.0);
-
-      vec2 sunrot = vec2(-0.55, -0.25);  // sync zu rct_sky()
-      vec3 sunDir = vec3(0.0, 0.15, 1.0);
-      sunDir.xz *= rct_rot2(-sunrot.x);
-      col += rct_sky(rfl, res, t, spec) * fres * 0.9;
-      float subRefract = pow(max(0.0, dot(rf, sunDir)), 35.0);
-      col += pow(rct_spc(spec - 0.1, 0.5), vec3(2.2)) * subRefract * 2.5;
-
-      vec3 rd2 = rd; rd2.xz *= rct_rot2(sunrot.x);
-      vec3 waterCol = clamp(rct_spc(spec - 0.1, 0.4), 0.0, 1.0)
-                      * (0.4 * pow(min(p.y * 0.7 + 0.9, 1.8), 4.0)
-                         * length(skyrd) * (rd2.z * 0.15 + 0.85));
-      col += waterCol * 0.17;
-      col = mix(col, skyrd, dO / 35.0);
-    } else {
-      col += skyrd;
-    }
-
-    col = clamp(col, 0.0, 1.0);
-    col = pow(col, vec3(0.87));  // gamma
-    col *= 1.0 - 0.8 * pow(length(uv * vec2(0.8, 1.0)), 2.7);  // vignette
-
-    // Sanfter Theme-Tint via u_line_color (additiv, klein gehalten)
+    float spec = 0.45;
+    vec3 col = (rct_render_wave(fc + vec2(0.25, 0.25), res, t, spec)
+              + rct_render_wave(fc + vec2(0.75, 0.25), res, t, spec)
+              + rct_render_wave(fc + vec2(0.25, 0.75), res, t, spec)
+              + rct_render_wave(fc + vec2(0.75, 0.75), res, t, spec)) * 0.25;
     col = mix(col, col * (vec3(0.5) + u_line_color * 0.5), 0.25);
-
     color = clamp(col, 0.0, 1.0);
     gl_FragColor = vec4(color, 1.0);
     return;
