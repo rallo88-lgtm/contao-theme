@@ -287,13 +287,13 @@ vec3 rct_sky(vec3 rd, vec2 res, float t, float spec) {
   float e = 0.0;
   vec3 p = rdo;
   p.xz *= 0.4;
-  p.x += t * 0.007;
+  p.x += t * 0.003;
   float s = 200.0;
   for (int i = 0; i < 32; i++) {
     if (s <= 10.0) break;
     p.xz *= rct_rot2(s);
     p += vec3(s);
-    e += abs(dot(sin(p * s + t * 0.02) / s, vec3(1.65)));
+    e += abs(dot(sin(p * s + t * 0.008) / s, vec3(1.65)));
     s *= 0.8;
   }
   e *= smoothstep(0.5, 0.4, e - 0.095);

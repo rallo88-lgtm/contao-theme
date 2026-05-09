@@ -355,6 +355,7 @@
 }
 [data-theme="neon-grid"] #rct-dots-canvas { display: none; }
 [data-theme="fire"] #rct-dots-canvas { display: none; }
+[data-theme="wave"] #rct-dots-canvas { display: none; }
 
 /* Toxic Green: Canvas Hintergrundbild + Maske deaktivieren */
 [data-theme="toxic-green"] #gradient-canvas {

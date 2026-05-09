@@ -324,7 +324,7 @@ const RCT_CANVAS_CONFIG = {
     shaderMode:                17,
     fragmentShader_lineCount:  1,
     fragmentShader_lineWidth:  1.0,
-    fragmentShader_lineSpeed:  0.3,
+    fragmentShader_lineSpeed:  0.15,
     fragmentShader_lineColor:  '#4fc3f7',    // hellblau als zusätzlicher Tint
     frameSkip:                 2,            // 15fps, hohe Settings
   },
