@@ -939,7 +939,7 @@ void main() {
     // konstant — Form ist auflösungs- und aspect-unabhängig. Was variiert ist
     // ausschließlich der vom Display sichtbare u-Range (= maximale Gesamtgröße).
     vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / max(res.x, res.y);
-    u *= 1.85;  // Zoom-out: globaler Skalierungsfaktor, gleichermaßen auf beide Achsen
+    u *= 2.3;  // Zoom-out: globaler Skalierungsfaktor, gleichermaßen auf beide Achsen
     float c  = length(u + u);
     // Polar-Twist: Radius + Winkel via Magic-Matrix verschraubt (Spirale)
     vec2 polar = vec2(c, atan(u.y, u.x));
