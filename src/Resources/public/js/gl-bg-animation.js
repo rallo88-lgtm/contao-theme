@@ -938,11 +938,11 @@ void main() {
     // Pixel-isotrope Normierung via max(w,h) — Pixel-Distanz vom Center → konstanter
     // u-Schritt, egal ob Landscape oder Portrait. Vortex bleibt visuell rund.
     vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / max(res.x, res.y);
-    u *= 2.0;  // Zoom-out: Lotus-Blüte erscheint halb so groß im Display
-    // Landscape-Aspect-Korrektur: u.y verstärken damit der mat2-Polar-Twist
-    // (u.y = 7c + 3θ vs u.x = 9c rein radial) nicht als Hochkant-Streckung
-    // wahrnehmbar wird. Auf Portrait (ar<1) bleibt der Look unverändert.
-    u.y *= max(res.x / res.y, 1.0);
+    u *= 2.67;  // Zoom-out: Lotus ~37% der Display-Größe (kompakte Blüte)
+    // Landscape-Aspect-Korrektur: u.y überproportional verstärken (pow(ar, 1.25))
+    // damit der mat2-Polar-Twist (u.y = 7c + 3θ vs u.x = 9c rein radial)
+    // nicht als Hochkant-Streckung wahrnehmbar wird. Portrait bleibt neutral.
+    u.y *= pow(max(res.x / res.y, 1.0), 1.25);
     float c  = length(u + u);
     // Polar-Twist: Radius + Winkel via Magic-Matrix verschraubt (Spirale)
     vec2 polar = vec2(c, atan(u.y, u.x));
