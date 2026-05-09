@@ -1090,13 +1090,13 @@ void main() {
     float xpart = fc.x / res.x;
     float ypart = fc.y / res.y;
 
-    // Fuel-Glockenkurve über X (max Mitte, 0 an Rändern)
+    // Fuel-Glockenkurve über X (max Mitte, 0 an Rändern), enger zusammengeschoben
     float xfuel = 1.0 - abs(2.0 * xpart - 1.0);
-    xfuel = smoothstep(0.0, 0.4, xfuel);  // schärfere Mitte
+    xfuel = smoothstep(0.0, 0.65, xfuel);
 
-    // Y-Intensität: stark unten, schneller fade nach oben (pow 3.5 → niedriger Flamme)
+    // Y-Intensität: stark unten, fade nach oben (pow 2.8 → leicht höhere Flamme)
     float yInt = 1.0 - ypart;
-    yInt = pow(max(yInt, 0.0), 3.5);
+    yInt = pow(max(yInt, 0.0), 2.8);
 
     // Noise mit vertikalem Drift (Flammen steigen) — fbm mit time
     vec2 nCoord = vec2(fc.x * 0.012, fc.y * 0.018 - t * 6.0);
@@ -1113,26 +1113,25 @@ void main() {
     // Color: R schnell, G mittel, B nur Spitzen → klassisches Feuer-Profil
     vec3 fire = vec3(flame, flame * flame * 0.7, flame * flame * flame * 0.3);
 
-    // Sparks: hexagonales Grid, aber nur ~35% der Cells aktiv (sRand > 0.65)
-    // + zeitlich rotierender Offset innerhalb der Cell bricht die Grid-Optik
+    // Sparks: hexagonales Grid, nur ~15% der Cells aktiv (sRand > 0.85), schneller
     float gridSize = min(res.x, res.y) * 0.06;
-    vec2  sparkCoord = fc - vec2(0.0, 180.0 * t);
+    vec2  sparkCoord = fc - vec2(0.0, 350.0 * t);  // schnellerer vertikaler Drift
     if (mod(sparkCoord.y / gridSize, 2.0) < 1.0) sparkCoord.x += 0.5 * gridSize;
     vec2  gridIdx = floor(sparkCoord / gridSize);
     float sRand   = rct_hash(gridIdx);
 
     vec3 sparks = vec3(0.0);
-    if (sRand > 0.65 && xfuel > 0.15) {
-      // Random rotierende Position innerhalb der Cell
+    if (sRand > 0.85 && xfuel > 0.15) {
+      // Random rotierende Position innerhalb der Cell bricht die Grid-Optik
       float sRadians = 999.0 * sRand + 2.0 * t;
       vec2  sCirc    = vec2(sin(sRadians), cos(sRadians));
       vec2  sOffset  = 0.3 * gridSize * sCirc;
       vec2  sMod     = mod(sparkCoord + sOffset, gridSize) - 0.5 * vec2(gridSize);
-      // Variable Größe: remap sRand [0.65..1] auf [0..1]
-      float sSize    = xfuel * (sRand - 0.65) / 0.35 * 0.18;
+      // Variable Größe: remap sRand [0.85..1] auf [0..1]
+      float sSize    = xfuel * (sRand - 0.85) / 0.15 * 0.18;
       float sLen     = length(sMod);
       float sGray    = max(0.0, 1.0 - sLen / (sSize * gridSize + 0.5));
-      float sLife    = clamp(1.0 - (gridIdx.y + 180.0 * t / gridSize)
+      float sLife    = clamp(1.0 - (gridIdx.y + 350.0 * t / gridSize)
                              / (24.0 - 20.0 * sRand), 0.0, 1.0);
       sparks = sLife * sGray * u_line_color * 1.8;
     }
