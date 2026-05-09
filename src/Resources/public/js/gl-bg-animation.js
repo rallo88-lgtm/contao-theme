@@ -1453,29 +1453,30 @@ void main() {
       hp += d * ray;
     }
 
-    // Sky-BG: cremig mit sanftem mint-blau-tint, dunkles Vignette
-    vec3 sky = vec3(0.94, 0.96, 0.95) - dot(st, st) * 0.18;
+    // Sky-BG: dunkel mit minimalem Center-Glow
+    vec3 sky = vec3(0.04, 0.04, 0.08) + dot(st, st) * 0.04;
     vec3 col = sky;
 
     if (hit) {
       vec3 nrm = rct_flower_normal(hp, t);
       vec3 ld  = normalize(vec3(0.0, 1.0, -0.1));
       float diff = max(0.0, dot(nrm, ld));
-      vec3 baseLit = mix(vec3(0.500, 0.763, 0.915), vec3(1.0), diff);
+      // Dark ambient, helles Light — mehr Kontrast für leuchtende Blumen
+      vec3 baseLit = mix(vec3(0.08, 0.10, 0.15), vec3(1.1), diff);
 
       vec3 tintCol;
       if (hit_m == 1) {
-        // Petalen: stable spawn-color basierend auf cell-ID-hash (keine time-Komponente)
+        // Petalen: stable spawn-color, höhere Sättigung
         float colorPhase = fract(sin(hit_id * 0.5483) * 43758.5453);
         tintCol = rct_pal(colorPhase,
-                          vec3(0.65, 0.55, 0.65),
-                          vec3(0.35, 0.35, 0.30),
+                          vec3(0.55, 0.45, 0.55),
+                          vec3(0.55, 0.55, 0.50),     // amplitude höher
                           vec3(1.0, 0.8, 0.9),
                           vec3(0.0, 0.20, 0.40));
-        tintCol *= 1.3;  // boost
+        tintCol *= 1.5;  // stärker boost
       } else {
-        // Stems + Blätter: fix hellgrün
-        tintCol = vec3(0.85, 0.95, 0.88);
+        // Stems + Blätter: kräftiges Grün
+        tintCol = vec3(0.45, 0.85, 0.55);
       }
 
       col = baseLit * tintCol;
