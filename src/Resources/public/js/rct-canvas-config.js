@@ -284,7 +284,7 @@ const RCT_CANVAS_CONFIG = {
     shaderMode:                12,
     fragmentShader_lineCount:  1,            // unbenutzt im Lotus-Mode
     fragmentShader_lineWidth:  1.0,          // unbenutzt
-    fragmentShader_lineSpeed:  0.5,          // ruhig pulsierende Vortex-Geschwindigkeit
+    fragmentShader_lineSpeed:  0.25,         // ruhig pulsierende Vortex-Geschwindigkeit (sanft)
     fragmentShader_lineColor:  '#d8b4fe',    // Lavendel-Akzent als Blütenblatt-Tint
     frameSkip:                 2,            // 15fps — Vortex bewegt sich langsam
   },

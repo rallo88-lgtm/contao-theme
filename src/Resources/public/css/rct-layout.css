@@ -341,9 +341,10 @@
   opacity: 1.0;
 }
 
-/* Neon Grid + Magnetic Field: Maske deaktivieren — Vollbild-Shader */
+/* Neon Grid + Magnetic Field + Lotus: Maske deaktivieren — Vollbild-Shader */
 [data-theme="neon-grid"] #gradient-canvas,
-[data-theme="magnetic-field"] #gradient-canvas {
+[data-theme="magnetic-field"] #gradient-canvas,
+[data-theme="lotus"] #gradient-canvas {
   mask-image: none;
   -webkit-mask-image: none;
   opacity: 1.0;
