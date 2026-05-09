@@ -123,10 +123,28 @@ float rct_fbm(vec2 p) {
   }
   return v;
 }
-// Pseudo-3D-Noise im Fragment-Shader (snoise ist nur im Vertex-Shader prepended).
-// Range [-1,1] für snoise-Kompatibilität. Z-Achse als phase-shift auf 2D-Noise.
+// Echter 3D Value-Noise im Fragment-Shader (snoise ist nur im Vertex-Shader
+// prepended). 8-Corner-Trilinear-Interpolation mit Z-Offset als 2D-hash-shift.
+// Range [-1, 1] für snoise-Kompatibilität.
 float rct_vnoise3(vec3 p) {
-  return rct_vnoise(p.xy + vec2(p.z * 1.3, p.z * 0.7)) * 2.0 - 1.0;
+  vec3 i = floor(p);
+  vec3 f = fract(p);
+  vec3 u = f * f * (3.0 - 2.0 * f);
+  vec2 z0 = vec2(i.z * 17.13);
+  vec2 z1 = vec2((i.z + 1.0) * 17.13);
+  float n000 = rct_hash(i.xy                    + z0);
+  float n100 = rct_hash(i.xy + vec2(1.0, 0.0)   + z0);
+  float n010 = rct_hash(i.xy + vec2(0.0, 1.0)   + z0);
+  float n110 = rct_hash(i.xy + vec2(1.0, 1.0)   + z0);
+  float n001 = rct_hash(i.xy                    + z1);
+  float n101 = rct_hash(i.xy + vec2(1.0, 0.0)   + z1);
+  float n011 = rct_hash(i.xy + vec2(0.0, 1.0)   + z1);
+  float n111 = rct_hash(i.xy + vec2(1.0, 1.0)   + z1);
+  float v = mix(
+    mix(mix(n000, n100, u.x), mix(n010, n110, u.x), u.y),
+    mix(mix(n001, n101, u.x), mix(n011, n111, u.x), u.y),
+    u.z);
+  return v * 2.0 - 1.0;
 }
 
 // 3×5 Pixel-Digit Bitmap (bit = row*3+col, row0=top)
