@@ -222,7 +222,7 @@ vec2 rct_wavedx(vec2 wavPos, int iters, float t) {
   float wavWeight = 1.0;
   wavPos += t * 1.5 * vec2(1.0, 1.0);
   wavPos *= 1.1;
-  float wavFreq = 0.6;
+  float wavFreq = 0.5;
   float wavTime = 1.4 * t;
   for (int i = 0; i < 20; i++) {
     if (i >= iters) break;
@@ -233,7 +233,7 @@ vec2 rct_wavedx(vec2 wavPos, int iters, float t) {
     dx += result * wavDir / pow(wavWeight, 0.65);
     wavFreq *= 1.2;
     wavTime *= 1.095;
-    wavPos -= wavDir * result * 0.9;
+    wavPos -= wavDir * result * 0.93;
     wavWeight *= 0.8;
   }
   float wavSum = -(pow(0.8, float(iters)) - 1.0) * 3.5;
@@ -246,7 +246,7 @@ float rct_wave_h(vec2 wavPos, int iters, float t) {
   float wavWeight = 1.0;
   wavPos += t * 1.5 * vec2(1.0, 1.0);
   wavPos *= 1.1;
-  float wavFreq = 0.6;
+  float wavFreq = 0.5;
   float wavTime = 1.4 * t;
   for (int i = 0; i < 20; i++) {
     if (i >= iters) break;
@@ -256,7 +256,7 @@ float rct_wave_h(vec2 wavPos, int iters, float t) {
     wav += wv;
     wavFreq *= 1.2;
     wavTime *= 1.095;
-    wavPos -= wavDir * wv * 0.9 * cos(x);
+    wavPos -= wavDir * wv * 0.93 * cos(x);
     wavWeight *= 0.8;
   }
   float wavSum = -(pow(0.8, float(iters)) - 1.0) * 3.5;
