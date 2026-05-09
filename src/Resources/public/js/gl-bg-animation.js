@@ -942,7 +942,7 @@ void main() {
     // Landscape-Aspect-Korrektur: u.y überproportional verstärken (pow(ar, 1.25))
     // damit der mat2-Polar-Twist (u.y = 7c + 3θ vs u.x = 9c rein radial)
     // nicht als Hochkant-Streckung wahrnehmbar wird. Portrait bleibt neutral.
-    u.y *= pow(max(res.x / res.y, 1.0), 1.25);
+    u.y *= pow(max(res.x / res.y, 1.0), 1.25) * 2.0;
     float c  = length(u + u);
     // Polar-Twist: Radius + Winkel via Magic-Matrix verschraubt (Spirale)
     vec2 polar = vec2(c, atan(u.y, u.x));
