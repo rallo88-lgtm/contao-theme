@@ -388,7 +388,7 @@ vec3 rct_flower_normal(vec3 p, float t) {
   int m_dummy;
   float id_dummy;
   float d = rct_flower_df(p, t, m_dummy, id_dummy);
-  vec2 u = vec2(0.0, 0.0002);
+  vec2 u = vec2(0.0, 0.001);  // größer für smoothere Normals (weniger Aliasing)
   return normalize(vec3(rct_flower_df(p + u.yxx, t, m_dummy, id_dummy),
                         rct_flower_df(p + u.xyx, t, m_dummy, id_dummy),
                         rct_flower_df(p + u.xxy, t, m_dummy, id_dummy)) - d);
@@ -1474,13 +1474,13 @@ void main() {
         float wrap = 0.5 + 0.5 * dot(nrm, ld);  // wrap-light = keine harten Schatten
         col = sky + glowCol * (0.4 + wrap * 0.5);
       } else {
-        // Stems + Blätter = Glas: Fresnel-Edges in hellblau, Mitte transparent
-        float fresnel = pow(1.0 - abs(dot(nrm, viewDir)), 3.0);
+        // Stems + Blätter = Glas: Fresnel-Edges in hellblau, plus minimaler Tint
+        float fresnel = pow(1.0 - abs(dot(nrm, viewDir)), 2.0);
         vec3 glassCol = vec3(0.5, 0.85, 1.0);
-        col = sky + glassCol * fresnel * 0.55;
+        col = sky + glassCol * 0.05 + glassCol * fresnel * 0.45;
       }
 
-      col = mix(col, sky, smoothstep(20.0, 25.0, distance(hp, cam)));
+      col = mix(col, sky, smoothstep(8.0, 18.0, distance(hp, cam)));
       col = mix(col, sky, smoothstep(0.5, 3.0, dot(st, st) * 10.0));
     }
 
