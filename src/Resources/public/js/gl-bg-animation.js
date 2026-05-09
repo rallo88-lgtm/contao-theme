@@ -940,7 +940,7 @@ void main() {
     // → Vortex echt rund, ohne u.y-Boost (kein Stauchen, kein Stretchen).
     vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / res.y;
     u.x     /= max(res.x / res.y, 1.0);
-    u *= 2.39;  // Zoom-out: 30% kleiner als vorheriger Stand (1.67 / 0.7)
+    u *= 2.0;  // Zoom-out: ~20% größer als 2.39
     float c  = length(u + u);
     // Polar-Twist: Radius + Winkel via Magic-Matrix verschraubt (Spirale)
     vec2 polar = vec2(c, atan(u.y, u.x));
