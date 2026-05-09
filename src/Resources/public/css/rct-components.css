@@ -175,7 +175,7 @@
 .current-theme-dot.wave,
 .opt-dot.wave { background: radial-gradient(circle at 70% 30%, #ffffff 0%, #4fc3f7 25%, #1e88c5 60%, #062035 100%); }
 .current-theme-dot.flower,
-.opt-dot.flower { background: radial-gradient(circle, #ffe0ec 0%, #d96687 40%, #5a2848 75%, #0a0510 100%); }
+.opt-dot.flower { background: conic-gradient(from 0deg, #c45050 0deg, #e9a050 60deg, #d4b840 120deg, #4a8060 180deg, #305878 240deg, #6a3878 300deg, #c45050 360deg); }
 .current-theme-dot.fire,
 .opt-dot.fire { background: radial-gradient(circle at 50% 70%, #ffaa44 0%, #ff5020 35%, #6b0a05 75%, #0a0202 100%); }
 

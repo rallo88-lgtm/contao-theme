@@ -2577,19 +2577,19 @@ body.rct-right-open #right {
   --grad-4: #050100;
 }
 
-/* --- Theme: Flower Power Sakura (Pastel-Blüten + Glas-Stems + Dämmerungs-Sky) --- */
+/* --- Theme: Flower Power Stained Glass (kraeftige Farben + Bleifassung + warmes Backlight) --- */
 [data-theme="flower"] {
-  --rct-primary:       #d96687;
-  --rct-primary-light: #f4c2d4;
-  --rct-accent:        #f4c2d4;
-  --rct-primary-container: rgba(217, 102, 135, 0.12);
+  --rct-primary:       #c45050;
+  --rct-primary-light: #e9a050;
+  --rct-accent:        #c45050;
+  --rct-primary-container: rgba(196, 80, 80, 0.12);
   --rct-sidebar-alpha:     0.6;
   --rct-main-alpha:        0.3;
-  --rct-bg-dots:           rgba(244, 194, 212, 0.45);
-  --grad-1: #0a0510;
-  --grad-2: #1f0a18;
-  --grad-3: #14081a;
-  --grad-4: #050308;
+  --rct-bg-dots:           rgba(196, 80, 80, 0.35);
+  --grad-1: #f0eae0;
+  --grad-2: #d8c8b0;
+  --grad-3: #e8d8c0;
+  --grad-4: #f5ede0;
 }
 
 /* --- Theme: Wave (prozeduraler Ozean, hellblau ocean accents) --- */

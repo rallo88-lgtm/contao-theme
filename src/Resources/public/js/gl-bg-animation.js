@@ -1453,10 +1453,10 @@ void main() {
       hp += d * ray;
     }
 
-    // Sky-BG: dunkelviolett mit warmem rosig-glow im Center (Sakura-Dämmerung)
-    vec3 skyBase = vec3(0.05, 0.03, 0.08);
-    vec3 skyGlow = vec3(0.12, 0.07, 0.08);
-    vec3 sky = mix(skyGlow, skyBase, clamp(dot(st, st) * 1.8, 0.0, 1.0));
+    // Sky-BG: warmes off-white als Backlight (Sonne hinter Kirchenfenster)
+    vec3 skyCenter = vec3(0.94, 0.90, 0.84);
+    vec3 skyEdge   = vec3(0.78, 0.72, 0.65);
+    vec3 sky = mix(skyCenter, skyEdge, clamp(dot(st, st) * 1.5, 0.0, 1.0));
     vec3 col = sky;
 
     if (hit) {
@@ -1465,21 +1465,21 @@ void main() {
       vec3 ld  = normalize(vec3(0.0, 1.0, -0.1));
 
       if (hit_m == 1) {
-        // Blüten = Sakura-Pastel: rosé/peach/lavendel/cremeweiß per spawn-id
+        // Blüten = Stained Glass: kräftige saturated Farben + Edge-Backlight
         float colorPhase = fract(sin(hit_id * 0.5483) * 43758.5453);
-        vec3 glowCol = rct_pal(colorPhase,
-                               vec3(0.80, 0.70, 0.75),    // hell-pastel mid
-                               vec3(0.20, 0.25, 0.20),    // sanfte amp (kein Saturated)
-                               vec3(1.0, 0.8, 0.9),
-                               vec3(0.0, 0.15, 0.35));    // peach/rose/lavender phase-shift
-        glowCol *= 1.1;
-        float wrap = 0.5 + 0.5 * dot(nrm, ld);
-        col = sky + glowCol * (0.4 + wrap * 0.5);
+        vec3 glassCol = rct_pal(colorPhase,
+                                vec3(0.50, 0.45, 0.50),
+                                vec3(0.50, 0.55, 0.50),    // hohe amp = saturated
+                                vec3(1.0, 0.7, 0.85),
+                                vec3(0.0, 0.20, 0.45));
+        float fresnel = pow(1.0 - abs(dot(nrm, viewDir)), 1.5);
+        // Center: kräftiges Glas, Edges: Backlight (heller, sky scheint durch)
+        col = glassCol + sky * fresnel * 0.5;
       } else {
-        // Stems + Blätter = Glas in hellgrün (Sakura-Stems)
-        float fresnel = pow(1.0 - abs(dot(nrm, viewDir)), 2.0);
-        vec3 glassCol = vec3(0.55, 0.85, 0.65);
-        col = sky + glassCol * 0.05 + glassCol * fresnel * 0.45;
+        // Stems + Blätter = Bleifassung (dunkles Anthrazit, opaque)
+        vec3 leadCol = vec3(0.08, 0.06, 0.08);
+        float fresnel = pow(1.0 - abs(dot(nrm, viewDir)), 1.5);
+        col = leadCol + vec3(0.22, 0.18, 0.15) * fresnel * 0.4;
       }
 
       col = mix(col, sky, smoothstep(8.0, 18.0, distance(hp, cam)));
