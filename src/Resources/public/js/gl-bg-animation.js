@@ -935,13 +935,11 @@ void main() {
   // RCT-Adaption: WebGL1-tauglich (tanh-Polyfill, scalar atan), Theme-Tint via u_line_color
   if (u_line_mode > 11.5 && u_line_mode < 12.5) {
     vec2 res = resolution.xy;
-    // Mode-7-Pattern (Baccara-Rose): /res.y normieren, dann u.x mit Aspect-Ratio
-    // stauchen damit der Vortex auf Landscape u.x = ±1 hat (statt ±AR). u quadratisch
-    // → Vortex echt rund, ohne u.y-Boost (kein Stauchen, kein Stretchen).
-    vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / res.y;
-    u.x     /= max(res.x / res.y, 1.0);
-    u *= 1.85;  // Zoom-out: etwas größer als 2.0
-    u.y *= 0.92;  // minimal entstauchen (8% weniger Phasen vertikal)
+    // Pixel-isotrope Normierung via max(w,h): u-Schritt pro Pixel-Distanz ist
+    // konstant — Form ist auflösungs- und aspect-unabhängig. Was variiert ist
+    // ausschließlich der vom Display sichtbare u-Range (= maximale Gesamtgröße).
+    vec2 u   = (gl_FragCoord.xy + gl_FragCoord.xy - res) / max(res.x, res.y);
+    u *= 1.85;  // Zoom-out: globaler Skalierungsfaktor, gleichermaßen auf beide Achsen
     float c  = length(u + u);
     // Polar-Twist: Radius + Winkel via Magic-Matrix verschraubt (Spirale)
     vec2 polar = vec2(c, atan(u.y, u.x));
