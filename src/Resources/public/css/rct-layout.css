@@ -341,12 +341,13 @@
   opacity: 1.0;
 }
 
-/* Neon Grid + Magnetic Field + Lotus + Plasma + Inversion: Maske aus — Vollbild-Shader */
+/* Neon Grid + Magnetic Field + Lotus + Plasma + Inversion + Fire: Maske aus — Vollbild-Shader */
 [data-theme="neon-grid"] #gradient-canvas,
 [data-theme="magnetic-field"] #gradient-canvas,
 [data-theme="lotus"] #gradient-canvas,
 [data-theme="plasma"] #gradient-canvas,
-[data-theme="inversion"] #gradient-canvas {
+[data-theme="inversion"] #gradient-canvas,
+[data-theme="fire"] #gradient-canvas {
   mask-image: none;
   -webkit-mask-image: none;
   opacity: 1.0;
@@ -2554,6 +2555,21 @@ body.rct-right-open #right {
   --grad-2: #0a1830;
   --grad-3: #04081a;
   --grad-4: #02040a;
+}
+
+/* --- Theme: Fire (flames + sparks + smoke, warm-orange accents) --- */
+[data-theme="fire"] {
+  --rct-primary:       #ff5020;
+  --rct-primary-light: #ffaa44;
+  --rct-accent:        #ffaa44;
+  --rct-primary-container: rgba(255, 80, 32, 0.12);
+  --rct-sidebar-alpha:     0.6;
+  --rct-main-alpha:        0.3;
+  --rct-bg-dots:           rgba(255, 200, 100, 0.45);
+  --grad-1: #0a0202;
+  --grad-2: #2a0808;
+  --grad-3: #1a0404;
+  --grad-4: #050100;
 }
 
 #rct-baker-bg {

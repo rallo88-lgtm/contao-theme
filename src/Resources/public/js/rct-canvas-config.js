@@ -289,6 +289,26 @@ const RCT_CANVAS_CONFIG = {
     frameSkip:                 2,            // 15fps — Plasma fließt langsam
   },
 
+  // Fire — Flammen + Funken + Rauch via Simplex-Noise
+  fire: {
+    vertexShader_amp:          0,
+    vertexShader_seed:         0,
+    vertexShader_freqX:        0,
+    vertexShader_freqY:        0,
+    vertexShader_freqDelta:    0,
+    vertexShader_timeSpeed:    0,
+    vertexShader_density:      [0.06, 0.16],
+    vertexShader_activeColors: [1, 1, 1, 1],
+    vertexShader_bgColor:      '#0a0202',   // Burgund-Schwarz
+    fragmentWithVertex:        false,
+    shaderMode:                16,
+    fragmentShader_lineCount:  1,
+    fragmentShader_lineWidth:  1.0,
+    fragmentShader_lineSpeed:  0.3,
+    fragmentShader_lineColor:  '#ffaa44',    // warm-gelb für Sparks
+    frameSkip:                 2,            // 15fps — heavy noise
+  },
+
   // Inversion — Möbius-Inversion + Mat2-Rotation, fraktal-galaktischer Look
   inversion: {
     vertexShader_amp:          0,

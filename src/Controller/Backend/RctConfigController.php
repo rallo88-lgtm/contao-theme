@@ -30,6 +30,7 @@ class RctConfigController extends AbstractBackendController
         'lotus'           => 'Lotus',
         'plasma'          => 'Plasma',
         'inversion'       => 'Inversion',
+        'fire'            => 'Fire',
     ];
 
     private const DEFAULTS = [

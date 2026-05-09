@@ -1067,6 +1067,95 @@ void main() {
     return;
   }
 
+  // Modus 16: Fire — Flammen + Funken + Rauch via Simplex-Noise (Folklore-Pattern)
+  // 3-Layer-Setup: Y-Profile × multi-octave Simplex-Noise = Flammen, separate
+  // Noise-Layer = Rauch, hexagonales Spark-Grid mit Lifecycle = Funken.
+  // snoise (MIT, Ashima Arts) bereits global verfügbar im miniGl-Setup.
+  // Eigene Implementation der Fire-Math (klassische GLSL-Folklore).
+  if (u_line_mode > 15.5 && u_line_mode < 16.5) {
+    vec2 res = resolution.xy;
+    vec2 fc  = gl_FragCoord.xy;
+    float t  = u_time * u_line_speed;
+
+    // Globaler Drift statt iMouse (RCT hat kein Mouse-System hier)
+    vec2 offset = vec2(sin(t * 0.13) * 30.0, 0.0);
+
+    float xpart = fc.x / res.x;
+    float ypart = fc.y / res.y;
+
+    // Aspect-aware Clip-Höhe: 50% der kürzeren Display-Dim
+    float clip = min(res.x, res.y) * 0.5;
+    float ypartClip = fc.y / clip;
+    float ypartClippedFalloff = clamp(2.0 - ypartClip, 0.0, 1.0);
+    float ypartClipped = min(ypartClip, 1.0);
+    float ypartClippedn = 1.0 - ypartClipped;
+
+    // Fuel-Glockenkurve über X (max in der Mitte, 0 an den Rändern)
+    float xfuel = 1.0 - abs(2.0 * xpart - 1.0);
+
+    // Coordinate-Setup für die Noise-Stacks
+    vec2 coordScaled = 0.01 * fc - 0.02 * vec2(offset.x, 0.0);
+    vec3 position = vec3(coordScaled, 0.0) + vec3(1223.0, 6434.0, 8425.0);
+    vec3 flow = vec3(4.1 * (0.5 - xpart) * pow(ypartClippedn, 4.0),
+                     -2.0 * xfuel * pow(ypartClippedn, 64.0),
+                     0.0);
+    vec3 timing = t * vec3(0.0, -1.7, 1.1) + flow;
+
+    // Domain-Distortion: 2-octave Noise-Stack auf 2 Achsen (für displace3)
+    vec3 dPos  = vec3(1.0, 0.5, 1.0) * 2.4 * position + t * vec3(0.01, -0.7, 1.3);
+    vec3 dPosB = dPos + vec3(3984.293, 423.21, 5235.19);
+    float dispA = (1.0 + mix(snoise(dPos),  snoise(dPos  * 2.0), 0.4)) * 0.5;
+    float dispB = (1.0 + mix(snoise(dPosB), snoise(dPosB * 2.0), 0.4)) * 0.5;
+    vec3 displace = vec3(dispA, dispB, 0.0);
+
+    // Fire-Noise: 3-octave Stack mit Falloff 0.4
+    vec3 noiseCoord = vec3(2.0, 1.0, 1.0) * position + timing + 0.4 * displace;
+    float n0 = snoise(noiseCoord);
+    float n1 = snoise(noiseCoord * 2.0);
+    float n2 = snoise(noiseCoord * 4.0);
+    float fireNoise = (1.0 + mix(mix(n0, n1, 0.4), n2, 0.16)) * 0.5;
+
+    // Flammen-Profil: Y × Noise, gepowert mit xfuel (mehr fuel = schärfere Flammen)
+    float flames = pow(ypartClipped, 0.3 * xfuel) * pow(fireNoise, 0.3 * xfuel);
+    float f      = ypartClippedFalloff * pow(1.0 - flames * flames * flames, 8.0);
+    float fff    = f * f * f;
+    vec3 fire    = 1.5 * vec3(f, fff, fff * fff);  // R schnell, G mittel, B langsam → orange
+
+    // Rauch (Smoke): grayscale-Layer in oberer Bildhälfte
+    float smokeNoise = 0.5 + snoise(0.4 * position + timing * vec3(1.0, 1.0, 0.2)) * 0.5;
+    vec3 smoke = vec3(0.3 * pow(xfuel, 3.0) * pow(ypart, 2.0)
+                      * (smokeNoise + 0.4 * (1.0 - fireNoise)));
+
+    // Sparks: hexagonales Grid mit pro-Cell-Lifecycle
+    float gridSize = min(res.x, res.y) * 0.04;
+    vec2  sparkCoord = fc - vec2(2.0 * offset.x, 190.0 * t);
+    sparkCoord -= 30.0 * vec2(dispA, dispB);
+    sparkCoord += 100.0 * flow.xy;
+    if (mod(sparkCoord.y / gridSize, 2.0) < 1.0) sparkCoord.x += 0.5 * gridSize;
+    vec2  gridIdx  = floor(sparkCoord / gridSize);
+    float sRand    = rct_hash(gridIdx);
+    float sLife    = min(10.0 * (1.0 - min(
+                       (gridIdx.y + (190.0 * t / gridSize)) / (24.0 - 20.0 * sRand), 1.0)), 1.0);
+
+    vec3 sparks = vec3(0.0);
+    if (sLife > 0.0) {
+      float sSize    = xfuel * xfuel * sRand * 0.08;
+      float sRadians = 999.0 * sRand * 6.28318 + 2.0 * t;
+      vec2  sCirc    = vec2(sin(sRadians), cos(sRadians));
+      vec2  sOffset  = (0.5 - sSize) * gridSize * sCirc;
+      vec2  sMod     = mod(sparkCoord + sOffset, gridSize) - 0.5 * vec2(gridSize);
+      float sLength  = length(sMod);
+      float sGray    = max(0.0, 1.0 - sLength / (sSize * gridSize));
+      // Spark-Color via Theme-Tint (statt klassisch orange)
+      sparks = sLife * sGray * u_line_color * 1.5;
+    }
+
+    // Final-Composit: max(fire, sparks) + smoke (sparks überstrahlen Fire wo heller)
+    color = clamp(max(fire, sparks) + smoke, 0.0, 1.0);
+    gl_FragColor = vec4(color, 1.0);
+    return;
+  }
+
   gl_FragColor = vec4(color, 1.0);
 }
 `;
