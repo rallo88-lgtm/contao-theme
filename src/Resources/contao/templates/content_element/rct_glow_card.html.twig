@@ -1,0 +1,28 @@
+{#
+  RCT – rct_glow_card.html.twig
+  Karte mit animiertem Conic-Gradient-Glow als Border.
+  glowStyle: rainbow | accent | dual
+  glowSpeed: slow | normal | fast
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+<div class="rct-glow-card glow-{{ glowStyle }} speed-{{ glowSpeed }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+  <div class="rct-glow-card__inner">
+    {% if headline %}
+      <h3 class="rct-glow-card__headline">{{ headline }}</h3>
+    {% endif %}
+    {% if text %}
+      <p class="rct-glow-card__text">{{ text|raw }}</p>
+    {% endif %}
+    {% if linkUrl %}
+      <a href="{{ linkUrl }}"
+         class="rct-glow-card__link rct-btn rct-btn--primary"
+         target="{{ linkTarget }}"
+         {% if linkTarget == '_blank' %}rel="noopener noreferrer"{% endif %}>
+        {{ linkLabel }}
+      </a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
