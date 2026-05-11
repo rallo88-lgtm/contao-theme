@@ -21,3 +21,4 @@ $GLOBALS['TL_LANG']['CTE']['rct_fun_box']        = ['RCT Fun-Box', 'Image card w
 $GLOBALS['TL_LANG']['tl_content']['link_legend'] = 'Link';
 $GLOBALS['TL_LANG']['CTE']['rct_pricing_table']  = ['RCT Pricing Table', 'Column-based pricing overview with features and CTA button'];
 $GLOBALS['TL_LANG']['CTE']['rct_hero']           = ['RCT Hero', 'Large entry section with headline, text, buttons and optional image'];
+$GLOBALS['TL_LANG']['CTE']['rct_glow_card']      = ['RCT Neon Card', 'Card with animated neon border (WebGL shader, theme or laser color)'];

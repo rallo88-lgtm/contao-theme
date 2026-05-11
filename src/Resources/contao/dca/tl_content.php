@@ -1819,7 +1819,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_emitter_pool_size'] = [
 // rct_glow_card_* ohne 'sql' → jsonData. link_page bleibt int-Spalte für Lazy-Load.
 // =====================================================================
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_glow_card'] =
-    '{type_legend},type;{glow_card_legend},rct_glow_card_headline,rct_glow_card_text,rct_glow_card_style,rct_glow_card_speed;{glow_card_link_legend:hide},rct_glow_card_link_page,rct_glow_card_link_url,rct_glow_card_link_label,rct_glow_card_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{glow_card_legend},rct_glow_card_headline,rct_glow_card_text,rct_glow_card_align,rct_glow_card_color,rct_glow_card_width,rct_glow_card_speed;{glow_card_link_legend:hide},rct_glow_card_link_page,rct_glow_card_link_url,rct_glow_card_link_label,rct_glow_card_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_headline'] = [
     'label'     => ['Überschrift', 'Titel der Glow-Card'],
@@ -1833,24 +1833,50 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_text'] = [
     'eval'      => ['style' => 'height:120px', 'tl_class' => 'clr'],
 ];
 
-$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_style'] = [
-    'label'     => ['Glow-Stil', 'Animations-Stil des leuchtenden Borders'],
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_align'] = [
+    'label'     => ['Textausrichtung', 'Ausrichtung von Headline, Text und Button'],
     'inputType' => 'select',
     'options'   => [
-        'rainbow' => 'Rainbow (alle Farben)',
-        'accent'  => 'Akzentfarbe (sanft pulsierend)',
-        'dual'    => 'Dual (Akzent + Primary)',
+        'left'   => 'Linksbündig',
+        'center' => 'Zentriert',
+        'right'  => 'Rechtsbündig',
+    ],
+    'eval'      => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_color'] = [
+    'label'     => ['Border-Farbe', 'Laser-Farbe des animierten Borders'],
+    'inputType' => 'select',
+    'options'   => [
+        'accent'  => 'Theme-Akzent',
+        'cyan'    => 'Cyan',
+        'magenta' => 'Magenta',
+        'green'   => 'Grün',
+        'violet'  => 'Violett',
+        'gold'    => 'Gold',
+        'red'     => 'Rot',
+    ],
+    'eval'      => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_width'] = [
+    'label'     => ['Border-Breite', 'Stärke des Neon-Glows'],
+    'inputType' => 'select',
+    'options'   => [
+        'thin'   => 'Dünn',
+        'normal' => 'Normal',
+        'bold'   => 'Fett',
     ],
     'eval'      => ['tl_class' => 'w50'],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_glow_card_speed'] = [
-    'label'     => ['Geschwindigkeit', 'Wie schnell der Glow um die Card rotiert'],
+    'label'     => ['Geschwindigkeit', 'Tempo der Border-Animation'],
     'inputType' => 'select',
     'options'   => [
-        'slow'   => 'Langsam (8s)',
-        'normal' => 'Normal (4s)',
-        'fast'   => 'Schnell (2s)',
+        'slow'   => 'Langsam',
+        'normal' => 'Normal',
+        'fast'   => 'Schnell',
     ],
     'eval'      => ['tl_class' => 'w50'],
 ];

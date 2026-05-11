@@ -341,23 +341,30 @@
   opacity: 1.0;
 }
 
-/* Neon Grid + Magnetic Field + Lotus + Plasma + Inversion + Fire + Wave + Flower: Maske aus */
+/* Neon Grid + Magnetic Field + Lotus + Plasma + Inversion + Fire + Wave: Maske aus */
 [data-theme="neon-grid"] #gradient-canvas,
 [data-theme="magnetic-field"] #gradient-canvas,
 [data-theme="lotus"] #gradient-canvas,
 [data-theme="plasma"] #gradient-canvas,
 [data-theme="inversion"] #gradient-canvas,
 [data-theme="fire"] #gradient-canvas,
-[data-theme="wave"] #gradient-canvas,
-[data-theme="flower"] #gradient-canvas {
+[data-theme="wave"] #gradient-canvas {
   mask-image: none;
   -webkit-mask-image: none;
   opacity: 1.0;
 }
+
+/* Starry: Standard-Maske ueberschreiben — innen Sterne sichtbar, aussen ausfaden */
+[data-theme="starry"] #gradient-canvas {
+  mask-image: radial-gradient(ellipse 80% 75% at center, black 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 75% at center, black 60%, transparent 100%);
+  opacity: 1.0;
+}
+
 [data-theme="neon-grid"] #rct-dots-canvas { display: none; }
 [data-theme="fire"] #rct-dots-canvas { display: none; }
 [data-theme="wave"] #rct-dots-canvas { display: none; }
-[data-theme="flower"] #rct-dots-canvas { display: none !important; }
+[data-theme="starry"] #rct-dots-canvas { display: none; }
 
 /* Toxic Green: Canvas Hintergrundbild + Maske deaktivieren */
 [data-theme="toxic-green"] #gradient-canvas {
@@ -2577,21 +2584,6 @@ body.rct-right-open #right {
   --grad-4: #050100;
 }
 
-/* --- Theme: Flower Power Stained Glass (kraeftige Farben + Bleifassung + warmes Backlight) --- */
-[data-theme="flower"] {
-  --rct-primary:       #c45050;
-  --rct-primary-light: #e9a050;
-  --rct-accent:        #c45050;
-  --rct-primary-container: rgba(196, 80, 80, 0.12);
-  --rct-sidebar-alpha:     0.6;
-  --rct-main-alpha:        0.3;
-  --rct-bg-dots:           rgba(196, 80, 80, 0.35);
-  --grad-1: #f0eae0;
-  --grad-2: #d8c8b0;
-  --grad-3: #e8d8c0;
-  --grad-4: #f5ede0;
-}
-
 /* --- Theme: Wave (prozeduraler Ozean, hellblau ocean accents) --- */
 [data-theme="wave"] {
   --rct-primary:       #1e88c5;
@@ -2605,6 +2597,21 @@ body.rct-right-open #right {
   --grad-2: #0a3855;
   --grad-3: #04182a;
   --grad-4: #021018;
+}
+
+/* --- Theme: Starry Planes (CC0 mrange, fliegende Sternen-Ebenen) --- */
+[data-theme="starry"] {
+  --rct-primary:       #c879ff;
+  --rct-primary-light: #ff80c8;
+  --rct-accent:        #80e0ff;
+  --rct-primary-container: rgba(200, 121, 255, 0.12);
+  --rct-sidebar-alpha:     0.55;
+  --rct-main-alpha:        0.28;
+  --rct-bg-dots:           rgba(200, 160, 255, 0.40);
+  --grad-1: #000000;
+  --grad-2: #0a0218;
+  --grad-3: #050108;
+  --grad-4: #000000;
 }
 
 #rct-baker-bg {

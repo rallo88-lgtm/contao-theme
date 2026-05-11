@@ -72,6 +72,7 @@ $GLOBALS['TL_LANG']['CTE']['rct_chart_bars'] = ['RCT Balkendiagramm', 'Animierte
 
 // CTA
 $GLOBALS['TL_LANG']['CTE']['rct_cta']                   = ['RCT Call-to-Action', 'Handlungsaufforderung mit Headline, Text und bis zu 2 Buttons'];
+$GLOBALS['TL_LANG']['CTE']['rct_glow_card']             = ['RCT Neon Card', 'Karte mit animiertem Neon-Border (WebGL-Shader, Theme- oder Laser-Farbe)'];
 $GLOBALS['TL_LANG']['tl_content']['cta_legend']         = 'Inhalt';
 $GLOBALS['TL_LANG']['tl_content']['cta_bg_legend']      = 'RCT Hintergrund';
 $GLOBALS['TL_LANG']['tl_content']['cta_btn1_legend']    = 'Primärer Button';

@@ -21,8 +21,23 @@ class RctGlowCardController extends AbstractContentElementController
         $template->text       = $model->rct_glow_card_text
             ? nl2br(htmlspecialchars((string) $model->rct_glow_card_text, ENT_QUOTES, 'UTF-8'))
             : '';
-        $template->glowStyle  = $model->rct_glow_card_style ?: 'rainbow';
         $template->glowSpeed  = $model->rct_glow_card_speed ?: 'normal';
+        $template->glowAlign  = $model->rct_glow_card_align ?: 'center';
+        $template->glowWidth  = $model->rct_glow_card_width ?: 'normal';
+
+        $colorMap = [
+            'accent'  => null,        // null = JS uses --rct-accent
+            'cyan'    => '#00d9ff',
+            'magenta' => '#ff00d9',
+            'green'   => '#00ff80',
+            'violet'  => '#b833e8',
+            'gold'    => '#ffd840',
+            'red'     => '#ff2d50',
+        ];
+        $preset = $model->rct_glow_card_color ?: 'accent';
+        $template->glowColor = $colorMap[$preset] ?? null;
+
+        $GLOBALS['TL_BODY']['rct-glow-card-js'] = '<script src="bundles/rct/js/rct-glow-card.js" defer></script>';
         $template->linkUrl    = $linkUrl;
         $template->linkLabel  = $linkUrl
             ? htmlspecialchars((string) ($model->rct_glow_card_link_label ?: 'Mehr erfahren'), ENT_QUOTES, 'UTF-8')

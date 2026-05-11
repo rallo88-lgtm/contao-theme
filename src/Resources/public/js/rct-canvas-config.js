@@ -309,27 +309,7 @@ const RCT_CANVAS_CONFIG = {
     frameSkip:                 2,            // 15fps — heavy noise
   },
 
-  // Flower — Fraktale Spirale aus Blüten/Blättern (rotiert um Y-Achse)
-  flower: {
-    vertexShader_amp:          0,
-    vertexShader_seed:         0,
-    vertexShader_freqX:        0,
-    vertexShader_freqY:        0,
-    vertexShader_freqDelta:    0,
-    vertexShader_timeSpeed:    0,
-    vertexShader_density:      [0.06, 0.16],
-    vertexShader_activeColors: [1, 1, 1, 1],
-    vertexShader_bgColor:      '#f0eae0',   // warmes off-white (Backlight)
-    fragmentWithVertex:        false,
-    shaderMode:                18,
-    fragmentShader_lineCount:  1,
-    fragmentShader_lineWidth:  1.0,
-    fragmentShader_lineSpeed:  0.05,
-    fragmentShader_lineColor:  '#c45050',    // kräftiges Glas-Rot als Theme-Tint
-    frameSkip:                 2,            // 15fps
-  },
-
-  // Wave — Prozeduraler Ozean mit Sonne, hellblau (heavy raymarch)
+  // Wave — Prozeduraler Ozean mit Sonne, hellblau (light variant)
   wave: {
     vertexShader_amp:          0,
     vertexShader_seed:         0,
@@ -347,6 +327,27 @@ const RCT_CANVAS_CONFIG = {
     fragmentShader_lineSpeed:  0.07,
     fragmentShader_lineColor:  '#4fc3f7',    // hellblau als zusätzlicher Tint
     frameSkip:                 2,            // 15fps, hohe Settings
+  },
+
+  // Starry Planes — fliegende Sternen-Ebenen auf gekruemmter Kamerabahn
+  // (CC0 adapted from mrange, ~2-3x guenstiger als Wave-Light)
+  starry: {
+    vertexShader_amp:          0,
+    vertexShader_seed:         0,
+    vertexShader_freqX:        0,
+    vertexShader_freqY:        0,
+    vertexShader_freqDelta:    0,
+    vertexShader_timeSpeed:    0,
+    vertexShader_density:      [0.06, 0.16],
+    vertexShader_activeColors: [1, 1, 1, 1],
+    vertexShader_bgColor:      '#000000',   // Tiefschwarz fuer Sternen-Look
+    fragmentWithVertex:        false,
+    shaderMode:                18,
+    fragmentShader_lineCount:  1,
+    fragmentShader_lineWidth:  1.0,
+    fragmentShader_lineSpeed:  0.08,         // Plane-March-Speed (planeDist*time)
+    fragmentShader_lineColor:  '#ffffff',    // neutraler Tint (Sterne sind farbig)
+    frameSkip:                 2,            // 15fps
   },
 
   // Inversion — Möbius-Inversion + Mat2-Rotation, fraktal-galaktischer Look

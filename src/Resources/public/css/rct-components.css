@@ -174,70 +174,44 @@
 .opt-dot.inversion { background: radial-gradient(circle, #5fcfff 0%, #2080d0 50%, #040814 100%); }
 .current-theme-dot.wave,
 .opt-dot.wave { background: radial-gradient(circle at 70% 30%, #ffffff 0%, #4fc3f7 25%, #1e88c5 60%, #062035 100%); }
-.current-theme-dot.flower,
-.opt-dot.flower { background: conic-gradient(from 0deg, #c45050 0deg, #e9a050 60deg, #d4b840 120deg, #4a8060 180deg, #305878 240deg, #6a3878 300deg, #c45050 360deg); }
+.current-theme-dot.starry,
+.opt-dot.starry { background: radial-gradient(circle at 50% 50%, #ffffff 0%, #c879ff 12%, #4a3070 35%, #000000 100%); }
 
 /* ============================================================
-   RCT Glow Card — Animated Conic-Gradient Border
+   RCT Glow Card — WebGL Distance-Field Neon Border
    ============================================================ */
-
-@property --rct-glow-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
 
 .rct-glow-card {
   position: relative;
   border-radius: 1rem;
-  background: var(--rct-shell-bg, #1a1a1a);
-  color: var(--rct-shell-text, #f0f0f0);
+  background: transparent;
   isolation: isolate;
   margin: 1rem 0;
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.rct-glow-card__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .rct-glow-card__inner {
+  position: relative;
+  z-index: 1;
   padding: 2.5rem;
+  color: var(--rct-shell-text, #f0f0f0);
+  text-align: center;
 }
 
-.rct-glow-card::before {
-  content: '';
-  position: absolute;
-  inset: -3px;
-  border-radius: calc(1rem + 3px);
-  z-index: -1;
-  filter: blur(2px);
-  background: conic-gradient(from var(--rct-glow-angle),
-    transparent 0deg,
-    var(--rct-accent) 60deg,
-    transparent 180deg,
-    var(--rct-accent) 240deg,
-    transparent 360deg);
-  animation: rct-glow-spin 4s linear infinite;
-}
-
-.rct-glow-card.glow-rainbow::before {
-  background: conic-gradient(from var(--rct-glow-angle),
-    #ff2d78 0deg,
-    #ffaa44 60deg,
-    #ffd840 120deg,
-    #4ada80 180deg,
-    #4fc3f7 240deg,
-    #b833e8 300deg,
-    #ff2d78 360deg);
-}
-
-.rct-glow-card.glow-dual::before {
-  background: conic-gradient(from var(--rct-glow-angle),
-    transparent 0deg,
-    var(--rct-accent) 90deg,
-    transparent 180deg,
-    var(--rct-primary-light) 270deg,
-    transparent 360deg);
-}
-
-.rct-glow-card.speed-slow::before  { animation-duration: 8s; }
-.rct-glow-card.speed-fast::before  { animation-duration: 2s; }
+.rct-glow-card.align-left  .rct-glow-card__inner { text-align: left;  padding-left: 80px; }
+.rct-glow-card.align-right .rct-glow-card__inner { text-align: right; padding-right: 80px; }
+.rct-glow-card.align-center .rct-glow-card__inner { text-align: center; }
 
 .rct-glow-card__headline {
   font-family: var(--rct-font-headline, var(--rct-font-body));
@@ -253,15 +227,6 @@
 
 .rct-glow-card__link {
   display: inline-block;
-}
-
-@keyframes rct-glow-spin {
-  to { --rct-glow-angle: 360deg; }
-}
-
-/* Reduced-motion: still show static glow but no spinning */
-@media (prefers-reduced-motion: reduce) {
-  .rct-glow-card::before { animation: none; }
 }
 .current-theme-dot.fire,
 .opt-dot.fire { background: radial-gradient(circle at 50% 70%, #ffaa44 0%, #ff5020 35%, #6b0a05 75%, #0a0202 100%); }
@@ -7025,3 +6990,17 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   Text-Shadow Utilities
+   ============================================================ */
+
+.rct-ts-sm       { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); }
+.rct-ts-md       { text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); }
+.rct-ts-lg       { text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); }
+.rct-ts-glow     { text-shadow: 0 0 8px color-mix(in srgb, var(--rct-accent) 60%, transparent); }
+.rct-ts-neon     { text-shadow:
+                     0 0 4px currentColor,
+                     0 0 12px currentColor,
+                     0 0 24px color-mix(in srgb, var(--rct-accent) 70%, transparent); }
+.rct-ts-readable { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9); }

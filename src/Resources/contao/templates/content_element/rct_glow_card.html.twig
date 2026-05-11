@@ -1,13 +1,18 @@
 {#
   RCT – rct_glow_card.html.twig
-  Karte mit animiertem Conic-Gradient-Glow als Border.
-  glowStyle: rainbow | accent | dual
-  glowSpeed: slow | normal | fast
+  Karte mit WebGL-Shader-Border (Distance-Field + Procedural Noise).
+  Theme-Accent als stroke-color, Speed via DCA (slow/normal/fast).
 #}
 {% extends '@Contao/content_element/_base.html.twig' %}
 
 {% block content %}
-<div class="rct-glow-card glow-{{ glowStyle }} speed-{{ glowSpeed }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+<div class="rct-glow-card speed-{{ glowSpeed }} align-{{ glowAlign }}{{ cssClass ? ' ' ~ cssClass }}"
+     data-rct-glow-card
+     data-glow-speed="{{ glowSpeed }}"
+     data-glow-width="{{ glowWidth }}"
+     {% if glowColor %}data-glow-color="{{ glowColor }}"{% endif %}
+     {% if htmlId %}id="{{ htmlId }}"{% endif %}>
+  <canvas class="rct-glow-card__canvas" aria-hidden="true"></canvas>
   <div class="rct-glow-card__inner">
     {% if headline %}
       <h3 class="rct-glow-card__headline">{{ headline }}</h3>

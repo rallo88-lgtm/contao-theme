@@ -26,7 +26,7 @@ class RctMenuListener
         $category = $factory->createItem('rct_theme')
             ->setLabel('RCT Theme')
             ->setUri('/contao?mtg=rct_theme')
-            ->setLinkAttribute('class', 'group-rct_theme')
+            ->setLinkAttribute('class', 'group-rct_theme group-content')
             ->setLinkAttribute('data-action', 'contao--toggle-navigation#toggle:prevent')
             ->setLinkAttribute('data-contao--toggle-navigation-category-param', 'rct_theme')
             ->setLinkAttribute('aria-controls', 'rct_theme')

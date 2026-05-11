@@ -263,8 +263,8 @@ float rct_wave_h(vec2 wavPos, int iters, float t) {
   return wav / wavSum;
 }
 
-float rct_wave_map(vec3 p, float t)  { return p.y - rct_wave_h(p.xz, 9, t); }
-vec3  rct_wave_norm(vec3 p, float t) { vec2 w = -rct_wavedx(p.xz, 20, t); return normalize(vec3(w.x, 1.0, w.y)); }
+float rct_wave_map(vec3 p, float t)  { return p.y - rct_wave_h(p.xz, 4, t); }
+vec3  rct_wave_norm(vec3 p, float t) { vec2 w = -rct_wavedx(p.xz, 6, t); return normalize(vec3(w.x, 1.0, w.y)); }
 
 // Sky mit Sonne + Wolken (variabler Loop-Bound auf WebGL1-fix mit break umgebaut)
 vec3 rct_sky(vec3 rd, vec2 res, float t, float spec) {
@@ -307,94 +307,128 @@ vec2 rct_tanh2(vec2 x) {
   return sign(x) * (1.0 - e) / (1.0 + e);
 }
 
-// === Flower Theme (Mode 18) Helpers ===
-float rct_opSU(float d1, float d2, float k) {
-  float h = clamp(0.5 + 0.5 * (d2 - d1) / k, 0.0, 1.0);
-  return mix(d2, d1, h) - k * h * (1.0 - h);
+// === Starry Planes Theme (Mode 18) Helpers ===
+// Adapted from CC0 "Starry planes" by mrange (public domain).
+// SDF + smin helpers MIT-licensed by Inigo Quilez.
+// ACES tonemap approximation by Matt Taylor.
+const float rct_starry_pi        = 3.14159265358979;
+const float rct_starry_planeDist = 0.5;
+const float rct_starry_furthest  = 16.0;
+const float rct_starry_fadeFrom  = 8.0;
+const vec2  rct_starry_pathA     = vec2(0.31, 0.41);
+const vec2  rct_starry_pathB     = vec2(1.0, 0.70710678);  // sqrt(0.5)
+
+vec3 rct_starry_aces(vec3 v) {
+  v = max(v, 0.0) * 0.6;
+  return clamp((v*(2.51*v+0.03))/(v*(2.43*v+0.59)+0.14), 0.0, 1.0);
 }
 
-float rct_petalDcp(vec2 uv, float w) {
-  uv.x = abs(uv.x) + 0.25 + 0.25 * w;
-  return length(uv) - 0.5;
+vec3 rct_starry_offset(float z) {
+  return vec3(rct_starry_pathB * sin(rct_starry_pathA * z), z);
 }
 
-float rct_petal(vec3 p, float m, float t) {
-  float ouv = m - 0.015;
-  float w = m;
-  const float b = 0.5;
-  p.y -= 0.45;
-  p.z -= b;
-  p.zy *= rct_rot2(ouv * 2.0);
-  float pDcp = rct_petalDcp(p.xy, w);
+vec3 rct_starry_doffset(float z) {
+  return vec3(rct_starry_pathA * rct_starry_pathB * cos(rct_starry_pathA * z), 1.0);
+}
+
+vec3 rct_starry_ddoffset(float z) {
+  return vec3(-rct_starry_pathA * rct_starry_pathA * rct_starry_pathB * sin(rct_starry_pathA * z), 0.0);
+}
+
+vec4 rct_starry_alphaBlend(vec4 back, vec4 front) {
+  float w = front.w + back.w * (1.0 - front.w);
+  vec3 xyz = (front.xyz * front.w + back.xyz * back.w * (1.0 - front.w)) / max(w, 1e-6);
+  return w > 0.0 ? vec4(xyz, w) : vec4(0.0);
+}
+
+float rct_starry_pmin(float a, float b, float k) {
+  float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+  return mix(b, a, h) - k * h * (1.0 - h);
+}
+
+float rct_starry_pabs(float a, float k) {
+  return -rct_starry_pmin(a, -a, k);
+}
+
+float rct_starry_star5(vec2 p, float r, float rf, float sm) {
+  p = -p;
+  const vec2 k1 = vec2( 0.809016994375, -0.587785252292);
+  const vec2 k2 = vec2(-0.809016994375, -0.587785252292);
   p.x = abs(p.x);
-  p.xz *= rct_rot2(-0.25);
-  float c1 = length(p.yz) - b;
-  return max(max(pDcp, abs(c1) - 0.01), p.z);
+  p -= 2.0 * max(dot(k1, p), 0.0) * k1;
+  p -= 2.0 * max(dot(k2, p), 0.0) * k2;
+  p.x = rct_starry_pabs(p.x, sm);
+  p.y -= r;
+  vec2 ba = rf * vec2(-k1.y, k1.x) - vec2(0.0, 1.0);
+  float h = clamp(dot(p, ba) / dot(ba, ba), 0.0, r);
+  return length(p - ba * h) * sign(p.y * ba.x - p.x * ba.y);
 }
 
-vec2 rct_flower_repRot(vec2 p, float aIt) {
-  float pi = 3.14159265;
-  return p * rct_rot2(-(6.283185 / aIt) * floor((atan(p.x, p.y) / 6.283185 + 0.5) * aIt) - pi - 6.283185 / (aIt * 2.0));
+vec3 rct_starry_palette(float n) {
+  return 0.5 + 0.5 * sin(vec3(0.0, 1.0, 2.0) + n);
 }
 
-float rct_flower_petal(vec3 p, float aIt, float m, float t) {
-  p.xy = rct_flower_repRot(p.xy, aIt);
-  return rct_petal(p, m, t);
+vec4 rct_starry_plane(vec3 pp, vec3 npp, float pd, float n) {
+  float aa = 3.0 * pd * distance(pp.xy, npp.xy);
+  vec2 p2 = pp.xy - rct_starry_offset(pp.z).xy;
+  vec2 doff  = rct_starry_ddoffset(pp.z).xz;
+  vec2 ddoff = rct_starry_doffset(pp.z).xz;
+  float dd = dot(doff, ddoff);
+  p2 = rct_rot2(dd * rct_starry_pi * 5.0) * p2;
+
+  float d0 = rct_starry_star5(p2, 0.45, 1.6, 0.2) - 0.02;
+  float d1 = d0 - 0.01;
+  float d2 = length(p2);
+  const float colp  = 314.159265;  // pi*100
+  float colaa = aa * 200.0;
+
+  vec4 col = vec4(0.0);
+  col.xyz = rct_starry_palette(0.5 * n + 2.0 * d2)
+          * mix(0.5 / (d2 * d2), 1.0, smoothstep(-0.5 + colaa, 0.5 + colaa, sin(d2 * colp)))
+          / max(3.0 * d2 * d2, 0.1);
+  col.xyz = mix(col.xyz, vec3(2.0), smoothstep(aa, -aa, d1));
+  col.w   = smoothstep(aa, -aa, -d0);
+  return col;
 }
 
-float rct_flower_df(vec3 pp, float t, out int m_out, out float spawn_id) {
-  pp.y = -pp.y;
-  pp.xz *= rct_rot2(1.016);  // fixe Orientierung (keine 3D-Drehung)
-  pp.xy *= rct_rot2(-0.640);
+vec3 rct_starry_render(vec3 ww, vec3 uu, vec3 vv, vec3 ro, vec2 p, vec2 res) {
+  vec2 np = p + 1.0 / res.xy;
+  float rdd = 1.75;
 
-  float dd = 1e9, ee = 1e9;
-  vec3 p = pp;
-  const float fsz = 0.25;
-  vec2 n = vec2(cos(3.14159265 * 0.125), sin(3.14159265 * 0.125));
+  vec3 rd  = normalize(p.x  * uu + p.y  * vv + rdd * ww);
+  vec3 nrd = normalize(np.x * uu + np.y * vv + rdd * ww);
 
-  bool b = false;
-  m_out = 0;
-  spawn_id = 0.0;
-  for (int g = 0; g < 3; g++) {
-    float gf = float(g);
-    p = (b = !b) ? p.xzy : p.zxy;
-    float r = length(p.xy);
-    vec3 pp2 = vec3(log(r) - t * (0.1 + ((gf + 1.0) * 0.051)), atan(p.x, p.y), p.z / r);
-    float e_orig = dot(pp2.xy, n);
-    float f_orig = dot(pp2.xy, vec2(n.y, -n.x));
-    float k = 1.2021;
-    float e = mod(e_orig, k) - k * 0.5;
-    float l = 0.65;
-    float f_shifted = f_orig + 1.3;
-    float i_layer = mod(floor(f_shifted / l) + gf, 3.0);
-    float f = mod(f_shifted, l) - l * 0.5;
-    float d = (length(vec2(e, pp2.z)) - 0.015 / r) * r;
-    bool j = i_layer != 2.0;  // 2 von 3 Layers werden Blüten (mehr Blümchen)
-    dd = rct_opSU(dd, d, 0.1);
-    float ff = rct_flower_petal(vec3(e, f, pp2.z + 0.06) / fsz, smoothstep(-1.0, 1.0, r * r) * (j ? 5.0 : 2.0), smoothstep(1.0, -0.0, r * r), t) * fsz * r;
-    if (ff < ee) {
-      ee = ff;
-      m_out = j ? 1 : 0;
-      // Stable cell-ID per Spirale-Cell — Blumen behalten ihre Spawn-Farbe
-      spawn_id = floor(e_orig / k) * 13.7 + floor(f_shifted / l) * 27.3 + gf * 71.3;
-    }
+  float nz = floor(ro.z / rct_starry_planeDist);
+  vec4 acol = vec4(0.0);
+  vec3 aro  = ro;
+  float apd = 0.0;
+
+  for (int i = 1; i <= 16; i++) {
+    if (acol.w > 0.95) break;
+    float fi = float(i);
+    float pz = rct_starry_planeDist * (nz + fi);
+    float lpd = (pz - aro.z) / rd.z;
+    float npd = (pz - aro.z) / nrd.z;
+
+    vec3 pp  = aro + rd  * lpd;
+    vec3 npp = aro + nrd * npd;
+    apd += lpd;
+
+    float dz = pp.z - ro.z;
+    float fadeIn  = smoothstep(rct_starry_planeDist * rct_starry_furthest,
+                               rct_starry_planeDist * rct_starry_fadeFrom, dz);
+    float fadeOut = smoothstep(0.0, rct_starry_planeDist * 0.1, dz);
+
+    vec4 pcol = rct_starry_plane(pp, npp, apd, nz + fi);
+    pcol.w *= fadeOut * fadeIn;
+    acol = rct_starry_alphaBlend(pcol, acol);
+    aro = pp;
   }
-  float ff = min(dd, ee);
-  if (dd < ee) m_out = 0;
-  return ff * 0.8;
+
+  return acol.xyz * acol.w;
 }
 
-vec3 rct_flower_normal(vec3 p, float t) {
-  int m_dummy;
-  float id_dummy;
-  float d = rct_flower_df(p, t, m_dummy, id_dummy);
-  vec2 u = vec2(0.0, 0.001);  // größer für smoothere Normals (weniger Aliasing)
-  return normalize(vec3(rct_flower_df(p + u.yxx, t, m_dummy, id_dummy),
-                        rct_flower_df(p + u.xyx, t, m_dummy, id_dummy),
-                        rct_flower_df(p + u.xxy, t, m_dummy, id_dummy)) - d);
-}
-
-// Wave-Renderer (extrahiert für 2x2 Supersampling in Mode 17)
+// Wave-Renderer
 vec3 rct_render_wave(vec2 fc, vec2 res, float t, float spec) {
   vec2 uv = (fc - 0.5 * res) / min(res.y, res.x);
   vec3 col = vec3(0.0);
@@ -410,11 +444,11 @@ vec3 rct_render_wave(vec2 fc, vec2 res, float t, float spec) {
   float tPln = -(ro.y - 1.86) / rd.y;
   if (tPln > 0.0) {
     dO += tPln;
-    for (int i = 0; i < 80; i++) {
+    for (int i = 0; i < 32; i++) {
       p = ro + rd * dO;
       float d = rct_wave_map(p, t);
       dO += d;
-      if (abs(d) < 0.005 || i > 78) { hit = true; break; }
+      if (abs(d) < 0.005 || i > 30) { hit = true; break; }
       if (dO > 35.0) { dO = 35.0; break; }
     }
   }
@@ -1407,86 +1441,45 @@ void main() {
     return;
   }
 
-  // Modus 17: Wave — prozeduraler Ozean mit 2x2 Supersampling-AA
-  // Renderer ist als rct_render_wave() extrahiert, hier 4× aufgerufen mit
-  // Sub-Pixel-Offsets für Anti-Aliasing der Wellen-Highlights.
+  // Modus 17: Wave — prozeduraler Ozean (light variant, ohne Supersampling)
   if (u_line_mode > 16.5 && u_line_mode < 17.5) {
     vec2 res = resolution.xy;
     vec2 fc  = gl_FragCoord.xy;
     float t  = u_time * u_line_speed;
     float spec = 0.45;
-    vec3 col = (rct_render_wave(fc + vec2(0.25, 0.25), res, t, spec)
-              + rct_render_wave(fc + vec2(0.75, 0.25), res, t, spec)
-              + rct_render_wave(fc + vec2(0.25, 0.75), res, t, spec)
-              + rct_render_wave(fc + vec2(0.75, 0.75), res, t, spec)) * 0.25;
+    vec3 col = rct_render_wave(fc + vec2(0.5, 0.5), res, t, spec);
     col = mix(col, col * (vec3(0.5) + u_line_color * 0.5), 0.25);
     color = clamp(col, 0.0, 1.0);
     gl_FragColor = vec4(color, 1.0);
     return;
   }
 
-  // Modus 18: Flower Power — fraktale Spirale aus Blüten/Blättern auf Kamera zu
-  // Quelle-Inspiration: paperu "Plants growing from nowhere". 500-step Raymarch,
-  // 3-fach nested Spirale-SDF in df(). Drehung um Y-Achse aktiviert. Bunte Pastel-
-  // Palette für Petalen via cosine-cycle, Stems hellblau↔hellgrün-gradient.
+  // Modus 18: Starry Planes — fliegende Sternen-Ebenen auf gekruemmtem Kamerapfad
+  // Adapted from CC0 "Starry planes" by mrange. 16-Step Plane-March mit early-exit,
+  // star5-SDF + alphaBlend pro Plane, ACES-Tonemap + sqrt-Gamma am Ende.
   if (u_line_mode > 17.5 && u_line_mode < 18.5) {
     vec2 res = resolution.xy;
     vec2 fc  = gl_FragCoord.xy;
     float t  = u_time * u_line_speed;
-    vec2 st  = (fc - res * 0.5) / res.x;
-    // 2D-Drehung gegen Uhrzeigersinn (langsam)
-    st = rct_rot2(t * 0.1) * st;
-    vec3 cam = vec3(0.0, 0.0, -10.0);
-    vec3 ray = normalize(vec3(st, 1.0));
 
-    // Raymarch
-    vec3 hp = cam;
-    bool hit = false;
-    int hit_m = 0;
-    float hit_id = 0.0;
-    for (int i = 0; i < 500; i++) {
-      int m_tmp;
-      float id_tmp;
-      float d = rct_flower_df(hp, t, m_tmp, id_tmp);
-      if (d < 0.0002) { hit = true; hit_m = m_tmp; hit_id = id_tmp; break; }
-      if (distance(cam, hp) > 30.0) break;
-      hp += d * ray;
-    }
+    vec2 q  = fc / res;
+    vec2 p  = -1.0 + 2.0 * q;
+    p.x *= res.x / res.y;
 
-    // Sky-BG: warmes off-white als Backlight (Sonne hinter Kirchenfenster)
-    vec3 skyCenter = vec3(0.94, 0.90, 0.84);
-    vec3 skyEdge   = vec3(0.78, 0.72, 0.65);
-    vec3 sky = mix(skyCenter, skyEdge, clamp(dot(st, st) * 1.5, 0.0, 1.0));
-    vec3 col = sky;
+    float tm   = rct_starry_planeDist * t;
+    vec3 ro    = rct_starry_offset(tm);
+    vec3 dro   = rct_starry_doffset(tm);
+    vec3 ddro  = rct_starry_ddoffset(tm);
 
-    if (hit) {
-      vec3 nrm = rct_flower_normal(hp, t);
-      vec3 viewDir = -ray;
-      vec3 ld  = normalize(vec3(0.0, 1.0, -0.1));
+    vec3 ww = normalize(dro);
+    vec3 uu = normalize(cross(vec3(0.0, 1.0, 0.0) + ddro, ww));
+    vec3 vv = cross(ww, uu);
 
-      if (hit_m == 1) {
-        // Blüten = Stained Glass: kräftige saturated Farben + Edge-Backlight
-        float colorPhase = fract(sin(hit_id * 0.5483) * 43758.5453);
-        vec3 glassCol = rct_pal(colorPhase,
-                                vec3(0.50, 0.45, 0.50),
-                                vec3(0.50, 0.55, 0.50),    // hohe amp = saturated
-                                vec3(1.0, 0.7, 0.85),
-                                vec3(0.0, 0.20, 0.45));
-        float fresnel = pow(1.0 - abs(dot(nrm, viewDir)), 1.5);
-        // Center: kräftiges Glas, Edges: Backlight (heller, sky scheint durch)
-        col = glassCol + sky * fresnel * 0.5;
-      } else {
-        // Stems + Blätter = Bleifassung (dunkles Anthrazit, opaque)
-        vec3 leadCol = vec3(0.08, 0.06, 0.08);
-        float fresnel = pow(1.0 - abs(dot(nrm, viewDir)), 1.5);
-        col = leadCol + vec3(0.22, 0.18, 0.15) * fresnel * 0.4;
-      }
+    vec3 col = rct_starry_render(ww, uu, vv, ro, p, res);
+    col = rct_starry_aces(col);
+    col = sqrt(col);
 
-      col = mix(col, sky, smoothstep(8.0, 18.0, distance(hp, cam)));
-      col = mix(col, sky, smoothstep(0.5, 3.0, dot(st, st) * 10.0));
-    }
-
-    // Theme-Tint sanft via u_line_color
+    // Theme-Tint sanft via u_line_color (Default: neutral)
     col = mix(col, col * (vec3(0.5) + u_line_color * 0.5), 0.18);
 
     color = clamp(col, 0.0, 1.0);
