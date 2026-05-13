@@ -10,6 +10,8 @@
         </svg>
     </button>
     <div class="theme-dropdown layout-dropdown">
+        {# Layout-Labels vom Volltext-Index ausschliessen — sonst landet „Sidebar Links / Top Navigation" als Match auf jeder Seite. #}
+        <!-- indexer::stop -->
         <ul class="theme-list">
             <li>
                 <button class="layout-opt-btn" data-set-layout="sidebar">
@@ -30,5 +32,6 @@
                 </button>
             </li>
         </ul>
+        <!-- indexer::continue -->
     </div>
 </div>
