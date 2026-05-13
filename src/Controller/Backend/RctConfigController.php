@@ -62,6 +62,13 @@ class RctConfigController extends AbstractBackendController
         'rct_klaro_global'       => '0',
     ];
 
+    public const PRESETS = [
+        'soft-edition' => [
+            'label'  => 'Soft Edition (Coach/Therapie/Beratung)',
+            'themes' => ['soft-sage', 'soft-sky', 'soft-honey', 'soft-rose'],
+        ],
+    ];
+
     public function __construct(private readonly Connection $db) {}
 
     public function __invoke(Request $request): Response
@@ -83,6 +90,7 @@ class RctConfigController extends AbstractBackendController
             'saved'      => $saved,
             'defaults'   => self::DEFAULTS,
             'all_themes' => self::ALL_THEMES,
+            'presets'    => self::PRESETS,
         ]);
     }
 
@@ -97,6 +105,20 @@ class RctConfigController extends AbstractBackendController
 
     private function saveConfig(Request $request): void
     {
+        // Preset-Buttons setzen Allowed-Themes direkt und überspringen den normalen Form-Flow.
+        $preset = $request->request->get('rct_apply_preset', '');
+        if ($preset !== '' && isset(self::PRESETS[$preset])) {
+            $themes = self::PRESETS[$preset]['themes'];
+            $data   = ['tstamp' => time(), 'rct_allowed_themes' => implode(',', $themes)];
+            $exists = $this->db->fetchOne("SELECT id FROM tl_rct_config LIMIT 1");
+            if ($exists) {
+                $this->db->update('tl_rct_config', $data, ['id' => $exists]);
+            } else {
+                $this->db->insert('tl_rct_config', array_merge(self::DEFAULTS, $data));
+            }
+            return;
+        }
+
         $fields = array_keys(self::DEFAULTS);
         $data   = ['tstamp' => time()];
 

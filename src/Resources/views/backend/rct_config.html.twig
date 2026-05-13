@@ -180,6 +180,19 @@
     <h2>Verfügbare Themes</h2>
     <div style="padding: 12px 16px 4px;">
       <p style="font-size: 12px; color: #888; margin: 0 0 12px;">Legt fest welche Themes im FE-Theme-Switcher auswählbar sind. Ist nur ein Theme aktiv, wird es als festes Theme erzwungen — kein Switcher nötig.</p>
+        {% if presets is defined and presets|length > 0 %}
+        <div style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #f0f0f0;">
+          <span style="font-size: 11px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.04em; margin-right: 12px;">Preset:</span>
+          {% for key, preset in presets %}
+          <button type="submit" name="rct_apply_preset" value="{{ key }}"
+                  class="tl_submit"
+                  style="margin-right: 8px;"
+                  onclick="return confirm('Allowed-Themes wird auf „{{ preset.label }}“ gesetzt. Andere ungespeicherte Änderungen gehen dabei verloren. Fortfahren?');">
+            {{ preset.label }}
+          </button>
+          {% endfor %}
+        </div>
+        {% endif %}
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px 16px; padding-bottom: 12px;">
         {% for key, label in all_themes %}
         <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; padding: 4px 0;">
