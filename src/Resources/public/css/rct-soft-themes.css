@@ -99,6 +99,16 @@
   50%      { opacity: 1; }
 }
 
+/* === Tech-Canvas-Stack ausblenden für die 3 statischen Soft-Themes ===
+ * soft-sage behält den Standard-Aurora-Canvas als Übergang bis WebGL Mode 19 (v1.7.1).
+ * sky/honey/rose sind CSS-only — die cyan-tech-Aurora und das Dots-Punktefeld
+ * passen optisch nicht zum ruhigen Coach-Look. */
+[data-theme^="soft-"]:not([data-theme="soft-sage"]) #gradient-canvas,
+[data-theme^="soft-"]:not([data-theme="soft-sage"]) #rct-effects-canvas,
+[data-theme^="soft-"]:not([data-theme="soft-sage"]) #rct-dots-canvas {
+  display: none !important;
+}
+
 /* === Accessibility: alle Soft-Animationen pausieren === */
 @media (prefers-reduced-motion: reduce) {
   [data-theme^="soft-"] * {
