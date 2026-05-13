@@ -34,6 +34,15 @@
   --rct-accent-strong: #5d7256;
   --rct-accent-soft: rgba(122,144,112,0.12);
   --rct-text-on-accent: #ffffff;
+  /* Bundle-weit verwendete Primary-Tokens (Menü, Links, Hover) */
+  --rct-primary: #5d7256;
+  --rct-primary-light: #7a9070;
+  --rct-primary-container: rgba(122,144,112,0.12);
+  /* Aurora-Gradienten in Salbei-Tönen — übergangsweise bis WebGL Mode 19 in v1.7.1 */
+  --grad-1: #7a9070;
+  --grad-2: #5d7256;
+  --grad-3: #b8c8a8;
+  --grad-4: #f5f7f0;
 }
 
 [data-theme="soft-sky"] {
@@ -43,6 +52,9 @@
   --rct-accent-strong: #4f7395;
   --rct-accent-soft: rgba(106,146,184,0.12);
   --rct-text-on-accent: #ffffff;
+  --rct-primary: #4f7395;
+  --rct-primary-light: #6a92b8;
+  --rct-primary-container: rgba(106,146,184,0.12);
 }
 
 [data-theme="soft-honey"] {
@@ -52,6 +64,9 @@
   --rct-accent-strong: #a17a32;
   --rct-accent-soft: rgba(200,154,78,0.14);
   --rct-text-on-accent: #ffffff;
+  --rct-primary: #a17a32;
+  --rct-primary-light: #c89a4e;
+  --rct-primary-container: rgba(200,154,78,0.14);
 }
 
 [data-theme="soft-rose"] {
@@ -61,6 +76,9 @@
   --rct-accent-strong: #966a6a;
   --rct-accent-soft: rgba(184,138,138,0.13);
   --rct-text-on-accent: #ffffff;
+  --rct-primary: #966a6a;
+  --rct-primary-light: #b88a8a;
+  --rct-primary-container: rgba(184,138,138,0.13);
 }
 
 /* === Animationen — nur dezent, alle deaktiviert via prefers-reduced-motion === */
@@ -117,8 +135,14 @@
   }
 }
 
-/* === Theme-Switcher-Dot-Farben (für die kleine Vorschau-Punkte im Dropdown) === */
+/* === Theme-Switcher-Dot-Farben ===
+ * opt-dot = Vorschau-Punkte im Dropdown,
+ * current-theme-dot = der eine Punkt im Trigger-Button (zeigt das aktive Theme). */
+.current-theme-dot.soft-sage,
 .opt-dot.soft-sage  { background: #7a9070; }
+.current-theme-dot.soft-sky,
 .opt-dot.soft-sky   { background: #6a92b8; }
+.current-theme-dot.soft-honey,
 .opt-dot.soft-honey { background: #c89a4e; }
+.current-theme-dot.soft-rose,
 .opt-dot.soft-rose  { background: #b88a8a; }
