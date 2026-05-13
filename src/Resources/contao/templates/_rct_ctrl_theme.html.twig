@@ -7,6 +7,7 @@
         </svg>
     </button>
     <div class="theme-dropdown">
+        {# Theme-Labels vom Volltext-Index ausschliessen — sonst landet jedes Label als Match auf jeder Seite #}
         {{ '{{indexer::stop}}' }}
         <ul class="theme-list">
             {% for slug, label in rct_themes() %}
