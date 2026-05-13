@@ -109,7 +109,13 @@ class RctConfigController extends AbstractBackendController
         $preset = $request->request->get('rct_apply_preset', '');
         if ($preset !== '' && isset(self::PRESETS[$preset])) {
             $themes = self::PRESETS[$preset]['themes'];
-            $data   = ['tstamp' => time(), 'rct_allowed_themes' => implode(',', $themes)];
+            // Validate: alle Theme-Slugs müssen in ALL_THEMES existieren UND mind. einer da sein.
+            // Schützt gegen leere/getypose Preset-Definitionen, die sonst silent „alle erlaubt" setzen würden.
+            $valid = array_values(array_intersect($themes, array_keys(self::ALL_THEMES)));
+            if (empty($valid) || count($valid) !== count($themes)) {
+                return;
+            }
+            $data = ['tstamp' => time(), 'rct_allowed_themes' => implode(',', $valid)];
             $exists = $this->db->fetchOne("SELECT id FROM tl_rct_config LIMIT 1");
             if ($exists) {
                 $this->db->update('tl_rct_config', $data, ['id' => $exists]);
