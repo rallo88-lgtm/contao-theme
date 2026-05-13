@@ -5351,13 +5351,16 @@ a.rct-gallery-link {
   overflow: hidden;
   position: relative;
 }
+/* Explizit dunkler/heller Article-BG — Editor-Wahl, NICHT theme-folge.
+ * Color über --rct-on-surface-dark/-light (immer kontrastsicher), damit
+ * der gewählte Mode bei jedem Theme rendert wie intendiert. */
 .rct-article-bg-dark {
   background: rgba(23, 23, 23, var(--rct-article-alpha, 1));
-  color: var(--rct-shell-text);
+  color: var(--rct-on-surface-dark, #ffffff);
 }
 .rct-article-bg-white {
   background: rgba(255, 255, 255, var(--rct-article-alpha, 1));
-  color: #1a1a1a;
+  color: var(--rct-on-surface-light, #1a1a1a);
 }
 .rct-article-bg-accent {
   background: rgba(39, 196, 244, var(--rct-article-alpha, 1));
