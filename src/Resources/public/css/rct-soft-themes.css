@@ -7,60 +7,60 @@
 /* === Gemeinsame Soft-Base — überschreibt globale Tokens ===
  * Greift für alle Themes deren Slug mit "soft-" beginnt. */
 [data-theme^="soft-"] {
-    --rct-bg: #fafaf6;
-    --rct-text: #2a2a28;
-    --rct-text-muted: #6e6e68;
-    --rct-radius: 0.25rem;
-    --rct-radius-lg: 0.5rem;
-    --rct-radius-xl: 1rem;
-    --rct-section-padding-y: 5rem;
-    --rct-shadow-soft: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
-    /* DM Mono raus — Mono-Slot zeigt auf Body-Font */
-    --rct-font-mono: var(--rct-font-body);
+  --rct-bg: #fafaf6;
+  --rct-text: #2a2a28;
+  --rct-text-muted: #6e6e68;
+  --rct-radius: 0.25rem;
+  --rct-radius-lg: 0.5rem;
+  --rct-radius-xl: 1rem;
+  --rct-section-padding-y: 5rem;
+  --rct-shadow-soft: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
+  /* DM Mono raus — Mono-Slot zeigt auf Body-Font */
+  --rct-font-mono: var(--rct-font-body);
 }
 
 /* Body-BG tint pro Theme (überschreibt --rct-bg in der Variant-Section unten) */
 [data-theme^="soft-"] body {
-    background-color: var(--rct-bg);
-    color: var(--rct-text);
+  background-color: var(--rct-bg);
+  color: var(--rct-text);
 }
 
 /* === Akzent-Overrides pro Theme === */
 
 [data-theme="soft-sage"] {
-    --rct-bg: #f5f7f0;
-    --rct-accent: #7a9070;
-    --rct-accent-rgb: 122,144,112;
-    --rct-accent-strong: #5d7256;
-    --rct-accent-soft: rgba(122,144,112,0.12);
-    --rct-text-on-accent: #ffffff;
+  --rct-bg: #f5f7f0;
+  --rct-accent: #7a9070;
+  --rct-accent-rgb: 122,144,112;
+  --rct-accent-strong: #5d7256;
+  --rct-accent-soft: rgba(122,144,112,0.12);
+  --rct-text-on-accent: #ffffff;
 }
 
 [data-theme="soft-sky"] {
-    --rct-bg: #f3f6fa;
-    --rct-accent: #6a92b8;
-    --rct-accent-rgb: 106,146,184;
-    --rct-accent-strong: #4f7395;
-    --rct-accent-soft: rgba(106,146,184,0.12);
-    --rct-text-on-accent: #ffffff;
+  --rct-bg: #f3f6fa;
+  --rct-accent: #6a92b8;
+  --rct-accent-rgb: 106,146,184;
+  --rct-accent-strong: #4f7395;
+  --rct-accent-soft: rgba(106,146,184,0.12);
+  --rct-text-on-accent: #ffffff;
 }
 
 [data-theme="soft-honey"] {
-    --rct-bg: #faf6ee;
-    --rct-accent: #c89a4e;
-    --rct-accent-rgb: 200,154,78;
-    --rct-accent-strong: #a17a32;
-    --rct-accent-soft: rgba(200,154,78,0.14);
-    --rct-text-on-accent: #ffffff;
+  --rct-bg: #faf6ee;
+  --rct-accent: #c89a4e;
+  --rct-accent-rgb: 200,154,78;
+  --rct-accent-strong: #a17a32;
+  --rct-accent-soft: rgba(200,154,78,0.14);
+  --rct-text-on-accent: #ffffff;
 }
 
 [data-theme="soft-rose"] {
-    --rct-bg: #faf3f3;
-    --rct-accent: #b88a8a;
-    --rct-accent-rgb: 184,138,138;
-    --rct-accent-strong: #966a6a;
-    --rct-accent-soft: rgba(184,138,138,0.13);
-    --rct-text-on-accent: #ffffff;
+  --rct-bg: #faf3f3;
+  --rct-accent: #b88a8a;
+  --rct-accent-rgb: 184,138,138;
+  --rct-accent-strong: #966a6a;
+  --rct-accent-soft: rgba(184,138,138,0.13);
+  --rct-text-on-accent: #ffffff;
 }
 
 /* === Animationen — nur dezent, alle deaktiviert via prefers-reduced-motion === */
@@ -68,43 +68,43 @@
 /* soft-sky: Akzent-Glow auf interaktiven Elementen */
 [data-theme="soft-sky"] .rct-cta-primary,
 [data-theme="soft-sky"] button.theme-trigger {
-    box-shadow: 0 0 0 0 var(--rct-accent-soft);
-    transition: box-shadow 0.6s ease;
+  box-shadow: 0 0 0 0 var(--rct-accent-soft);
+  transition: box-shadow 0.6s ease;
 }
 [data-theme="soft-sky"] .rct-cta-primary:hover,
 [data-theme="soft-sky"] button.theme-trigger:hover {
-    box-shadow: 0 0 0 8px var(--rct-accent-soft);
+  box-shadow: 0 0 0 8px var(--rct-accent-soft);
 }
 
 /* soft-honey: sehr langsamer BG-Gradient-Shift (60s pro Cycle) */
 [data-theme="soft-honey"] body {
-    background-image:
-        radial-gradient(ellipse at 20% 0%, rgba(200,154,78,0.05), transparent 50%),
-        radial-gradient(ellipse at 80% 100%, rgba(200,154,78,0.04), transparent 50%);
-    background-size: 200% 200%;
-    animation: rct-soft-honey-drift 60s ease-in-out infinite alternate;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(200,154,78,0.05), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(200,154,78,0.04), transparent 50%);
+  background-size: 200% 200%;
+  animation: rct-soft-honey-drift 60s ease-in-out infinite alternate;
 }
 @keyframes rct-soft-honey-drift {
-    from { background-position: 0% 0%; }
-    to   { background-position: 100% 100%; }
+  from { background-position: 0% 0%; }
+  to   { background-position: 100% 100%; }
 }
 
 /* soft-rose: atmender Akzent-Glow */
 [data-theme="soft-rose"] .rct-accent-mark,
 [data-theme="soft-rose"] .opt-dot.soft-rose {
-    animation: rct-soft-rose-breathe 6s ease-in-out infinite;
+  animation: rct-soft-rose-breathe 6s ease-in-out infinite;
 }
 @keyframes rct-soft-rose-breathe {
-    0%, 100% { opacity: 0.85; }
-    50%      { opacity: 1; }
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 1; }
 }
 
 /* === Accessibility: alle Soft-Animationen pausieren === */
 @media (prefers-reduced-motion: reduce) {
-    [data-theme^="soft-"] * {
-        animation: none !important;
-        transition: none !important;
-    }
+  [data-theme^="soft-"] * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 /* === Theme-Switcher-Dot-Farben (für die kleine Vorschau-Punkte im Dropdown) === */
