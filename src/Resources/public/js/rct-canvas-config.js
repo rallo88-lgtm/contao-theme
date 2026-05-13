@@ -387,7 +387,7 @@ const RCT_CANVAS_CONFIG = {
     shaderMode:                19,
     fragmentShader_lineCount:  1,
     fragmentShader_lineWidth:  1.0,
-    fragmentShader_lineSpeed:  0.06,         // langsam aber sichtbar (war 0.02 = zu unauffällig)
+    fragmentShader_lineSpeed:  0.03,         // sehr ruhig — Aquarell-Drift, kaum merkbar bewegt
     fragmentShader_lineColor:  '#7a9070',    // Salbei-Akzent für Theme-Tint
     frameSkip:                 2,            // 15fps reichen für so langsame Drift
   },
