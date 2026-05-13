@@ -1510,9 +1510,9 @@ void main() {
     vec3 cream = vec3(0.961, 0.969, 0.941);   // #f5f7f0 Cream (= soft-sage BG-Tint)
     vec3 sage  = vec3(0.478, 0.564, 0.439);   // #7a9070 Salbei
 
-    // 3-Stop-Mix entlang FBM-Wert
-    vec3 col = mix(white, cream, smoothstep(0.25, 0.55, n));
-    col = mix(col, sage, smoothstep(0.55, 0.85, n) * 0.6);
+    // 3-Stop-Mix entlang FBM-Wert — Sage-Anteil verstärkt damit Wolken sichtbar sind
+    vec3 col = mix(white, cream, smoothstep(0.20, 0.50, n));
+    col = mix(col, sage, smoothstep(0.45, 0.80, n) * 0.95);
 
     // Theme-Tint via u_line_color (subtle)
     col = mix(col, col * (vec3(0.5) + u_line_color * 0.5), 0.18);
@@ -1520,12 +1520,12 @@ void main() {
     // sqrt-Gamma für sanfte Mid-Tones (kein ACES — zu kontrastreich für Aquarell-Look)
     col = sqrt(col);
 
-    // Default-Maske: zentrum sichtbar, am Rand ausfaden (wie Starry Mode 18)
+    // Default-Maske: zentrum sichtbar, am Rand ausfaden — sanft, nicht hart
     vec2 maskUV = (fc - 0.5 * res) / min(res.y, res.x);
-    float mask = 1.0 - smoothstep(0.5, 1.1, length(maskUV));
+    float mask = 1.0 - smoothstep(0.6, 1.3, length(maskUV));
 
-    // Max 0.4 Opacity-Blend mit Cream-BG — BG-Tint scheint durch, kein Voll-Overlay
-    col = mix(cream, col, mask * 0.4);
+    // Max-Opacity-Blend mit Cream-BG — auf 0.85 hochgezogen (war 0.4 = zu unsichtbar)
+    col = mix(cream, col, mask * 0.85);
 
     color = clamp(col, 0.0, 1.0);
     gl_FragColor = vec4(color, 1.0);
