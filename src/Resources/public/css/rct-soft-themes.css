@@ -35,6 +35,37 @@
   text-shadow: none;
 }
 
+/* Step 3: Theme-Switcher + Layout-Switcher für Soft-Themes.
+ * Default-Stylesheet (rct-components.css) hardcoded weiße rgba-Werte für Dark-Themes —
+ * Trigger-BG `rgba(255,255,255,0.05)`, Dropdown-BG `#1a1a1a`, Text `#fff`.
+ * Für Soft-Themes spiegeln wir das ins Dunkel-auf-Hell. */
+[data-theme^="soft-"] .theme-trigger,
+[data-theme^="soft-"] .layout-trigger {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.10);
+  color: var(--rct-text);
+}
+[data-theme^="soft-"] .theme-trigger:hover,
+[data-theme^="soft-"] .layout-trigger:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.18);
+}
+[data-theme^="soft-"] .theme-dropdown,
+[data-theme^="soft-"] .layout-dropdown {
+  background: var(--rct-bg);
+  border-color: rgba(0, 0, 0, 0.10);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+[data-theme^="soft-"] .theme-opt-btn,
+[data-theme^="soft-"] .layout-opt-btn {
+  color: var(--rct-text-muted);
+}
+[data-theme^="soft-"] .theme-opt-btn:hover,
+[data-theme^="soft-"] .layout-opt-btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--rct-text);
+}
+
 /* Body-BG tint pro Theme (überschreibt --rct-bg in der Variant-Section unten) */
 [data-theme^="soft-"] body {
   background-color: var(--rct-bg);
