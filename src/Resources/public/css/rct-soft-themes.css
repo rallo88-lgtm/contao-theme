@@ -68,6 +68,14 @@
   color: var(--rct-text);
 }
 
+/* Sidebar-Logo-Box für Soft-Themes — leichte Tönung + Trennlinie. */
+[data-theme^="soft-"] #left .rct-sidebar-logo,
+[data-theme^="soft-"] #right .rct-sidebar-logo {
+  padding: 1rem;
+  border-top: 1px solid var(--rct-shell-border);
+  background-color: rgba(0,0,0,0.05);
+}
+
 /* Logo-Swap: für Soft-Themes Hypatia-Eule im Sidebar-Logo (Menü-Bereich),
  * Header-Logo bleibt unverändert.
  * SVG 180x180 wird als BG des Containers eingesetzt, Inline-SVGs/IMGs

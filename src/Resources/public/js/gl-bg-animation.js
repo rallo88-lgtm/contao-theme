@@ -1508,11 +1508,11 @@ void main() {
     // Sage-Palette (3 Stops aus Spec — Salbei + Cream + Off-White, niedrige Sättigung)
     vec3 white = vec3(0.980, 0.980, 0.965);   // #fafaf6 Off-White
     vec3 cream = vec3(0.961, 0.969, 0.941);   // #f5f7f0 Cream (= soft-sage BG-Tint)
-    vec3 sage  = vec3(0.478, 0.564, 0.439);   // #7a9070 Salbei
+    vec3 sage  = vec3(0.420, 0.545, 0.370);   // kräftigeres Salbei (~#6b8b5e statt #7a9070)
 
     // 3-Stop-Mix entlang FBM-Wert — Sage-Anteil verstärkt damit Wolken sichtbar sind
     vec3 col = mix(white, cream, smoothstep(0.20, 0.50, n));
-    col = mix(col, sage, smoothstep(0.45, 0.80, n) * 0.95);
+    col = mix(col, sage, smoothstep(0.45, 0.80, n));
 
     // Theme-Tint via u_line_color (subtle)
     col = mix(col, col * (vec3(0.5) + u_line_color * 0.5), 0.18);
