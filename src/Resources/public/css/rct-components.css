@@ -6534,9 +6534,11 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   --rf-btn-fg:         #0e0e18;
 }
 /* Dark-Form bekommt eigenes dunkles Surface — sonst wäre weiße Schrift
-   auf weißem mod_article-BG unlesbar. */
+   auf weißem mod_article-BG unlesbar. --rct-surface-dark ist garantiert
+   dunkel, folgt NICHT dem Theme (bei hellen Themes wie Soft Edition
+   würde --rct-shell-bg sonst hell, was die is-dark-Intent kaputt macht). */
 .ce_form form.is-dark {
-  background: var(--rct-shell-bg, #171717);
+  background: var(--rct-surface-dark, #171717);
   color: var(--rf-txt);
   border-radius: var(--rct-radius-lg, 0.5rem);
 }

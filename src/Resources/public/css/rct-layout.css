@@ -125,6 +125,12 @@
   --rct-shell-muted:              #c7c7c7;
   --rct-shell-hover:              rgba(255,255,255,0.13);
 
+  /* Garantiert-dunkle / -helle Surfaces für Komponenten mit expliziter
+   * Mode-Wahl (z.B. .is-dark Kontaktform). NICHT theme-folge! Soll bei
+   * jedem Theme — auch den hellen Soft-Themes — den Mode wie gewählt rendern. */
+  --rct-surface-dark:              #171717;
+  --rct-surface-light:             #f5f5f5;
+
   /* --- Typografie --- */
   --rct-font-headline:            'Space Grotesk', sans-serif;
   --rct-font-body:                'Space Grotesk', sans-serif;
