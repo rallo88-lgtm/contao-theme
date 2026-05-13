@@ -17,6 +17,8 @@
   --rct-shadow-soft: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
   /* DM Mono raus — Mono-Slot zeigt auf Body-Font */
   --rct-font-mono: var(--rct-font-body);
+  /* Hell-Färbung Step 1: Shell (Header, Bottom, Sidebars) folgt dem Theme-BG-Tint */
+  --rct-shell-bg: var(--rct-bg);
 }
 
 /* Body-BG tint pro Theme (überschreibt --rct-bg in der Variant-Section unten) */
