@@ -19,6 +19,20 @@
   --rct-font-mono: var(--rct-font-body);
   /* Hell-Färbung Step 1: Shell (Header, Bottom, Sidebars) folgt dem Theme-BG-Tint */
   --rct-shell-bg: var(--rct-bg);
+  /* Step 2: Shell-Text + Border auf dunkel-passend (Default ist white/white-transparent für Dark-Themes) */
+  --rct-shell-text: var(--rct-text);
+  --rct-shell-muted: var(--rct-text-muted);
+  --rct-shell-border: rgba(0,0,0,0.08);
+}
+
+/* Text-Shadow auf Sidebar-Menü-Links für Soft-Themes entfernen.
+ * Default ist `0 1px 6px rgba(0,0,0,0.9)` — schwarz-glow für weißen Text auf dunkel.
+ * Bei dunklem Text auf hell verschmiert das Schwarz-Glow alles. */
+[data-theme^="soft-"] #left nav ul li a,
+[data-theme^="soft-"] #left .mod_navigation ul li a,
+[data-theme^="soft-"] #right nav ul li a,
+[data-theme^="soft-"] #right .mod_navigation ul li a {
+  text-shadow: none;
 }
 
 /* Body-BG tint pro Theme (überschreibt --rct-bg in der Variant-Section unten) */
