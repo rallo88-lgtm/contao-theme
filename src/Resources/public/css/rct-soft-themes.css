@@ -176,7 +176,9 @@
 [data-theme^="soft-"]:not([data-theme="soft-sage"]) #gradient-canvas,
 [data-theme^="soft-"]:not([data-theme="soft-sage"]) #gradient-canvas.is-visible,
 [data-theme^="soft-"]:not([data-theme="soft-sage"]) #rct-effects-canvas,
-[data-theme^="soft-"]:not([data-theme="soft-sage"]) #rct-dots-canvas {
+[data-theme^="soft-"]:not([data-theme="soft-sage"]) #rct-dots-canvas,
+[data-theme^="soft-"]:not([data-theme="soft-sage"]) #rct-sky-canvas,
+[data-theme^="soft-"]:not([data-theme="soft-sage"]) #rct-baker-bg {
   display: none !important;
   opacity: 0 !important;
 }
