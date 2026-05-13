@@ -370,6 +370,28 @@ const RCT_CANVAS_CONFIG = {
     frameSkip:                 2,            // 15fps — heavy Math
   },
 
+  // Aquarell-Wolken — Soft Edition WebGL-Krone für soft-sage.
+  // FBM-Noise mit Salbei/Cream/Off-White Palette, sehr langsame Drift,
+  // Default-Maske + max 0.4 Opacity-Blend (BG-Tint scheint durch).
+  'soft-sage': {
+    vertexShader_amp:          0,
+    vertexShader_seed:         0,
+    vertexShader_freqX:        0,
+    vertexShader_freqY:        0,
+    vertexShader_freqDelta:    0,
+    vertexShader_timeSpeed:    0,
+    vertexShader_density:      [0.06, 0.16],
+    vertexShader_activeColors: [1, 1, 1, 1],
+    vertexShader_bgColor:      '#f5f7f0',   // Cream/Salbei-BG (= --rct-bg von soft-sage)
+    fragmentWithVertex:        false,
+    shaderMode:                19,
+    fragmentShader_lineCount:  1,
+    fragmentShader_lineWidth:  1.0,
+    fragmentShader_lineSpeed:  0.02,         // sehr langsam — 1/4 von Wave-Light
+    fragmentShader_lineColor:  '#7a9070',    // Salbei-Akzent für Theme-Tint
+    frameSkip:                 2,            // 15fps reichen für so langsame Drift
+  },
+
   // Lotus — Polar-Vortex/Kaleidoskop, statisch (kein Aurora-Background)
   lotus: {
     vertexShader_amp:          0,

@@ -1487,6 +1487,51 @@ void main() {
     return;
   }
 
+  // Modus 19: Aquarell-Wolken — sanftes FBM-Noise mit Salbei-Palette,
+  // sehr langsame Drift, Default-Maske, max 0.4 Opacity-Blend mit Cream-BG.
+  // WebGL-Krone der Soft Edition (für soft-sage).
+  if (u_line_mode > 18.5 && u_line_mode < 19.5) {
+    vec2 res = resolution.xy;
+    vec2 fc  = gl_FragCoord.xy;
+    float t  = u_time * u_line_speed;
+
+    // UV mit Aspect-Korrektur
+    vec2 uv = fc / res;
+    uv.x *= res.x / res.y;
+
+    // Drei FBM-Layer mit Pan + verschiedenen Scales — Aquarell-Texture
+    float n1 = rct_fbm(uv * 1.4 + vec2(t * 0.80, t * 0.50));
+    float n2 = rct_fbm(uv * 2.8 + vec2(-t * 0.40, t * 0.60) + 12.3);
+    float n3 = rct_fbm(uv * 5.5 - vec2(t * 0.20, t * 0.30) + 7.7);
+    float n  = n1 * 0.55 + n2 * 0.30 + n3 * 0.15;
+
+    // Sage-Palette (3 Stops aus Spec — Salbei + Cream + Off-White, niedrige Sättigung)
+    vec3 white = vec3(0.980, 0.980, 0.965);   // #fafaf6 Off-White
+    vec3 cream = vec3(0.961, 0.969, 0.941);   // #f5f7f0 Cream (= soft-sage BG-Tint)
+    vec3 sage  = vec3(0.478, 0.564, 0.439);   // #7a9070 Salbei
+
+    // 3-Stop-Mix entlang FBM-Wert
+    vec3 col = mix(white, cream, smoothstep(0.25, 0.55, n));
+    col = mix(col, sage, smoothstep(0.55, 0.85, n) * 0.6);
+
+    // Theme-Tint via u_line_color (subtle)
+    col = mix(col, col * (vec3(0.5) + u_line_color * 0.5), 0.18);
+
+    // sqrt-Gamma für sanfte Mid-Tones (kein ACES — zu kontrastreich für Aquarell-Look)
+    col = sqrt(col);
+
+    // Default-Maske: zentrum sichtbar, am Rand ausfaden (wie Starry Mode 18)
+    vec2 maskUV = (fc - 0.5 * res) / min(res.y, res.x);
+    float mask = 1.0 - smoothstep(0.5, 1.1, length(maskUV));
+
+    // Max 0.4 Opacity-Blend mit Cream-BG — BG-Tint scheint durch, kein Voll-Overlay
+    col = mix(cream, col, mask * 0.4);
+
+    color = clamp(col, 0.0, 1.0);
+    gl_FragColor = vec4(color, 1.0);
+    return;
+  }
+
   gl_FragColor = vec4(color, 1.0);
 }
 `;
