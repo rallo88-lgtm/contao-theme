@@ -7,11 +7,13 @@
         </svg>
     </button>
     <div class="theme-dropdown">
+        {{ '{{indexer::stop}}' }}
         <ul class="theme-list">
             {% for slug, label in rct_themes() %}
             <li><button class="theme-opt-btn" data-set-theme="{{ slug }}"><span class="opt-dot {{ slug }}"></span><span class="opt-label">{{ label }}</span></button></li>
             {% endfor %}
         </ul>
+        {{ '{{indexer::continue}}' }}
         <div class="theme-footer">
             <label class="save-toggle">
                 <input type="checkbox" id="save-theme-pref" checked>
