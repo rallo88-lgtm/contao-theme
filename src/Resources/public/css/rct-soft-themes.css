@@ -68,6 +68,13 @@
   color: var(--rct-text);
 }
 
+/* Fullscreen-Mode überschreibt header-icon-btn auf hardcoded #fff
+ * (siehe rct-layout.css:796) — für Soft-Themes auf dunkel zurückholen. */
+[data-theme^="soft-"]:fullscreen .header-icon-btn,
+:fullscreen [data-theme^="soft-"] .header-icon-btn {
+  color: var(--rct-text);
+}
+
 /* Sprachschalter — analog zum Theme-/Layout-Switcher. */
 [data-theme^="soft-"] .lang-trigger {
   background: rgba(0, 0, 0, 0.04);
