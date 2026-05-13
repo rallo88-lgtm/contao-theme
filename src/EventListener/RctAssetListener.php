@@ -28,6 +28,13 @@ class RctAssetListener
         $GLOBALS['TL_CSS'][] = 'bundles/rct/css/rct-components.css||static';
         $GLOBALS['TL_CSS'][] = 'bundles/rct/css/rct-customize.css||static';
 
+        // Soft Edition CSS nur laden wenn ein soft-* Theme erreichbar ist.
+        // (Allowed-Themes leer = alle erlaubt = laden. Sonst nur wenn explizit drin.)
+        $allowed = $config['rct_allowed_themes'] ?? '';
+        if ($allowed === '' || str_contains($allowed, 'soft-')) {
+            $GLOBALS['TL_CSS'][] = 'bundles/rct/css/rct-soft-themes.css||static';
+        }
+
         // imagesloaded + isotope werden nur vom rct_gallery CE gebraucht und dort
         // per `{% add ... to body %}` lazy geladen (siehe rct_gallery.html.twig).
         // Klaro (CSS+JS+Config) wird nur von youtube + rct_map CEs gebraucht und
