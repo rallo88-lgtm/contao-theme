@@ -23,6 +23,8 @@
   --rct-shell-text: var(--rct-text);
   --rct-shell-muted: var(--rct-text-muted);
   --rct-shell-border: rgba(0,0,0,0.08);
+  /* Step 4: Sidebar-Pseudo-Overlay deckender — Restschimmer der Aurora unterdrücken */
+  --rct-sidebar-alpha: 0.9;
 }
 
 /* Text-Shadow auf Sidebar-Menü-Links für Soft-Themes entfernen.
@@ -62,6 +64,29 @@
 }
 [data-theme^="soft-"] .theme-opt-btn:hover,
 [data-theme^="soft-"] .layout-opt-btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--rct-text);
+}
+
+/* Sprachschalter — analog zum Theme-/Layout-Switcher. */
+[data-theme^="soft-"] .lang-trigger {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.10);
+  color: var(--rct-text);
+}
+[data-theme^="soft-"] .lang-trigger:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.18);
+}
+[data-theme^="soft-"] .lang-dropdown {
+  background: var(--rct-bg);
+  border-color: rgba(0, 0, 0, 0.10);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+[data-theme^="soft-"] .lang-opt-btn {
+  color: var(--rct-text-muted);
+}
+[data-theme^="soft-"] .lang-opt-btn:hover {
   background: rgba(0, 0, 0, 0.04);
   color: var(--rct-text);
 }
