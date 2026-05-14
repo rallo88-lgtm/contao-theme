@@ -76,21 +76,6 @@
   background-color: rgba(0,0,0,0.05);
 }
 
-/* Logo-Swap: für Soft-Themes Hypatia-Eule im Sidebar-Logo (Menü-Bereich),
- * Header-Logo bleibt unverändert.
- * SVG 180x180 wird als BG des Containers eingesetzt, Inline-SVGs/IMGs
- * im Container per visibility:hidden ausgeblendet (Layout-Space bleibt). */
-[data-theme^="soft-"] .rct-logo-link {
-  background-image: url('/bundles/rct/img/eule-transparent.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-[data-theme^="soft-"] .rct-logo-link > svg,
-[data-theme^="soft-"] .rct-logo-link > img {
-  visibility: hidden;
-}
-
 /* Fullscreen-Mode überschreibt header-icon-btn auf hardcoded #fff
  * (siehe rct-layout.css:796) — für Soft-Themes auf dunkel zurückholen. */
 [data-theme^="soft-"]:fullscreen .header-icon-btn,
