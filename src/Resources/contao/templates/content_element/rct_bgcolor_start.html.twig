@@ -1,0 +1,5 @@
+{%- set styles = [] -%}
+{%- if bg %}{% set styles = styles|merge(['background-color:' ~ bg]) %}{% endif -%}
+{%- if image %}{% set styles = styles|merge(['background-image:url(\'' ~ image ~ '\')']) %}{% endif -%}
+<div class="rct-bgbox rct-bgbox--{{ padding }}{{ image ? ' rct-bgbox--has-image' }}{{ cssClass ? ' ' ~ cssClass }}"
+     {% if styles is not empty %}style="{{ styles|join(';') }}"{% endif %}{% if htmlId %} id="{{ htmlId }}"{% endif %}>

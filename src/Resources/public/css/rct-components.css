@@ -1843,6 +1843,23 @@
 }
 
 /* ============================================================
+   RCT BG-Color Wrapper (farblich/bildlich hinterlegte Hinweis-Boxen)
+   Wrapper-Paar rct_bgcolor_start / rct_bgcolor_end aus tl_content.
+   Inline-Style setzt background-color + optional background-image —
+   nur Padding und Surface-Reset stehen hier.
+   ============================================================ */
+.rct-bgbox {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: var(--rct-radius-lg, 0.5rem);
+}
+.rct-bgbox--none { padding: 0; }
+.rct-bgbox--sm   { padding: 0.75rem 1rem; }
+.rct-bgbox--md   { padding: 1.5rem; }
+.rct-bgbox--lg   { padding: 2.5rem 2rem; }
+
+/* ============================================================
    RCT Map (OpenStreetMap / Leaflet)
    ============================================================ */
 

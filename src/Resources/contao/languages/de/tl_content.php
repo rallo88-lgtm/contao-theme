@@ -37,6 +37,12 @@ $GLOBALS['TL_LANG']['tl_content']['rct_parallax_video']   = ['Hintergrundvideo',
 $GLOBALS['TL_LANG']['tl_content']['rct_parallax_height']  = ['Mindesthöhe', 'Minimale Höhe des Bereichs'];
 $GLOBALS['TL_LANG']['tl_content']['rct_parallax_overlay'] = ['Overlay', 'Dunkles Overlay für bessere Lesbarkeit'];
 
+// BG-Color Fields
+$GLOBALS['TL_LANG']['tl_content']['bgcolor_legend']        = 'Hintergrund-Einstellungen';
+$GLOBALS['TL_LANG']['tl_content']['rct_bgcolor_bg']        = ['Hintergrundfarbe', 'Hex-Farbwert (#fff8e1) oder leer für transparent'];
+$GLOBALS['TL_LANG']['tl_content']['rct_bgcolor_image']     = ['Hintergrundbild (optional)', 'Bild als Hintergrund (wirkt zusammen mit Farbe)'];
+$GLOBALS['TL_LANG']['tl_content']['rct_bgcolor_padding']   = ['Innenabstand', 'Polster innerhalb der Box'];
+
 // Element type labels
 $GLOBALS['TL_LANG']['CTE']['rct']            = 'RCT Elemente';
 $GLOBALS['TL_LANG']['CTE']['rct_gallery']    = ['RCT Galerie', 'Isotope-Bildergalerie mit Ordner-Auswahl, Filter und Lightbox'];
@@ -59,6 +65,8 @@ $GLOBALS['TL_LANG']['CTE']['rct_grid_col_start'] = ['RCT Grid-Spalte (Start)', '
 $GLOBALS['TL_LANG']['CTE']['rct_grid_col_end']   = ['RCT Grid-Spalte (Ende)', 'Schließt die Grid-Spalte'];
 $GLOBALS['TL_LANG']['CTE']['rct_fullwidth_start']= ['RCT Fullwidth (Start)', 'Bricht aus dem Content-Container aus für 100% Viewport-Breite'];
 $GLOBALS['TL_LANG']['CTE']['rct_fullwidth_end']  = ['RCT Fullwidth (Ende)', 'Schließt die Fullwidth-Section'];
+$GLOBALS['TL_LANG']['CTE']['rct_bgcolor_start']  = ['RCT BG-Color (Start)', 'Öffnet eine farblich hinterlegte Box (optional mit Hintergrundbild) — wraps die nachfolgenden CEs bis zum Stop-Element'];
+$GLOBALS['TL_LANG']['CTE']['rct_bgcolor_end']    = ['RCT BG-Color (Ende)', 'Schließt die BG-Color-Box'];
 $GLOBALS['TL_LANG']['CTE']['rct_slider_box']     = ['RCT Slider-Box', 'Hero-Slide mit BG-Bild, Overline, Headline, Text und CTA — funktioniert im Slider und standalone'];
 
 $GLOBALS['TL_LANG']['tl_content']['image_legend'] = 'Bild & Layout';

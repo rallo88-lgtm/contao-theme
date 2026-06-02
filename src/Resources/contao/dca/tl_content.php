@@ -308,6 +308,37 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_fullwidth_end'] =
     '{type_legend},type;{invisible_legend:hide},invisible,start,stop';
 
 // ============================================================
+// RCT BG-Color (Wrapper-Paar — farblich hinterlegte Hinweis-Boxen)
+// ============================================================
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_bgcolor_start'] =
+    '{type_legend},type;{bgcolor_legend},rct_bgcolor_bg,rct_bgcolor_padding,rct_bgcolor_image;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_bgcolor_end'] =
+    '{type_legend},type;{invisible_legend:hide},invisible,start,stop';
+
+// File-Field: blob NULL (UUIDs nicht json-serialisierbar)
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_bgcolor_image'] = [
+    'label'     => ['Hintergrundbild (optional)', 'Bild als Hintergrund der Box (überschreibt die Hintergrundfarbe nicht — beide wirken zusammen)'],
+    'inputType' => 'fileTree',
+    'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif,svg', 'fieldType' => 'radio', 'tl_class' => 'clr'],
+    'sql'       => "blob NULL",
+];
+
+// String-Felder ohne 'sql' → jsonData (Contao 5.7+)
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_bgcolor_bg'] = [
+    'label'     => ['Hintergrundfarbe', 'Hex-Farbwert (#fff8e1) oder leer lassen für transparent'],
+    'inputType' => 'text',
+    'eval'      => ['colorpicker' => true, 'isHexColor' => true, 'tl_class' => 'w50 wizard', 'maxlength' => 64],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_bgcolor_padding'] = [
+    'label'     => ['Innenabstand', 'Größe des Polsters innerhalb der Box'],
+    'inputType' => 'select',
+    'options'   => ['none' => 'Keiner', 'sm' => 'Klein', 'md' => 'Normal (Standard)', 'lg' => 'Groß'],
+    'eval'      => ['tl_class' => 'w50'],
+];
+
+// ============================================================
 // RCT Slider Box
 // ============================================================
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_slider_box'] =
