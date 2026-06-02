@@ -30,6 +30,55 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_fullscreen_toggle'] =
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_language_switcher'] =
     '{title_legend},name,headline,type;{languages_legend},rct_languages;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
+// RCT News Pager — Vorgänger/Nachfolger im aktuellen News-Archive
+$GLOBALS['TL_DCA']['tl_module']['palettes']['rct_news_pager'] =
+    '{title_legend},name,headline,type;{pager_legend},rct_pager_position,rct_pager_style,rct_pager_sort_order,rct_pager_show_cover_link,rct_pager_loop,rct_pager_keyboard,rct_pager_swipe;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_pager_position'] = [
+    'label'     => ['Position', 'Wo soll der Pager im Newsreader-Layout erscheinen'],
+    'inputType' => 'select',
+    'options'   => ['bottom' => 'Unten (Standard)', 'top' => 'Oben', 'both' => 'Oben und Unten'],
+    'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_pager_style'] = [
+    'label'     => ['Stil', 'Visuelles Erscheinungsbild des Pagers'],
+    'inputType' => 'select',
+    'options'   => ['arrows' => 'Nur Pfeile', 'arrows-counter' => 'Pfeile + Position (3 / 8)', 'arrows-labels' => 'Pfeile + Titel der Nachbar-Seite'],
+    'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_pager_sort_order'] = [
+    'label'     => ['Sortier-Richtung', 'Aufsteigend = Seite 1 → N (z.B. Magazin-Reihenfolge), Absteigend = neueste zuerst (Blog-Reihenfolge)'],
+    'inputType' => 'select',
+    'options'   => ['asc' => 'Aufsteigend (Seite 1 → N)', 'desc' => 'Absteigend (Neueste zuerst)'],
+    'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => false],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_pager_show_cover_link'] = [
+    'label'     => ['„Zum Cover"-Link', 'Zeigt einen zusätzlichen Link zur ersten Seite des Archivs (z.B. „Heft-Cover")'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_pager_loop'] = [
+    'label'     => ['Loop am Ende', 'Wenn am letzten/ersten Eintrag — wieder von vorn/hinten beginnen (Endlos-Schleife)'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_pager_keyboard'] = [
+    'label'     => ['Tastatur-Pfeile', 'Pfeil-links/rechts auf der Tastatur navigiert zwischen den Seiten'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_pager_swipe'] = [
+    'label'     => ['Touch-Swipe', 'Wischen auf Touch-Geräten navigiert zwischen den Seiten'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
+
 // RCT-Felder in tl_module ohne 'sql' → jsonData (RctModuleFieldsJsonStorageMigration).
 // rct_logo_image + rct_logo_image_mobile (fileTree) bleiben als Spalten.
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_languages'] = [

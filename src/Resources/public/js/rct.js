@@ -1427,5 +1427,58 @@ window.applyLayout = function (layout) {
     document.addEventListener('rct:page-ready', reserveNavHeight);
   })();
 
+  // === RCT News Pager — Tastatur + Touch-Swipe (progressive enhancement) ===
+  // FE-Modul mod_rct_news_pager rendert <nav class="rct-news-pager"> mit
+  // data-pager-keyboard="1" und/oder data-pager-swipe="1" je nach DCA-Toggle.
+  // Greift NUR wenn mind. ein Pager im DOM ist.
+  (function rctNewsPager() {
+    function getNav(direction) {
+      var pager = document.querySelector('.rct-news-pager');
+      if (!pager) return null;
+      var sel = direction === 'next' ? '.rct-pager-next' : '.rct-pager-prev';
+      var link = pager.querySelector(sel + ':not(.rct-pager-link--disabled)');
+      return link && link.href ? link : null;
+    }
+    function navigate(direction) {
+      var link = getNav(direction);
+      if (link) window.location.href = link.href;
+    }
+    function init() {
+      var first = document.querySelector('.rct-news-pager');
+      if (!first) return;
+
+      if (first.dataset.pagerKeyboard === '1') {
+        document.addEventListener('keydown', function(e) {
+          // nur wenn kein Input/Textarea/Contenteditable fokussiert ist
+          var t = document.activeElement;
+          if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+          if (e.key === 'ArrowLeft')  navigate('prev');
+          if (e.key === 'ArrowRight') navigate('next');
+        });
+      }
+
+      if (first.dataset.pagerSwipe === '1') {
+        var startX = 0, startY = 0, threshold = 60;
+        document.addEventListener('touchstart', function(e) {
+          if (!e.touches[0]) return;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+        }, { passive: true });
+        document.addEventListener('touchend', function(e) {
+          if (!e.changedTouches[0]) return;
+          var dx = e.changedTouches[0].clientX - startX;
+          var dy = e.changedTouches[0].clientY - startY;
+          // nur horizontale Wischer (sonst Scroll-Konflikt)
+          if (Math.abs(dx) < threshold || Math.abs(dy) > Math.abs(dx) * 0.6) return;
+          navigate(dx < 0 ? 'next' : 'prev');
+        }, { passive: true });
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
 
 })();

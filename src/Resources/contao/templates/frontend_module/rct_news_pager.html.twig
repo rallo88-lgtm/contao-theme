@@ -1,0 +1,50 @@
+<nav class="rct-news-pager rct-news-pager--{{ positionClass }} rct-news-pager--style-{{ style }}"
+     aria-label="Seitennavigation innerhalb des Archivs"
+     {% if rctVisibility and rctVisibility != 'both' %}data-rct-visibility="{{ rctVisibility }}"{% endif %}
+     {% if keyboard %}data-pager-keyboard="1"{% endif %}
+     {% if swipe %}data-pager-swipe="1"{% endif %}>
+
+  {%- if prev %}
+  <a href="{{ prev.url }}" class="rct-pager-link rct-pager-prev" rel="prev"
+     aria-label="Vorherige Seite{% if style == 'arrows-labels' and prev.title %}: {{ prev.title }}{% endif %}">
+    <span class="rct-pager-arrow" aria-hidden="true">←</span>
+    {%- if style == 'arrows-labels' and prev.title %}
+    <span class="rct-pager-label">{{ prev.title }}</span>
+    {%- endif %}
+  </a>
+  {%- else %}
+  <span class="rct-pager-link rct-pager-prev rct-pager-link--disabled" aria-disabled="true">
+    <span class="rct-pager-arrow" aria-hidden="true">←</span>
+  </span>
+  {%- endif %}
+
+  {%- if cover %}
+  <a href="{{ cover.url }}" class="rct-pager-cover" rel="up">
+    <span class="rct-pager-cover-icon" aria-hidden="true">⌂</span>
+    <span class="rct-pager-cover-label">Zum Cover</span>
+  </a>
+  {%- endif %}
+
+  {%- if style == 'arrows-counter' %}
+  <span class="rct-pager-counter" aria-label="Seite {{ position }} von {{ total }}">
+    <span class="rct-pager-position">{{ position }}</span>
+    <span class="rct-pager-separator">/</span>
+    <span class="rct-pager-total">{{ total }}</span>
+  </span>
+  {%- endif %}
+
+  {%- if next %}
+  <a href="{{ next.url }}" class="rct-pager-link rct-pager-next" rel="next"
+     aria-label="Nächste Seite{% if style == 'arrows-labels' and next.title %}: {{ next.title }}{% endif %}">
+    {%- if style == 'arrows-labels' and next.title %}
+    <span class="rct-pager-label">{{ next.title }}</span>
+    {%- endif %}
+    <span class="rct-pager-arrow" aria-hidden="true">→</span>
+  </a>
+  {%- else %}
+  <span class="rct-pager-link rct-pager-next rct-pager-link--disabled" aria-disabled="true">
+    <span class="rct-pager-arrow" aria-hidden="true">→</span>
+  </span>
+  {%- endif %}
+
+</nav>
