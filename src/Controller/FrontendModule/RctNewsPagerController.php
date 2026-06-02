@@ -21,13 +21,20 @@ class RctNewsPagerController extends AbstractFrontendModuleController
 
     protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
     {
-        // Aktuelle News-Alias aus URL: /news-detail/items/<alias>
-        $alias = (string) Input::get('items');
+        // Aktuelle News-Alias aus URL — versuche items, auto_item, news (verschiedene Contao-Setups)
+        $alias = (string) (Input::get('items') ?: Input::get('auto_item') ?: Input::get('news'));
         if ($alias === '') {
             return new Response('');
         }
 
-        $current = NewsModel::findPublishedByParentAndIdOrAlias($alias, null);
+        // Alle News-Archive-IDs sammeln — findPublishedByParentAndIdOrAlias braucht Array, nicht null
+        $allArchives = NewsArchiveModel::findAll();
+        $archiveIds  = $allArchives ? $allArchives->fetchEach('id') : [];
+        if (empty($archiveIds)) {
+            return new Response('');
+        }
+
+        $current = NewsModel::findPublishedByParentAndIdOrAlias($alias, $archiveIds);
         if ($current === null) {
             return new Response('');
         }
