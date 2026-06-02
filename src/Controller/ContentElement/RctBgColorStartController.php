@@ -22,6 +22,10 @@ class RctBgColorStartController extends AbstractContentElementController
         $bg      = trim((string) $model->rct_bgcolor_bg);
         $padding = $model->rct_bgcolor_padding ?: 'md';
 
+        // Contao colorpicker + isHexColor speichert OHNE #-Prefix → ergänzen
+        if ($bg !== '' && $bg[0] !== '#') {
+            $bg = '#' . $bg;
+        }
         $template->bg      = preg_match('/^#[0-9a-fA-F]{3,8}$/', $bg) ? $bg : '';
         $template->padding = in_array($padding, ['none', 'sm', 'md', 'lg'], true) ? $padding : 'md';
 
