@@ -1,0 +1,54 @@
+#!/bin/bash
+# RCT/Contao-Instanz auf Mittwald updaten (Ralph 2026-10-30) – liegt in ~/rct-tools/, Kopie im Repo docs/server/
+#   rct-update <instanz>          nur das RCT-Bundle (rallo88-lgtm/contao-theme, dev-master)
+#   rct-update <instanz> --voll   alles inkl. Contao-Patches (bleibt in der Linie aus composer.json, z. B. 5.7.*)
+# Ablauf: sichern (DB-Backup + composer.json/.lock) → composer → cache:clear → contao:migrate --with-deletes → assets:install → cache:clear
+# Bei einem Fehler stoppt das Skript und nennt den Rückweg: rct-rollback <instanz>
+set -o pipefail
+
+I="$1"; MODE="$2"; D="/html/$I"
+if [ -z "$I" ] || [ ! -f "$D/composer.json" ]; then
+  echo "Aufruf: rct-update <instanz> [--voll]"
+  echo "Instanzen: $(cd /html && ls -d */ | tr -d / | while read d; do [ -f "$d/composer.json" ] && printf '%s ' "$d"; done)"
+  exit 1
+fi
+if [ -n "$MODE" ] && [ "$MODE" != "--voll" ]; then echo "Unbekannte Option: $MODE (erlaubt: --voll)"; exit 1; fi
+cd "$D" || exit 1
+
+C="php vendor/bin/contao-console"
+STAMP=$(date +%Y%m%d-%H%M%S)
+contao() { composer show contao/core-bundle 2>/dev/null | awk '/^versions/{print $NF}'; }
+bundle() { php -r '$l=json_decode(file_get_contents("composer.lock"),true); foreach($l["packages"] as $p) if($p["name"]=="rallo88-lgtm/contao-theme") echo substr($p["source"]["reference"] ?? $p["dist"]["reference"],0,7);'; }
+step() { echo; echo "▶ $1"; }
+fail() { echo; echo "✖ FEHLER bei: $1"; echo "  Nichts weiter angefasst. Zurück zum Stand vorher: rct-rollback $I"; exit 1; }
+
+V0="Contao $(contao) · Bundle $(bundle)"
+echo "== $I  ($V0)  Modus: ${MODE:-nur Bundle}"
+
+step "Sichern"
+mkdir -p .rct-update
+cp composer.json ".rct-update/composer.json.$STAMP" && cp composer.lock ".rct-update/composer.lock.$STAMP" || fail "composer-Dateien sichern"
+B=$($C contao:backup:create --no-interaction 2>&1 | grep -o 'backup__[0-9]*\.sql\.gz') || fail "DB-Backup"
+echo "$B" > ".rct-update/backup.$STAMP"
+echo "  DB: var/backups/$B · composer: .rct-update/*.$STAMP"
+
+step "Composer"
+if [ "$MODE" = "--voll" ]; then
+  COMPOSER_MEMORY_LIMIT=-1 composer update --no-interaction 2>&1 | grep -E 'Upgrading (contao/core-bundle|rallo88)|Removing|Problem|\[ERROR\]|Fatal' ; [ "${PIPESTATUS[0]}" = 0 ] || fail "composer update"
+else
+  composer update rallo88-lgtm/contao-theme --prefer-source --no-cache --no-interaction 2>&1 | grep -E 'Upgrading|Nothing to|Problem|\[ERROR\]|Fatal' ; [ "${PIPESTATUS[0]}" = 0 ] || fail "composer update (Bundle)"
+fi
+
+step "Cache leeren"
+$C cache:clear --no-interaction >/dev/null 2>&1 || fail "cache:clear"
+step "Datenbank migrieren"
+$C contao:migrate --with-deletes --no-interaction 2>&1 | grep -E '^\s*\*|\[OK\]|\[ERROR\]' ; [ "${PIPESTATUS[0]}" = 0 ] || fail "contao:migrate"
+step "Assets + Cache"
+$C assets:install --no-interaction >/dev/null 2>&1 || fail "assets:install"
+$C cache:clear --no-interaction >/dev/null 2>&1 || fail "cache:clear"
+
+echo
+echo "✔ FERTIG $I"
+echo "  vorher:  $V0"
+echo "  jetzt:   Contao $(contao) · Bundle $(bundle)"
+echo "  Bitte kurz im Browser prüfen (Startseite, eine CE-Seite, Backend). Rückweg: rct-rollback $I"

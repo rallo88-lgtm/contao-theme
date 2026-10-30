@@ -1,0 +1,28 @@
+#!/bin/bash
+# Letztes rct-update einer Instanz zurückdrehen (Ralph 2026-10-30) – liegt in ~/rct-tools/, Kopie im Repo docs/server/
+#   rct-rollback <instanz>
+# Holt composer.json/.lock vom letzten rct-update zurück, installiert genau diese Versionen und spielt das DB-Backup von damals ein.
+# ACHTUNG: alles, was seit dem Update in der Datenbank geändert wurde (Inhalte, Formulareingänge), geht dabei verloren.
+set -o pipefail
+
+I="$1"; D="/html/$I"
+if [ -z "$I" ] || [ ! -d "$D/.rct-update" ]; then echo "Aufruf: rct-rollback <instanz>   (nur nach einem rct-update möglich)"; exit 1; fi
+cd "$D" || exit 1
+C="php vendor/bin/contao-console"
+
+STAMP=$(ls .rct-update/composer.lock.* 2>/dev/null | sort | tail -1 | sed 's/.*composer\.lock\.//')
+[ -n "$STAMP" ] || { echo "Kein gesicherter Stand gefunden."; exit 1; }
+B=$(cat ".rct-update/backup.$STAMP" 2>/dev/null)
+
+echo "== $I zurück auf den Stand vom $STAMP"
+echo "   composer: .rct-update/composer.lock.$STAMP"
+echo "   DB:       var/backups/$B"
+echo "   Alle DB-Änderungen seit diesem Zeitpunkt gehen verloren."
+read -r -p "Wirklich zurückdrehen? (ja/nein) " A
+[ "$A" = "ja" ] || { echo "Abgebrochen, nichts geändert."; exit 0; }
+
+cp ".rct-update/composer.json.$STAMP" composer.json && cp ".rct-update/composer.lock.$STAMP" composer.lock || { echo "✖ composer-Dateien"; exit 1; }
+COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction 2>&1 | grep -E 'Downgrading|Upgrading|Problem|\[ERROR\]|Fatal' ; [ "${PIPESTATUS[0]}" = 0 ] || { echo "✖ composer install"; exit 1; }
+if [ -n "$B" ]; then $C contao:backup:restore "$B" --no-interaction 2>&1 | tail -1 || { echo "✖ DB-Restore"; exit 1; }; fi
+$C cache:clear --no-interaction >/dev/null 2>&1 && $C assets:install --no-interaction >/dev/null 2>&1 && $C cache:clear --no-interaction >/dev/null 2>&1
+echo "✔ $I ist zurück auf dem Stand vom $STAMP. Bitte im Browser prüfen."
