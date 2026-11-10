@@ -1562,6 +1562,7 @@ html[data-layout="classic"] #left .rct-header-logo-link {
   color: var(--rct-accent);
 }
 
+
 /* FULLSCREEN */
 [data-layout="full"] #header          { display: none; }
 [data-layout="full"] #navbar          { display: none; }
@@ -2266,7 +2267,9 @@ body.rct-right-open #right {
   overflow: hidden;
   transition: width var(--rct-transition-speed) var(--rct-transition-type);
 }
-#bottom_left  { width: var(--rct-sidebar-left-current,  0px); }
+/* Links: mindestens Sidebar-Breite, aber nie schmaler als das Copy – sonst lag das Copy bei geschlossener/fehlender
+   linker Sidebar (Classic, Topnav, Sidebar zu) über den Legal-Links (Ralph 10.11.2026, aws.a-web-service.de). */
+#bottom_left  { width: auto; min-width: var(--rct-sidebar-left-current,  0px); overflow: visible; transition: min-width var(--rct-transition-speed) var(--rct-transition-type); }
 #bottom_right { width: var(--rct-sidebar-right-current, 0px); }
 
 /* Mittlere Spalte — folgt der Content-Lane (max-width zentriert) */
@@ -2314,10 +2317,7 @@ body.rct-right-open #right {
    unabhaengig davon ob #bottom_left collapsed ist oder gar keine Module
    enthaelt. */
 .bottom-copy {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
+  white-space: nowrap;   /* im Fluss statt absolut: schiebt die Legal-Links bei schmaler linker Spalte nach rechts */
 }
 .bottom-copy,
 .bottom-copy p,
