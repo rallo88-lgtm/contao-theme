@@ -307,6 +307,16 @@ vec2 rct_tanh2(vec2 x) {
   return sign(x) * (1.0 - e) / (1.0 + e);
 }
 
+// === Datenmeer (Mode 20) Helpers – Wellenhöhe 0..1 und Heightfield ===
+float rct_dm_wave(vec2 w, float t) {
+  w += vec2(0.0, 0.6 * (rct_vnoise(w * vec2(0.35, 0.5) + t * 0.05) - 0.5));
+  float h = 0.55 * sin(2.1 * w.y - t * 0.9 + 1.6 * sin(0.45 * w.x + 0.3 * w.y))
+          + 0.30 * sin(0.9 * w.x + 2.9 * w.y - t * 1.1) + 0.22 * sin(-1.1 * w.x + 3.7 * w.y + t * 0.7)
+          + 0.35 * (rct_vnoise(w * vec2(0.6, 1.4) + vec2(0.0, t * 0.25)) - 0.5);
+  return clamp(h * 0.6 + 0.5, 0.0, 1.0);
+}
+float rct_dm_H(vec2 p, float t) { return (rct_dm_wave(p, t) - 0.5) * 0.55; }
+
 // === Starry Planes Theme (Mode 18) Helpers ===
 // Adapted from CC0 "Starry planes" by mrange (public domain).
 // SDF + smin helpers MIT-licensed by Inigo Quilez.
@@ -1529,6 +1539,82 @@ void main() {
 
     color = clamp(col, 0.0, 1.0);
     gl_FragColor = vec4(color, 1.0);
+    return;
+  }
+
+  // Modus 20: Datenmeer (Ralph 10.11.2026, a-web-service.de, nach Astras Floß-Entwurf) — nächtliches Meer per Raymarching-Heightfield:
+  // Kamera hoch und geneigt (Horizont 72 %), auf den Kämmen feine Cyan-Punkte (Größe nach Wellenhöhe, Zufallsversatz/-lücken),
+  // in den Tälern zerfranste Mond-Reflexe #9ad2df (selten Magenta #734074), Himmel Petrol mit Wolken (Türkis/Lila, am Mond heller).
+  // Mond = Bild per CSS ([data-theme="datenmeer"] body::after), nicht im Shader. fwidth gibt es in WebGL1 nicht → Pixelgröße analytisch.
+  if (u_line_mode > 19.5 && u_line_mode < 20.5) {
+    vec2 res = resolution.xy;
+    vec2 uv  = gl_FragCoord.xy / res;
+    float t  = u_time * u_line_speed;
+    float horizon = 0.72;
+    vec3 skyTop = vec3(0.0, 0.137, 0.204), skyLow = vec3(0.0, 0.161, 0.224);
+    vec3 seaFar = vec3(0.0, 0.17, 0.245), seaNear = vec3(0.0, 0.2, 0.29);
+    vec3 cyan = vec3(0.063, 0.68, 0.80);
+    float aspect = res.x / res.y; float sy = uv.y - horizon;
+    float pitch = atan((horizon - 0.5) / 1.1);
+    vec3 rd0 = normalize(vec3((uv.x - 0.5) * aspect, uv.y - 0.5, 1.1));
+    vec3 rd = vec3(rd0.x, rd0.y * cos(pitch) - rd0.z * sin(pitch), rd0.y * sin(pitch) + rd0.z * cos(pitch));
+    vec3 ro = vec3(0.0, 2.6, 0.0);
+    vec3 haze = skyLow + cyan * 0.07;
+
+    if (rd.y > -0.002) {
+      vec3 c = mix(skyLow, skyTop, smoothstep(0.0, 1.0 - horizon, sy)); c += cyan * 0.06 * exp(-sy * 28.0);
+      vec2 q = vec2(uv.x * aspect * 2.4 + t * 0.012, uv.y * 11.0); float n = rct_fbm(q);
+      float band = smoothstep(horizon + 0.03, horizon + 0.09, uv.y) * (1.0 - smoothstep(0.95, 1.0, uv.y));
+      float moonLit = exp(-length((uv - vec2(0.89, 0.856)) * vec2(aspect, 1.0)) * 2.6);
+      float cl = smoothstep(0.5 - 0.08 * moonLit, 0.66, n) * band; float edge = smoothstep(0.6, 0.76, n);
+      vec3 lilaC = mix(vec3(0.369, 0.333, 0.569), vec3(0.467, 0.392, 0.651), edge), tuerC = mix(vec3(0.157, 0.361, 0.486), vec3(0.25, 0.56, 0.66), edge);
+      vec3 cc = mix(tuerC, lilaC, smoothstep(0.42, 0.62, rct_vnoise(q * vec2(0.35, 0.5) + 5.0)));
+      c = mix(c, cc * (0.8 + 1.0 * moonLit), cl * 0.92);
+      gl_FragColor = vec4(clamp(c, 0.0, 1.0), 1.0);
+      return;
+    }
+
+    float tt = 0.5, lastT = 0.5; bool hit = false;
+    for (int i = 0; i < 90; i++) {
+      vec3 q = ro + rd * tt;
+      if (q.y - rct_dm_H(q.xz, t) > 0.0) { lastT = tt; tt += 0.04 + tt * 0.065; if (tt > 260.0) break; } else { hit = true; break; }
+    }
+    if (!hit) { gl_FragColor = vec4(haze, 1.0); return; }
+    float a0 = lastT, b0 = tt;
+    for (int k = 0; k < 6; k++) { float m = 0.5 * (a0 + b0); vec3 q = ro + rd * m; if (q.y - rct_dm_H(q.xz, t) > 0.0) a0 = m; else b0 = m; }
+    tt = b0;
+    vec3 p = ro + rd * tt; float z = max(p.z, 0.3); float fog = exp(-z * 0.014);
+    float e = 0.04;
+    vec3 n = normalize(vec3(rct_dm_H(p.xz - vec2(e, 0.0), t) - rct_dm_H(p.xz + vec2(e, 0.0), t), 2.0 * e, rct_dm_H(p.xz - vec2(0.0, e), t) - rct_dm_H(p.xz + vec2(0.0, e), t)));
+    vec3 L = normalize(vec3(0.55, 0.42, 1.0));
+    float dif = max(dot(n, L), 0.0); float rim = pow(1.0 - max(dot(n, -rd), 0.0), 3.0);
+    float spec = pow(max(dot(reflect(rd, n), L), 0.0), 60.0);
+    float hgt = rct_dm_wave(p.xz, t);
+    vec3 c = mix(seaFar, seaNear, fog) * (0.45 + 0.75 * dif);
+    c += cyan * (0.10 * rim + 0.5 * spec) * (0.4 + 0.6 * fog);
+    // Mond-Reflexe in den Tälern: hell #9ad2df, selten Magenta #734074, zerfranst, gesammelt unter dem Mond
+    float valley = 1.0 - smoothstep(0.38, 0.55, hgt);
+    float nn = rct_vnoise(vec2(p.x * 2.2, p.z * 11.0 + t * 0.6)) * 0.65 + rct_vnoise(vec2(p.x * 4.5, p.z * 20.0 - t * 0.9)) * 0.35;
+    vec3 hell = vec3(0.604, 0.824, 0.875), magenta = vec3(0.451, 0.251, 0.455);
+    float fray = rct_vnoise(vec2(p.x * 9.0, p.z * 28.0) + hgt * 5.0 + vec2(0.0, t * 0.4));
+    float path = 0.45 + 1.3 * exp(-pow((uv.x - 0.88) * 3.2, 2.0));
+    vec3 glint = mix(hell, magenta, smoothstep(0.62, 0.78, rct_vnoise(vec2(p.x * 0.07 + 3.0, p.z * 0.3))));
+    c += glint * smoothstep(0.6, 0.85, nn) * smoothstep(0.3, 0.6, fray) * valley * path * (1.4 * fog + 0.25);
+    // Punkte auf den Kämmen: Gitter wächst nach vorn, Zufallsversatz/-größe/-lücken; Pixelgröße analytisch statt fwidth
+    vec2 g = vec2(p.x / pow(z, 0.55) * 62.0, pow(z, 0.45) * 30.0);
+    vec2 id = floor(g);
+    vec2 cell = fract(g) - 0.5 - (vec2(rct_hash(id), rct_hash(id + 7.3)) - 0.5) * 0.55;
+    float pxW = tt / (1.1 * res.y);
+    vec2 fw = vec2(62.0 / pow(z, 0.55) * pxW, 13.5 * pow(z, -0.55) * pxW / max(-rd.y, 0.02));
+    vec2 pxc = cell / max(fw, vec2(1e-4));
+    float keep = step(0.27, rct_hash(id + 3.1)); float vary = 0.65 + 0.7 * rct_hash(id + 11.7);
+    float rise = smoothstep(0.38, 1.0, hgt); float rad = mix(0.12, 0.72, rise * rise) * (0.5 + 0.5 * fog);
+    float dotm = keep * (1.0 - smoothstep(rad * vary - 0.35, rad * vary + 0.35, length(pxc)));
+    float lod = 1.0 - smoothstep(0.3, 0.55, max(fw.x, fw.y));
+    c += cyan * dotm * smoothstep(0.36, 0.5, hgt) * (0.35 + 0.9 * rise) * lod * (0.35 + 0.65 * fog);
+    c += cyan * rise * 0.06 * (1.0 - lod) * fog;
+    c = mix(haze, c, smoothstep(0.0, 0.25, fog + 0.02));
+    gl_FragColor = vec4(clamp(c, 0.0, 1.0), 1.0);
     return;
   }
 

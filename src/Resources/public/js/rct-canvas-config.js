@@ -13,6 +13,7 @@
  *                      8=Claudy Sky    (FBM-Wolken, honoris causa)
  *                      10=Magnetfeld   (Dipol-Feldlinien + Lemniskaten-Pole)
  *                      11=Neon Grid    (Synthwave Perspektivgitter, Maus-reaktiv)
+ *                      20=Datenmeer    (Raymarching-Meer, Lichtpunkte + Mond-Reflexe)
  * fragmentWithVertex → true=Aurora im Hintergrund | false=flacher BG
  */
 const RCT_CANVAS_CONFIG = {
@@ -348,6 +349,25 @@ const RCT_CANVAS_CONFIG = {
     fragmentShader_lineSpeed:  0.08,         // Plane-March-Speed (planeDist*time)
     fragmentShader_lineColor:  '#ffffff',    // neutraler Tint (Sterne sind farbig)
     frameSkip:                 2,            // 15fps
+  },
+  // Datenmeer — nächtliches Meer aus Lichtpunkten + Mond-Reflexen (Ralph 10.11.2026, a-web-service.de)
+  datenmeer: {
+    vertexShader_amp:          0,
+    vertexShader_seed:         0,
+    vertexShader_freqX:        0,
+    vertexShader_freqY:        0,
+    vertexShader_freqDelta:    0,
+    vertexShader_timeSpeed:    0,
+    vertexShader_density:      [0.06, 0.16],
+    vertexShader_activeColors: [1, 1, 1, 1],
+    vertexShader_bgColor:      '#002334',   // Petrol-Nachtblau
+    fragmentWithVertex:        false,
+    shaderMode:                20,
+    fragmentShader_lineCount:  1,
+    fragmentShader_lineWidth:  1.0,
+    fragmentShader_lineSpeed:  0.05,         // × 0,02 × ms = Sekunden-Takt wie im Prototyp
+    fragmentShader_lineColor:  '#10adcd',
+    frameSkip:                 2,            // Raymarching – sparsam
   },
 
   // Inversion — Möbius-Inversion + Mat2-Rotation, fraktal-galaktischer Look

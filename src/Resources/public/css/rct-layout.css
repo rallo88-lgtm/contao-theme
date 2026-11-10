@@ -357,7 +357,8 @@
 [data-theme="plasma"] #gradient-canvas,
 [data-theme="inversion"] #gradient-canvas,
 [data-theme="fire"] #gradient-canvas,
-[data-theme="wave"] #gradient-canvas {
+[data-theme="wave"] #gradient-canvas,
+[data-theme="datenmeer"] #gradient-canvas {
   mask-image: none;
   -webkit-mask-image: none;
   opacity: 1.0;
@@ -374,6 +375,7 @@
 [data-theme="fire"] #rct-dots-canvas { display: none; }
 [data-theme="wave"] #rct-dots-canvas { display: none; }
 [data-theme="starry"] #rct-dots-canvas { display: none; }
+[data-theme="datenmeer"] #rct-dots-canvas { display: none; }
 
 /* Toxic Green: Canvas Hintergrundbild + Maske deaktivieren */
 [data-theme="toxic-green"] #gradient-canvas {
@@ -2622,6 +2624,27 @@ body.rct-right-open #right {
   --grad-3: #050108;
   --grad-4: #000000;
 }
+
+/* --- Theme: Datenmeer (Ralph 10.11.2026) – nächtliches Meer aus Lichtpunkten, Mond als Bild oben rechts --- */
+[data-theme="datenmeer"] {
+  --rct-primary:       #1e88c5;
+  --rct-primary-light: #4fc3f7;
+  --rct-accent:        #9ad2df;
+  --rct-primary-container: rgba(16, 173, 205, 0.12);
+  --rct-sidebar-alpha:     0.6;
+  --rct-main-alpha:        0.0;
+  --rct-bg-dots:           rgba(154, 210, 223, 0.40);
+  --grad-1: #002334;
+  --grad-2: #00364d;
+  --grad-3: #001a27;
+  --grad-4: #000f17;
+}
+body[data-theme="datenmeer"]::after {
+  content: ""; position: fixed; right: 4vw; top: calc(var(--rct-header-height, 64px) + 26px);
+  width: min(12vw, 200px); aspect-ratio: 1; z-index: 11; pointer-events: none;   /* über dem Meer-Canvas (10), unter dem Inhalt */
+  background: url('../img/theme-datenmeer-mond.avif') center / contain no-repeat;
+}
+@media (max-width: 800px) { body[data-theme="datenmeer"]::after { width: 22vw; } }
 
 #rct-baker-bg {
   position: fixed;

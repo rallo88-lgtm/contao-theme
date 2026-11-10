@@ -39,6 +39,7 @@ class RctConfigController extends AbstractBackendController
         'fire'              => 'Fire',
         'wave'              => 'Wave',
         'starry'            => 'Starry Planes',
+        'datenmeer'         => 'Datenmeer',
     ];
 
     private const DEFAULTS = [
