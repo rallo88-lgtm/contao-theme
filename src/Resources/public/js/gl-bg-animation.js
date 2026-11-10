@@ -315,7 +315,7 @@ float rct_dm_wave(vec2 w, float t) {
           + 0.35 * (rct_vnoise(w * vec2(0.6, 1.4) + vec2(0.0, t * 0.25)) - 0.5);
   return clamp(h * 0.6 + 0.5, 0.0, 1.0);
 }
-float rct_dm_H(vec2 p, float t) { return (rct_dm_wave(p, t) - 0.5) * 0.55; }
+float rct_dm_H(vec2 p, float t) { return (rct_dm_wave(p, t) - 0.5) * 0.41; } // Höhe -25 % (Ralph 10.11.)
 
 // === Starry Planes Theme (Mode 18) Helpers ===
 // Adapted from CC0 "Starry planes" by mrange (public domain).
@@ -1603,10 +1603,15 @@ void main() {
     // Punkte auf den Kämmen: Gitter wächst nach vorn, Zufallsversatz/-größe/-lücken; Pixelgröße analytisch statt fwidth
     vec2 g = vec2(p.x / pow(z, 0.55) * 62.0, pow(z, 0.45) * 30.0);
     vec2 id = floor(g);
-    vec2 cell = fract(g) - 0.5 - (vec2(rct_hash(id), rct_hash(id + 7.3)) - 0.5) * 0.55;
     float pxW = tt / (1.1 * res.y);
     vec2 fw = vec2(62.0 / pow(z, 0.55) * pxW, 13.5 * pow(z, -0.55) * pxW / max(-rd.y, 0.02));
-    vec2 pxc = cell / max(fw, vec2(1e-4));
+    // Punkt rund in Bildschirm-Pixeln (Ralph 10.11.: Wellen sollen die Punkte nicht verzerren): Zellmitte auf die Welle setzen und projizieren
+    vec2 gc = id + 0.5 + (vec2(rct_hash(id), rct_hash(id + 7.3)) - 0.5) * 0.55;
+    float zc = pow(gc.y / 30.0, 1.0 / 0.45); float xc = gc.x / 62.0 * pow(zc, 0.55);
+    vec3 v = vec3(xc, rct_dm_H(vec2(xc, zc), t), zc) - ro;
+    vec3 dc = vec3(v.x, v.y * cos(pitch) + v.z * sin(pitch), -v.y * sin(pitch) + v.z * cos(pitch));
+    vec2 scr = (vec2(0.5 + dc.x / dc.z * 1.1 / aspect, 0.5 + dc.y / dc.z * 1.1)) * res;
+    vec2 pxc = (gl_FragCoord.xy - scr) * vec2(1.0, u_px_stretch);
     float keep = step(0.27, rct_hash(id + 3.1)); float vary = 0.65 + 0.7 * rct_hash(id + 11.7);
     float rise = smoothstep(0.38, 1.0, hgt); float rad = mix(0.12, 0.72, rise * rise) * (0.5 + 0.5 * fog);
     float dotm = keep * (1.0 - smoothstep(rad * vary - 0.35, rad * vary + 0.35, length(pxc)));
@@ -1941,7 +1946,7 @@ e(this, "handleMouseMove", (event) => {
       e(this, "handleScrollEnd", () => {
           this.isScrolling = !1, this.isIntersecting && this.play()
       }), e(this, "resize", () => {
-          this.width = window.innerWidth, this.minigl.setSize(this.width, this.height), this.minigl.setOrthographicCamera(), this.xSegCount = Math.ceil(this.width * this.conf.density[0]), this.ySegCount = Math.ceil(this.height * this.conf.density[1]), this.mesh.geometry.setTopology(this.xSegCount, this.ySegCount), this.mesh.geometry.setSize(this.width, this.height), this.mesh.material.uniforms.u_shadow_power.value = this.width < 600 ? 5 : 6,
+          this.width = window.innerWidth, this.minigl.setSize(this.width, this.height), this.minigl.setOrthographicCamera(), this.xSegCount = Math.ceil(this.width * this.conf.density[0]), this.ySegCount = Math.ceil(this.height * this.conf.density[1]), this.mesh.geometry.setTopology(this.xSegCount, this.ySegCount), this.mesh.geometry.setSize(this.width, this.height), this.mesh.material.uniforms.u_shadow_power.value = this.width < 600 ? 5 : 6, this.mesh.material.uniforms.u_px_stretch && (this.mesh.material.uniforms.u_px_stretch.value = (this.el.getBoundingClientRect().height || window.innerHeight) / this.height),
         // Responsive: auf Mobile Tropfen/Linien halbieren
         this.lineCount !== undefined && (
           this.mesh.material.uniforms.u_line_count.value = this.width < 768
@@ -2138,6 +2143,7 @@ u_mouse: new this.minigl.Uniform({
           u_line_count: new this.minigl.Uniform({ value: this.lineCount || 20.0 }),
           u_line_width: new this.minigl.Uniform({ value: this.lineWidth || 0.15 }),
           u_line_speed: new this.minigl.Uniform({ value: this.lineSpeed || 0.0 }),
+          u_px_stretch: new this.minigl.Uniform({ value: 1.0 }), // CSS-Höhe / Canvas-Höhe (fest 600) – Datenmeer-Punkte bleiben rund
           u_line_color: new this.minigl.Uniform({ value: this.lineColor || [0.8, 0.7, 0.4], type: "vec3" }),
           u_bg_color:   new this.minigl.Uniform({ value: this.bgColor   || [0.06, 0.06, 0.08], type: "vec3" }),
           u_wave_strength: new this.minigl.Uniform({ value: this.waveStrength || 1.0 }),
