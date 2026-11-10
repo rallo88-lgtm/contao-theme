@@ -56,6 +56,86 @@ class RctAssetListener
         if ($config) {
             $this->applyThemeConfig($config);
         }
+        $this->injectPageTheme($page, $layout, $config ?? []);
+    }
+
+    /**
+     * Theme pro Seite (v1.7.6): rct_page_theme der Seite, sonst der nächsten Elternseite im Trail.
+     * Kein Theme-Umschalter im Layout → Seiten-Theme gilt immer (gespeicherte Besucherwahl wird ignoriert, nicht gelöscht).
+     * Umschalter im Layout → Seiten-Theme ist nur Startwert, die Besucherwahl (localStorage user-theme) gewinnt.
+     * Nirgends ein Theme gesetzt → nichts ausgeben, altes Verhalten bleibt.
+     */
+    private function injectPageTheme(PageModel $page, LayoutModel $layout, array $config): void
+    {
+        $theme = $this->resolvePageTheme($page, $config);
+        if ($theme === null) {
+            return;
+        }
+        $switchable = $this->layoutHasThemeSwitcher($layout);
+        $t = json_encode($theme);
+
+        $script  = '<script id="rct-page-theme">';
+        $script .= 'window.rctPageTheme=' . $t . ';window.rctThemeSwitchable=' . ($switchable ? 'true' : 'false') . ';';
+        $script .= '(function(){var t=' . $t . ';';
+        if ($switchable) {
+            $script .= 'try{if(localStorage.getItem(\'user-theme\'))return;}catch(e){}';
+        }
+        $script .= 'var d=document.documentElement;if(t===\'default\')d.removeAttribute(\'data-theme\');else d.setAttribute(\'data-theme\',t);})();';
+        $script .= '</script>';
+
+        $GLOBALS['TL_HEAD'][] = $script;
+    }
+
+    private function resolvePageTheme(PageModel $page, array $config): ?string
+    {
+        $all = array_keys(\Rallo\ContaoTheme\Controller\Backend\RctConfigController::ALL_THEMES);
+        $raw = (string) ($config['rct_allowed_themes'] ?? '');
+        $valid = $raw === '' ? $all : array_values(array_intersect(explode(',', $raw), $all));
+        if (!$valid) {
+            $valid = $all;
+        }
+
+        $trail = array_map('intval', (array) ($page->trail ?: [$page->id]));
+        if (!$trail) {
+            return null;
+        }
+        try {
+            $rows = $this->db->fetchAllKeyValue(
+                'SELECT id, rct_page_theme FROM tl_page WHERE id IN (' . implode(',', $trail) . ')'
+            );
+        } catch (\Throwable) {
+            return null; // Spalte noch nicht migriert
+        }
+
+        foreach (array_reverse($trail) as $id) {
+            $t = (string) ($rows[$id] ?? '');
+            if ($t !== '' && in_array($t, $valid, true)) {
+                return $t;
+            }
+        }
+
+        return null;
+    }
+
+    private function layoutHasThemeSwitcher(LayoutModel $layout): bool
+    {
+        $mods = \Contao\StringUtil::deserialize($layout->modules, true);
+        $ids = [];
+        foreach ($mods as $m) {
+            if (!empty($m['enable']) && (int) ($m['mod'] ?? 0) > 0) {
+                $ids[] = (int) $m['mod'];
+            }
+        }
+        if (!$ids) {
+            return false;
+        }
+        try {
+            return (bool) $this->db->fetchOne(
+                "SELECT COUNT(*) FROM tl_module WHERE type = 'rct_theme_switcher' AND id IN (" . implode(',', $ids) . ')'
+            );
+        } catch (\Throwable) {
+            return false;
+        }
     }
 
     private function loadConfig(): ?array

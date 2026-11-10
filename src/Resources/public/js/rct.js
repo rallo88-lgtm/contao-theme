@@ -703,9 +703,12 @@
       applyTheme(allowedThemes[0], false);
       if (switcher) switcher.style.display = 'none';
     } else {
-      const validTheme = (allowedThemes && savedTheme && !allowedThemes.includes(savedTheme))
-        ? allowedThemes[0]
-        : (savedTheme || 'default');
+      // Theme pro Seite (v1.7.6): ohne Umschalter gilt das Seiten-Theme fest, mit Umschalter ist es nur der Startwert
+      const pageTheme = window.rctPageTheme || null;
+      let validTheme = (allowedThemes && savedTheme && !allowedThemes.includes(savedTheme))
+        ? (pageTheme || allowedThemes[0])
+        : (savedTheme || pageTheme || 'default');
+      if (pageTheme && !switcher) validTheme = pageTheme;
       applyTheme(validTheme, false);
 
       if (switcher) {
