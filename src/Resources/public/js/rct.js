@@ -690,6 +690,20 @@
       });
     }
 
+    // Datenmeer-Scroll (Fallback für Browser ohne CSS-Scroll-Animation, z. B. Firefox): Canvas + Mond scrollen die Himmelshöhe (28vh) mit
+    if (!(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'))) {
+      const dmRoot = document.documentElement;
+      let dmTick = false, dmLast = -1;
+      const dmUpdate = () => {
+        dmTick = false;
+        const s = dmRoot.getAttribute('data-theme') === 'datenmeer' ? Math.round(Math.min(Math.max(window.scrollY, 0), window.innerHeight * 0.28)) : 0;
+        if (s !== dmLast) { dmRoot.style.setProperty('--rct-dm-shift', s + 'px'); dmLast = s; }
+      };
+      window.addEventListener('scroll', () => { if (!dmTick) { dmTick = true; requestAnimationFrame(dmUpdate); } }, { passive: true });
+      window.addEventListener('resize', dmUpdate, { passive: true });
+      dmUpdate();
+    }
+
 
     /* ------------------------------------------------------------------
        8. THEME INITIALISIERUNG & SWITCHER-EVENTS

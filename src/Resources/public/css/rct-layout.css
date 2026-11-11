@@ -940,6 +940,7 @@ position: sticky;
 #navbar.is-scrolled {
   box-shadow: 0 4px 24px rgba(0,0,0,0.3);
   padding-top: 23px;
+  margin-bottom: -23px;   /* gleicht das Padding im Fluss aus – sonst springt der Inhalt beim Andocken 23px nach unten (Layout-Shift, Ralph 11.11.) */
 }
 
 
@@ -1383,6 +1384,7 @@ html[data-layout="classic"] #left .rct-header-logo-link {
 /* is-scrolled Padding-Sprung aus dem Sidebar-Layout neutralisieren */
 [data-layout="classic"] #navbar.is-scrolled {
   padding-top: 0;
+  margin-bottom: 0;
 }
 [data-layout="classic"] #navbar {
   transition: box-shadow 0.3s ease;
@@ -2645,6 +2647,26 @@ body[data-theme="datenmeer"]::after {
   background: url('../img/theme-datenmeer-mond.avif') center / contain no-repeat;
 }
 @media (max-width: 800px) { body[data-theme="datenmeer"]::after { width: 22vw; } }
+
+/* Datenmeer: Canvas um die Himmelshöhe größer (128vh) und beim Scrollen 1:1 mit dem Inhalt nach oben, bis der Himmel weg ist –
+   so bleibt das Floß im Hero auf dem Wasser (Ralph 11.11.2026). Shader rechnet mit dmX = 0.28 (gl-bg-animation.js, Modus 20).
+   Verschoben wird nur per transform (GPU) – die WebGL-Animation pausiert beim Scrollen ohnehin.
+   Weg 1: scroll-driven animation (Chrome/Edge/Safari) läuft im Takt des Scrollens, ohne JS.
+   Weg 2 (Fallback, Firefox): rct.js setzt --rct-dm-shift; die Animation hat Vorrang, wo sie unterstützt wird. */
+[data-theme="datenmeer"] #gradient-canvas {
+  height: 128vh;
+  transform: translate3d(0, calc(-1 * var(--rct-dm-shift, 0px)), 0);
+}
+body[data-theme="datenmeer"]::after { transform: translate3d(0, calc(-1 * var(--rct-dm-shift, 0px)), 0); }
+@supports (animation-timeline: scroll()) {
+  [data-theme="datenmeer"] #gradient-canvas,
+  body[data-theme="datenmeer"]::after {
+    animation: rct-dm-shift linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 28vh;
+  }
+}
+@keyframes rct-dm-shift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, -28vh, 0); } }
 
 #rct-baker-bg {
   position: fixed;

@@ -1547,8 +1547,10 @@ void main() {
   // in den Tälern zerfranste Mond-Reflexe #9ad2df (selten Magenta #734074), Himmel Petrol mit Wolken (Türkis/Lila, am Mond heller).
   // Mond = Bild per CSS ([data-theme="datenmeer"] body::after), nicht im Shader. fwidth gibt es in WebGL1 nicht → Pixelgröße analytisch.
   if (u_line_mode > 19.5 && u_line_mode < 20.5) {
-    vec2 res = resolution.xy;
-    vec2 uv  = gl_FragCoord.xy / res;
+    // Canvas ist 128vh hoch und scrollt die Himmelshöhe (28vh) mit dem Inhalt mit (Ralph 11.11.: Floß bleibt auf dem Wasser) – rechnen in Bildschirm-Koordinaten
+    float dmX = 0.28;
+    vec2 res = vec2(resolution.x, resolution.y / (1.0 + dmX));
+    vec2 uv  = vec2(gl_FragCoord.x / resolution.x, gl_FragCoord.y / res.y - dmX);
     float t  = u_time * u_line_speed;
     float horizon = 0.72;
     vec3 skyTop = vec3(0.0, 0.137, 0.204), skyLow = vec3(0.0, 0.161, 0.224);
@@ -1610,8 +1612,8 @@ void main() {
     float zc = pow(gc.y / 30.0, 1.0 / 0.45); float xc = gc.x / 62.0 * pow(zc, 0.55);
     vec3 v = vec3(xc, rct_dm_H(vec2(xc, zc), t), zc) - ro;
     vec3 dc = vec3(v.x, v.y * cos(pitch) + v.z * sin(pitch), -v.y * sin(pitch) + v.z * cos(pitch));
-    vec2 scr = (vec2(0.5 + dc.x / dc.z * 1.1 / aspect, 0.5 + dc.y / dc.z * 1.1)) * res;
-    vec2 pxc = (gl_FragCoord.xy - scr) * vec2(1.0, u_px_stretch);
+    vec2 scr = vec2(0.5 + dc.x / dc.z * 1.1 / aspect, 0.5 + dc.y / dc.z * 1.1);
+    vec2 pxc = (uv - scr) * res * vec2(1.0, u_px_stretch);
     float keep = step(0.27, rct_hash(id + 3.1)); float vary = 0.65 + 0.7 * rct_hash(id + 11.7);
     float rise = smoothstep(0.38, 1.0, hgt); float rad = mix(0.12, 0.72, rise * rise) * (0.5 + 0.5 * fog);
     float dotm = keep * (1.0 - smoothstep(rad * vary - 0.35, rad * vary + 0.35, length(pxc)));
