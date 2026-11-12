@@ -1633,6 +1633,167 @@ void main() {
     return;
   }
 
+  // Modus 21 „Floß im Datenmeer“ (aus Shader-Labor Exp. 32, Ralph 12.11.2026) – Datenmeer aus Exp. 31, darüber Floß + Sofa (u_tex1) und Missis Kopf (u_tex2, Blick per u_x1.xy), Spiegelbild im Wasser
+  // u_x0 = Floß-Kasten (x, y, w, h in Mond-Einheiten wie u_moon), u_x1 = (Spalte, Zeile, Schaukel-Winkel, Schaukel-Hub)
+  if (u_line_mode > 20.5 && u_line_mode < 21.5) {
+    // Canvas ist 128vh hoch und scrollt die Himmelshöhe (28vh) mit dem Inhalt mit (Ralph 11.11.: Floß bleibt auf dem Wasser) – rechnen in Bildschirm-Koordinaten
+    float dmX = 0.28;
+    vec2 res = vec2(resolution.x, resolution.y / (1.0 + dmX));
+    vec2 uv  = vec2(gl_FragCoord.x / resolution.x, gl_FragCoord.y / res.y - dmX);
+    float t  = u_time * u_line_speed;
+    float horizon = u_p0 + u_x2.y, wh = u_p1, dens = max(u_p3, 0.05);   // p0 Horizont (+ Scroll-Neigung u_x2.y), p1 Wellenhöhe, p3 Punktdichte
+    vec3 skyTop = u_bg_color, skyLow = u_bg_color + vec3(0.0, 0.024, 0.02);   // Grundfarbe = Petrol des Himmels, Abstufungen wie im Original
+    vec3 seaFar = u_bg_color + vec3(0.0, 0.033, 0.041), seaNear = u_bg_color + vec3(0.0, 0.063, 0.086);
+    vec3 cyan = u_line_color;   // Effektfarbe = Lichtpunkte + Glanz
+    float aspect = res.x / res.y; float sy = uv.y - horizon;
+    float pitch = atan((horizon - 0.5) / 1.1);
+    vec3 rd0 = normalize(vec3((uv.x - 0.5) * aspect, uv.y - 0.5, 1.1));
+    vec3 rd = vec3(rd0.x, rd0.y * cos(pitch) - rd0.z * sin(pitch), rd0.y * sin(pitch) + rd0.z * cos(pitch));
+    vec3 ro = vec3(0.0, max(u_p2 + u_x2.x, 0.3), 0.0);   // p2 Kamerahöhe (+ Scroll-Versatz u_x2.x)
+    vec3 haze = skyLow + cyan * 0.07;
+
+    // Mond-Textur VOR der Himmel/Meer-Verzweigung lesen: in Verzweigungen verschätzt sich die GPU am Rand mit der Mipmap (feine Linie am Horizont)
+    vec2 mcUv = u_moon.w > 0.0 ? vec2(u_moon.x / (resolution.x * 1.02), 1.0 - u_moon.y / u_moon.w) : vec2(0.89, 0.856);
+    vec2 mp = (vec2(uv.x * resolution.x * 1.02, (1.0 - uv.y) * u_moon.w) - u_moon.xy) / max(u_moon.z, 1.0);
+    vec4 moonT = texture2D(u_tex0, clamp(vec2(0.5 + mp.x, 0.5 - mp.y), 0.0, 1.0));
+    float moonA = u_tex0_ready * moonT.a * (1.0 - smoothstep(0.44, 0.5, max(abs(mp.x), abs(mp.y))));   // außerhalb des Mondbilds 0, zum Rand weich aus
+
+    vec3 cOut = vec3(0.0); bool water = rd.y <= -0.002;
+    if (!water) {
+      vec3 c = mix(skyLow, skyTop, smoothstep(0.0, 1.0 - horizon, sy)); c += cyan * 0.06 * exp(-sy * 28.0);
+      // Mond als Textur (Ralph 12.11.): erst der Mond, danach ziehen die Wolken DARÜBER – Lage in CSS-px wie der alte CSS-Mond (u_moon)
+      c = mix(c, moonT.rgb, moonA);
+      vec2 q = vec2(uv.x * aspect * 2.4 + t * 0.012, uv.y * 11.0); float n = rct_fbm(q);
+      float band = smoothstep(horizon + 0.03, horizon + 0.09, uv.y) * (1.0 - smoothstep(0.95, 1.0, uv.y));
+      float moonLit = exp(-length((uv - mcUv) * vec2(aspect, 1.0)) * 2.6);
+      float cl = smoothstep(0.5 - 0.08 * moonLit - 0.12 * (u_p6 - 1.0), 0.66, n) * band * clamp(u_p6, 0.0, 1.0); float edge = smoothstep(0.6, 0.76, n);   // p6 Wolkenmenge
+      vec3 lilaC = mix(u_c3, u_c3 + vec3(0.098, 0.059, 0.082), edge), tuerC = mix(u_c2, u_c2 + vec3(0.093, 0.199, 0.174), edge);   // c2 Wolke Türkis, c3 Wolke Lila
+      vec3 cc = mix(tuerC, lilaC, smoothstep(0.42, 0.62, rct_vnoise(q * vec2(0.35, 0.5) + 5.0)));
+      c = mix(c, cc * (0.8 + 1.0 * moonLit), cl * 0.92 * (1.0 - 0.5 * moonA));   // Mond schimmert durch die Wolken
+      cOut = c;
+    } else {
+
+    float tt = 0.5, lastT = 0.5; bool hit = false;
+    for (int i = 0; i < 90; i++) {
+      vec3 q = ro + rd * tt;
+      if (q.y - (rct_dm_wave(q.xz, t) - 0.5) * wh > 0.0) { lastT = tt; tt += 0.04 + tt * 0.065; if (tt > 260.0) break; } else { hit = true; break; }
+    }
+    if (!hit) { cOut = haze; } else {
+    float a0 = lastT, b0 = tt;
+    for (int k = 0; k < 6; k++) { float m = 0.5 * (a0 + b0); vec3 q = ro + rd * m; if (q.y - (rct_dm_wave(q.xz, t) - 0.5) * wh > 0.0) a0 = m; else b0 = m; }
+    tt = b0;
+    vec3 p = ro + rd * tt; float z = max(p.z, 0.3); float fog = exp(-z * u_p7);   // p7 Sichtweite (Dunst)
+    float e = 0.04;
+    vec3 n = normalize(vec3((rct_dm_wave(p.xz - vec2(e, 0.0), t) - 0.5) * wh - (rct_dm_wave(p.xz + vec2(e, 0.0), t) - 0.5) * wh, 2.0 * e, (rct_dm_wave(p.xz - vec2(0.0, e), t) - 0.5) * wh - (rct_dm_wave(p.xz + vec2(0.0, e), t) - 0.5) * wh));
+    vec3 L = normalize(vec3(0.55, 0.42, 1.0));
+    float dif = max(dot(n, L), 0.0); float rim = pow(1.0 - max(dot(n, -rd), 0.0), 3.0);
+    float spec = pow(max(dot(reflect(rd, n), L), 0.0), 60.0);
+    float hgt = rct_dm_wave(p.xz, t);
+    vec3 c = mix(seaFar, seaNear, fog) * (0.45 + 0.75 * dif);
+    c += cyan * (0.10 * rim + 0.5 * spec) * (0.4 + 0.6 * fog);
+    // Mond-Reflexe in den Tälern: hell #9ad2df, selten Magenta #734074, zerfranst, gesammelt unter dem Mond
+    float valley = 1.0 - smoothstep(0.38, 0.55, hgt);
+    float nn = rct_vnoise(vec2(p.x * 2.2, p.z * 11.0 + t * 0.6)) * 0.65 + rct_vnoise(vec2(p.x * 4.5, p.z * 20.0 - t * 0.9)) * 0.35;
+    vec3 hell = u_c0, magenta = u_c1;   // c0 Reflex hell, c1 Reflex selten
+    float fray = rct_vnoise(vec2(p.x * 9.0, p.z * 28.0) + hgt * 5.0 + vec2(0.0, t * 0.4));
+    float path = 0.45 + 1.3 * exp(-pow((uv.x - 0.88) * 3.2, 2.0));
+    vec3 glint = mix(hell, magenta, smoothstep(0.62, 0.78, rct_vnoise(vec2(p.x * 0.07 + 3.0, p.z * 0.3))));
+    c += u_p5 * glint * smoothstep(0.6, 0.85, nn) * smoothstep(0.3, 0.6, fray) * valley * path * (1.4 * fog + 0.25);
+    // Punkte auf den Kämmen: Gitter wächst nach vorn, Zufallsversatz/-größe/-lücken; Pixelgröße analytisch statt fwidth
+    vec2 g = vec2(p.x / pow(z, 0.55) * 62.0 * dens, pow(z, 0.45) * 30.0 * dens);
+    vec2 id = floor(g);
+    float pxW = tt / (1.1 * res.y);
+    vec2 fw = vec2(62.0 * dens / pow(z, 0.55) * pxW, 13.5 * dens * pow(z, -0.55) * pxW / max(-rd.y, 0.02));
+    // Punkt rund in Bildschirm-Pixeln (Ralph 10.11.: Wellen sollen die Punkte nicht verzerren): Zellmitte auf die Welle setzen und projizieren
+    vec2 gc = id + 0.5 + (vec2(rct_hash(id), rct_hash(id + 7.3)) - 0.5) * 0.55;
+    float zc = pow(gc.y / (30.0 * dens), 1.0 / 0.45); float xc = gc.x / (62.0 * dens) * pow(zc, 0.55);
+    // Hover-Leuchten (Ralph 12.11.): Maus (u_x3.xy) + Nachzügler (u_x3.zw) als Punkte auf dem Wasser, Leucht-Streifen dazwischen – p8 Stärke, p9 Radius, p10 Nachglühen, c4 Farbe
+    float hov = 0.0;
+    if (u_x3.x > -1.0 && u_p8 > 0.0) {
+      vec3 h0 = normalize(vec3((u_x3.x - 0.5) * aspect, u_x3.y - 0.5, 1.1)), h1 = normalize(vec3((u_x3.z - 0.5) * aspect, u_x3.w - 0.5, 1.1));
+      h0 = vec3(h0.x, h0.y * cos(pitch) - h0.z * sin(pitch), h0.y * sin(pitch) + h0.z * cos(pitch));
+      h1 = vec3(h1.x, h1.y * cos(pitch) - h1.z * sin(pitch), h1.y * sin(pitch) + h1.z * cos(pitch));
+      if (h0.y < -0.002 && h1.y < -0.002) {
+        vec2 hm = (ro + h0 * (ro.y / -h0.y)).xz, ht = (ro + h1 * (ro.y / -h1.y)).xz, ab = hm - ht, cxz = vec2(xc, zc);
+        float hs = clamp(dot(cxz - ht, ab) / max(dot(ab, ab), 1e-4), 0.0, 1.0), hd = length(cxz - (ht + ab * hs));
+        float hR = 0.75 * max(u_p9, 0.05) * (1.0 + 0.08 * length(hm));   // in der Ferne etwas größer, damit es dort nicht verschwindet
+        hov = u_p8 * exp(-hd * hd / (hR * hR)) * mix(clamp(u_p10, 0.0, 1.0), 1.0, hs);   // Nachglühen: Streifen-Ende beim Nachzügler
+      }
+    }
+    vec3 v = vec3(xc, (rct_dm_wave(vec2(xc, zc), t) - 0.5) * wh, zc) - ro;
+    vec3 dc = vec3(v.x, v.y * cos(pitch) + v.z * sin(pitch), -v.y * sin(pitch) + v.z * cos(pitch));
+    vec2 scr = vec2(0.5 + dc.x / dc.z * 1.1 / aspect, 0.5 + dc.y / dc.z * 1.1);
+    vec2 pxc = (uv - scr) * res * vec2(1.0, u_px_stretch);
+    float keep = step(0.27, rct_hash(id + 3.1)); float vary = 0.65 + 0.7 * rct_hash(id + 11.7);
+    float rise = smoothstep(0.38, 1.0, hgt); float rad = mix(0.12, 0.72, rise * rise) * (0.5 + 0.5 * fog) * u_p4;   // p4 Punktgröße
+    rad *= 1.0 + 1.6 * min(hov, 1.5);   // beleuchtete Punkte werden deutlich größer
+    float dotm = keep * (1.0 - smoothstep(rad * vary - 0.35, rad * vary + 0.35, length(pxc)));
+    float lod = 1.0 - smoothstep(0.3, 0.55, max(fw.x, fw.y));
+    c += cyan * dotm * smoothstep(0.36, 0.5, hgt) * (0.35 + 0.9 * rise) * lod * (0.35 + 0.65 * fog);
+    c += cyan * rise * 0.06 * (1.0 - lod) * fog;
+    c += u_c4 * hov * (dotm * 1.6 + keep * 0.35 * exp(-length(pxc) / (2.0 + 2.0 * rad)) + 0.10 * (0.3 + rise) * fog);   // Hover: Punkte (auch die im Tal) leuchten + Glüh-Hof + Hauch aufs Wasser
+    c = mix(haze, c, smoothstep(0.0, 0.25, fog + 0.02));
+    cOut = c;
+    }
+    }
+    // ── Floß: Spiegelbild (k = 0, nur Wasser unter der Wasserlinie) und Floß selbst (k = 1) ──
+    vec2 cssP = vec2(uv.x * resolution.x * 1.02, (1.0 - uv.y) * u_moon.w);
+    float bt = u_time * u_line_speed;
+    // Floß in der Welt verankert (Ralph 12.11.): u_x0 = Lage bei Standard-Kamera (Höhe 2.6, Horizont 0.72) → Wasserpunkt in der Welt → mit der aktuellen Kamera neu projiziert
+    vec4 bx = u_x0; float wHub = 0.0, wAng = 0.0; bool onWave = false;   // onWave: Floß sitzt auf den echten Wellen (Hub/Kippen aus der Wellenhöhe statt Sinus-Takt)
+    if (u_x0.z > 0.0) {
+      float mw = max(u_moon.w, 1.0), cw = resolution.x * 1.02, rp0 = atan((0.72 - 0.5) / 1.1);
+      vec2 fa = u_x0.xy + vec2(0.53, 0.88) * u_x0.zw; vec2 fu = vec2(fa.x / cw, 1.0 - fa.y / mw);
+      vec3 fr = normalize(vec3((fu.x - 0.5) * aspect, fu.y - 0.5, 1.1));
+      fr = vec3(fr.x, fr.y * cos(rp0) - fr.z * sin(rp0), fr.y * sin(rp0) + fr.z * cos(rp0));
+      if (fr.y < -0.001) {
+        vec3 fv0 = fr * (2.6 / -fr.y); float fz0 = -fv0.y * sin(rp0) + fv0.z * cos(rp0);
+        vec3 fv1 = fv0 + vec3(0.0, 2.6, 0.0) - ro;
+        vec3 fd = vec3(fv1.x, fv1.y * cos(pitch) + fv1.z * sin(pitch), -fv1.y * sin(pitch) + fv1.z * cos(pitch));
+        if (fd.z > 0.05) {
+          vec2 fs = vec2(0.5 + fd.x / fd.z * 1.1 / aspect, 0.5 + fd.y / fd.z * 1.1);
+          vec2 fwh = u_x0.zw * (fz0 / fd.z);
+          bx = vec4(vec2(fs.x * cw, (1.0 - fs.y) * mw) - vec2(0.53, 0.88) * fwh, fwh);
+          // Wellen-Kopplung (Ralph 12.11.): Wellenhöhe unter der Floßmitte hebt/senkt, Höhenunterschied links/rechts kippt – je über 3 Stellen gemittelt (großes Floß glättet kleine Wellen)
+          vec2 wp = vec2(fv0.x, fv0.z); float hw = fwh.x / cw * aspect * fd.z / 1.1 * 0.45;   // halbe Floßbreite in Welt-Einheiten
+          float hc = 0.0, hl = 0.0, hr = 0.0;
+          for (int j = -1; j <= 1; j++) { vec2 o = vec2(0.0, float(j) * hw * 0.35);
+            hc += rct_dm_wave(wp + o, t); hl += rct_dm_wave(wp + o - vec2(hw, 0.0), t); hr += rct_dm_wave(wp + o + vec2(hw, 0.0), t); }
+          hc = (hc / 3.0 - 0.5) * wh; hl = (hl / 3.0 - 0.5) * wh; hr = (hr / 3.0 - 0.5) * wh;
+          wHub = -hc * 1.1 / fd.z * mw;   // Welt-Höhe → Bildschirm-px (nach oben = kleineres y)
+          wAng = -atan((hr - hl) / (2.0 * hw)) * 0.7; onWave = true;   // rechts höher → im Bild rechts hoch (0,7: Floß liegt träge im Wasser)
+        }
+      }
+    }
+    float ang = onWave ? wAng : u_x1.z * sin(bt * 0.9), hub = onWave ? wHub : u_x1.w * sin(bt * 0.9 + 1.3) * bx.w;
+    vec2 org = bx.xy + vec2(0.53, 0.88) * bx.zw;
+    float wline = org.y + hub;
+    for (int k = 0; k < 2; k++) {
+      vec2 P = cssP; float s = 1.0;
+      if (k == 0) {
+        float below = cssP.y - wline;
+        s = (water && below > 0.0 && bx.z > 0.0) ? 0.42 * (1.0 - smoothstep(0.0, 0.55 * bx.w, below)) : 0.0;
+        P = vec2(cssP.x + sin(cssP.y * 0.09 + bt * 2.3) * (2.0 + below * 0.05), 2.0 * wline - cssP.y + sin(cssP.x * 0.05 + bt * 1.7) * 1.5);
+      }
+      if (s > 0.0) {
+        vec2 d = P - org - vec2(0.0, hub);
+        vec2 r = vec2(d.x * cos(ang) + d.y * sin(ang), -d.x * sin(ang) + d.y * cos(ang));
+        vec2 rp = (r + org - bx.xy) / max(bx.zw, vec2(1.0));
+        float inR = step(0.0, rp.x) * step(rp.x, 1.0) * step(0.0, rp.y) * step(rp.y, 1.0);
+        vec4 R = texture2D(u_tex1, vec2(rp.x, 1.0 - rp.y)) * inR * u_tex1_ready;
+        vec4 hb = vec4(0.7349, 0.10106, 0.12045, 0.12045 * bx.z / max(bx.w, 1.0));
+        vec2 hp = (rp - hb.xy) / hb.zw;
+        float inH = step(0.0, hp.x) * step(hp.x, 1.0) * step(0.0, hp.y) * step(hp.y, 1.0);
+        vec2 suv = (u_x1.xy + clamp(hp, 0.0, 1.0)) / 3.0;
+        vec4 M = texture2D(u_tex2, vec2(suv.x, 1.0 - suv.y)) * inH * u_tex2_ready;
+        vec3 col = mix(R.rgb, M.rgb, M.a); float a = R.a + M.a * (1.0 - R.a);
+        if (k == 0) col = mix(col * 0.55, cOut, 0.25);
+        cOut = mix(cOut, col, a * s);
+      }
+    }
+    gl_FragColor = vec4(clamp(cOut, 0.0, 1.0), 1.0);
+    return;
+  }
   gl_FragColor = vec4(color, 1.0);
 }
 `;
@@ -1642,6 +1803,11 @@ void main() {
 // nur ein Modus ~120 ms und läuft glatt. Alle `if (u_line_mode > a && u_line_mode < b) {…}`-Blöcke, die
 // nicht zum Modus passen, werden vor dem Kompilieren herausgeschnitten. Der Modus wird nie live
 // umgeschaltet (Theme-Wechsel in rct.js baut einen neuen Gradient) — sonst hier den kompletten Shader nehmen.
+function rctWithExtraModes(src) {   // Shader-Labor: window.RCT_EXTRA_MODES (Modus-Blöcke im bekannten if-Muster) vor die letzte Standard-Zeile setzen – ohne Labor unverändert
+  const extra = typeof window !== 'undefined' && window.RCT_EXTRA_MODES; if (!extra) return src;
+  const tail = '  gl_FragColor = vec4(color, 1.0);', i = src.lastIndexOf(tail); if (i < 0) return src;
+  return src.slice(0, i) + extra + String.fromCharCode(10) + src.slice(i);
+}
 function rctShaderForMode(src, mode) {
   const re = /if\s*\(\s*u_line_mode\s*>\s*([\d.]+)\s*&&\s*u_line_mode\s*<\s*([\d.]+)\s*\)\s*\{/g;
   let out = '', last = 0, m;
@@ -1957,10 +2123,13 @@ e(this, "handleMouseMove", (event) => {
       e(this, "handleScrollEnd", () => {
           this.isScrolling = !1, this.isIntersecting && this.play()
       }), e(this, "resize", () => {
-          this.width = window.innerWidth, this.minigl.setSize(this.width, this.height), this.minigl.setOrthographicCamera(), this.xSegCount = Math.ceil(this.width * this.conf.density[0]), this.ySegCount = Math.ceil(this.height * this.conf.density[1]), this.mesh.geometry.setTopology(this.xSegCount, this.ySegCount), this.mesh.geometry.setSize(this.width, this.height), this.mesh.material.uniforms.u_shadow_power.value = this.width < 600 ? 5 : 6, this.setMoon(), this.mesh.material.uniforms.u_px_stretch && (this.mesh.material.uniforms.u_px_stretch.value = (this.el.getBoundingClientRect().height || window.innerHeight) / this.height),
+          const nw = Math.round((this.viewW || window.innerWidth) * (this.resScale || 1)), nh = Math.round((this.renderH || 600) * (this.resScale || 1)), U = this.mesh.material.uniforms;   // Handy: Adressleiste ein/aus = resize ohne neue Auflösung
+          if (this._sized && nw === this.width && nh === this.height) { this.setMoon(); if (U.u_px_stretch) U.u_px_stretch.value = (this.el.getBoundingClientRect().height || window.innerHeight) / this.height; return; }   // → kein Mesh-Neubau, nur Streckung/Mond nachführen
+          this._sized = true;
+          this.width = Math.round((this.viewW || window.innerWidth) * (this.resScale || 1)), this.height = Math.round((this.renderH || 600) * (this.resScale || 1)), this.minigl.setSize(this.width, this.height), this.minigl.setOrthographicCamera(), this.xSegCount = Math.ceil(this.width * this.conf.density[0]), this.ySegCount = Math.ceil(this.height * this.conf.density[1]), this.mesh.geometry.setTopology(this.xSegCount, this.ySegCount), this.mesh.geometry.setSize(this.width, this.height), this.mesh.material.uniforms.u_shadow_power.value = (this.viewW || window.innerWidth) < 600 ? 5 : 6, this.setMoon(), this.mesh.material.uniforms.u_px_stretch && (this.mesh.material.uniforms.u_px_stretch.value = (this.el.getBoundingClientRect().height || window.innerHeight) / this.height),
         // Responsive: auf Mobile Tropfen/Linien halbieren
         this.lineCount !== undefined && (
-          this.mesh.material.uniforms.u_line_count.value = this.width < 768
+          this.mesh.material.uniforms.u_line_count.value = (this.viewW || window.innerWidth) < 768
             ? Math.ceil(this.lineCount / 2)
             : this.lineCount
         )
@@ -2103,7 +2272,7 @@ e(this, "handleMouseMove", (event) => {
           vertex: this.fragmentWithVertex ? RCT_VERTEX_SHADER : RCT_VERTEX_SHADER_FLAT,
           noise: "//\n// Description : Array and textureless GLSL 2D/3D/4D simplex\n//               noise functions.\n//      Author : Ian McEwan, Ashima Arts.\n//  Maintainer : stegu\n//     Lastmod : 20110822 (ijm)\n//     License : Copyright (C) 2011 Ashima Arts. All rights reserved.\n//               Distributed under the MIT License. See LICENSE file.\n//               https://github.com/ashima/webgl-noise\n//               https://github.com/stegu/webgl-noise\n//\n\nvec3 mod289(vec3 x) {\n  return x - floor(x * (1.0 / 289.0)) * 289.0;\n}\n\nvec4 mod289(vec4 x) {\n  return x - floor(x * (1.0 / 289.0)) * 289.0;\n}\n\nvec4 permute(vec4 x) {\n    return mod289(((x*34.0)+1.0)*x);\n}\n\nvec4 taylorInvSqrt(vec4 r)\n{\n  return 1.79284291400159 - 0.85373472095314 * r;\n}\n\nfloat snoise(vec3 v)\n{\n  const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;\n  const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);\n\n// First corner\n  vec3 i  = floor(v + dot(v, C.yyy) );\n  vec3 x0 =   v - i + dot(i, C.xxx) ;\n\n// Other corners\n  vec3 g = step(x0.yzx, x0.xyz);\n  vec3 l = 1.0 - g;\n  vec3 i1 = min( g.xyz, l.zxy );\n  vec3 i2 = max( g.xyz, l.zxy );\n\n  //   x0 = x0 - 0.0 + 0.0 * C.xxx;\n  //   x1 = x0 - i1  + 1.0 * C.xxx;\n  //   x2 = x0 - i2  + 2.0 * C.xxx;\n  //   x3 = x0 - 1.0 + 3.0 * C.xxx;\n  vec3 x1 = x0 - i1 + C.xxx;\n  vec3 x2 = x0 - i2 + C.yyy; // 2.0*C.x = 1/3 = C.y\n  vec3 x3 = x0 - D.yyy;      // -1.0+3.0*C.x = -0.5 = -D.y\n\n// Permutations\n  i = mod289(i);\n  vec4 p = permute( permute( permute(\n            i.z + vec4(0.0, i1.z, i2.z, 1.0 ))\n          + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))\n          + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));\n\n// Gradients: 7x7 points over a square, mapped onto an octahedron.\n// The ring size 17*17 = 289 is close to a multiple of 49 (49*6 = 294)\n  float n_ = 0.142857142857; // 1.0/7.0\n  vec3  ns = n_ * D.wyz - D.xzx;\n\n  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);  //  mod(p,7*7)\n\n  vec4 x_ = floor(j * ns.z);\n  vec4 y_ = floor(j - 7.0 * x_ );    // mod(j,N)\n\n  vec4 x = x_ *ns.x + ns.yyyy;\n  vec4 y = y_ *ns.x + ns.yyyy;\n  vec4 h = 1.0 - abs(x) - abs(y);\n\n  vec4 b0 = vec4( x.xy, y.xy );\n  vec4 b1 = vec4( x.zw, y.zw );\n\n  //vec4 s0 = vec4(lessThan(b0,0.0))*2.0 - 1.0;\n  //vec4 s1 = vec4(lessThan(b1,0.0))*2.0 - 1.0;\n  vec4 s0 = floor(b0)*2.0 + 1.0;\n  vec4 s1 = floor(b1)*2.0 + 1.0;\n  vec4 sh = -step(h, vec4(0.0));\n\n  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;\n  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;\n\n  vec3 p0 = vec3(a0.xy,h.x);\n  vec3 p1 = vec3(a0.zw,h.y);\n  vec3 p2 = vec3(a1.xy,h.z);\n  vec3 p3 = vec3(a1.zw,h.w);\n\n//Normalise gradients\n  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));\n  p0 *= norm.x;\n  p1 *= norm.y;\n  p2 *= norm.z;\n  p3 *= norm.w;\n\n// Mix final noise value\n  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);\n  m = m * m;\n  return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),\n                                dot(p2,x2), dot(p3,x3) ) );\n}",
           blend: "//\n// https://github.com/jamieowen/glsl-blend\n//\n\n// Normal\n\nvec3 blendNormal(vec3 base, vec3 blend) {\n\treturn blend;\n}\n\nvec3 blendNormal(vec3 base, vec3 blend, float opacity) {\n\treturn (blendNormal(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Screen\n\nfloat blendScreen(float base, float blend) {\n\treturn 1.0-((1.0-base)*(1.0-blend));\n}\n\nvec3 blendScreen(vec3 base, vec3 blend) {\n\treturn vec3(blendScreen(base.r,blend.r),blendScreen(base.g,blend.g),blendScreen(base.b,blend.b));\n}\n\nvec3 blendScreen(vec3 base, vec3 blend, float opacity) {\n\treturn (blendScreen(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Multiply\n\nvec3 blendMultiply(vec3 base, vec3 blend) {\n\treturn base*blend;\n}\n\nvec3 blendMultiply(vec3 base, vec3 blend, float opacity) {\n\treturn (blendMultiply(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Overlay\n\nfloat blendOverlay(float base, float blend) {\n\treturn base<0.5?(2.0*base*blend):(1.0-2.0*(1.0-base)*(1.0-blend));\n}\n\nvec3 blendOverlay(vec3 base, vec3 blend) {\n\treturn vec3(blendOverlay(base.r,blend.r),blendOverlay(base.g,blend.g),blendOverlay(base.b,blend.b));\n}\n\nvec3 blendOverlay(vec3 base, vec3 blend, float opacity) {\n\treturn (blendOverlay(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Hard light\n\nvec3 blendHardLight(vec3 base, vec3 blend) {\n\treturn blendOverlay(blend,base);\n}\n\nvec3 blendHardLight(vec3 base, vec3 blend, float opacity) {\n\treturn (blendHardLight(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Soft light\n\nfloat blendSoftLight(float base, float blend) {\n\treturn (blend<0.5)?(2.0*base*blend+base*base*(1.0-2.0*blend)):(sqrt(base)*(2.0*blend-1.0)+2.0*base*(1.0-blend));\n}\n\nvec3 blendSoftLight(vec3 base, vec3 blend) {\n\treturn vec3(blendSoftLight(base.r,blend.r),blendSoftLight(base.g,blend.g),blendSoftLight(base.b,blend.b));\n}\n\nvec3 blendSoftLight(vec3 base, vec3 blend, float opacity) {\n\treturn (blendSoftLight(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Color dodge\n\nfloat blendColorDodge(float base, float blend) {\n\treturn (blend==1.0)?blend:min(base/(1.0-blend),1.0);\n}\n\nvec3 blendColorDodge(vec3 base, vec3 blend) {\n\treturn vec3(blendColorDodge(base.r,blend.r),blendColorDodge(base.g,blend.g),blendColorDodge(base.b,blend.b));\n}\n\nvec3 blendColorDodge(vec3 base, vec3 blend, float opacity) {\n\treturn (blendColorDodge(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Color burn\n\nfloat blendColorBurn(float base, float blend) {\n\treturn (blend==0.0)?blend:max((1.0-((1.0-base)/blend)),0.0);\n}\n\nvec3 blendColorBurn(vec3 base, vec3 blend) {\n\treturn vec3(blendColorBurn(base.r,blend.r),blendColorBurn(base.g,blend.g),blendColorBurn(base.b,blend.b));\n}\n\nvec3 blendColorBurn(vec3 base, vec3 blend, float opacity) {\n\treturn (blendColorBurn(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Vivid Light\n\nfloat blendVividLight(float base, float blend) {\n\treturn (blend<0.5)?blendColorBurn(base,(2.0*blend)):blendColorDodge(base,(2.0*(blend-0.5)));\n}\n\nvec3 blendVividLight(vec3 base, vec3 blend) {\n\treturn vec3(blendVividLight(base.r,blend.r),blendVividLight(base.g,blend.g),blendVividLight(base.b,blend.b));\n}\n\nvec3 blendVividLight(vec3 base, vec3 blend, float opacity) {\n\treturn (blendVividLight(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Lighten\n\nfloat blendLighten(float base, float blend) {\n\treturn max(blend,base);\n}\n\nvec3 blendLighten(vec3 base, vec3 blend) {\n\treturn vec3(blendLighten(base.r,blend.r),blendLighten(base.g,blend.g),blendLighten(base.b,blend.b));\n}\n\nvec3 blendLighten(vec3 base, vec3 blend, float opacity) {\n\treturn (blendLighten(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Linear burn\n\nfloat blendLinearBurn(float base, float blend) {\n\t// Note : Same implementation as BlendSubtractf\n\treturn max(base+blend-1.0,0.0);\n}\n\nvec3 blendLinearBurn(vec3 base, vec3 blend) {\n\t// Note : Same implementation as BlendSubtract\n\treturn max(base+blend-vec3(1.0),vec3(0.0));\n}\n\nvec3 blendLinearBurn(vec3 base, vec3 blend, float opacity) {\n\treturn (blendLinearBurn(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Linear dodge\n\nfloat blendLinearDodge(float base, float blend) {\n\t// Note : Same implementation as BlendAddf\n\treturn min(base+blend,1.0);\n}\n\nvec3 blendLinearDodge(vec3 base, vec3 blend) {\n\t// Note : Same implementation as BlendAdd\n\treturn min(base+blend,vec3(1.0));\n}\n\nvec3 blendLinearDodge(vec3 base, vec3 blend, float opacity) {\n\treturn (blendLinearDodge(base, blend) * opacity + base * (1.0 - opacity));\n}\n\n// Linear light\n\nfloat blendLinearLight(float base, float blend) {\n\treturn blend<0.5?blendLinearBurn(base,(2.0*blend)):blendLinearDodge(base,(2.0*(blend-0.5)));\n}\n\nvec3 blendLinearLight(vec3 base, vec3 blend) {\n\treturn vec3(blendLinearLight(base.r,blend.r),blendLinearLight(base.g,blend.g),blendLinearLight(base.b,blend.b));\n}\n\nvec3 blendLinearLight(vec3 base, vec3 blend, float opacity) {\n\treturn (blendLinearLight(base, blend) * opacity + base * (1.0 - opacity));\n}",
-          fragment: rctShaderForMode(RCT_FRAGMENT_SHADER, this.lineMode || 0)
+          fragment: rctShaderForMode(rctWithExtraModes(RCT_FRAGMENT_SHADER), this.lineMode || 0)
       },
       this.conf = {
           presetName: "",
@@ -2155,8 +2324,13 @@ u_mouse: new this.minigl.Uniform({
           u_line_width: new this.minigl.Uniform({ value: this.lineWidth || 0.15 }),
           u_line_speed: new this.minigl.Uniform({ value: this.lineSpeed || 0.0 }),
           u_px_stretch: new this.minigl.Uniform({ value: 1.0 }), // CSS-Höhe / Canvas-Höhe (fest 600) – Datenmeer-Punkte bleiben rund
+          ...Object.fromEntries([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(i => ["u_p" + i, new this.minigl.Uniform({ value: +((this.params || [])[i] || 0), excludeFrom: "vertex" })])),
+          ...Object.fromEntries([0, 1, 2, 3, 4, 5].map(i => ["u_c" + i, new this.minigl.Uniform({ type: "vec3", value: (this.cparams || [])[i] || [0, 0, 0], excludeFrom: "vertex" })])),   // Farb-Regler für Experimente (Preset-Feld cparams: [Hex …], Shader-Labor 12.11.)   // Regler-Plätze für neue Modi (Shader-Labor, Preset-Feld params: [..])
           u_tex0: new this.minigl.Uniform({ type: "sampler2D", value: 0, excludeFrom: "vertex" }), // Bild im Shader (Textur-Einheit 0, Ralph 12.11.) – geladen per loadTexture()
           u_tex0_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }), // 1 = Bild ist da (vorher zeichnet der Shader ohne)
+          u_tex1: new this.minigl.Uniform({ type: "sampler2D", value: 1, excludeFrom: "vertex" }), u_tex1_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),   // weitere Bild-Plätze (Shader-Labor): Einheit 1 und 2, geladen per loadTextureUnit()
+          u_tex2: new this.minigl.Uniform({ type: "sampler2D", value: 2, excludeFrom: "vertex" }), u_tex2_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),
+          ...Object.fromEntries([0, 1, 2, 3].map(i => ["u_x" + i, new this.minigl.Uniform({ type: "vec4", value: (this.extra || [])[i] || [0, 0, 0, 0], excludeFrom: "vertex" })])),   // freie Datenkanäle für Experimente (JS → Shader, z. B. Lage/Blick einer Figur)
           u_moon: new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" }), // Datenmeer-Mond in CSS-px: Mitte x, Mitte y von oben, Durchmesser, Fensterhöhe (wie der alte CSS-Mond)
           u_line_color: new this.minigl.Uniform({ value: this.lineColor || [0.8, 0.7, 0.4], type: "vec3" }),
           u_bg_color:   new this.minigl.Uniform({ value: this.bgColor   || [0.06, 0.06, 0.08], type: "vec3" }),
@@ -2281,6 +2455,15 @@ u_mouse: new this.minigl.Uniform({
   }
   // Bild als Textur in den Shader (Ralph 12.11.: „können wir Grafiken IM Shader nutzen?“) – beim Laden auf ~Anzeigegröße verkleinert, OHNE Mipmaps
   // (Mipmaps: an Verzweigungen im Shader verschätzt sich die GPU mit der Stufe → feine helle Linie am Horizont, gemessen 12.11.)
+  loadTextureUnit(unit, src, w, h) {   // Bild/Canvas auf Bild-Platz unit (1, 2 …) legen, auf w×h verkleinert, ohne Mipmaps (Shader-Labor) – setzt u_tex<unit>_ready
+      const gl = this.minigl.gl, cv = document.createElement("canvas"); cv.width = w; cv.height = h; cv.getContext("2d").drawImage(src, 0, 0, w, h);
+      const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cv);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.activeTexture(gl.TEXTURE0);
+      const r = this.mesh && this.mesh.material.uniforms["u_tex" + unit + "_ready"]; if (r) r.value = 1;
+  }
   loadTexture(url, size = 256) {
       const gl = this.minigl.gl, img = new Image(), root = document.documentElement;
       root.classList.remove("rct-shader-moon");
@@ -2293,17 +2476,17 @@ u_mouse: new this.minigl.Uniform({
           gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
           this.mesh.material.uniforms.u_tex0_ready.value = 1; root.classList.add("rct-shader-moon");   // CSS-Mond (Rückfall ohne WebGL) ausblenden
       };
-      img.src = url;
+      const name = url.split("/").pop(); img.src = (window.RCT_TEX_URLS && window.RCT_TEX_URLS[name]) || url;   // RCT_TEX_URLS: Ersatz-URL je Dateiname (Shader-Labor unter file:// mit Data-URIs)
   }
   setMoon() {   // gleiche Lage/Größe wie der CSS-Mond (rct-layout.css body[data-theme=datenmeer]::after)
       const u = this.mesh && this.mesh.material.uniforms.u_moon; if (!u) return;
-      const w = window.innerWidth, h = window.innerHeight, d = w <= 800 ? 0.22 * w : Math.min(0.12 * w, 200);
+      const w = this.viewW || window.innerWidth, h = window.innerHeight, d = w <= 800 ? 0.22 * w : Math.min(0.12 * w, 200);
       const hh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--rct-header-height")) || 64;
-      u.value = [w - 0.04 * w - d / 2, hh + 26 + d / 2, d, h];
+      const k = this.resScale || 1; u.value = [w - 0.04 * w - d / 2, hh + 26 + d / 2, d, h].map(v => v * k);   // resScale (Shader-Labor, halbe Auflösung): Mond-Lage mitskalieren, sonst liegt er außerhalb des Bildes – ohne Labor ×1
   }
   init() {
       this.initGradientColors(), this.initMesh(), this.resize(), requestAnimationFrame(this.animate), window.addEventListener("resize", this.resize);
-      if (this.lineMode > 19.5 && this.lineMode < 20.5) this.loadTexture("/bundles/rct/img/theme-datenmeer-mond.avif", window.innerWidth <= 800 ? 128 : 256);   // Datenmeer: Mond im Shader, hinter den Wolken
+      if (this.lineMode > 19.5 && this.lineMode < 21.5) this.loadTexture("/bundles/rct/img/theme-datenmeer-mond.avif", (this.viewW || window.innerWidth) <= 800 ? 128 : 256);   // Datenmeer: Mond im Shader, hinter den Wolken
   }
   /*
   * Waiting for the css variables to become available, usually on page load before we can continue.

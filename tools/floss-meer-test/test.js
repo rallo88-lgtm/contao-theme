@@ -1,0 +1,39 @@
+// Tests Zweig floss-meer: Regression (master vs. Zweig, pixelgleich) + Theme floss-meer
+const { chromium } = require(process.env.PWC);
+let fails = 0; const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++; };
+const shot = () => { const g = window.gradient, gl = g.minigl.gl; g.pause(); g.mesh.material.uniforms.u_time.value = 5000; g.minigl.render();
+  const W = gl.drawingBufferWidth, H = gl.drawingBufferHeight, b = new Uint8Array(W * H * 4); gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, b); return { W, H, px: Array.from(b) }; };
+(async () => {
+  const b = await chromium.launch({ channel: 'chrome' });
+  const page = async (url, vp = { width: 1280, height: 800 }, extra = {}) => { const c = await b.newContext(Object.assign({ viewport: vp }, extra)), p = await c.newPage(), errs = [];
+    p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type() === 'error' && errs.push(m.text().slice(0, 200)));
+    await p.goto(url); await p.waitForFunction(() => window.gradient && window.gradient.mesh && window.gradient.conf.playing, null, { timeout: 8000 }); await p.waitForTimeout(1500); return { p, c, errs }; };
+  for (const th of ['datenmeer', 'default', 'wave', 'neon-grid', 'honey-moon']) {
+    const A = await page('http://localhost:8765/master.html?theme=' + th), B = await page('http://localhost:8765/?theme=' + th);
+    const a = await A.p.evaluate(shot), z = await B.p.evaluate(shot); let max = 0; if (a.W === z.W && a.H === z.H) for (let i = 0; i < a.px.length; i++) max = Math.max(max, Math.abs(a.px[i] - z.px[i])); else max = 999;
+    ok(max <= 1, `Regression ${th}: Zweig = master (max. Abweichung ${max}, ${a.W}×${a.H})`); await A.c.close(); await B.c.close();
+  }
+  { const { p, c, errs } = await page('http://localhost:8765/?theme=floss-meer', { width: 1440, height: 860 });
+    const r = await p.evaluate(() => { const g = window.gradient, u = g.mesh.material.uniforms, el = document.querySelector('.rct-content-inner').getBoundingClientRect();
+      return { mode: g.lineMode, h: g.height, t: [u.u_tex0_ready.value, u.u_tex1_ready.value, u.u_tex2_ready.value], x0: [...u.u_x0.value], right: el.right - 20, left: el.left + 20 }; });
+    ok(r.mode === 21 && r.h === 1024, `floss-meer: Modus 21, Desktop Render-Höhe ${r.h}`);
+    ok(r.t.every(v => v === 1), 'Mond, Floß und Missi geladen ' + JSON.stringify(r.t));
+    ok(r.x0[0] >= r.left && r.x0[0] + r.x0[2] <= r.right + 1, `Floß in der Inhaltsspalte (${Math.round(r.x0[0])}…${Math.round(r.x0[0] + r.x0[2])} innerhalb ${Math.round(r.left)}…${Math.round(r.right)})`);
+    await p.evaluate(() => scrollTo(0, innerHeight)); await p.waitForTimeout(1500);
+    const x2 = await p.evaluate(() => [...window.gradient.mesh.material.uniforms.u_x2.value]);
+    ok(Math.abs(x2[0] + 0.7) < 0.02 && Math.abs(x2[1] - 0.45) < 0.02, 'Scroll 1 Bildschirmhöhe → Sinkflug ' + JSON.stringify(x2.slice(0, 2).map(v => +v.toFixed(3))));
+    await p.mouse.move(300, 700); await p.waitForTimeout(600);
+    ok(await p.evaluate(() => window.gradient.mesh.material.uniforms.u_x3.value[0] > -1), 'Hover: Maus über dem Meer kommt im Shader an');
+    await p.evaluate(() => window.applyTheme('datenmeer', false)); await p.waitForTimeout(2500);
+    ok(await p.evaluate(() => window._rctThemeHookStop === null && window.gradient.lineMode === 20), 'Theme-Wechsel → Floß-JS abgemeldet, Datenmeer läuft');
+    ok(errs.filter(e => !/favicon/.test(e)).length === 0, 'Desktop ohne JS-/Shader-Fehler ' + JSON.stringify(errs.slice(0, 3))); await c.close(); }
+  { const { p, c, errs } = await page('http://localhost:8765/?theme=floss-meer', { width: 390, height: 844 }, { isMobile: true, hasTouch: true });
+    const r = await p.evaluate(() => { const u = window.gradient.mesh.material.uniforms; return { h: window.gradient.height, p0: u.u_p0.value, p2: u.u_p2.value }; });
+    ok(r.h === 600 && r.p0 === 0.45 && r.p2 === 1.0, `Handy: Render-Höhe ${r.h}, Hochformat-Horizont ${r.p0} / Kamera ${r.p2}`);
+    await p.screenshot({ path: 'D:/tmp/rct-floss-handy.png' });
+    ok(errs.length === 0, 'Handy ohne Fehler ' + JSON.stringify(errs.slice(0, 3))); await c.close(); }
+  { const { p, c } = await page('http://localhost:8765/?theme=floss-meer', { width: 1280, height: 800 }, { reducedMotion: 'reduce' });
+    await p.evaluate(() => scrollTo(0, innerHeight)); await p.waitForTimeout(1200);
+    ok(await p.evaluate(() => window.gradient.mesh.material.uniforms.u_x2.value[0] === 0), '„Bewegung reduzieren“ → Kamera bleibt stehen'); await c.close(); }
+  await b.close(); console.log(fails ? `\n${fails} FEHLGESCHLAGEN` : '\nALLES GRÜN'); process.exit(fails ? 1 : 0);
+})();

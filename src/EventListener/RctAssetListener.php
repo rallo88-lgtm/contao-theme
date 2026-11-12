@@ -50,6 +50,7 @@ class RctAssetListener
             $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-baker.js||static';
             $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-canvas-config.js||static';
             $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/gl-bg-animation.js||static';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-floss-meer.js||static';
         }
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct.js||static';
 
