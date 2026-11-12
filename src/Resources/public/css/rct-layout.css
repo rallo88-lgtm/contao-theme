@@ -2695,6 +2695,7 @@ body[data-theme="floss-meer"]::after {   /* Mond als Bild nur ohne WebGL (sonst 
 }
 @media (max-width: 800px) { body[data-theme="floss-meer"]::after { width: 22vw; } }
 html.rct-shader-moon body[data-theme="floss-meer"]::after { display: none; }
+html.rct-floss-leise[data-theme="floss-meer"] { --rct-main-alpha: 0.35; }   /* leise Seiten (ohne .rct-floss): Inhalt auf dunklem Glas, Text bleibt lesbar – ohne backdrop-blur (kostet am Handy jedes Bild) */
 
 #rct-baker-bg {
   position: fixed;

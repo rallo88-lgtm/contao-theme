@@ -18,6 +18,7 @@ const shot = () => { const g = window.gradient, gl = g.minigl.gl; g.pause(); g.m
       return { mode: g.lineMode, h: g.height, t: [u.u_tex0_ready.value, u.u_tex1_ready.value, u.u_tex2_ready.value], x0: [...u.u_x0.value], right: el.right - 20, left: el.left + 20 }; });
     ok(r.mode === 21 && r.h === 1024, `floss-meer: Modus 21, Desktop Render-Höhe ${r.h}`);
     ok(r.t.every(v => v === 1), 'Mond, Floß und Missi geladen ' + JSON.stringify(r.t));
+    ok(await p.evaluate(() => !document.documentElement.classList.contains('rct-floss-leise')), 'Home (Klasse rct-floss): volle Bühne, kein Glas');
     ok(r.x0[0] >= r.left && r.x0[0] + r.x0[2] <= r.right + 1, `Floß in der Inhaltsspalte (${Math.round(r.x0[0])}…${Math.round(r.x0[0] + r.x0[2])} innerhalb ${Math.round(r.left)}…${Math.round(r.right)})`);
     await p.evaluate(() => scrollTo(0, innerHeight)); await p.waitForTimeout(1500);
     const x2 = await p.evaluate(() => [...window.gradient.mesh.material.uniforms.u_x2.value]);
@@ -27,6 +28,22 @@ const shot = () => { const g = window.gradient, gl = g.minigl.gl; g.pause(); g.m
     await p.evaluate(() => window.applyTheme('datenmeer', false)); await p.waitForTimeout(2500);
     ok(await p.evaluate(() => window._rctThemeHookStop === null && window.gradient.lineMode === 20), 'Theme-Wechsel → Floß-JS abgemeldet, Datenmeer läuft');
     ok(errs.filter(e => !/favicon/.test(e)).length === 0, 'Desktop ohne JS-/Shader-Fehler ' + JSON.stringify(errs.slice(0, 3))); await c.close(); }
+  { const { p, c, errs } = await page('http://localhost:8765/?theme=floss-meer&leise', { width: 1440, height: 860 });   // Unterseite ohne Klasse rct-floss: leises Meer
+    await p.waitForTimeout(1000);
+    const r = await p.evaluate(() => { const g = window.gradient, u = g.mesh.material.uniforms, cf = g.themeConfig.paramsLeise;
+      return { mode: g.lineMode, t: [u.u_tex1_ready.value, u.u_tex2_ready.value], p: Object.keys(cf).map(i => +u['u_p' + i].value.toFixed(4)), soll: Object.values(cf), kl: document.documentElement.classList.contains('rct-floss-leise'),
+        alpha: getComputedStyle(document.documentElement).getPropertyValue('--rct-main-alpha').trim() }; });
+    ok(r.mode === 21 && r.t.every(v => v === 0), 'Leise: Modus 21, kein Floß/Missi geladen ' + JSON.stringify(r.t));
+    ok(JSON.stringify(r.p) === JSON.stringify(r.soll), 'Leise: andere Kamera (paramsLeise) ' + JSON.stringify(r.p));
+    ok(r.kl && r.alpha === '0.35', 'Leise: Glas hinter dem Inhalt (--rct-main-alpha ' + r.alpha + ')');
+    await p.evaluate(() => scrollTo(0, innerHeight)); await p.waitForTimeout(1500);
+    const x2 = await p.evaluate(() => [...window.gradient.mesh.material.uniforms.u_x2.value]);
+    ok(Math.abs(x2[0] + 0.25) < 0.02 && Math.abs(x2[1] - 0.15) < 0.02, 'Leise: sanfte Scroll-Kamera ' + JSON.stringify(x2.slice(0, 2).map(v => +v.toFixed(3))));
+    await p.mouse.move(300, 700); await p.waitForTimeout(600);
+    ok(await p.evaluate(() => window.gradient.mesh.material.uniforms.u_x3.value[0] > -1), 'Leise: Hover-Leuchten bleibt an');
+    await p.evaluate(() => window.applyTheme('datenmeer', false)); await p.waitForTimeout(2500);
+    ok(await p.evaluate(() => !document.documentElement.classList.contains('rct-floss-leise')), 'Leise: Theme-Wechsel räumt die Glas-Klasse weg');
+    ok(errs.filter(e => !/favicon/.test(e)).length === 0, 'Leise ohne Fehler ' + JSON.stringify(errs.slice(0, 3))); await c.close(); }
   { const { p, c, errs } = await page('http://localhost:8765/?theme=floss-meer', { width: 390, height: 844 }, { isMobile: true, hasTouch: true });
     const r = await p.evaluate(() => { const u = window.gradient.mesh.material.uniforms; return { h: window.gradient.height, p0: u.u_p0.value, p2: u.u_p2.value }; });
     ok(r.h === 600 && r.p0 === 0.45 && r.p2 === 1.0, `Handy: Render-Höhe ${r.h}, Hochformat-Horizont ${r.p0} / Kamera ${r.p2}`);

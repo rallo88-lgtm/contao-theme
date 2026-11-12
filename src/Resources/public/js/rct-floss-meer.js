@@ -10,7 +10,10 @@
 
   function start(g) {
     const U = g.mesh.material.uniforms, cfg = g.themeConfig || {};
-    Promise.all([loadImg(src('teppich-insel.avif')), loadImg(src('aws-hero-bg.avif')), loadImg(src('aws-hero-missi-sheet.avif'))]).then(([insel, couch, missi]) => {
+    const leise = !document.querySelector('.rct-floss');   // Floß nur auf Seiten mit Klasse „rct-floss“ (Ralph 12.11.: Home = Bühne); sonst leises Meer: selber Shader, andere Kamera
+    document.documentElement.classList.toggle('rct-floss-leise', leise);
+    if (leise) { U.u_tex1_ready.value = 0; U.u_tex2_ready.value = 0; }
+    if (!leise) Promise.all([loadImg(src('teppich-insel.avif')), loadImg(src('aws-hero-bg.avif')), loadImg(src('aws-hero-missi-sheet.avif'))]).then(([insel, couch, missi]) => {
       if (window.gradient !== g) return;
       const W = 1300, H = Math.round(W * 941 / 1672), cv = document.createElement('canvas'); cv.width = W; cv.height = H;   // Kasten wie .aws-sofa (1672 : 941)
       const x = cv.getContext('2d'); x.drawImage(insel, 0, 0, W, H); x.drawImage(couch, W * 0.25, H * 0.09883, W * 0.7082, W * 0.7082 * couch.height / couch.width);   // Lage wie .aws-insel / .aws-couch im Hero-CE
@@ -18,7 +21,10 @@
     }).catch(() => {});   // Bilder fehlen → Meer ohne Floß
 
     const hochformat = () => innerWidth < innerHeight * 0.8;
-    const horizont = () => { const pp = hochformat() && cfg.paramsPortrait || {}; for (const i of [0, 2]) { const u = U['u_p' + i]; if (u) u.value = pp[i] != null ? pp[i] : (cfg.params || [])[i]; } };   // Handy hochkant: eigene Horizont-Neigung (p0) + Kamerahöhe (p2) – der Horizont liegt auf Kamera-Augenhöhe, Halshöhe also über p2
+    const horizont = () => {   // Handy hochkant: eigene Horizont-Neigung (p0) + Kamerahöhe (p2) – der Horizont liegt auf Kamera-Augenhöhe, Halshöhe also über p2; leise Seiten: paramsLeise (+ paramsLeisePortrait)
+      const lagen = leise ? [cfg.paramsLeise, hochformat() && cfg.paramsLeisePortrait] : [hochformat() && cfg.paramsPortrait], pp = Object.assign({}, ...lagen.map(o => o || {}));
+      const idx = new Set([0, 2, ...Object.keys(cfg.paramsLeise || {}).map(Number)]);
+      for (const i of idx) { const u = U['u_p' + i]; if (u) u.value = pp[i] != null ? pp[i] : (cfg.params || [])[i]; } };
     const spalte = () => {   // Inhaltsspalte des Themes (ohne Innenabstand); ohne Spalte: ganzes Fenster
       const el = document.querySelector('.rct-content-inner') || document.querySelector('#main'); if (!el) return { left: 0, width: innerWidth };
       const r = el.getBoundingClientRect(), cs = getComputedStyle(el), pl = parseFloat(cs.paddingLeft) || 0, pr = parseFloat(cs.paddingRight) || 0;
@@ -45,12 +51,12 @@
     const hover = e => { const r = g.el.getBoundingClientRect();
       hm = (e.clientX >= r.left && e.clientX <= r.left + innerWidth && e.clientY >= 0 && e.clientY <= innerHeight) ? [(e.clientX - r.left) / r.width, 1 - e.clientY / innerHeight] : null; };
     const weg = () => { hm = null; };
-    const look = e => { hover(e); const b = placed(), hx = b.x + b.w * (0.7349 + 0.12045 / 2), hy = b.y + b.h * 0.10106 + b.w * 0.12045 * 0.45, dz = b.w * 0.12045 * 0.55;
+    const look = e => { hover(e); if (leise) return; const b = placed(), hx = b.x + b.w * (0.7349 + 0.12045 / 2), hy = b.y + b.h * 0.10106 + b.w * 0.12045 * 0.45, dz = b.w * 0.12045 * 0.55;
       col = pick(e.clientX - hx, dz); row = pick(e.clientY - hy, dz); layout(); clearTimeout(idle); idle = setTimeout(() => { col = 1; row = 1; layout(); }, 4000); };
     layout(); addEventListener('pointermove', look); addEventListener('resize', layout); document.documentElement.addEventListener('mouseleave', weg); addEventListener('blur', weg);
 
     // Scroll-Kamera „Sinkflug“: pro gescrollter Bildschirmhöhe sinkt die Kamera und neigt sich (Horizont wandert mit dem Inhalt), max. 2 Bildschirmhöhen, 0,1 s Nachgleiten
-    const ZIEL = [-0.7, 0.45], MAX_BILDER = 2, still = matchMedia('(prefers-reduced-motion: reduce)').matches;   // „Bewegung reduzieren“ → Kamera bleibt stehen
+    const ZIEL = leise ? (cfg.scrollLeise || [-0.25, 0.15]) : [-0.7, 0.45], MAX_BILDER = 2, still = matchMedia('(prefers-reduced-motion: reduce)').matches;   // „Bewegung reduzieren“ → Kamera bleibt stehen
     let cur = [0, 0], last = performance.now(), raf = 0, skip = null, dtAvg = 16;
     const fahrt = now => { raf = requestAnimationFrame(fahrt); const dt = Math.min((now - last) / 1000, 0.1); last = now; dtAvg += (dt * 1000 - dtAvg) * 0.1;
       const se = document.scrollingElement || document.documentElement, pr = still ? 0 : Math.min(Math.max(se.scrollTop / Math.max(innerHeight, 1), 0), MAX_BILDER), f = 1 - Math.exp(-dt * 10);
@@ -60,7 +66,7 @@
       else { ht = null; U.u_x3.value = [-5, -5, -5, -5]; }
       if (moving && skip === null) { skip = g.frameSkip; g.frameSkip = dtAvg < 11 ? 2 : 1; } else if (!moving && skip !== null) { g.frameSkip = skip; skip = null; } };   // Fahrt: ~60 Shader-Bilder/s (120-Hz-Handy: jedes 2. Bild)
     U.u_x3.value = [-5, -5, -5, -5]; raf = requestAnimationFrame(fahrt);
-    return () => { removeEventListener('pointermove', look); removeEventListener('resize', layout); document.documentElement.removeEventListener('mouseleave', weg); removeEventListener('blur', weg);
+    return () => { document.documentElement.classList.remove('rct-floss-leise'); removeEventListener('pointermove', look); removeEventListener('resize', layout); document.documentElement.removeEventListener('mouseleave', weg); removeEventListener('blur', weg);
       clearTimeout(idle); cancelAnimationFrame(raf); if (skip !== null) g.frameSkip = skip; };
   }
 

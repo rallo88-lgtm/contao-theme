@@ -3,10 +3,11 @@
 <title>RCT Floß-Test</title>
 <link rel="stylesheet" href="/bundles/rct/css/rct-layout.css">
 <script>window.rctPageTheme = new URLSearchParams(location.search).get('theme') || 'floss-meer';</script>
-<style>body{margin:0;background:#000;color:#fff;font:14px system-ui} .rct-content-inner{position:relative;z-index:20;max-width:1200px;margin:0 auto;padding:0 20px} section{min-height:100vh;padding-top:30vh}</style>
+<style>body{margin:0;background:#000;color:#fff;font:14px system-ui} #mainContainer{background-color:rgba(14,14,24,var(--rct-main-alpha,0))} .rct-content-inner{position:relative;z-index:20;max-width:1200px;margin:0 auto;padding:0 20px} section{min-height:100vh;padding-top:30vh}</style>
 </head><body>
 <canvas id="gradient-canvas"></canvas>
-<div id="main"><div class="rct-content-inner"><section><h1>Startscreen</h1></section><section><h2>Abschnitt 2</h2></section><section><h2>Abschnitt 3</h2></section></div></div>
+<div id="mainContainer"><div id="main"><div class="rct-content-inner"><section id="s1"><h1>Startscreen</h1><p style="max-width:60ch;line-height:1.6">Leistungen: Webdesign, Contao-Themes, Shader-Hintergründe und Figuren, die mit der Maus mitschauen. Fließtext zur Lesbarkeitsprobe auf dem leisen Meer.</p></section><section><h2>Abschnitt 2</h2></section><section><h2>Abschnitt 3</h2></section></div></div></div>
+<script>if (!new URLSearchParams(location.search).has('leise')) document.getElementById('s1').classList.add('rct-floss');</script>
 <script src="/bundles/rct/js/rct-canvas-config.js"></script>
 <script src="/bundles/rct/js/gl-bg-animation.js"></script>
 <script src="/bundles/rct/js/rct-floss-meer.js"></script>
