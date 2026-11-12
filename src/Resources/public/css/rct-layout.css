@@ -2647,6 +2647,7 @@ body[data-theme="datenmeer"]::after {
   background: url('../img/theme-datenmeer-mond.avif') center / contain no-repeat;
 }
 @media (max-width: 800px) { body[data-theme="datenmeer"]::after { width: 22vw; } }
+html.rct-shader-moon body[data-theme="datenmeer"]::after { display: none; }   /* Mond kommt als Textur aus dem Shader (hinter den Wolken, Ralph 12.11.) – CSS-Mond bleibt nur Rückfall ohne WebGL */
 
 /* Datenmeer: Canvas um die Himmelshöhe größer (128vh) und beim Scrollen 1:1 mit dem Inhalt nach oben, bis der Himmel weg ist –
    so bleibt das Floß im Hero auf dem Wasser (Ralph 11.11.2026). Shader rechnet mit dmX = 0.28 (gl-bg-animation.js, Modus 20).

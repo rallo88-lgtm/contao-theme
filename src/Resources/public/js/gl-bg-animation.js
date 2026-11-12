@@ -1563,15 +1563,23 @@ void main() {
     vec3 ro = vec3(0.0, 2.6, 0.0);
     vec3 haze = skyLow + cyan * 0.07;
 
+    // Mond-Textur VOR der Himmel/Meer-Verzweigung lesen: in Verzweigungen verschätzt sich die GPU am Rand mit der Mipmap (feine Linie am Horizont)
+    vec2 mcUv = u_moon.w > 0.0 ? vec2(u_moon.x / (resolution.x * 1.02), 1.0 - u_moon.y / u_moon.w) : vec2(0.89, 0.856);
+    vec2 mp = (vec2(uv.x * resolution.x * 1.02, (1.0 - uv.y) * u_moon.w) - u_moon.xy) / max(u_moon.z, 1.0);
+    vec4 moonT = texture2D(u_tex0, clamp(vec2(0.5 + mp.x, 0.5 - mp.y), 0.0, 1.0));
+    float moonA = u_tex0_ready * moonT.a * (1.0 - smoothstep(0.44, 0.5, max(abs(mp.x), abs(mp.y))));   // außerhalb des Mondbilds 0, zum Rand weich aus
+
     if (rd.y > -0.002) {
       vec3 c = mix(skyLow, skyTop, smoothstep(0.0, 1.0 - horizon, sy)); c += cyan * 0.06 * exp(-sy * 28.0);
+      // Mond als Textur (Ralph 12.11.): erst der Mond, danach ziehen die Wolken DARÜBER – Lage in CSS-px wie der alte CSS-Mond (u_moon)
+      c = mix(c, moonT.rgb, moonA);
       vec2 q = vec2(uv.x * aspect * 2.4 + t * 0.012, uv.y * 11.0); float n = rct_fbm(q);
       float band = smoothstep(horizon + 0.03, horizon + 0.09, uv.y) * (1.0 - smoothstep(0.95, 1.0, uv.y));
-      float moonLit = exp(-length((uv - vec2(0.89, 0.856)) * vec2(aspect, 1.0)) * 2.6);
+      float moonLit = exp(-length((uv - mcUv) * vec2(aspect, 1.0)) * 2.6);
       float cl = smoothstep(0.5 - 0.08 * moonLit, 0.66, n) * band; float edge = smoothstep(0.6, 0.76, n);
       vec3 lilaC = mix(vec3(0.369, 0.333, 0.569), vec3(0.467, 0.392, 0.651), edge), tuerC = mix(vec3(0.157, 0.361, 0.486), vec3(0.25, 0.56, 0.66), edge);
       vec3 cc = mix(tuerC, lilaC, smoothstep(0.42, 0.62, rct_vnoise(q * vec2(0.35, 0.5) + 5.0)));
-      c = mix(c, cc * (0.8 + 1.0 * moonLit), cl * 0.92);
+      c = mix(c, cc * (0.8 + 1.0 * moonLit), cl * 0.92 * (1.0 - 0.5 * moonA));   // Mond schimmert durch die Wolken
       gl_FragColor = vec4(clamp(c, 0.0, 1.0), 1.0);
       return;
     }
@@ -1733,6 +1741,7 @@ class MiniGl {
                       this.typeFn = {
                           float: "1f",
                           int: "1i",
+                          sampler2D: "1i",
                           vec2: "2fv",
                           vec3: "3fv",
                           vec4: "4fv",
@@ -1948,7 +1957,7 @@ e(this, "handleMouseMove", (event) => {
       e(this, "handleScrollEnd", () => {
           this.isScrolling = !1, this.isIntersecting && this.play()
       }), e(this, "resize", () => {
-          this.width = window.innerWidth, this.minigl.setSize(this.width, this.height), this.minigl.setOrthographicCamera(), this.xSegCount = Math.ceil(this.width * this.conf.density[0]), this.ySegCount = Math.ceil(this.height * this.conf.density[1]), this.mesh.geometry.setTopology(this.xSegCount, this.ySegCount), this.mesh.geometry.setSize(this.width, this.height), this.mesh.material.uniforms.u_shadow_power.value = this.width < 600 ? 5 : 6, this.mesh.material.uniforms.u_px_stretch && (this.mesh.material.uniforms.u_px_stretch.value = (this.el.getBoundingClientRect().height || window.innerHeight) / this.height),
+          this.width = window.innerWidth, this.minigl.setSize(this.width, this.height), this.minigl.setOrthographicCamera(), this.xSegCount = Math.ceil(this.width * this.conf.density[0]), this.ySegCount = Math.ceil(this.height * this.conf.density[1]), this.mesh.geometry.setTopology(this.xSegCount, this.ySegCount), this.mesh.geometry.setSize(this.width, this.height), this.mesh.material.uniforms.u_shadow_power.value = this.width < 600 ? 5 : 6, this.setMoon(), this.mesh.material.uniforms.u_px_stretch && (this.mesh.material.uniforms.u_px_stretch.value = (this.el.getBoundingClientRect().height || window.innerHeight) / this.height),
         // Responsive: auf Mobile Tropfen/Linien halbieren
         this.lineCount !== undefined && (
           this.mesh.material.uniforms.u_line_count.value = this.width < 768
@@ -2146,6 +2155,9 @@ u_mouse: new this.minigl.Uniform({
           u_line_width: new this.minigl.Uniform({ value: this.lineWidth || 0.15 }),
           u_line_speed: new this.minigl.Uniform({ value: this.lineSpeed || 0.0 }),
           u_px_stretch: new this.minigl.Uniform({ value: 1.0 }), // CSS-Höhe / Canvas-Höhe (fest 600) – Datenmeer-Punkte bleiben rund
+          u_tex0: new this.minigl.Uniform({ type: "sampler2D", value: 0, excludeFrom: "vertex" }), // Bild im Shader (Textur-Einheit 0, Ralph 12.11.) – geladen per loadTexture()
+          u_tex0_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }), // 1 = Bild ist da (vorher zeichnet der Shader ohne)
+          u_moon: new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" }), // Datenmeer-Mond in CSS-px: Mitte x, Mitte y von oben, Durchmesser, Fensterhöhe (wie der alte CSS-Mond)
           u_line_color: new this.minigl.Uniform({ value: this.lineColor || [0.8, 0.7, 0.4], type: "vec3" }),
           u_bg_color:   new this.minigl.Uniform({ value: this.bgColor   || [0.06, 0.06, 0.08], type: "vec3" }),
           u_wave_strength: new this.minigl.Uniform({ value: this.waveStrength || 1.0 }),
@@ -2267,8 +2279,31 @@ u_mouse: new this.minigl.Uniform({
   hideGradientLegend() {
       this.isGradientLegendVisible = !1, document.body.classList.remove("isGradientLegendVisible")
   }
+  // Bild als Textur in den Shader (Ralph 12.11.: „können wir Grafiken IM Shader nutzen?“) – beim Laden auf ~Anzeigegröße verkleinert, OHNE Mipmaps
+  // (Mipmaps: an Verzweigungen im Shader verschätzt sich die GPU mit der Stufe → feine helle Linie am Horizont, gemessen 12.11.)
+  loadTexture(url, size = 256) {
+      const gl = this.minigl.gl, img = new Image(), root = document.documentElement;
+      root.classList.remove("rct-shader-moon");
+      img.onload = () => {
+          if (!this.mesh) return;
+          const cv = document.createElement("canvas"); cv.width = cv.height = size; cv.getContext("2d").drawImage(img, 0, 0, size, size);
+          const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, t); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cv);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          this.mesh.material.uniforms.u_tex0_ready.value = 1; root.classList.add("rct-shader-moon");   // CSS-Mond (Rückfall ohne WebGL) ausblenden
+      };
+      img.src = url;
+  }
+  setMoon() {   // gleiche Lage/Größe wie der CSS-Mond (rct-layout.css body[data-theme=datenmeer]::after)
+      const u = this.mesh && this.mesh.material.uniforms.u_moon; if (!u) return;
+      const w = window.innerWidth, h = window.innerHeight, d = w <= 800 ? 0.22 * w : Math.min(0.12 * w, 200);
+      const hh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--rct-header-height")) || 64;
+      u.value = [w - 0.04 * w - d / 2, hh + 26 + d / 2, d, h];
+  }
   init() {
-      this.initGradientColors(), this.initMesh(), this.resize(), requestAnimationFrame(this.animate), window.addEventListener("resize", this.resize)
+      this.initGradientColors(), this.initMesh(), this.resize(), requestAnimationFrame(this.animate), window.addEventListener("resize", this.resize);
+      if (this.lineMode > 19.5 && this.lineMode < 20.5) this.loadTexture("/bundles/rct/img/theme-datenmeer-mond.avif", window.innerWidth <= 800 ? 128 : 256);   // Datenmeer: Mond im Shader, hinter den Wolken
   }
   /*
   * Waiting for the css variables to become available, usually on page load before we can continue.
