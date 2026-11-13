@@ -71,8 +71,8 @@
         const J = [0, 1, 2].map(j => { const v = u.slice(); v[j] += 1e-3; return f(v).map((x, i) => (x - f0[i]) / 1e-3); }), A = [0, 1, 2].map(i => [J[0][i], J[1][i], J[2][i]]), D = det(A);
         if (Math.abs(D) < 1e-12) break;
         const dx = [0, 1, 2].map(c => det(A.map((row, i) => row.map((x, j) => j === c ? -f0[i] : x))) / D);
-        u = u.map((x, j) => x + 0.8 * dx[j]); u[0] = Math.min(Math.max(u[0], 0.4), 6); u[1] = Math.min(Math.max(u[1], -8), 6); }
-      return [p0, u[0], u[1], u[2]]; };
+        u = u.map((x, j) => x + 0.8 * dx[j]); u[0] = Math.min(Math.max(u[0], 0.4), 9); u[1] = Math.min(Math.max(u[1], -8), W.wz - 1.5); }   // Grenzen: Höhe bis 9, Fahrt bis kurz vors Floß
+      const rest = f(u); return [p0, u[0], u[1], u[2], Math.hypot(...rest)]; };   // 5. Wert: Restfehler in px (Kamera an der Grenze → groß)
     const korrektur = () => { const st = window.RCT_FLOSS_KORREKTUR || cfg.flossKorrektur || [], w = innerWidth;   // [[breite, dx px, dy px, größe ±, horizont ±], …] – weiche Kurve durch alle Punkte (Ralph 13.11.)
       if (!st.length) return [0, 0, 0, 0]; if (w <= st[0][0]) return [1, 2, 3, 4].map(j => st[0][j] || 0); if (w >= st[st.length - 1][0]) return [1, 2, 3, 4].map(j => st[st.length - 1][j] || 0);
       return [1, 2, 3, 4].map(j => kurve(st.map(x => x[0]), st.map(x => x[j] || 0), w)); };
@@ -90,7 +90,9 @@
       flossFahrt = null; camX = 0; if (leise || !U.u_p0) return; const W = zuWelt(b); if (!W) return;   // auch untereinander (Ralph 13.11.: unter 800 sollen die Korrekturen auch greifen)
       const stK = window.RCT_FLOSS_KORREKTUR || cfg.flossKorrektur || [], kr = hoch && !(stK.length && stK[0][0] <= innerWidth) && !stK.some(x => x[0] < 800) ? [0, 0, 0, 0] : korrektur(), p0 = U.u_p0.value,   // untereinander nur mit eigener Korrektur unter 800 (sonst würde die 800er aufs Handy durchschlagen)
         p2 = U.u_p2.value, f0 = fahrtNachRegel(), ist = proj(W, [p0, p2, f0, 0]), p0n = Math.min(Math.max(p0 + (kr[3] || 0), 0.3), 0.9);
-      const kam = kr.some(v => v) ? loese(W, { ax: ist.ax + kr[0], ay: ist.ay + kr[1], w: ist.w * (1 + kr[2]) }, p0n, [p2, f0, 0]) : [p0, p2, f0, 0];
+      const ziel = { ax: ist.ax + kr[0], ay: ist.ay + kr[1], w: ist.w * (1 + kr[2]) };
+      let kam = kr.some(v => v) ? loese(W, ziel, p0n, [p2, f0, 0]) : [p0, p2, f0, 0, 0];
+      for (let n = 1; kam[4] > 2 && n <= 40; n++) kam = loese(W, ziel, p0n - n * 0.01 * Math.sign(kr[1] || 1), [p2, f0, 0]);   // Kamera an der Grenze (hohes Fenster): Neigung nachgeben lassen – Horizont nur so weit wie nötig verschieben
       U.u_p0.value = kam[0]; U.u_p2.value = kam[1]; flossFahrt = kam[2]; camX = kam[3]; };
     let col = 1, row = 1, idle = 0;
     const platz = h => { const el = heroEl(); if (el) el.style.marginBottom = h ? Math.round(h * 1.06) + 'px' : ''; };   // untereinander: Hero wird um die Floßhöhe länger, die nächste Kachel rückt nach unten (nie mehr Floß hinter den Kacheln)
