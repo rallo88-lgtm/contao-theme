@@ -35,7 +35,9 @@
       const c = spalte(), platz = unterkante() - innerHeight * 0.12;   // Höhe zwischen Kopfzeile und Unterkante Hero-Text
       const w = Math.min(Math.max(c.width * 0.55, innerWidth * 0.355), Math.max(platz, innerHeight * 0.25) * 1672 / 941), h = w * 941 / 1672;   // Ralph 13.11.: 10 % größer + mit der Bildschirmbreite wachsen, aber nie höher als der Hero Platz hat (sonst rutscht es hinter den nächsten Artikel)
       const x = Math.min(c.left + c.width * 0.42, innerWidth * 0.97 - w);   // Ralph 13.11.: näher an den Text (war 0.48)   // darf rechts über die Inhaltsspalte ragen, nie über den Bildschirmrand
-      return { k, x, y: wasserlinie(h), w, h }; };
+      return { k, x, y: wasserlinie(h) + hoehenVersatz(), w, h }; };
+    const hoehenVersatz = () => { const r = cfg.hoehenRegel || [1920, 2560, -0.06, 0.065];   // Ralph 13.11.: 1920 und 2560 „treffen sich in der Mitte“ – Floß bei 1920 etwas höher, bei 2560 etwas tiefer (Anteil der Fensterhöhe)
+      const k = Math.min(Math.max((innerWidth - r[0]) / (r[1] - r[0]), 0), 1); return (r[2] + (r[3] - r[2]) * k) * innerHeight; };
     const horizontZumFloss = b => {   // Ralph 13.11.: Horizont liegt bei 44 % der Fensterhöhe, der Hero-Text in festen Pixeln → auf hohen Bildschirmen (2560×1440) lag die Wasserlinie ÜBER dem Horizont („in der Luft“).
       if (leise || hochformat() || !U.u_p0) return;   // Lösung: Abstand Wasserlinie–Horizont fest wie bei 1920 (10,3 % der Fensterhöhe) → der Horizont wandert mit dem Floß
       const anker = (b.y + 0.88 * b.h) / innerHeight, p0 = (cfg.params || [])[0] || 0.56;
