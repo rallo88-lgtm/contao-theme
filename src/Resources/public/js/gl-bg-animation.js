@@ -1649,7 +1649,7 @@ void main() {
     float pitch = atan((horizon - 0.5) / 1.1);
     vec3 rd0 = normalize(vec3((uv.x - 0.5) * aspect, uv.y - 0.5, 1.1));
     vec3 rd = vec3(rd0.x, rd0.y * cos(pitch) - rd0.z * sin(pitch), rd0.y * sin(pitch) + rd0.z * cos(pitch));
-    vec3 ro = vec3(0.0, max(u_p2 + u_x2.x, 0.3), u_p11 + u_x2.z);   // p11 Kamera-Fahrt vor/zurück (+ Scroll u_x2.z) – Ralph 13.11.
+    vec3 ro = vec3(u_x2.w, max(u_p2 + u_x2.x, 0.3), u_p11 + u_x2.z);   // p11 Kamera-Fahrt vor/zurück (+ Scroll/Intro u_x2.z), u_x2.w Kamera seitlich (Stationen je Breite) – Ralph 13.11.
     float zo = min(ro.z, 0.0);   // Punkt-Gitter: weltfest beim Vorfahren, Ursprung wandert nur beim Zurückfahren mit   // p2 Kamerahöhe (+ Scroll-Versatz u_x2.x)
     vec3 haze = skyLow + cyan * 0.07;
 
