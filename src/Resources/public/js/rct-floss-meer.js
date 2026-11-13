@@ -55,8 +55,8 @@
       const ax = (b.x + 0.53 * b.w) * k, ay = (b.y + 0.88 * b.h) * k, ux = ax / cw, uy = 1 - ay / mw;
       let x = (ux - 0.5) * asp, y = uy - 0.5, z = 1.1; const n = Math.hypot(x, y, z); x /= n; y /= n; z /= n;
       const ry = y * Math.cos(p0) - z * Math.sin(p0), rz = y * Math.sin(p0) + z * Math.cos(p0); if (ry > -0.001) return b;
-      const t = 2.6 / -ry, wx = x * t, wy = ry * t, wz = rz * t, z0 = -wy * Math.sin(p0) + wz * Math.cos(p0), vy = wy + 2.6 - cam;
-      const dy = vy * Math.cos(p1) + wz * Math.sin(p1), dz = -vy * Math.sin(p1) + wz * Math.cos(p1); if (dz < 0.05) return b;
+      const t = 2.6 / -ry, wx = x * t, wy = ry * t, wz = rz * t, z0 = -wy * Math.sin(p0) + wz * Math.cos(p0), vy = wy + 2.6 - cam, vz = wz - ((U.u_p11 ? U.u_p11.value : 0) + x2[2]);   // vz: Kamera-Fahrt
+      const dy = vy * Math.cos(p1) + vz * Math.sin(p1), dz = -vy * Math.sin(p1) + vz * Math.cos(p1); if (dz < 0.05) return b;
       const sx = 0.5 + wx / dz * 1.1 / asp, sy = 0.5 + dy / dz * 1.1, s = z0 / dz, w = b.w * s, h = b.h * s;
       return { k, w, h, x: sx * cw / k - 0.53 * w, y: (1 - sy) * mw / k - 0.88 * h }; };
 
@@ -69,12 +69,12 @@
     layout(); addEventListener('pointermove', look); addEventListener('resize', layout); document.documentElement.addEventListener('mouseleave', weg); addEventListener('blur', weg);
 
     // Scroll-Kamera „Sinkflug“: pro gescrollter Bildschirmhöhe sinkt die Kamera und neigt sich (Horizont wandert mit dem Inhalt), max. 2 Bildschirmhöhen, 0,1 s Nachgleiten
-    const ZIEL = leise ? (cfg.scrollLeise || [-0.25, 0.15]) : [-0.7, 0.45], MAX_BILDER = 2, still = matchMedia('(prefers-reduced-motion: reduce)').matches;   // „Bewegung reduzieren“ → Kamera bleibt stehen
-    let cur = [0, 0], last = performance.now(), raf = 0, skip = null, dtAvg = 16;
+    const ZIEL = (leise ? (cfg.scrollLeise || [-0.25, 0.15]) : (cfg.scroll || [-0.7, 0.45])).concat([0, 0, 0]).slice(0, 3), MAX_BILDER = 2, still = matchMedia('(prefers-reduced-motion: reduce)').matches;   // Scroll-Ziel [Höhe, Neigung, Fahrt] pro Bildschirmhöhe, window.RCT_FLOSS_SCROLL übersteuert (Contao-Vorschau im Labor);    „Bewegung reduzieren“ → Kamera bleibt stehen
+    let cur = [0, 0, 0], last = performance.now(), raf = 0, skip = null, dtAvg = 16;
     const fahrt = now => { raf = requestAnimationFrame(fahrt); const dt = Math.min((now - last) / 1000, 0.1); last = now; dtAvg += (dt * 1000 - dtAvg) * 0.1;
       const se = document.scrollingElement || document.documentElement, pr = still ? 0 : Math.min(Math.max(se.scrollTop / Math.max(innerHeight, 1), 0), MAX_BILDER), f = 1 - Math.exp(-dt * 10);
-      const tgt = [ZIEL[0] * pr, ZIEL[1] * pr], moving = Math.abs(tgt[0] - cur[0]) + Math.abs(tgt[1] - cur[1]) > 1e-4;
-      cur = moving ? [cur[0] + (tgt[0] - cur[0]) * f, cur[1] + (tgt[1] - cur[1]) * f] : tgt; U.u_x2.value = [cur[0], cur[1], 0, 0];
+      const zl = (!leise && window.RCT_FLOSS_SCROLL) || ZIEL, tgt = [0, 1, 2].map(i => (zl[i] || 0) * pr), moving = tgt.some((v, i) => Math.abs(v - cur[i]) > 1e-4);
+      cur = moving ? cur.map((v, i) => v + (tgt[i] - v) * f) : tgt; U.u_x2.value = [cur[0], cur[1], cur[2], 0];
       if (hm) { const fh = 1 - Math.exp(-dt / 0.45); ht = ht ? [ht[0] + (hm[0] - ht[0]) * fh, ht[1] + (hm[1] - ht[1]) * fh] : hm.slice(); U.u_x3.value = [hm[0], hm[1], ht[0], ht[1]]; }   // Nachzügler = Leuchtspur
       else { ht = null; U.u_x3.value = [-5, -5, -5, -5]; }
       if (moving && skip === null) { skip = g.frameSkip; g.frameSkip = dtAvg < 11 ? 2 : 1; } else if (!moving && skip !== null) { g.frameSkip = skip; skip = null; } };   // Fahrt: ~60 Shader-Bilder/s (120-Hz-Handy: jedes 2. Bild)

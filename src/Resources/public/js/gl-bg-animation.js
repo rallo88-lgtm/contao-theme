@@ -1649,12 +1649,14 @@ void main() {
     float pitch = atan((horizon - 0.5) / 1.1);
     vec3 rd0 = normalize(vec3((uv.x - 0.5) * aspect, uv.y - 0.5, 1.1));
     vec3 rd = vec3(rd0.x, rd0.y * cos(pitch) - rd0.z * sin(pitch), rd0.y * sin(pitch) + rd0.z * cos(pitch));
-    vec3 ro = vec3(0.0, max(u_p2 + u_x2.x, 0.3), 0.0);   // p2 Kamerahöhe (+ Scroll-Versatz u_x2.x)
+    vec3 ro = vec3(0.0, max(u_p2 + u_x2.x, 0.3), u_p11 + u_x2.z);   // p11 Kamera-Fahrt vor/zurück (+ Scroll u_x2.z) – Ralph 13.11.
+    float zo = min(ro.z, 0.0);   // Punkt-Gitter: weltfest beim Vorfahren, Ursprung wandert nur beim Zurückfahren mit   // p2 Kamerahöhe (+ Scroll-Versatz u_x2.x)
     vec3 haze = skyLow + cyan * 0.07;
 
     // Mond-Textur VOR der Himmel/Meer-Verzweigung lesen: in Verzweigungen verschätzt sich die GPU am Rand mit der Mipmap (feine Linie am Horizont)
-    vec2 mcUv = u_moon.w > 0.0 ? vec2(u_moon.x / (resolution.x * 1.02), 1.0 - u_moon.y / u_moon.w) : vec2(0.89, 0.856);
-    vec2 mp = (vec2(uv.x * resolution.x * 1.02, (1.0 - uv.y) * u_moon.w) - u_moon.xy) / max(u_moon.z, 1.0);
+    vec2 mPos = u_moon.xy - vec2(0.0, u_x2.y * u_moon.w);   // Mond hängt am Himmel (Ralph 13.11.): wandert bei Kamera-Neigung mit dem Horizont
+    vec2 mcUv = u_moon.w > 0.0 ? vec2(mPos.x / (resolution.x * 1.02), 1.0 - mPos.y / u_moon.w) : vec2(0.89, 0.856 + u_x2.y);
+    vec2 mp = (vec2(uv.x * resolution.x * 1.02, (1.0 - uv.y) * u_moon.w) - mPos) / max(u_moon.z, 1.0);
     vec4 moonT = texture2D(u_tex0, clamp(vec2(0.5 + mp.x, 0.5 - mp.y), 0.0, 1.0));
     float moonA = u_tex0_ready * moonT.a * (1.0 - smoothstep(0.44, 0.5, max(abs(mp.x), abs(mp.y))));   // außerhalb des Mondbilds 0, zum Rand weich aus
 
@@ -1663,7 +1665,7 @@ void main() {
       vec3 c = mix(skyLow, skyTop, smoothstep(0.0, 1.0 - horizon, sy)); c += cyan * 0.06 * exp(-sy * 28.0);
       // Mond als Textur (Ralph 12.11.): erst der Mond, danach ziehen die Wolken DARÜBER – Lage in CSS-px wie der alte CSS-Mond (u_moon)
       c = mix(c, moonT.rgb, moonA);
-      vec2 q = vec2(uv.x * aspect * 2.4 + t * 0.012, uv.y * 11.0); float n = rct_fbm(q);
+      vec2 q = vec2(uv.x * aspect * 2.4 + t * 0.012, (uv.y - u_x2.y) * 11.0); float n = rct_fbm(q);   // Wolken hängen am Himmel wie der Mond
       float band = smoothstep(horizon + 0.03, horizon + 0.09, uv.y) * (1.0 - smoothstep(0.95, 1.0, uv.y));
       float moonLit = exp(-length((uv - mcUv) * vec2(aspect, 1.0)) * 2.6);
       float cl = smoothstep(0.5 - 0.08 * moonLit - 0.12 * (u_p6 - 1.0), 0.66, n) * band * clamp(u_p6, 0.0, 1.0); float edge = smoothstep(0.6, 0.76, n);   // p6 Wolkenmenge
@@ -1682,7 +1684,7 @@ void main() {
     float a0 = lastT, b0 = tt;
     for (int k = 0; k < 6; k++) { float m = 0.5 * (a0 + b0); vec3 q = ro + rd * m; if (q.y - (rct_dm_wave(q.xz, t) - 0.5) * wh > 0.0) a0 = m; else b0 = m; }
     tt = b0;
-    vec3 p = ro + rd * tt; float z = max(p.z, 0.3); float fog = exp(-z * u_p7);   // p7 Sichtweite (Dunst)
+    vec3 p = ro + rd * tt; float z = max(p.z - zo, 0.3); float fog = exp(-max(p.z - ro.z, 0.3) * u_p7);   // Dunst nach Abstand zur Kamera   // p7 Sichtweite (Dunst)
     float e = 0.04;
     vec3 n = normalize(vec3((rct_dm_wave(p.xz - vec2(e, 0.0), t) - 0.5) * wh - (rct_dm_wave(p.xz + vec2(e, 0.0), t) - 0.5) * wh, 2.0 * e, (rct_dm_wave(p.xz - vec2(0.0, e), t) - 0.5) * wh - (rct_dm_wave(p.xz + vec2(0.0, e), t) - 0.5) * wh));
     vec3 L = normalize(vec3(0.55, 0.42, 1.0));
@@ -1706,7 +1708,7 @@ void main() {
     vec2 fw = vec2(62.0 * dens / pow(z, 0.55) * pxW, 13.5 * dens * pow(z, -0.55) * pxW / max(-rd.y, 0.02));
     // Punkt rund in Bildschirm-Pixeln (Ralph 10.11.: Wellen sollen die Punkte nicht verzerren): Zellmitte auf die Welle setzen und projizieren
     vec2 gc = id + 0.5 + (vec2(rct_hash(id), rct_hash(id + 7.3)) - 0.5) * 0.55;
-    float zc = pow(gc.y / (30.0 * dens), 1.0 / 0.45); float xc = gc.x / (62.0 * dens) * pow(zc, 0.55);
+    float zc = pow(gc.y / (30.0 * dens), 1.0 / 0.45); float xc = gc.x / (62.0 * dens) * pow(zc, 0.55); zc += zo;   // zc in Weltkoordinaten
     // Hover-Leuchten (Ralph 12.11.): Maus (u_x3.xy) + Nachzügler (u_x3.zw) als Punkte auf dem Wasser, Leucht-Streifen dazwischen – p8 Stärke, p9 Radius, p10 Nachglühen, c4 Farbe
     float hov = 0.0;
     if (u_x3.x > -1.0 && u_p8 > 0.0) {
