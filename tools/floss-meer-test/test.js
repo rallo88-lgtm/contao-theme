@@ -58,7 +58,7 @@ const shot = () => { const g = window.gradient, gl = g.minigl.gl; g.pause(); g.m
     const r = await p.evaluate(() => { const g = window.gradient, u = g.mesh.material.uniforms, k = g.resScale || 1, x0 = u.u_x0.value, mw = u.u_moon.value[3] / k;
       const hero = document.querySelector('.rct-floss').getBoundingClientRect(), naechst = document.querySelector('.rct-floss').nextElementSibling;
       return { h: g.height, p2: u.u_p2.value, horizontY: (1 - u.u_p0.value) * mw, hinten: (x0[1] + 0.55 * x0[3]) / k, flossOben: x0[1] / k, flossUnten: (x0[1] + x0[3]) / k, textUnten: hero.bottom, naechstOben: naechst ? naechst.getBoundingClientRect().top : 1e9 }; });
-    ok(r.h === 600 && r.p2 === 1.0, `Handy: Render-Höhe ${r.h}, Kamera ${r.p2}`);
+    ok(r.h === 600 && r.p2 >= 0.4 && r.p2 <= 9, `Handy: Render-Höhe ${r.h}, Kamera-Höhe ${r.p2.toFixed(2)} (aus Ralphs Korrektur-Kurve)`);
     ok(r.flossOben >= r.textUnten - 2 && r.naechstOben >= r.flossUnten - 2, `Handy untereinander: Floß unter dem Text, nächster Inhalt darunter (Text ${Math.round(r.textUnten)}, Floß ${Math.round(r.flossOben)}–${Math.round(r.flossUnten)}, nächster ${Math.round(r.naechstOben)})`);
     ok(r.hinten >= r.horizontY - 2, `Handy: Floß ragt nicht über den Horizont (hintere Kante ${Math.round(r.hinten)}, Horizont ${Math.round(r.horizontY)})`);
     await p.screenshot({ path: 'D:/tmp/rct-floss-handy.png' });
