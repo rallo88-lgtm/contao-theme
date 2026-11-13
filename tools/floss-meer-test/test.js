@@ -47,12 +47,12 @@ const shot = () => { const g = window.gradient, gl = g.minigl.gl; g.pause(); g.m
     await p.evaluate(() => window.applyTheme('datenmeer', false)); await p.waitForTimeout(2500);
     ok(await p.evaluate(() => !document.documentElement.classList.contains('rct-floss-leise')), 'Leise: Theme-Wechsel räumt die Glas-Klasse weg');
     ok(errs.filter(e => !/favicon/.test(e)).length === 0, 'Leise ohne Fehler ' + JSON.stringify(errs.slice(0, 3))); await c.close(); }
-  for (const [vw, ziel] of [[1920, 0], [2560, 3]]) {   // Intro: Kamera fährt in 4 s von −4 auf das Ziel je Bildschirmbreite, Text blendet ein
+  for (let [vw, ziel] of [[1920, 0], [2560, 3]]) {   // Intro: Kamera fährt in 4 s von −4 auf das Ziel je Bildschirmbreite, Text blendet ein
     const c = await b.newContext({ viewport: { width: vw, height: Math.round(vw * 9 / 16) } }), p = await c.newPage(); await p.goto('http://localhost:8765/?theme=floss-meer');
     await p.waitForFunction(() => window.gradient && window.gradient.mesh && window.gradient.mesh.material.uniforms.u_x2, null, { timeout: 8000 }); await p.waitForTimeout(400);
     const op = () => p.evaluate(() => { const e = document.querySelector('.rct-floss'); return e ? +getComputedStyle(e).opacity : 1; });
     const frueh = await p.evaluate(() => ({ z: window.gradient.mesh.material.uniforms.u_x2.value[2] })); frueh.intro = (await op()) < 0.05;
-    await p.waitForTimeout(4600); const spaet = await p.evaluate(() => ({ z: window.gradient.mesh.material.uniforms.u_x2.value[2] })); spaet.intro = (await op()) < 0.99;
+    await p.waitForTimeout(4600); const spaet = await p.evaluate(() => ({ z: window.gradient.mesh.material.uniforms.u_x2.value[2], soll: window.gradient._floss.kamera()[2] })); spaet.intro = (await op()) < 0.99; ziel = spaet.soll;   // Ziel = Kamera-Rechnung (Ralphs Korrekturen)
     ok(frueh.z < -2.5 && frueh.intro && Math.abs(spaet.z - ziel) < 0.05 && !spaet.intro, `Intro ${vw} px: Fahrt ${frueh.z.toFixed(2)} → ${spaet.z.toFixed(2)} (Ziel ${ziel}), Text erst danach`); await c.close(); }
   { const { p, c, errs } = await page('http://localhost:8765/?theme=floss-meer', { width: 390, height: 844 }, { isMobile: true, hasTouch: true });
     const r = await p.evaluate(() => { const g = window.gradient, u = g.mesh.material.uniforms, k = g.resScale || 1, x0 = u.u_x0.value, mw = u.u_moon.value[3] / k;

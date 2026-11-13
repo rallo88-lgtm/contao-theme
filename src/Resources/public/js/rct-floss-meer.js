@@ -73,16 +73,23 @@
         const dx = [0, 1, 2].map(c => det(A.map((row, i) => row.map((x, j) => j === c ? -f0[i] : x))) / D);
         u = u.map((x, j) => x + 0.8 * dx[j]); u[0] = Math.min(Math.max(u[0], 0.4), 6); u[1] = Math.min(Math.max(u[1], -8), 6); }
       return [p0, u[0], u[1], u[2]]; };
-    const korrektur = () => { const st = window.RCT_FLOSS_KORREKTUR || cfg.flossKorrektur || [], w = innerWidth;   // [[breite, dx px, dy px, größe ±, horizont ±], …] – dazwischen gleichmäßig
-      if (!st.length) return [0, 0, 0, 0]; if (w <= st[0][0]) return st[0].slice(1);
-      for (let i = 1; i < st.length; i++) if (w <= st[i][0]) { const a = st[i - 1], b = st[i], q = (w - a[0]) / (b[0] - a[0]); return [1, 2, 3, 4].map(j => (a[j] || 0) + ((b[j] || 0) - (a[j] || 0)) * q); }
-      return st[st.length - 1].slice(1); };
+    const korrektur = () => { const st = window.RCT_FLOSS_KORREKTUR || cfg.flossKorrektur || [], w = innerWidth;   // [[breite, dx px, dy px, größe ±, horizont ±], …] – weiche Kurve durch alle Punkte (Ralph 13.11.)
+      if (!st.length) return [0, 0, 0, 0]; if (w <= st[0][0]) return [1, 2, 3, 4].map(j => st[0][j] || 0); if (w >= st[st.length - 1][0]) return [1, 2, 3, 4].map(j => st[st.length - 1][j] || 0);
+      return [1, 2, 3, 4].map(j => kurve(st.map(x => x[0]), st.map(x => x[j] || 0), w)); };
+    const kurve = (xs, ys, x) => {   // monotone kubische Kurve (Fritsch-Carlson): weich, schießt zwischen zwei Punkten nie über deren Werte hinaus
+      const n = xs.length, d = [], m = []; for (let i = 0; i < n - 1; i++) d.push((ys[i + 1] - ys[i]) / (xs[i + 1] - xs[i]));
+      for (let i = 0; i < n; i++) m.push(i === 0 ? d[0] : i === n - 1 ? d[n - 2] : (d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2));
+      for (let i = 0; i < n - 1; i++) { if (d[i] === 0) { m[i] = 0; m[i + 1] = 0; continue; } const a = m[i] / d[i], b = m[i + 1] / d[i], q = a * a + b * b; if (q > 9) { const t = 3 / Math.sqrt(q); m[i] = t * a * d[i]; m[i + 1] = t * b * d[i]; } }
+      let k = 0; while (k < n - 2 && x > xs[k + 1]) k++;
+      const h = xs[k + 1] - xs[k], t = (x - xs[k]) / h, t2 = t * t, t3 = t2 * t;
+      return (2 * t3 - 3 * t2 + 1) * ys[k] + (t3 - 2 * t2 + t) * h * m[k] + (-2 * t3 + 3 * t2) * ys[k + 1] + (t3 - t2) * h * m[k + 1]; };
     let flossFahrt = null;
     let camX = 0;
     const fahrtNachRegel = () => { const R = cfg.fahrtRegel || [1920, 2560, 3]; return Math.min(Math.max((innerWidth - R[0]) / (R[1] - R[0]) * R[2], 0), R[2]); };   // Grund-Fahrt je Breite (0 bis 1920, 3 bei 2560) – hier oben, weil layout() vor dem Intro-Teil läuft
     const kameraRechnen = (b, hoch) => {   // nebeneinander: Kamera so, dass das Floß (Layout-Ziel + Ralphs Korrektur) genau sitzt – Horizont (p0) aus horizontZumFloss + Korrektur
-      flossFahrt = null; camX = 0; if (leise || hoch || !U.u_p0) return; const W = zuWelt(b); if (!W) return;
-      const kr = korrektur(), p0 = U.u_p0.value, p2 = U.u_p2.value, f0 = fahrtNachRegel(), ist = proj(W, [p0, p2, f0, 0]), p0n = Math.min(Math.max(p0 + (kr[3] || 0), 0.3), 0.9);
+      flossFahrt = null; camX = 0; if (leise || !U.u_p0) return; const W = zuWelt(b); if (!W) return;   // auch untereinander (Ralph 13.11.: unter 800 sollen die Korrekturen auch greifen)
+      const stK = window.RCT_FLOSS_KORREKTUR || cfg.flossKorrektur || [], kr = hoch && !(stK.length && stK[0][0] <= innerWidth) && !stK.some(x => x[0] < 800) ? [0, 0, 0, 0] : korrektur(), p0 = U.u_p0.value,   // untereinander nur mit eigener Korrektur unter 800 (sonst würde die 800er aufs Handy durchschlagen)
+        p2 = U.u_p2.value, f0 = fahrtNachRegel(), ist = proj(W, [p0, p2, f0, 0]), p0n = Math.min(Math.max(p0 + (kr[3] || 0), 0.3), 0.9);
       const kam = kr.some(v => v) ? loese(W, { ax: ist.ax + kr[0], ay: ist.ay + kr[1], w: ist.w * (1 + kr[2]) }, p0n, [p2, f0, 0]) : [p0, p2, f0, 0];
       U.u_p0.value = kam[0]; U.u_p2.value = kam[1]; flossFahrt = kam[2]; camX = kam[3]; };
     let col = 1, row = 1, idle = 0;

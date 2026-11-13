@@ -395,7 +395,7 @@ const RCT_CANVAS_CONFIG = {
     paramsLeise:         { 0: 0.72, 1: 0.35, 2: 2.6, 4: 0.85 },   // Seiten ohne Klasse „rct-floss“ (Ralph 12.11.: selber Shader, andere Kamera): höher, Horizont weiter oben, flachere Wellen, kleinere Punkte (Variante A)
     paramsLeisePortrait: { 0: 0.6 },
     scrollLeise:         [-0.25, 0.15],      // sanfte Scroll-Kamera auf leisen Seiten (Sinkflug, Neigung pro Bildschirmhöhe)
-    flossKorrektur: [[830, 0, 40, 0, 0], [1024, 0, 40, 0, 0], [1366, 0, 0, 0, 0], [1920, 0, 0, 0, 0], [2164, -50, 0, 0, 0], [2560, 0, 0, 0, 0]],   // [breite, dx px, dy px, größe ±, horizont ±] – Ralph 13.11.: 830–1024 tiefer, bei 2164 50 px links; Kamera rechnet sich danach (Korrektur-Werkzeug der Contao-Vorschau)
+    flossKorrektur: [[800, 10, 40, -0.16, 0], [830, 0, 40, 0, 0], [890, -15.5, 104.9, 0.249, 0.049], [1024, -50, 250, 0.16, 0.03], [1048, -10, 44.4, 0.202, 0.063], [1158, 0, 64.5, 0.232, 0.07], [1356, 0, 51.2, 0.08, 0.05], [1430, 0, 72.4, 0.117, 0.027], [1592, 0, 43.9, 0.131, 0.06], [1900, 0, 80, 0.12, 0], [2164, -50, 0, 0.04, 0.04], [2354, -117.2, -55.6, 0, 0.086], [2560, -190, -260, -0.12, 0.16]],   // [breite, dx px, dy px, größe ±, horizont ±] – Ralph 13.11.: 830–1024 tiefer, bei 2164 50 px links; Kamera rechnet sich danach (Korrektur-Werkzeug der Contao-Vorschau)
     // cparams: Reflex hell, Reflex selten, Wolke Türkis, Wolke Lila, Hover-Farbe
     cparams: ['#9ad2df', '#5e2392', '#285c7c', '#5e5591', '#701f76'],
   },
