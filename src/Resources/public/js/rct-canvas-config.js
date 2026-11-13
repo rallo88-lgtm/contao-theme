@@ -369,6 +369,35 @@ const RCT_CANVAS_CONFIG = {
     fragmentShader_lineColor:  '#10adcd',
     frameSkip:                 2,            // Raymarching – sparsam
   },
+  // Floß im Datenmeer — Datenmeer + Floß/Sofa/Missi als Bilder im Shader, Scroll-Kamera, Hover-Leuchten (Ralph 12.11.2026, aus Shader-Labor Exp. 32; JS: rct-floss-meer.js)
+  'floss-meer': {
+    vertexShader_amp:          0,
+    vertexShader_seed:         0,
+    vertexShader_freqX:        0,
+    vertexShader_freqY:        0,
+    vertexShader_freqDelta:    0,
+    vertexShader_timeSpeed:    0,
+    vertexShader_density:      [0.06, 0.16],
+    vertexShader_activeColors: [1, 1, 1, 1],
+    vertexShader_bgColor:      '#002334',
+    fragmentWithVertex:        false,
+    shaderMode:                21,
+    fragmentShader_lineCount:  1,
+    fragmentShader_lineWidth:  1.0,
+    fragmentShader_lineSpeed:  0.05,
+    fragmentShader_lineColor:  '#10adcd',
+    frameSkip:                 2,
+    renderHeight:              1024,         // Desktop: Mondrand scharf (Ralph: 1024 „perfekt“)
+    renderHeightMobile:        600,          // Handy (Touch oder < 768 px): 1024 ruckelt, 600 läuft flüssig (Ralph gemessen)
+    // params: Horizont, Wellenhöhe, Kamerahöhe, Punktdichte, Punktgröße, Reflexe, Wolken, Sichtweite, Hover-Stärke, Hover-Radius, Nachglühen, –
+    params:  [0.56, 0.47, 1.5, 1, 1, 1, 1, 0.014, 1.07, 0.2, 0.03, 0],
+    paramsPortrait: { 0: 0.45, 2: 1.0 },     // Handy hochkant: Neigung + Kamerahöhe so, dass der Horizont auf Halshöhe der Figur liegt (gemessen 12.11.)
+    paramsLeise:         { 0: 0.72, 1: 0.35, 2: 2.6, 4: 0.85 },   // Seiten ohne Klasse „rct-floss“ (Ralph 12.11.: selber Shader, andere Kamera): höher, Horizont weiter oben, flachere Wellen, kleinere Punkte (Variante A)
+    paramsLeisePortrait: { 0: 0.6 },
+    scrollLeise:         [-0.25, 0.15],      // sanfte Scroll-Kamera auf leisen Seiten (Sinkflug, Neigung pro Bildschirmhöhe)
+    // cparams: Reflex hell, Reflex selten, Wolke Türkis, Wolke Lila, Hover-Farbe
+    cparams: ['#9ad2df', '#5e2392', '#285c7c', '#5e5591', '#701f76'],
+  },
 
   // Inversion — Möbius-Inversion + Mat2-Rotation, fraktal-galaktischer Look
   inversion: {

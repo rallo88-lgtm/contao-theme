@@ -494,6 +494,7 @@
 
     window.applyTheme = function (theme, withFade) {
       if (!gradCanvas || !rctCanvasEnabled) return;
+      if (window._rctThemeHookStop) { try { window._rctThemeHookStop(); } catch (e) {} window._rctThemeHookStop = null; }   // Theme-JS (RCT_THEME_HOOKS) des alten Themes abmelden
 
       // Pre-cleanup: wechsel zu No-GL-Theme (baker-street/sparta)
       // GL beenden + Buffer leeren BEVOR data-theme gesetzt wird,
@@ -605,12 +606,19 @@
           window.gradient.waveStrength = p.fragmentShader_waveStrength ?? 1.0;
           window.gradient.slimeMode   = p.fragmentShader_slimeMode   ?? 0.0;
           window.gradient.frameSkip      = p.frameSkip ?? 2;
+          window.gradient.params         = p.params || [];   // Regler-Plätze u_p0..u_p11 für neue Modi
+          window.gradient.cparams        = (p.cparams || []).map(parseColor);   // Farb-Plätze u_c0..u_c5
+          const rctMobil = (window.matchMedia && matchMedia('(pointer: coarse)').matches) || window.innerWidth < 768;
+          window.gradient.renderH        = (rctMobil ? (p.renderHeightMobile || p.renderHeight) : p.renderHeight) || undefined;   // interne Canvas-Höhe (Standard 600)
+          window.gradient.themeConfig    = p;
           window.gradient.mouseParallax  = p.mouseParallax ?? false;
           // Kombination
           window.gradient.fragmentWithVertex = p.fragmentWithVertex ?? true;
           window.gradient.mouse     = [0.5, 0.5];
 
           window.gradient.initGradient('#gradient-canvas');
+          const rctHook = (window.RCT_THEME_HOOKS || {})[theme];   // Theme-JS (z. B. Floß im Datenmeer): startet, sobald der Shader läuft
+          if (rctHook && rctHook.start) { const g = window.gradient; const go = () => { if (window.gradient !== g) return; if (!(g.mesh && g.conf && g.conf.playing)) return requestAnimationFrame(go); window._rctThemeHookStop = rctHook.start(g) || null; }; go(); }
 
           // Mouse tracking
           if (!window._rctMouseHandler) {

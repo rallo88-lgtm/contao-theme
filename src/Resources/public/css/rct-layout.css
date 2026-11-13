@@ -358,7 +358,8 @@
 [data-theme="inversion"] #gradient-canvas,
 [data-theme="fire"] #gradient-canvas,
 [data-theme="wave"] #gradient-canvas,
-[data-theme="datenmeer"] #gradient-canvas {
+[data-theme="datenmeer"] #gradient-canvas,
+[data-theme="floss-meer"] #gradient-canvas {
   mask-image: none;
   -webkit-mask-image: none;
   opacity: 1.0;
@@ -376,6 +377,7 @@
 [data-theme="wave"] #rct-dots-canvas { display: none; }
 [data-theme="starry"] #rct-dots-canvas { display: none; }
 [data-theme="datenmeer"] #rct-dots-canvas { display: none; }
+[data-theme="floss-meer"] #rct-dots-canvas { display: none; }
 
 /* Toxic Green: Canvas Hintergrundbild + Maske deaktivieren */
 [data-theme="toxic-green"] #gradient-canvas {
@@ -2668,6 +2670,32 @@ body[data-theme="datenmeer"]::after { transform: translate3d(0, calc(-1 * var(--
   }
 }
 @keyframes rct-dm-shift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, -28vh, 0); } }
+
+/* --- Theme: Floß im Datenmeer (Ralph 12.11.2026, Shader-Modus 21 + rct-floss-meer.js) – Farben wie Datenmeer.
+   Floß/Sofa/Missi sind Bilder IM Shader; beim Scrollen bewegt sich die Kamera im Shader (kein Mitscrollen des Canvas).
+   Canvas 128vh, weil der Shader mit dmX = 0.28 rechnet (sichtbar sind die oberen 100vh). --- */
+[data-theme="floss-meer"] {
+  --rct-primary:       #1e88c5;
+  --rct-primary-light: #4fc3f7;
+  --rct-accent:        #9ad2df;
+  --rct-primary-container: rgba(16, 173, 205, 0.12);
+  --rct-sidebar-alpha:     0.6;
+  --rct-main-alpha:        0.0;
+  --rct-bg-dots:           rgba(154, 210, 223, 0.40);
+  --grad-1: #002334;
+  --grad-2: #00364d;
+  --grad-3: #001a27;
+  --grad-4: #000f17;
+}
+[data-theme="floss-meer"] #gradient-canvas { height: 128vh; }
+body[data-theme="floss-meer"]::after {   /* Mond als Bild nur ohne WebGL (sonst kommt er aus dem Shader) */
+  content: ""; position: fixed; right: 4vw; top: calc(var(--rct-header-height, 64px) + 26px);
+  width: min(12vw, 200px); aspect-ratio: 1; z-index: 11; pointer-events: none;
+  background: url('../img/theme-datenmeer-mond.avif') center / contain no-repeat;
+}
+@media (max-width: 800px) { body[data-theme="floss-meer"]::after { width: 22vw; } }
+html.rct-shader-moon body[data-theme="floss-meer"]::after { display: none; }
+html.rct-floss-leise[data-theme="floss-meer"] { --rct-main-alpha: 0.35; }   /* leise Seiten (ohne .rct-floss): Inhalt auf dunklem Glas, Text bleibt lesbar – ohne backdrop-blur (kostet am Handy jedes Bild) */
 
 #rct-baker-bg {
   position: fixed;
