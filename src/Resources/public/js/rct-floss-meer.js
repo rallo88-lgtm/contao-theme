@@ -32,7 +32,12 @@
     };
     const box = () => { const k = g.resScale || 1, hoch = hochformat();   // Desktop: rechte Hälfte der Inhaltsspalte (Meer bleibt volle Breite); Hochformat: fast volle Breite unter der Mitte
       if (hoch) { const w = innerWidth * 0.94; return { k, x: innerWidth * 0.03, y: innerHeight * 0.5, w, h: w * 941 / 1672 }; }
-      const c = spalte(), w = c.width * 0.5; return { k, x: c.left + c.width * 0.48, y: innerHeight * 0.4, w, h: w * 941 / 1672 }; };
+      const c = spalte(), w = c.width * 0.5, h = w * 941 / 1672;
+      return { k, x: c.left + c.width * 0.48, y: wasserlinie(h), w, h }; };
+    const wasserlinie = h => {   // Ralph 13.11.: Floß nicht fest bei 40 %, sondern Unterkante des Floß-Kastens auf die Unterkante des .rct-floss-Elements (Hero-Text) – in Seitenkoordinaten bei Scroll 0, die Scroll-Kamera übernimmt den Rest
+      const el = document.querySelector('.rct-floss'), se = document.scrollingElement || document.documentElement;
+      const unten = el ? el.getBoundingClientRect().bottom + se.scrollTop : innerHeight * 0.4 + 0.88 * h;
+      return Math.min(Math.max(unten - h, innerHeight * 0.12), innerHeight * 0.45); };   // ganzes Floß (Kasten) über der Unterkante – sonst rutscht der Bug hinter die Glasfläche des nächsten Artikels   // nie unter die Kopfzeile, nie tiefer als vorher
 
     let col = 1, row = 1, idle = 0;
     const layout = () => { horizont(); const b = box(); U.u_x0.value = [b.x * b.k, b.y * b.k, b.w * b.k, b.h * b.k]; U.u_x1.value = [col, row, 0.006, 0.006]; };   // Schaukeln-Reste (Shader nimmt die Wellen)
