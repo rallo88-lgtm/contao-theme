@@ -22,7 +22,10 @@ const shot = () => { const g = window.gradient, gl = g.minigl.gl; g.pause(); g.m
     ok(r.x0[0] >= r.left && r.x0[0] + r.x0[2] <= r.right + 1, `Floß in der Inhaltsspalte (${Math.round(r.x0[0])}…${Math.round(r.x0[0] + r.x0[2])} innerhalb ${Math.round(r.left)}…${Math.round(r.right)})`);
     await p.evaluate(() => scrollTo(0, innerHeight)); await p.waitForTimeout(1500);
     const x2 = await p.evaluate(() => [...window.gradient.mesh.material.uniforms.u_x2.value]);
-    ok(Math.abs(x2[0] + 0.7) < 0.02 && Math.abs(x2[1] - 0.45) < 0.02, 'Scroll 1 Bildschirmhöhe → Sinkflug ' + JSON.stringify(x2.slice(0, 2).map(v => +v.toFixed(3))));
+    ok(Math.abs(x2[0]) < 0.02 && Math.abs(x2[1] - 0.45) < 0.02, 'Scroll 1 Bildschirmhöhe → Station 1: Neigung + Anflug, Höhe noch 0 ' + JSON.stringify(x2.slice(0, 2).map(v => +v.toFixed(3))));
+    await p.evaluate(() => scrollTo(0, innerHeight * 2)); await p.waitForTimeout(1500);
+    const x2b = await p.evaluate(() => [...window.gradient.mesh.material.uniforms.u_x2.value]);
+    ok(Math.abs(x2b[0] + 0.8) < 0.03 && Math.abs(x2b[1] - 0.45) < 0.02, 'Scroll 2 Bildschirmhöhen → Station 2: jetzt sinkt die Höhe ' + JSON.stringify(x2b.slice(0, 2).map(v => +v.toFixed(3))));
     await p.mouse.move(300, 700); await p.waitForTimeout(600);
     ok(await p.evaluate(() => window.gradient.mesh.material.uniforms.u_x3.value[0] > -1), 'Hover: Maus über dem Meer kommt im Shader an');
     await p.evaluate(() => window.applyTheme('datenmeer', false)); await p.waitForTimeout(2500);
@@ -44,6 +47,13 @@ const shot = () => { const g = window.gradient, gl = g.minigl.gl; g.pause(); g.m
     await p.evaluate(() => window.applyTheme('datenmeer', false)); await p.waitForTimeout(2500);
     ok(await p.evaluate(() => !document.documentElement.classList.contains('rct-floss-leise')), 'Leise: Theme-Wechsel räumt die Glas-Klasse weg');
     ok(errs.filter(e => !/favicon/.test(e)).length === 0, 'Leise ohne Fehler ' + JSON.stringify(errs.slice(0, 3))); await c.close(); }
+  for (const [vw, ziel] of [[1920, 0], [2560, 3]]) {   // Intro: Kamera fährt in 4 s von −4 auf das Ziel je Bildschirmbreite, Text blendet ein
+    const c = await b.newContext({ viewport: { width: vw, height: Math.round(vw * 9 / 16) } }), p = await c.newPage(); await p.goto('http://localhost:8765/?theme=floss-meer');
+    await p.waitForFunction(() => window.gradient && window.gradient.mesh && window.gradient.mesh.material.uniforms.u_x2, null, { timeout: 8000 }); await p.waitForTimeout(400);
+    const op = () => p.evaluate(() => { const e = document.querySelector('.rct-floss'); return e ? +getComputedStyle(e).opacity : 1; });
+    const frueh = await p.evaluate(() => ({ z: window.gradient.mesh.material.uniforms.u_x2.value[2] })); frueh.intro = (await op()) < 0.05;
+    await p.waitForTimeout(4600); const spaet = await p.evaluate(() => ({ z: window.gradient.mesh.material.uniforms.u_x2.value[2] })); spaet.intro = (await op()) < 0.99;
+    ok(frueh.z < -2.5 && frueh.intro && Math.abs(spaet.z - ziel) < 0.05 && !spaet.intro, `Intro ${vw} px: Fahrt ${frueh.z.toFixed(2)} → ${spaet.z.toFixed(2)} (Ziel ${ziel}), Text erst danach`); await c.close(); }
   { const { p, c, errs } = await page('http://localhost:8765/?theme=floss-meer', { width: 390, height: 844 }, { isMobile: true, hasTouch: true });
     const r = await p.evaluate(() => { const u = window.gradient.mesh.material.uniforms; return { h: window.gradient.height, p0: u.u_p0.value, p2: u.u_p2.value }; });
     ok(r.h === 600 && r.p0 === 0.45 && r.p2 === 1.0, `Handy: Render-Höhe ${r.h}, Hochformat-Horizont ${r.p0} / Kamera ${r.p2}`);

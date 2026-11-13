@@ -68,13 +68,25 @@
       col = pick(e.clientX - hx, dz); row = pick(e.clientY - hy, dz); layout(); clearTimeout(idle); idle = setTimeout(() => { col = 1; row = 1; layout(); }, 4000); };
     layout(); addEventListener('pointermove', look); addEventListener('resize', layout); document.documentElement.addEventListener('mouseleave', weg); addEventListener('blur', weg);
 
-    // Scroll-Kamera „Sinkflug“: pro gescrollter Bildschirmhöhe sinkt die Kamera und neigt sich (Horizont wandert mit dem Inhalt), max. 2 Bildschirmhöhen, 0,1 s Nachgleiten
-    const ZIEL = (leise ? (cfg.scrollLeise || [-0.25, 0.15]) : (cfg.scroll || [-0.7, 0.45])).concat([0, 0, 0]).slice(0, 3), MAX_BILDER = 2, still = matchMedia('(prefers-reduced-motion: reduce)').matches;   // Scroll-Ziel [Höhe, Neigung, Fahrt] pro Bildschirmhöhe, window.RCT_FLOSS_SCROLL übersteuert (Contao-Vorschau im Labor);    „Bewegung reduzieren“ → Kamera bleibt stehen
+    // Scroll-Kamera in Stationen [Bildschirmhöhen, Höhe, Neigung, Fahrt] (Ralph 13.11.: oben Neigung + Anflug, danach Höhe) – dazwischen gleichmäßig, 0,1 s Nachgleiten
+    const STATIONEN = leise ? (cfg.stationenLeise || [[0, 0, 0, 0], [2, -0.5, 0.3, 0]]) : (cfg.stationen || [[0, 0, 0, 0], [1, 0, 0.45, 0.7], [2, -0.8, 0.45, 0.7]]);
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;   // „Bewegung reduzieren“ → kein Intro, keine Scroll-Fahrt
+    const alsStationen = z => Array.isArray(z[0]) ? z : [[0, 0, 0, 0], [2, 2 * (z[0] || 0), 2 * (z[1] || 0), 2 * (z[2] || 0)]];   // alte Form [Höhe, Neigung, Fahrt] pro Bildschirmhöhe → 2 Stationen
+    const anStation = (st, pr) => { if (pr <= st[0][0]) return st[0].slice(1);
+      for (let i = 1; i < st.length; i++) { const a = st[i - 1], b = st[i]; if (pr <= b[0]) { const k = (pr - a[0]) / Math.max(b[0] - a[0], 1e-6); return [1, 2, 3].map(j => a[j] + (b[j] - a[j]) * k); } }
+      return st[st.length - 1].slice(1); };
+    // Intro (Ralph 13.11.): Kamera fährt in 4 s von −4 auf ihr Ziel; Ziel-Fahrt hängt an der Bildschirmbreite (0 bis 1920 px, linear bis 3 bei 2560, gedeckelt); der Hero-Text blendet per CSS ein (rct-layout.css, kein Aufblitzen vor dem JS)
+    const INTRO = still || leise || hochformat() ? 0 : (cfg.introSekunden ?? 4) * 1000, VON = cfg.introVon ?? -4, REGEL = cfg.fahrtRegel || [1920, 2560, 3];
+    const zielFahrt = () => leise || hochformat() ? 0 : Math.min(Math.max((innerWidth - REGEL[0]) / (REGEL[1] - REGEL[0]) * REGEL[2], 0), REGEL[2]);
+    const sanft = k => k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;   // weich an- und abbremsen
+    const t0 = performance.now();
     let cur = [0, 0, 0], last = performance.now(), raf = 0, skip = null, dtAvg = 16;
     const fahrt = now => { raf = requestAnimationFrame(fahrt); const dt = Math.min((now - last) / 1000, 0.1); last = now; dtAvg += (dt * 1000 - dtAvg) * 0.1;
-      const se = document.scrollingElement || document.documentElement, pr = still ? 0 : Math.min(Math.max(se.scrollTop / Math.max(innerHeight, 1), 0), MAX_BILDER), f = 1 - Math.exp(-dt * 10);
-      const zl = (!leise && window.RCT_FLOSS_SCROLL) || ZIEL, tgt = [0, 1, 2].map(i => (zl[i] || 0) * pr), moving = tgt.some((v, i) => Math.abs(v - cur[i]) > 1e-4);
-      cur = moving ? cur.map((v, i) => v + (tgt[i] - v) * f) : tgt; U.u_x2.value = [cur[0], cur[1], cur[2], 0];
+      const st = alsStationen((!leise && window.RCT_FLOSS_SCROLL) || STATIONEN), se = document.scrollingElement || document.documentElement;
+      const pr = still ? 0 : Math.min(Math.max(se.scrollTop / Math.max(innerHeight, 1), 0), st[st.length - 1][0]), f = 1 - Math.exp(-dt * 10);
+      const tgt = anStation(st, pr), ki = INTRO ? Math.min((now - t0) / INTRO, 1) : 1, intro = VON + (zielFahrt() - VON) * (INTRO ? sanft(ki) : 1);
+      const moving = ki < 1 || tgt.some((v, i) => Math.abs(v - cur[i]) > 1e-4);
+      cur = moving ? cur.map((v, i) => v + (tgt[i] - v) * f) : tgt; U.u_x2.value = [cur[0], cur[1], cur[2] + intro, 0];
       if (hm) { const fh = 1 - Math.exp(-dt / 0.45); ht = ht ? [ht[0] + (hm[0] - ht[0]) * fh, ht[1] + (hm[1] - ht[1]) * fh] : hm.slice(); U.u_x3.value = [hm[0], hm[1], ht[0], ht[1]]; }   // Nachzügler = Leuchtspur
       else { ht = null; U.u_x3.value = [-5, -5, -5, -5]; }
       if (moving && skip === null) { skip = g.frameSkip; g.frameSkip = dtAvg < 11 ? 2 : 1; } else if (!moving && skip !== null) { g.frameSkip = skip; skip = null; } };   // Fahrt: ~60 Shader-Bilder/s (120-Hz-Handy: jedes 2. Bild)

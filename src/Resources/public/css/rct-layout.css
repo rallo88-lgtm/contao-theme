@@ -2696,6 +2696,11 @@ body[data-theme="floss-meer"]::after {   /* Mond als Bild nur ohne WebGL (sonst 
 @media (max-width: 800px) { body[data-theme="floss-meer"]::after { width: 22vw; } }
 html.rct-shader-moon body[data-theme="floss-meer"]::after { display: none; }
 html.rct-floss-leise[data-theme="floss-meer"] { --rct-main-alpha: 0.35; }   /* leise Seiten (ohne .rct-floss): Inhalt auf dunklem Glas, Text bleibt lesbar – ohne backdrop-blur (kostet am Handy jedes Bild) */
+/* Intro (Ralph 13.11.2026): die Kamera fährt 4 s aufs Floß zu, der Hero-Text (.rct-floss) blendet ab 3 s weich ein – rein per CSS, damit vor dem JS nichts aufblitzt.
+   Handy hochkant und „Bewegung reduzieren“: kein Intro, Text sofort da. */
+@keyframes rct-floss-ein { from { opacity: 0; } to { opacity: 1; } }
+.rct-floss { animation: rct-floss-ein 1.2s ease 3s both; }
+@media (prefers-reduced-motion: reduce), (orientation: portrait) { .rct-floss { animation: none; } }
 
 #rct-baker-bg {
   position: fixed;
