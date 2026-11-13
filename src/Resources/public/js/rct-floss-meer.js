@@ -32,15 +32,23 @@
     };
     const box = () => { const k = g.resScale || 1, hoch = hochformat();   // Desktop: rechte Hälfte der Inhaltsspalte (Meer bleibt volle Breite); Hochformat: fast volle Breite unter der Mitte
       if (hoch) { const w = innerWidth * 0.94; return { k, x: innerWidth * 0.03, y: innerHeight * 0.5, w, h: w * 941 / 1672 }; }
-      const c = spalte(), w = c.width * 0.5, h = w * 941 / 1672;
-      return { k, x: c.left + c.width * 0.48, y: wasserlinie(h), w, h }; };
+      const c = spalte(), platz = unterkante() - innerHeight * 0.12;   // Höhe zwischen Kopfzeile und Unterkante Hero-Text
+      const w = Math.min(Math.max(c.width * 0.55, innerWidth * 0.355), Math.max(platz, innerHeight * 0.25) * 1672 / 941), h = w * 941 / 1672;   // Ralph 13.11.: 10 % größer + mit der Bildschirmbreite wachsen, aber nie höher als der Hero Platz hat (sonst rutscht es hinter den nächsten Artikel)
+      const x = Math.min(c.left + c.width * 0.42, innerWidth * 0.97 - w);   // Ralph 13.11.: näher an den Text (war 0.48)   // darf rechts über die Inhaltsspalte ragen, nie über den Bildschirmrand
+      return { k, x, y: wasserlinie(h), w, h }; };
+    const horizontZumFloss = b => {   // Ralph 13.11.: Horizont liegt bei 44 % der Fensterhöhe, der Hero-Text in festen Pixeln → auf hohen Bildschirmen (2560×1440) lag die Wasserlinie ÜBER dem Horizont („in der Luft“).
+      if (leise || hochformat() || !U.u_p0) return;   // Lösung: Abstand Wasserlinie–Horizont fest wie bei 1920 (10,3 % der Fensterhöhe) → der Horizont wandert mit dem Floß
+      const anker = (b.y + 0.88 * b.h) / innerHeight, p0 = (cfg.params || [])[0] || 0.56;
+      U.u_p0.value = Math.min(Math.max(1 - (anker - 0.103), p0), 0.8); };   // nie tiefer als Ralphs Einstellung (0,56 = Halshöhe bei 1920)
+    const unterkante = () => { const el = document.querySelector('.rct-floss'), se = document.scrollingElement || document.documentElement;
+      return el ? el.getBoundingClientRect().bottom + se.scrollTop : innerHeight * 0.85; };
     const wasserlinie = h => {   // Ralph 13.11.: Floß nicht fest bei 40 %, sondern Unterkante des Floß-Kastens auf die Unterkante des .rct-floss-Elements (Hero-Text) – in Seitenkoordinaten bei Scroll 0, die Scroll-Kamera übernimmt den Rest
       const el = document.querySelector('.rct-floss'), se = document.scrollingElement || document.documentElement;
       const unten = el ? el.getBoundingClientRect().bottom + se.scrollTop : innerHeight * 0.4 + 0.88 * h;
       return Math.min(Math.max(unten - h, innerHeight * 0.12), innerHeight * 0.45); };   // ganzes Floß (Kasten) über der Unterkante – sonst rutscht der Bug hinter die Glasfläche des nächsten Artikels   // nie unter die Kopfzeile, nie tiefer als vorher
 
     let col = 1, row = 1, idle = 0;
-    const layout = () => { horizont(); const b = box(); U.u_x0.value = [b.x * b.k, b.y * b.k, b.w * b.k, b.h * b.k]; U.u_x1.value = [col, row, 0.006, 0.006]; };   // Schaukeln-Reste (Shader nimmt die Wellen)
+    const layout = () => { horizont(); const b = box(); U.u_x0.value = [b.x * b.k, b.y * b.k, b.w * b.k, b.h * b.k]; horizontZumFloss(b); U.u_x1.value = [col, row, 0.006, 0.006]; };   // Schaukeln-Reste (Shader nimmt die Wellen)
     const pick = (d, dz) => dz > Math.abs(d) ? 1 : (d < 0 ? 0 : 2);   // wie im Hero-CE: Totzone in der Mitte
     const placed = () => { const b = box(), k = b.k, gl = g.minigl.gl, res = [gl.drawingBufferWidth, gl.drawingBufferHeight], mw = Math.max(U.u_moon.value[3] || innerHeight * k, 1), cw = res[0] * 1.02;   // wie der Shader: Lage bei Standard-Kamera → Weltpunkt → aktuelle Kamera (für Missis Blick)
       const asp = res[0] / (res[1] / 1.28), p0 = Math.atan(0.22 / 1.1), x2 = U.u_x2.value, p1 = Math.atan((U.u_p0.value + x2[1] - 0.5) / 1.1), cam = Math.max(U.u_p2.value + x2[0], 0.3);
