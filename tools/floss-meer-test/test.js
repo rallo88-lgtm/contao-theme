@@ -55,8 +55,12 @@ const shot = () => { const g = window.gradient, gl = g.minigl.gl; g.pause(); g.m
     await p.waitForTimeout(4600); const spaet = await p.evaluate(() => ({ z: window.gradient.mesh.material.uniforms.u_x2.value[2] })); spaet.intro = (await op()) < 0.99;
     ok(frueh.z < -2.5 && frueh.intro && Math.abs(spaet.z - ziel) < 0.05 && !spaet.intro, `Intro ${vw} px: Fahrt ${frueh.z.toFixed(2)} → ${spaet.z.toFixed(2)} (Ziel ${ziel}), Text erst danach`); await c.close(); }
   { const { p, c, errs } = await page('http://localhost:8765/?theme=floss-meer', { width: 390, height: 844 }, { isMobile: true, hasTouch: true });
-    const r = await p.evaluate(() => { const u = window.gradient.mesh.material.uniforms; return { h: window.gradient.height, p0: u.u_p0.value, p2: u.u_p2.value }; });
-    ok(r.h === 600 && r.p0 === 0.45 && r.p2 === 1.0, `Handy: Render-Höhe ${r.h}, Hochformat-Horizont ${r.p0} / Kamera ${r.p2}`);
+    const r = await p.evaluate(() => { const g = window.gradient, u = g.mesh.material.uniforms, k = g.resScale || 1, x0 = u.u_x0.value, mw = u.u_moon.value[3] / k;
+      const hero = document.querySelector('.rct-floss').getBoundingClientRect(), naechst = document.querySelector('.rct-floss').nextElementSibling;
+      return { h: g.height, p2: u.u_p2.value, horizontY: (1 - u.u_p0.value) * mw, hinten: (x0[1] + 0.55 * x0[3]) / k, flossOben: x0[1] / k, flossUnten: (x0[1] + x0[3]) / k, textUnten: hero.bottom, naechstOben: naechst ? naechst.getBoundingClientRect().top : 1e9 }; });
+    ok(r.h === 600 && r.p2 === 1.0, `Handy: Render-Höhe ${r.h}, Kamera ${r.p2}`);
+    ok(r.flossOben >= r.textUnten - 2 && r.naechstOben >= r.flossUnten - 2, `Handy untereinander: Floß unter dem Text, nächster Inhalt darunter (Text ${Math.round(r.textUnten)}, Floß ${Math.round(r.flossOben)}–${Math.round(r.flossUnten)}, nächster ${Math.round(r.naechstOben)})`);
+    ok(r.hinten >= r.horizontY - 2, `Handy: Floß ragt nicht über den Horizont (hintere Kante ${Math.round(r.hinten)}, Horizont ${Math.round(r.horizontY)})`);
     await p.screenshot({ path: 'D:/tmp/rct-floss-handy.png' });
     ok(errs.length === 0, 'Handy ohne Fehler ' + JSON.stringify(errs.slice(0, 3))); await c.close(); }
   { const { p, c } = await page('http://localhost:8765/?theme=floss-meer', { width: 1280, height: 800 }, { reducedMotion: 'reduce' });

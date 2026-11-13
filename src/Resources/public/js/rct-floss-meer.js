@@ -20,7 +20,11 @@
       g.loadTextureUnit(1, cv, W, H); g.loadTextureUnit(2, missi, 768, 768);
     }).catch(() => {});   // Bilder fehlen → Meer ohne Floß
 
-    const hochformat = () => innerWidth < innerHeight * 0.8;
+    const heroEl = () => document.querySelector('.rct-floss');
+    const hochformat = () => { const el = heroEl(); if (!el) return innerWidth < innerHeight * 0.8;   // „untereinander“ (Ralph 13.11.): nicht mehr nach Seitenverhältnis, sondern sobald neben dem Hero-Text kein Platz fürs Floß ist (folgt dem Layout der Seite)
+      const c = spalte(), rg = document.createRange(), tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let rechts = c.left, n;
+      while ((n = tw.nextNode())) { if (!n.nodeValue.trim()) continue; rg.selectNodeContents(n); for (const q of rg.getClientRects()) if (q.width > 0) rechts = Math.max(rechts, q.right); }   // nur echte Textstücke (Blockkästen wären so breit wie die Spalte)
+      return c.left + c.width - rechts < Math.max(c.width * 0.35, 260); };   // weniger als 35 % der Spalte (bzw. 260 px) frei → Floß unter den Text
     const horizont = () => {   // Handy hochkant: eigene Horizont-Neigung (p0) + Kamerahöhe (p2) – der Horizont liegt auf Kamera-Augenhöhe, Halshöhe also über p2; leise Seiten: paramsLeise (+ paramsLeisePortrait)
       const lagen = leise ? [cfg.paramsLeise, hochformat() && cfg.paramsLeisePortrait] : [hochformat() && cfg.paramsPortrait], pp = Object.assign({}, ...lagen.map(o => o || {}));
       const idx = new Set([0, 2, ...Object.keys(cfg.paramsLeise || {}).map(Number)]);
@@ -31,7 +35,8 @@
       return r.width > 200 ? { left: r.left + pl, width: r.width - pl - pr } : { left: 0, width: innerWidth };
     };
     const box = () => { const k = g.resScale || 1, hoch = hochformat();   // Desktop: rechte Hälfte der Inhaltsspalte (Meer bleibt volle Breite); Hochformat: fast volle Breite unter der Mitte
-      if (hoch) { const w = innerWidth * 0.94; return { k, x: innerWidth * 0.03, y: innerHeight * 0.5, w, h: w * 941 / 1672 }; }
+      if (hoch) { const c = spalte(), w = Math.min(c.width, innerWidth * 0.94), h = w * 941 / 1672;   // untereinander: Floß direkt unter dem Hero-Text, so breit wie die Spalte
+        return { k, x: c.left + (c.width - w) / 2, y: unterkante(), w, h }; }
       const c = spalte(), platz = unterkante() - innerHeight * 0.12;   // Höhe zwischen Kopfzeile und Unterkante Hero-Text
       const w = Math.min(Math.max(c.width * 0.55, innerWidth * 0.355), Math.max(platz, innerHeight * 0.25) * 1672 / 941), h = w * 941 / 1672;   // Ralph 13.11.: 10 % größer + mit der Bildschirmbreite wachsen, aber nie höher als der Hero Platz hat (sonst rutscht es hinter den nächsten Artikel)
       const x = Math.min(c.left + c.width * 0.42, innerWidth * 0.97 - w);   // Ralph 13.11.: näher an den Text (war 0.48)   // darf rechts über die Inhaltsspalte ragen, nie über den Bildschirmrand
@@ -39,9 +44,8 @@
     const hoehenVersatz = () => { const r = cfg.hoehenRegel || [1920, 2560, -0.06, 0.065];   // Ralph 13.11.: 1920 und 2560 „treffen sich in der Mitte“ – Floß bei 1920 etwas höher, bei 2560 etwas tiefer (Anteil der Fensterhöhe)
       const k = Math.min(Math.max((innerWidth - r[0]) / (r[1] - r[0]), 0), 1); return (r[2] + (r[3] - r[2]) * k) * innerHeight; };
     const horizontZumFloss = b => {   // Ralph 13.11.: Horizont liegt bei 44 % der Fensterhöhe, der Hero-Text in festen Pixeln → auf hohen Bildschirmen (2560×1440) lag die Wasserlinie ÜBER dem Horizont („in der Luft“).
-      if (leise || hochformat() || !U.u_p0) return;   // Lösung: Abstand Wasserlinie–Horizont fest wie bei 1920 (10,3 % der Fensterhöhe) → der Horizont wandert mit dem Floß
-      const anker = (b.y + 0.88 * b.h) / innerHeight, p0 = (cfg.params || [])[0] || 0.56;
-      U.u_p0.value = Math.min(Math.max(1 - (anker - 0.103), p0), 0.8); };   // nie tiefer als Ralphs Einstellung (0,56 = Halshöhe bei 1920)
+      if (leise || !U.u_p0) return;   // Ralph 13.11. (Responsive): gilt jetzt für alle Größen – Horizont knapp über der hinteren Teppichkante (55 % der Kastenhöhe), unabhängig von der Fensterhöhe
+      const horizontY = b.y + 0.55 * b.h; U.u_p0.value = Math.min(Math.max(1 - horizontY / innerHeight, 0.4), 0.85); };   // 0,4–0,85: nie absurd viel Himmel oder Meer
     const unterkante = () => { const el = document.querySelector('.rct-floss'), se = document.scrollingElement || document.documentElement;
       return el ? el.getBoundingClientRect().bottom + se.scrollTop : innerHeight * 0.85; };
     const wasserlinie = h => {   // Ralph 13.11.: Floß nicht fest bei 40 %, sondern Unterkante des Floß-Kastens auf die Unterkante des .rct-floss-Elements (Hero-Text) – in Seitenkoordinaten bei Scroll 0, die Scroll-Kamera übernimmt den Rest
@@ -50,7 +54,8 @@
       return Math.min(Math.max(unten - h, innerHeight * 0.12), innerHeight * 0.45); };   // ganzes Floß (Kasten) über der Unterkante – sonst rutscht der Bug hinter die Glasfläche des nächsten Artikels   // nie unter die Kopfzeile, nie tiefer als vorher
 
     let col = 1, row = 1, idle = 0;
-    const layout = () => { horizont(); const b = box(); U.u_x0.value = [b.x * b.k, b.y * b.k, b.w * b.k, b.h * b.k]; horizontZumFloss(b); U.u_x1.value = [col, row, 0.006, 0.006]; };   // Schaukeln-Reste (Shader nimmt die Wellen)
+    const platz = h => { const el = heroEl(); if (el) el.style.marginBottom = h ? Math.round(h * 1.06) + 'px' : ''; };   // untereinander: Hero wird um die Floßhöhe länger, die nächste Kachel rückt nach unten (nie mehr Floß hinter den Kacheln)
+    const layout = () => { horizont(); platz(0); const hoch = hochformat(), b = box(); if (hoch) platz(b.h); U.u_x0.value = [b.x * b.k, b.y * b.k, b.w * b.k, b.h * b.k]; horizontZumFloss(b); U.u_x1.value = [col, row, 0.006, 0.006]; };   // Schaukeln-Reste (Shader nimmt die Wellen)
     const pick = (d, dz) => dz > Math.abs(d) ? 1 : (d < 0 ? 0 : 2);   // wie im Hero-CE: Totzone in der Mitte
     const placed = () => { const b = box(), k = b.k, gl = g.minigl.gl, res = [gl.drawingBufferWidth, gl.drawingBufferHeight], mw = Math.max(U.u_moon.value[3] || innerHeight * k, 1), cw = res[0] * 1.02;   // wie der Shader: Lage bei Standard-Kamera → Weltpunkt → aktuelle Kamera (für Missis Blick)
       const asp = res[0] / (res[1] / 1.28), p0 = Math.atan(0.22 / 1.1), x2 = U.u_x2.value, p1 = Math.atan((U.u_p0.value + x2[1] - 0.5) / 1.1), cam = Math.max(U.u_p2.value + x2[0], 0.3);
@@ -68,6 +73,7 @@
     const weg = () => { hm = null; };
     const look = e => { hover(e); if (leise) return; const b = placed(), hx = b.x + b.w * (0.7349 + 0.12045 / 2), hy = b.y + b.h * 0.10106 + b.w * 0.12045 * 0.45, dz = b.w * 0.12045 * 0.55;
       col = pick(e.clientX - hx, dz); row = pick(e.clientY - hy, dz); layout(); clearTimeout(idle); idle = setTimeout(() => { col = 1; row = 1; layout(); }, 4000); };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (window.gradient === g) layout(); });   // Webfont da → Text hat seine echte Höhe
     layout(); addEventListener('pointermove', look); addEventListener('resize', layout); document.documentElement.addEventListener('mouseleave', weg); addEventListener('blur', weg);
 
     // Scroll-Kamera in Stationen [Bildschirmhöhen, Höhe, Neigung, Fahrt] (Ralph 13.11.: oben Neigung + Anflug, danach Höhe) – dazwischen gleichmäßig, 0,1 s Nachgleiten
@@ -93,7 +99,7 @@
       else { ht = null; U.u_x3.value = [-5, -5, -5, -5]; }
       if (moving && skip === null) { skip = g.frameSkip; g.frameSkip = dtAvg < 11 ? 2 : 1; } else if (!moving && skip !== null) { g.frameSkip = skip; skip = null; } };   // Fahrt: ~60 Shader-Bilder/s (120-Hz-Handy: jedes 2. Bild)
     U.u_x3.value = [-5, -5, -5, -5]; raf = requestAnimationFrame(fahrt);
-    return () => { document.documentElement.classList.remove('rct-floss-leise'); removeEventListener('pointermove', look); removeEventListener('resize', layout); document.documentElement.removeEventListener('mouseleave', weg); removeEventListener('blur', weg);
+    return () => { platz(0); document.documentElement.classList.remove('rct-floss-leise'); removeEventListener('pointermove', look); removeEventListener('resize', layout); document.documentElement.removeEventListener('mouseleave', weg); removeEventListener('blur', weg);
       clearTimeout(idle); cancelAnimationFrame(raf); if (skip !== null) g.frameSkip = skip; };
   }
 
