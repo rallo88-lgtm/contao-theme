@@ -4,6 +4,7 @@
 #   rct-update <instanz> --voll   alles inkl. Contao-Patches (bleibt in der Linie aus composer.json, z. B. 5.7.*)
 # Ablauf: sichern (DB-Backup + composer.json/.lock) → composer → cache:clear → contao:migrate --with-deletes → assets:install → cache:clear
 # Bei einem Fehler stoppt das Skript und nennt den Rückweg: rct-rollback <instanz>
+# Quelle (seit 13.11.2026): direkt GitHub per git (composer.json: repositories.rct-theme vcs + no-api) – NICHT mehr Packagist (dort gelöscht). Darum kein --no-cache (GitDriver braucht den Cache).
 set -o pipefail
 
 I="$1"; MODE="$2"; D="/html/$I"
@@ -36,7 +37,7 @@ step "Composer"
 if [ "$MODE" = "--voll" ]; then
   COMPOSER_MEMORY_LIMIT=-1 composer update --no-interaction 2>&1 | grep -E 'Upgrading (contao/core-bundle|rallo88)|Removing|Problem|\[ERROR\]|Fatal' ; [ "${PIPESTATUS[0]}" = 0 ] || fail "composer update"
 else
-  composer update rallo88-lgtm/contao-theme --prefer-source --no-cache --no-interaction 2>&1 | grep -E 'Upgrading|Nothing to|Problem|\[ERROR\]|Fatal' ; [ "${PIPESTATUS[0]}" = 0 ] || fail "composer update (Bundle)"
+  composer update rallo88-lgtm/contao-theme --prefer-source --no-interaction 2>&1 | grep -E 'Upgrading|Nothing to|Problem|\[ERROR\]|Fatal' ; [ "${PIPESTATUS[0]}" = 0 ] || fail "composer update (Bundle)"
 fi
 
 step "Cache leeren"
