@@ -7341,7 +7341,9 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
     padding: 1.5rem 1.25rem 1.25rem;
   }
   .rct-testi-quote { padding: 1.25rem 1.25rem 1.5rem; }
-  /* Handy: wischen + Punkte statt Pfeile, damit die Karte die ganze Breite hat; Karte in natürlicher Höhe */
-  .swiper-wrapper .swiper-slide > .content-rct-testimonial { padding-inline: 0; align-self: flex-start; }
+  /* Handy: wischen + Punkte statt Pfeile, damit die Karte die ganze Breite hat. Alle Karten so hoch wie die längste
+     (feste Slider-Höhe → nichts darunter springt beim Wechsel; Ralph 14.11.), Zitat steht mittig. */
+  .swiper-wrapper .swiper-slide > .content-rct-testimonial { padding-inline: 0; }
+  .rct-testi-quote { flex: 1; }
   .swiper:has(.content-rct-testimonial) > :is(.swiper-button-prev, .swiper-button-next) { display: none; }
 }
