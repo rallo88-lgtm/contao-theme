@@ -3504,6 +3504,7 @@ button.rct-corner-logo:focus-visible { outline: 2px solid var(--rct-accent); out
   font-size: 0.875rem;
   line-height: 1.45;
   clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  overflow: hidden;   /* Browser-Standard für popover ist auto → gedrehtes Eselsohr ragte 2 px raus = Scrollbalken */
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.2s, transform 0.2s, display 0.2s allow-discrete, overlay 0.2s allow-discrete;
