@@ -498,9 +498,9 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_icon_textbox'] =
     '{type_legend},type;{content_legend},rct_itb_icon,rct_itb_headline,rct_itb_text,rct_itb_style,rct_itb_layout;{link_legend:hide},rct_itb_link_page,rct_itb_link_url,rct_itb_link_label,rct_itb_link_target;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_image'] = [
-    'label'     => ['Bild', 'Bild oben in der Box'],
+    'label'     => ['Bild / Logo', 'Bild der Box – bei der Kundenstimme das Logo (auch SVG)'],
     'inputType' => 'fileTree',
-    'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif,gif', 'fieldType' => 'radio', 'tl_class' => 'clr'],
+    'eval'      => ['filesOnly' => true, 'extensions' => 'jpg,jpeg,png,webp,avif,gif,svg', 'fieldType' => 'radio', 'tl_class' => 'clr'],
     'sql'       => "binary(16) NULL",
 ];
 
