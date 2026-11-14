@@ -1,8 +1,10 @@
 {#
   RCT – rct_corner_logo.html.twig (Ralph 14.11.2026)
   Eck-Logo fest unten links/rechts, ohne Hintergrund; unter der Mindestbreite ausgeblendet.
+  Ganz in indexer::stop/continue – steht auf jeder Seite, gehört nicht in den Suchindex.
   Mit „Auswahl“: Logo ist ein Button, der ein Popover (HTML popover-Attribut, ohne JS) über dem Logo öffnet.
 #}
+<!-- indexer::stop -->
 <div id="{{ cornerId }}" class="rct-corner rct-corner--{{ corner }}" style="--rct-corner-w:{{ width }}px;--rct-corner-h:{{ height }}px">
 {% if menu|length %}
   <button type="button" class="rct-corner-logo rct-corner-logo--{{ corner }}" popovertarget="{{ cornerId }}-pop" aria-label="{{ altText }}">
@@ -28,6 +30,7 @@
   </{{ tag }}>
 {% endif %}
 </div>
+<!-- indexer::continue -->
 {% if minWidth > 0 %}
 <style>@media (max-width: {{ minWidth - 1 }}px) { #{{ cornerId }} { display: none; } }</style>
 {% endif %}
