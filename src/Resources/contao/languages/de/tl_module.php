@@ -8,6 +8,7 @@ $GLOBALS['TL_LANG']['FMD']['rct']['0'] = 'RCT Theme';
 $GLOBALS['TL_LANG']['FMD']['rct_logo']            = ['RCT Logo', 'Konfigurierbares Logo-Modul für Sidebars.'];
 $GLOBALS['TL_LANG']['FMD']['rct_corner_logo']     = ['RCT Eck-Logo', 'Logo fest unten links oder rechts im Bildschirm (ohne Hintergrund), erst ab einer Mindest-Fensterbreite. Ohne Bild = großes RCT-Logo.'];
 $GLOBALS['TL_LANG']['tl_module']['corner_legend']      = 'Eck-Logo';
+$GLOBALS['TL_LANG']['tl_module']['corner_menu_legend'] = 'Auswahl-Fenster (optional)';
 $GLOBALS['TL_LANG']['FMD']['rct_bottom_controls'] = ['RCT Bottom Controls', 'Privacy- und Scroll-to-Top-Buttons für die Bottom-Bar.'];
 $GLOBALS['TL_LANG']['FMD']['rct_news_pager']      = ['RCT News-Pager', 'Vor/Zurück-Navigation innerhalb eines News-Archivs (z.B. Magazin-Blätter-Mechanik). Wird auf News-Detail-Seiten platziert.'];
 

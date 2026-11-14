@@ -131,7 +131,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_hide_mobile'] = [
 
 // RCT Eck-Logo (Ralph 14.11.2026) – Logo fest unten links/rechts; nutzt Bild/Link/Alt-Felder des Logo-Moduls
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_corner_logo'] =
-    '{title_legend},name,type;{corner_legend},rct_corner_pos,rct_corner_width,rct_corner_min,rct_logo_image,rct_logo_url,rct_corner_blank,rct_logo_alt;{expert_legend:hide},cssID';
+    '{title_legend},name,type;{corner_legend},rct_corner_pos,rct_corner_width,rct_corner_min,rct_logo_image,rct_logo_url,rct_corner_blank,rct_logo_alt;{corner_menu_legend:hide},rct_corner_menu_title,rct_corner_menu;{expert_legend:hide},cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_corner_pos'] = [
     'label'     => ['Ecke', 'In welcher Bildschirmecke das Logo steht'],
@@ -150,6 +150,19 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['rct_corner_min'] = [
     'label'     => ['Erst ab Fensterbreite (px)', 'Darunter wird das Logo ausgeblendet, damit es nie über dem Inhalt liegt (Standard 1720)'],
     'inputType' => 'text',
     'eval'      => ['rgxp' => 'natural', 'maxlength' => 4, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_corner_menu_title'] = [
+    'label'     => ['Auswahl – Überschrift', 'Steht oben im Auswahl-Fenster, z. B. „Zwei private Projekte von mir“'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 200, 'tl_class' => 'long clr'],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_corner_menu'] = [
+    'label'     => ['Auswahl statt Link', "Eine Zeile pro Ziel: Titel | Beschreibung | URL
+Ist etwas eingetragen, öffnet ein Klick aufs Logo ein kleines Auswahl-Fenster (der Logo-Link oben wird dann nicht benutzt)."],
+    'inputType' => 'textarea',
+    'eval'      => ['style' => 'height:90px;font-family:monospace', 'tl_class' => 'clr'],
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_corner_blank'] = [

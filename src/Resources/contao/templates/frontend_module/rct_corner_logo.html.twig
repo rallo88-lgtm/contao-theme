@@ -1,15 +1,33 @@
 {#
   RCT – rct_corner_logo.html.twig (Ralph 14.11.2026)
   Eck-Logo fest unten links/rechts, ohne Hintergrund; unter der Mindestbreite ausgeblendet.
+  Mit „Auswahl“: Logo ist ein Button, der ein Popover (HTML popover-Attribut, ohne JS) über dem Logo öffnet.
 #}
-{% set tag = url ? 'a' : 'div' %}
-<{{ tag }} id="{{ cornerId }}" class="rct-corner-logo rct-corner-logo--{{ corner }}" style="--rct-corner-w:{{ width }}px"{% if url %} href="{{ url }}"{% if newTab %} target="_blank" rel="noopener"{% endif %}{% endif %} aria-label="{{ altText }}">
-  {% if image %}
-    <img src="{{ image }}" alt="{{ altText }}">
-  {% else %}
-    {{ include('@Contao/_rct_logo.html.twig', { aria_label: altText }) }}
-  {% endif %}
-</{{ tag }}>
+<div id="{{ cornerId }}" class="rct-corner rct-corner--{{ corner }}" style="--rct-corner-w:{{ width }}px;--rct-corner-h:{{ height }}px">
+{% if menu|length %}
+  <button type="button" class="rct-corner-logo rct-corner-logo--{{ corner }}" popovertarget="{{ cornerId }}-pop" aria-label="{{ altText }}">
+    {% if image %}<img src="{{ image }}" alt="{{ altText }}">{% else %}{{ include('@Contao/_rct_logo.html.twig', { aria_label: altText }) }}{% endif %}
+  </button>
+  <div id="{{ cornerId }}-pop" class="rct-corner-pop rct-corner-pop--{{ corner }}" popover>
+    {% if menuTitle %}<p class="rct-corner-pop-title">{{ menuTitle }}</p>{% endif %}
+    <ul>
+      {% for item in menu %}
+      <li>
+        <a href="{{ item.url }}" target="_blank" rel="noopener">
+          <span class="rct-corner-pop-head"><strong>{{ item.title }}</strong>{% if item.host %}<span class="rct-corner-pop-host">{{ item.host }} ↗</span>{% endif %}</span>
+          {% if item.text %}<small>{{ item.text }}</small>{% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% else %}
+  {% set tag = url ? 'a' : 'div' %}
+  <{{ tag }} class="rct-corner-logo rct-corner-logo--{{ corner }}"{% if url %} href="{{ url }}"{% if newTab %} target="_blank" rel="noopener"{% endif %}{% endif %} aria-label="{{ altText }}">
+    {% if image %}<img src="{{ image }}" alt="{{ altText }}">{% else %}{{ include('@Contao/_rct_logo.html.twig', { aria_label: altText }) }}{% endif %}
+  </{{ tag }}>
+{% endif %}
+</div>
 {% if minWidth > 0 %}
 <style>@media (max-width: {{ minWidth - 1 }}px) { #{{ cornerId }} { display: none; } }</style>
 {% endif %}
