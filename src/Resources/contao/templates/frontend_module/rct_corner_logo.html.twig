@@ -1,0 +1,15 @@
+{#
+  RCT – rct_corner_logo.html.twig (Ralph 14.11.2026)
+  Eck-Logo fest unten links/rechts, ohne Hintergrund; unter der Mindestbreite ausgeblendet.
+#}
+{% set tag = url ? 'a' : 'div' %}
+<{{ tag }} id="{{ cornerId }}" class="rct-corner-logo rct-corner-logo--{{ corner }}" style="--rct-corner-w:{{ width }}px"{% if url %} href="{{ url }}"{% if newTab %} target="_blank" rel="noopener"{% endif %}{% endif %} aria-label="{{ altText }}">
+  {% if image %}
+    <img src="{{ image }}" alt="{{ altText }}">
+  {% else %}
+    {{ include('@Contao/_rct_logo.html.twig', { aria_label: altText }) }}
+  {% endif %}
+</{{ tag }}>
+{% if minWidth > 0 %}
+<style>@media (max-width: {{ minWidth - 1 }}px) { #{{ cornerId }} { display: none; } }</style>
+{% endif %}

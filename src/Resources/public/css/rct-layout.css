@@ -3453,3 +3453,28 @@ html[data-layout="sidebar"]:not(.rct-js-ready) #right {
 }
 /* mainContainer-Transition unterdruecken bis JS bereit (kein animiertes Snap) */
 html:not(.rct-js-ready) #mainContainer { transition: none !important; }
+
+/* ============================================================
+   RCT Eck-Logo (rct_corner_logo, Ralph 14.11.2026)
+   Fest unten links/rechts, ohne Hintergrund, über dem Inhalt, unter Sidebars/Overlays.
+   Ausblenden unter der Mindestbreite macht das Modul selbst (eigene Media-Query je Modul).
+   ============================================================ */
+.rct-corner-logo {
+  position: fixed;
+  bottom: calc(var(--rct-bottom-height, 50px) + 16px);
+  z-index: 150;
+  width: var(--rct-corner-w, 260px);
+  display: block;
+  line-height: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.rct-corner-logo--left  { left:  calc(var(--rct-sidebar-left-current, 0px) + 16px); }
+.rct-corner-logo--right { right: calc(var(--rct-sidebar-right-current, 0px) + 16px); }
+.rct-corner-logo img,
+.rct-corner-logo svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+a.rct-corner-logo:hover { transform: translateY(-2px); }
+@media print { .rct-corner-logo { display: none; } }

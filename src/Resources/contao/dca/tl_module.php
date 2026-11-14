@@ -129,6 +129,35 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['rct_logo_hide_mobile'] = [
     'eval'      => ['tl_class' => 'clr m12'],
 ];
 
+// RCT Eck-Logo (Ralph 14.11.2026) – Logo fest unten links/rechts; nutzt Bild/Link/Alt-Felder des Logo-Moduls
+$GLOBALS['TL_DCA']['tl_module']['palettes']['rct_corner_logo'] =
+    '{title_legend},name,type;{corner_legend},rct_corner_pos,rct_corner_width,rct_corner_min,rct_logo_image,rct_logo_url,rct_corner_blank,rct_logo_alt;{expert_legend:hide},cssID';
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_corner_pos'] = [
+    'label'     => ['Ecke', 'In welcher Bildschirmecke das Logo steht'],
+    'inputType' => 'select',
+    'options'   => ['left' => 'Unten links', 'right' => 'Unten rechts'],
+    'eval'      => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_corner_width'] = [
+    'label'     => ['Breite (px)', 'Breite des Logos (Standard 260)'],
+    'inputType' => 'text',
+    'eval'      => ['rgxp' => 'natural', 'maxlength' => 3, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_corner_min'] = [
+    'label'     => ['Erst ab Fensterbreite (px)', 'Darunter wird das Logo ausgeblendet, damit es nie über dem Inhalt liegt (Standard 1720)'],
+    'inputType' => 'text',
+    'eval'      => ['rgxp' => 'natural', 'maxlength' => 4, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_corner_blank'] = [
+    'label'     => ['Link in neuem Tab', 'Für Links auf andere Webseiten'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
+
 $GLOBALS['TL_DCA']['tl_module']['fields']['rct_visibility'] = [
     'label'     => ['Sichtbarkeit', 'Legt fest, ob das Modul auf Desktop, Mobile oder beiden angezeigt wird.'],
     'inputType' => 'select',
