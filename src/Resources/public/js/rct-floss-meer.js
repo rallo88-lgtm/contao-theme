@@ -87,10 +87,11 @@
       const ziel = { ax: ist.ax + kr[0], ay: ist.ay + kr[1], w: ist.w * (1 + kr[2]) };
       let kam = kr.some(v => v) ? loese(W, ziel, p0n, [p2, f0, 0]) : [p0, p2, f0, 0, 0];
       for (let n = 1; kam[4] > 2 && n <= 40; n++) kam = loese(W, ziel, p0n - n * 0.01 * Math.sign(kr[1] || 1), [p2, f0, 0]);   // Kamera an der Grenze (hohes Fenster): Neigung nachgeben lassen – Horizont nur so weit wie nötig verschieben
-      U.u_p0.value = kam[0]; U.u_p2.value = kam[1]; flossFahrt = kam[2]; camX = kam[3]; };
+      U.u_p0.value = kam[0]; U.u_p2.value = kam[1]; flossFahrt = kam[2]; camX = kam[3];
+      if (hoch) { const r = proj(W, kam), unten = r.ay + 0.12 * r.w * 941 / 1672; platz(Math.max(unten - b.y, 0) + 12); } };   // untereinander: Platz fürs tatsächlich gezeigte Floß (mit Korrektur) reservieren
     let col = 1, row = 1, idle = 0;
     const platz = h => { const el = heroEl(); if (el) el.style.marginBottom = h ? Math.round(h * 1.06) + 'px' : ''; };   // untereinander: Hero wird um die Floßhöhe länger, die nächste Kachel rückt nach unten (nie mehr Floß hinter den Kacheln)
-    const layout = () => { horizont(); platz(0); const hoch = hochformat(), b = box(); if (hoch) platz(b.h); U.u_x0.value = [b.x * b.k, b.y * b.k, b.w * b.k, b.h * b.k]; horizontZumFloss(b); kameraRechnen(b, hoch); U.u_x1.value = [col, row, 0.006, 0.006]; };   // Schaukeln-Reste (Shader nimmt die Wellen)
+    const layout = () => { horizont(); platz(0); const hoch = hochformat(), b = box(); if (hoch) platz(b.h / 1.06); U.u_x0.value = [b.x * b.k, b.y * b.k, b.w * b.k, b.h * b.k]; horizontZumFloss(b); kameraRechnen(b, hoch); U.u_x1.value = [col, row, 0.006, 0.006]; };   // Schaukeln-Reste (Shader nimmt die Wellen)
     const pick = (d, dz) => dz > Math.abs(d) ? 1 : (d < 0 ? 0 : 2);   // wie im Hero-CE: Totzone in der Mitte
     const placed = () => { const b = box(), k = b.k, gl = g.minigl.gl, res = [gl.drawingBufferWidth, gl.drawingBufferHeight], mw = Math.max(U.u_moon.value[3] || innerHeight * k, 1), cw = res[0] * 1.02;   // wie der Shader: Lage bei Standard-Kamera → Weltpunkt → aktuelle Kamera (für Missis Blick)
       const asp = res[0] / (res[1] / 1.28), p0 = Math.atan(0.22 / 1.1), x2 = U.u_x2.value, p1 = Math.atan((U.u_p0.value + x2[1] - 0.5) / 1.1), cam = Math.max(U.u_p2.value + x2[0], 0.3);
@@ -124,10 +125,13 @@
     const zielFahrt = () => flossFahrt != null ? flossFahrt : regelFahrt();   // Intro-Ziel: Fahrt aus der Kamera-Rechnung (nebeneinander) bzw. Regel
     const sanft = k => k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;   // weich an- und abbremsen
     const t0 = performance.now();
-    let cur = [0, 0, 0], last = performance.now(), raf = 0, skip = null, dtAvg = 16;
+    let cur = [0, 0, 0], last = performance.now(), raf = 0, skip = null, dtAvg = 16, handyAlt = false, syAlt = -1, ruht = false;
     const fahrt = now => { raf = requestAnimationFrame(fahrt); const dt = Math.min((now - last) / 1000, 0.1); last = now; dtAvg += (dt * 1000 - dtAvg) * 0.1;
       const st = alsStationen((!leise && window.RCT_FLOSS_SCROLL) || STATIONEN), se = document.scrollingElement || document.documentElement;
-      const pr = still ? 0 : Math.min(Math.max(se.scrollTop / Math.max(innerHeight, 1), 0), st[st.length - 1][0]), f = 1 - Math.exp(-dt * 10);
+      const handy = !leise && hochformat(), sy = se.scrollTop;   // Handy (untereinander): Bild scrollt wie ein Hero-Bild weg, keine Kamerafahrt
+      if (handy !== handyAlt || (handy && Math.abs(sy - syAlt) > 0.5)) { g.el.style.transform = handy && sy > 0 ? `translateY(${-sy}px)` : ''; syAlt = sy; handyAlt = handy; }
+      const weg = handy && sy > innerHeight * 1.35; if (weg !== ruht) { ruht = weg; if (weg) { if (g.pause) g.pause(); } else if (g.play) g.play(); }   // Bild ganz weggescrollt → Shader ruht (Akku)
+      const pr = still || handy ? 0 : Math.min(Math.max(se.scrollTop / Math.max(innerHeight, 1), 0), st[st.length - 1][0]), f = 1 - Math.exp(-dt * 10);
       const tgt = anStation(st, pr), ki = INTRO ? Math.min((now - t0) / INTRO, 1) : 1, zf = zielFahrt(), von = Math.min(VON, zf - 2), intro = von + (zf - von) * (INTRO ? sanft(ki) : 1);
       const moving = ki < 1 || tgt.some((v, i) => Math.abs(v - cur[i]) > 1e-4);
       cur = moving ? cur.map((v, i) => v + (tgt[i] - v) * f) : tgt; U.u_x2.value = [cur[0], cur[1], cur[2] + intro, camX];
@@ -136,7 +140,7 @@
       if (moving && skip === null) { skip = g.frameSkip; g.frameSkip = dtAvg < 11 ? 2 : 1; } else if (!moving && skip !== null) { g.frameSkip = skip; skip = null; } };   // Fahrt: ~60 Shader-Bilder/s (120-Hz-Handy: jedes 2. Bild)
     g._floss = { zuWelt, proj, korrektur, layout, box, kamera: () => [U.u_p0.value, U.u_p2.value, zielFahrt(), camX] };   // Contao-Vorschau: Korrektur-Werkzeug
     U.u_x3.value = [-5, -5, -5, -5]; raf = requestAnimationFrame(fahrt);
-    return () => { platz(0); document.documentElement.classList.remove('rct-floss-leise'); removeEventListener('pointermove', look); removeEventListener('resize', layout); document.documentElement.removeEventListener('mouseleave', weg); removeEventListener('blur', weg);
+    return () => { g.el.style.transform = ''; if (ruht && g.play) g.play(); platz(0); document.documentElement.classList.remove('rct-floss-leise'); removeEventListener('pointermove', look); removeEventListener('resize', layout); document.documentElement.removeEventListener('mouseleave', weg); removeEventListener('blur', weg);
       clearTimeout(idle); cancelAnimationFrame(raf); if (skip !== null) g.frameSkip = skip; };
   }
 
