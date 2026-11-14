@@ -955,6 +955,13 @@
 .rct-flex--align-end     { align-items: end; }
 .rct-flex--align-stretch { align-items: stretch; }   /* default */
 
+/* Karten füllen ihre Rasterzelle (Ralph 14.11.2026) – sonst ist jede Kachel nur so hoch wie ihr Text
+   und die Unterkanten springen. Nur bei „stretch“ (Standard), nicht bei oben/mittig/unten. */
+.rct-flex:not(.rct-flex--align-start, .rct-flex--align-center, .rct-flex--align-end) > * > :is(.rct-icon-box, .rct-itb, .rct-glow-card, .rct-stat-box, .rct-people-box, .rct-pricing, .rct-testi):first-child {
+  height: 100%;
+  box-sizing: border-box;
+}
+
 /* Responsive: Container Queries auf .rct-content-inner */
 @container (max-width: 1200px) {
   .rct-flex--4col { grid-template-columns: repeat(3, 1fr); }
