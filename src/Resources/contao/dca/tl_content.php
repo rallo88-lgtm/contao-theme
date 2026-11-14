@@ -1179,6 +1179,38 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_alert_style'] = [
 ];
 
 // ============================================================
+// RCT Kundenstimme (Ralph 14.11.2026) – Logo/Icon + Name links, Zitat rechts
+// ============================================================
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_testimonial'] =
+    '{type_legend},type;{ts_person_legend},rct_ts_name,rct_ts_company,rct_ts_url;{ts_quote_legend},rct_ts_quote;{ts_look_legend},rct_itb_image,rct_itb_icon,rct_itb_style;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+// rct_ts_* ohne 'sql' → tl_content.jsonData; Logo/Icon/Stil teilen sich die Felder der Icon-Textbox
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ts_name'] = [
+    'label'     => ['Name', 'Wer hat das gesagt? (z. B. Bernd Ginsberg)'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 120, 'mandatory' => true, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ts_company'] = [
+    'label'     => ['Firma / Zusatz', 'Optional, z. B. Sanitätshaus BEGI Siegen'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 160, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ts_url'] = [
+    'label'     => ['Webseite', 'Optional, z. B. begi.de – wird verlinkt und ohne https:// angezeigt'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ts_quote'] = [
+    'label'     => ['Zitat', 'Ohne Anführungszeichen – die setzt das Theme automatisch'],
+    'inputType' => 'textarea',
+    'eval'      => ['style' => 'height:140px', 'mandatory' => true, 'tl_class' => 'clr'],
+];
+
+// ============================================================
 // RCT Laufband (Ralph 14.11.2026) – Begriffe laufen endlos durchs Bild, reines CSS
 // ============================================================
 

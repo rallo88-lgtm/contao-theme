@@ -1,0 +1,26 @@
+{#
+  RCT – rct_testimonial.html.twig (Ralph 14.11.2026)
+  Kundenstimme: links Logo/Icon + Name, Firma, Webseite – rechts das Zitat (senkrecht mittig).
+  Anführungszeichen kommen per CSS (::before/::after), Style: light | dark.
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+{% if quote %}
+<figure class="rct-testi style-{{ boxStyle }}{{ cssClass ? ' ' ~ cssClass }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+  <figcaption class="rct-testi-who">
+    {% if logo %}
+      <span class="rct-testi-logo"><img src="{{ logo }}" alt="{{ name }}" loading="lazy"></span>
+    {% elseif icon %}
+      <span class="rct-testi-icon" aria-hidden="true">{{ icon|rct_icon }}</span>
+    {% endif %}
+    {% if name %}<strong class="rct-testi-name">{{ name }}</strong>{% endif %}
+    {% if company %}<span class="rct-testi-company">{{ company }}</span>{% endif %}
+    {% if url %}<a class="rct-testi-url" href="{{ url }}" target="_blank" rel="noopener">{{ urlLabel }}</a>{% endif %}
+  </figcaption>
+  <blockquote class="rct-testi-quote">
+    <p>{{ quote|raw }}</p>
+  </blockquote>
+</figure>
+{% endif %}
+{% endblock %}

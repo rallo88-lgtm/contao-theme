@@ -1608,6 +1608,12 @@
   }
 }
 
+/* Text-Elemente in einer Folie immer volle Breite (Ralph 14.11.2026) – sonst schrumpft eine Box mit kurzem Text.
+   Bilder bleiben wie bisher zentriert in ihrer eigenen Größe. */
+.swiper-wrapper .swiper-slide > :is(.content-text, .content-rct-icon-textbox, .content-rct-image-textbox, .content-rct-icon-box, .content-rct-cta, .content-rct-testimonial) {
+  width: 100%;
+}
+
 /* ==========================================================================
    19. Downloads (Mehrfach)
    ========================================================================== */
@@ -7173,4 +7179,163 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
   .rct-ticker-list[aria-hidden="true"] { display: none; }
   .rct-ticker-list .rct-ticker-sep:last-child { display: none; }
   .rct-ticker--fade { -webkit-mask-image: none; mask-image: none; }
+}
+
+/* ============================================================
+   RCT Kundenstimme (rct_testimonial, Ralph 14.11.2026)
+   Links Logo/Icon + Name, Firma, Webseite – rechts das Zitat, senkrecht mittig.
+   Hell wie die helle Icon-Textbox, dunkel wie die dunkle (Ecken, Akzent-Ecke, Scanlines, Mono).
+   ============================================================ */
+.rct-testi {
+  --rct-testi-line: #e5e7eb;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.rct-testi-who {
+  flex: 0 0 clamp(180px, 28%, 260px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1.75rem 1.25rem;
+  text-align: center;
+  border-right: 1px solid var(--rct-testi-line);
+}
+.rct-testi-logo img {
+  display: block;
+  max-width: 150px;
+  max-height: 72px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 0.4rem;
+}
+.rct-testi-icon {
+  font-size: 2.75rem;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+  color: var(--rct-accent);
+}
+.rct-testi-name {
+  font-family: var(--rct-font-headline);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.rct-testi-company {
+  font-size: 0.85rem;
+  line-height: 1.35;
+  opacity: 0.75;
+}
+.rct-testi-url {
+  font-size: 0.8rem;
+  color: var(--rct-accent);
+  text-decoration: none;
+  word-break: break-word;
+}
+.rct-testi-url:hover { text-decoration: underline; }
+.rct-testi-quote {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 1.75rem 2rem;
+  border: 0;
+  min-width: 0;
+}
+.rct-testi-quote p {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  font-style: normal;
+}
+.rct-testi-quote p::before { content: '„'; }
+.rct-testi-quote p::after  { content: '“'; }
+
+/* ── LIGHT ── */
+.rct-testi.style-light {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--rct-radius-lg, 12px);
+  color: #1a1a2e;
+}
+.rct-testi.style-light .rct-testi-quote p { color: #4a4a5e; }
+.rct-testi.style-light .rct-testi-url { color: var(--rct-primary, #2950c7); }
+
+/* ── DARK ── */
+.rct-testi.style-dark {
+  --rct-testi-line: rgba(39, 196, 244, 0.2);
+  background-color: rgba(10, 14, 20, 0.88);
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0px, transparent 3px,
+    rgba(39, 196, 244, 0.015) 3px, rgba(39, 196, 244, 0.015) 4px
+  );
+  border: 1px solid rgba(39, 196, 244, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+.rct-testi.style-dark::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--rct-accent);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  opacity: 0.8;
+  z-index: 3;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+.rct-testi.style-dark .rct-testi-icon {
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--rct-accent) 55%, transparent));
+}
+.rct-testi.style-dark .rct-testi-name {
+  font-family: var(--rct-font-mono);
+  color: var(--rct-shell-text, #fff);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+}
+.rct-testi.style-dark .rct-testi-company,
+.rct-testi.style-dark .rct-testi-url { font-family: var(--rct-font-mono); }
+.rct-testi.style-dark .rct-testi-quote p {
+  color: rgba(255, 255, 255, 0.75);
+  font-family: var(--rct-font-mono);
+  font-size: 0.95rem;
+}
+
+/* Im Slider: alle Folien so hoch wie die höchste (Swiper setzt sonst height:100 % = Inhaltshöhe),
+   Karte füllt die Folie + seitlich Platz für die Pfeile */
+.swiper-wrapper:has(> .swiper-slide > .content-rct-testimonial) > .swiper-slide {
+  height: auto;
+}
+.swiper-wrapper .swiper-slide > .content-rct-testimonial {
+  align-self: stretch;
+  display: flex;
+  padding-inline: 3.5rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .rct-testi { flex-direction: column; }
+  .rct-testi-who {
+    flex: 0 0 auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--rct-testi-line);
+    padding: 1.5rem 1.25rem 1.25rem;
+  }
+  .rct-testi-quote { padding: 1.25rem 1.25rem 1.5rem; }
+  /* Handy: wischen + Punkte statt Pfeile, damit die Karte die ganze Breite hat; Karte in natürlicher Höhe */
+  .swiper-wrapper .swiper-slide > .content-rct-testimonial { padding-inline: 0; align-self: flex-start; }
+  .swiper:has(.content-rct-testimonial) > :is(.swiper-button-prev, .swiper-button-next) { display: none; }
 }

@@ -154,6 +154,10 @@ $GLOBALS['TL_LANG']['tl_content']['rct_icon_box_style']           = ['Stil', 'Du
 $GLOBALS['TL_LANG']['tl_content']['rct_icon_box_link_target']     = ['Neues Tab', 'In neuem Tab öffnen'];
 
 // Alert
+$GLOBALS['TL_LANG']['CTE']['rct_testimonial']              = ['RCT Kundenstimme', 'Zitat mit Logo/Icon, Name und Webseite (hell/dunkel, slider-tauglich)'];
+$GLOBALS['TL_LANG']['tl_content']['ts_person_legend']     = 'Wer';
+$GLOBALS['TL_LANG']['tl_content']['ts_quote_legend']      = 'Zitat';
+$GLOBALS['TL_LANG']['tl_content']['ts_look_legend']       = 'Logo, Icon & Stil';
 $GLOBALS['TL_LANG']['CTE']['rct_ticker']                   = ['RCT Laufband', 'Begriffe laufen endlos durchs Bild (z. B. Branchen, Leistungen, Partner)'];
 $GLOBALS['TL_LANG']['tl_content']['ticker_legend']        = 'Begriffe';
 $GLOBALS['TL_LANG']['tl_content']['ticker_motion_legend'] = 'Bewegung';

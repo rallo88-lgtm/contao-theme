@@ -1506,4 +1506,34 @@ window.applyLayout = function (layout) {
     }
   })();
 
+
+  /* Kundenstimmen-Slider (Ralph 14.11.2026): auf dem Handy passt sich die Slider-Höhe der aktuellen Karte an,
+     sonst bleibt unter kurzen Zitaten eine Lücke so hoch wie das längste Zitat. Desktop: alle Karten gleich hoch. */
+  (function () {
+    function init() {
+      var mq = window.matchMedia('(max-width: 768px)');
+      document.querySelectorAll('.swiper').forEach(function (el) {
+        var sw = el.swiper;
+        if (!sw || !el.querySelector('.content-rct-testimonial')) return;
+        var setze = function () {
+          sw.params.autoHeight = mq.matches;
+          el.classList.toggle('swiper-autoheight', mq.matches);
+          if (mq.matches) {
+            sw.updateAutoHeight(0);
+          } else {
+            sw.wrapperEl.style.height = '';
+          }
+          sw.update();
+        };
+        setze();
+        if (mq.addEventListener) mq.addEventListener('change', setze);
+      });
+    }
+    if (document.readyState === 'complete') {
+      init();
+    } else {
+      window.addEventListener('load', init);
+    }
+  })();
+
 })();
