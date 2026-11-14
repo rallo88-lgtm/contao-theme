@@ -154,6 +154,10 @@ $GLOBALS['TL_LANG']['tl_content']['rct_icon_box_style']           = ['Stil', 'Du
 $GLOBALS['TL_LANG']['tl_content']['rct_icon_box_link_target']     = ['Neues Tab', 'In neuem Tab öffnen'];
 
 // Alert
+$GLOBALS['TL_LANG']['CTE']['rct_ticker']                   = ['RCT Laufband', 'Begriffe laufen endlos durchs Bild (z. B. Branchen, Leistungen, Partner)'];
+$GLOBALS['TL_LANG']['tl_content']['ticker_legend']        = 'Begriffe';
+$GLOBALS['TL_LANG']['tl_content']['ticker_motion_legend'] = 'Bewegung';
+$GLOBALS['TL_LANG']['tl_content']['ticker_look_legend']   = 'Aussehen';
 $GLOBALS['TL_LANG']['CTE']['rct_alert']                    = ['RCT Alert', 'Statusmeldung: Info, Warnung, Erfolg oder Fehler'];
 $GLOBALS['TL_LANG']['tl_content']['alert_legend']          = 'Meldung';
 $GLOBALS['TL_LANG']['tl_content']['rct_alert_type']        = ['Typ', 'Art der Meldung'];

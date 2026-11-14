@@ -1179,6 +1179,98 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_alert_style'] = [
 ];
 
 // ============================================================
+// RCT Laufband (Ralph 14.11.2026) – Begriffe laufen endlos durchs Bild, reines CSS
+// ============================================================
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['rct_ticker'] =
+    '{type_legend},type;{ticker_legend},rct_ticker_items,rct_ticker_separator;{ticker_motion_legend},rct_ticker_speed,rct_ticker_direction,rct_ticker_pause;{ticker_look_legend},rct_ticker_height,rct_ticker_size,rct_ticker_font,rct_ticker_color,rct_ticker_bg,rct_ticker_bg_alpha,rct_ticker_border,rct_ticker_fade;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+
+// rct_ticker_* ohne 'sql' → tl_content.jsonData (Contao 5.7 JSON-Storage, keine Migration nötig)
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_items'] = [
+    'label'     => ['Begriffe', 'Ein Begriff pro Zeile – laufen in dieser Reihenfolge endlos durchs Bild.'],
+    'inputType' => 'textarea',
+    'eval'      => ['style' => 'height:200px', 'tl_class' => 'clr', 'mandatory' => true],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_separator'] = [
+    'label'     => ['Trenner', 'Zeichen zwischen den Begriffen'],
+    'inputType' => 'select',
+    'options'   => ['dot' => '·  Punkt (Standard)', 'bullet' => '•  Kreis', 'bar' => '|  Strich', 'star' => '✦  Stern', 'none' => 'Kein Trenner'],
+    'eval'      => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_speed'] = [
+    'label'     => ['Tempo', 'Wie schnell das Band läuft (bleibt gleich, egal wie viele Begriffe)'],
+    'inputType' => 'select',
+    'options'   => ['slow' => 'Langsam', 'medium' => 'Mittel (Standard)', 'fast' => 'Schnell'],
+    'eval'      => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_direction'] = [
+    'label'     => ['Richtung', 'Laufrichtung des Bandes'],
+    'inputType' => 'select',
+    'options'   => ['left' => 'Nach links (Standard)', 'right' => 'Nach rechts'],
+    'eval'      => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_pause'] = [
+    'label'     => ['Bei Mauskontakt anhalten', 'Band stoppt, solange die Maus darüber ist – zum Lesen'],
+    'inputType' => 'checkbox',
+    'default'   => '1',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_height'] = [
+    'label'     => ['Laufbandhöhe (px)', 'Höhe des Bandes in Pixeln (Standard 64)'],
+    'inputType' => 'text',
+    'eval'      => ['rgxp' => 'natural', 'maxlength' => 3, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_size'] = [
+    'label'     => ['Schriftgröße (px)', 'Größe der Begriffe in Pixeln (Standard 22)'],
+    'inputType' => 'text',
+    'eval'      => ['rgxp' => 'natural', 'maxlength' => 3, 'tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_font'] = [
+    'label'            => ['Schriftart', 'Leer = Schrift des Themes'],
+    'inputType'        => 'select',
+    'options_callback' => [RctFontOptionsCallback::class, 'getHeadlineFonts'],
+    'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => true],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_color'] = [
+    'label'     => ['Textfarbe', 'Hex (#27c4f4) oder leer = Textfarbe des Themes'],
+    'inputType' => 'text',
+    'eval'      => ['colorpicker' => true, 'isHexColor' => true, 'tl_class' => 'w50 wizard', 'maxlength' => 64],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_bg'] = [
+    'label'     => ['Hintergrundfarbe', 'Hex oder leer = transparent'],
+    'inputType' => 'text',
+    'eval'      => ['colorpicker' => true, 'isHexColor' => true, 'tl_class' => 'w50 wizard', 'maxlength' => 64],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_bg_alpha'] = [
+    'label'     => ['Deckkraft Hintergrund', 'Nur wenn eine Hintergrundfarbe gesetzt ist'],
+    'inputType' => 'select',
+    'options'   => ['0' => '0% (unsichtbar)', '10' => '10%', '20' => '20%', '30' => '30%', '40' => '40%', '50' => '50%', '60' => '60%', '70' => '70%', '80' => '80%', '90' => '90%', '100' => '100% (deckend)'],
+    'eval'      => ['tl_class' => 'w50', 'includeBlankOption' => true, 'blankOptionLabel' => '100% (Standard)'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_border'] = [
+    'label'     => ['Rahmenfarbe', 'Feine Linie oben und unten – Hex oder leer = ohne Rahmen'],
+    'inputType' => 'text',
+    'eval'      => ['colorpicker' => true, 'isHexColor' => true, 'tl_class' => 'w50 wizard', 'maxlength' => 64],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_ticker_fade'] = [
+    'label'     => ['Weiche Kanten', 'Begriffe blenden links und rechts sanft aus'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'w50 m12'],
+];
+
+// ============================================================
 // RCT Tabs
 // ============================================================
 

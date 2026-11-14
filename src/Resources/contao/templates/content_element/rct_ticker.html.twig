@@ -1,0 +1,23 @@
+{#
+  RCT – rct_ticker.html.twig (Ralph 14.11.2026)
+  Laufband: Begriffe laufen endlos durchs Bild – reines CSS (zwei gleiche Spuren, translateX -50 %).
+  Die zweite Spur ist für Screenreader unsichtbar (aria-hidden), damit jeder Begriff nur einmal vorgelesen wird.
+#}
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+{% if items|length %}
+<div class="rct-ticker{{ reverse ? ' rct-ticker--right' }}{{ pause ? ' rct-ticker--pause' }}{{ fade ? ' rct-ticker--fade' }}{{ cssClass ? ' ' ~ cssClass }}" style="{{ styleCss }}"{% if htmlId %} id="{{ htmlId }}"{% endif %}>
+  <div class="rct-ticker-track">
+    {% for spur in [false, true] %}
+    <ul class="rct-ticker-list"{% if spur %} aria-hidden="true"{% endif %}>
+      {% for item in items %}
+      <li class="rct-ticker-item">{{ item|raw }}</li>
+      {% if separator %}<li class="rct-ticker-sep" aria-hidden="true">{{ separator }}</li>{% endif %}
+      {% endfor %}
+    </ul>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

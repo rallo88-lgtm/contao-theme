@@ -7119,3 +7119,58 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
                      0 0 12px currentColor,
                      0 0 24px color-mix(in srgb, var(--rct-accent) 70%, transparent); }
 .rct-ts-readable { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9); }
+
+/* ------------------------------------------------------------
+   RCT Laufband (rct_ticker, Ralph 14.11.2026)
+   Zwei gleiche Spuren nebeneinander, die Spur läuft um -50 % → nahtlose Endlosschleife ohne JS.
+   Variablen kommen aus dem Backend (Controller): Höhe, Schriftgröße, Laufzeit, Farben, Schrift.
+   ------------------------------------------------------------ */
+.rct-ticker {
+  --rct-ticker-h: 64px;
+  --rct-ticker-size: 22px;
+  --rct-ticker-dur: 40s;
+  position: relative;
+  overflow: hidden;
+  height: var(--rct-ticker-h);
+  display: flex;
+  align-items: center;
+  background: var(--rct-ticker-bg, transparent);
+  color: var(--rct-ticker-color, inherit);
+  font-family: var(--rct-ticker-font, inherit);
+  font-size: var(--rct-ticker-size);
+  line-height: 1;
+  border-top: 1px solid var(--rct-ticker-border, transparent);
+  border-bottom: 1px solid var(--rct-ticker-border, transparent);
+}
+.rct-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: rct-ticker-lauf var(--rct-ticker-dur) linear infinite;
+  will-change: transform;
+}
+.rct-ticker--right .rct-ticker-track { animation-direction: reverse; }
+.rct-ticker--pause:hover .rct-ticker-track { animation-play-state: paused; }
+.rct-ticker-list {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rct-ticker-item { white-space: nowrap; padding: 0 0.6em; }
+.rct-ticker-sep { opacity: 0.45; padding: 0 0.15em; }
+.rct-ticker--fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+@keyframes rct-ticker-lauf { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* „Bewegung reduzieren“: Band steht, Begriffe umbrechen als ruhige Zeile; die Doppel-Spur verschwindet */
+@media (prefers-reduced-motion: reduce) {
+  .rct-ticker { height: auto; min-height: var(--rct-ticker-h); padding: 0.5em 0; }
+  .rct-ticker-track { animation: none; width: auto; }
+  .rct-ticker-list { flex-wrap: wrap; flex-shrink: 1; justify-content: center; row-gap: 0.4em; }
+  .rct-ticker-list[aria-hidden="true"] { display: none; }
+  .rct-ticker-list .rct-ticker-sep:last-child { display: none; }
+  .rct-ticker--fade { -webkit-mask-image: none; mask-image: none; }
+}
