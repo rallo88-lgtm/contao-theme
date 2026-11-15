@@ -51,6 +51,7 @@ class RctAssetListener
             $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-canvas-config.js||static';
             $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/gl-bg-animation.js||static';
             $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-floss-meer.js||static';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-floss-delfin.js||static';   // Delfine im Floß-Meer (ab 1800 px, Sheet lädt erst bei Bedarf)
         }
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct.js||static';
 
