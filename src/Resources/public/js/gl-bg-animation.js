@@ -316,6 +316,29 @@ float rct_dm_wave(vec2 w, float t) {
   return clamp(h * 0.6 + 0.5, 0.0, 1.0);
 }
 float rct_dm_H(vec2 p, float t) { return (rct_dm_wave(p, t) - 0.5) * 0.41; } // Höhe -25 % (Ralph 10.11.)
+// Delfin im Floß-Meer (Modus 21, Ralph 15.11.2026): Sheet 4×4 auf u_tex3; d0 = Drehpunkt (px), px je Sheet-px, Drehung · d1 = Spalte, Zeile, Richtung, Wasserlinie (px) · d2 = Helligkeit, Deckkraft, unter Wasser (1)
+vec3 rct_delfin(vec3 cOut, vec2 cssP, float bt, vec4 d0, vec4 d1, vec4 d2) {
+      float dca = cos(d0.w), dsa = sin(d0.w), dwy = d1.w;   // d0 = Drehpunkt (px), px je Sheet-px, Drehung · d1 = Spalte, Zeile, Richtung, Wasserlinie (px) · d2 = Helligkeit, Deckkraft, unter Wasser (1)
+      for (int k = 0; k < 2; k++) {   // k = 0 Spiegelbild unter der Wasserlinie, k = 1 Delfin darüber
+        vec2 Q = cssP; float ds = 1.0;
+        bool unter = d2.z > 0.5;   // Ralph 15.11.: vor dem Floß unter Wasser vorbeischwimmen – kein Spiegelbild, keine Wasserlinie, Bild durch die Wellen verzerrt
+        if (unter) { ds = k == 1 ? 1.0 : 0.0; Q = cssP + vec2(sin(cssP.y * 0.06 + bt * 1.9) * 3.0 + sin(cssP.x * 0.021 - bt * 1.3) * 2.0, sin(cssP.x * 0.045 + bt * 1.6) * 2.5); }
+        else if (k == 0) { float below = cssP.y - dwy; ds = below > 0.0 ? 0.32 * (1.0 - smoothstep(0.0, 120.0 * d0.z, below)) : 0.0;
+          Q = vec2(cssP.x + sin(cssP.y * 0.09 + bt * 2.3) * 2.0, 2.0 * dwy - cssP.y); }
+        else ds = cssP.y < dwy ? 1.0 : 0.0;
+        if (ds > 0.0) {
+          vec2 v = Q - d0.xy; v = vec2(v.x * dca + v.y * dsa, -v.x * dsa + v.y * dca); v.x *= d1.z;
+          vec2 fu = (v / d0.z + vec2(139.0, 120.0)) / 256.0;   // Drehpunkt im 256er-Bild (Schwerpunkt, Sheet v2)
+          float inD = step(0.0, fu.x) * step(fu.x, 1.0) * step(0.0, fu.y) * step(fu.y, 1.0);
+          vec4 D = texture2D(u_tex3, vec2((d1.x + clamp(fu.x, 0.0, 1.0)) / 4.0, 1.0 - (d1.y + clamp(fu.y, 0.0, 1.0)) / 4.0)) * inD;
+          vec3 dc = mix(vec3(dot(D.rgb, vec3(0.299, 0.587, 0.114))), D.rgb, 0.8) * d2.x;
+          if (unter) dc = mix(cOut, dc * vec3(0.3, 0.48, 0.6), 0.5 + 0.12 * sin(Q.x * 0.03 + Q.y * 0.05 - bt * 2.0) * sin(Q.x * 0.017 - bt * 1.1));   // unter Wasser: blaugrün, halb durchscheinend, Lichtflackern
+          else if (k == 0) dc = mix(dc * 0.55, cOut, 0.25);
+          cOut = mix(cOut, dc, D.a * d2.y * ds);
+        }
+      }
+      return cOut;
+}
 
 // === Starry Planes Theme (Mode 18) Helpers ===
 // Adapted from CC0 "Starry planes" by mrange (public domain).
@@ -1741,6 +1764,11 @@ void main() {
     // ── Floß: Spiegelbild (k = 0, nur Wasser unter der Wasserlinie) und Floß selbst (k = 1) ──
     vec2 cssP = vec2(uv.x * resolution.x * 1.02, (1.0 - uv.y) * u_moon.w);
     float bt = u_time * u_line_speed;
+    if (u_tex3_ready > 0.5) {   // Delfine (Ralph 15.11.): bis zu 3 gleichzeitig (Schule), zwischen Meer und Floß – das Floß verdeckt sie von selbst
+      if (u_d0.z > 0.0) cOut = rct_delfin(cOut, cssP, bt, u_d0, u_d1, u_d2);
+      if (u_d3.z > 0.0) cOut = rct_delfin(cOut, cssP, bt, u_d3, u_d4, u_d5);
+      if (u_d6.z > 0.0) cOut = rct_delfin(cOut, cssP, bt, u_d6, u_d7, u_d8);
+    }
     // Floß in der Welt verankert (Ralph 12.11.): u_x0 = Lage bei Standard-Kamera (Höhe 2.6, Horizont 0.72) → Wasserpunkt in der Welt → mit der aktuellen Kamera neu projiziert
     vec4 bx = u_x0; float wHub = 0.0, wAng = 0.0; bool onWave = false;   // onWave: Floß sitzt auf den echten Wellen (Hub/Kippen aus der Wellenhöhe statt Sinus-Takt)
     if (u_x0.z > 0.0) {
@@ -2332,6 +2360,8 @@ u_mouse: new this.minigl.Uniform({
           u_tex0_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }), // 1 = Bild ist da (vorher zeichnet der Shader ohne)
           u_tex1: new this.minigl.Uniform({ type: "sampler2D", value: 1, excludeFrom: "vertex" }), u_tex1_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),   // weitere Bild-Plätze (Shader-Labor): Einheit 1 und 2, geladen per loadTextureUnit()
           u_tex2: new this.minigl.Uniform({ type: "sampler2D", value: 2, excludeFrom: "vertex" }), u_tex2_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),
+          u_tex3: new this.minigl.Uniform({ type: "sampler2D", value: 3, excludeFrom: "vertex" }), u_tex3_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),   // Delfin-Sheet (Floß-Meer, Ralph 15.11.)
+          ...Object.fromEntries([0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => ["u_d" + i, new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" })])),   // Delfin: Lage/Bild/Helligkeit (u_d0.z = 0 → kein Delfin)
           ...Object.fromEntries([0, 1, 2, 3].map(i => ["u_x" + i, new this.minigl.Uniform({ type: "vec4", value: (this.extra || [])[i] || [0, 0, 0, 0], excludeFrom: "vertex" })])),   // freie Datenkanäle für Experimente (JS → Shader, z. B. Lage/Blick einer Figur)
           u_moon: new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" }), // Datenmeer-Mond in CSS-px: Mitte x, Mitte y von oben, Durchmesser, Fensterhöhe (wie der alte CSS-Mond)
           u_line_color: new this.minigl.Uniform({ value: this.lineColor || [0.8, 0.7, 0.4], type: "vec3" }),
