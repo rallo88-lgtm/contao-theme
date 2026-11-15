@@ -109,7 +109,8 @@
     const hover = e => { const r = g.el.getBoundingClientRect();
       hm = (e.clientX >= r.left && e.clientX <= r.left + innerWidth && e.clientY >= 0 && e.clientY <= innerHeight) ? [(e.clientX - r.left) / r.width, 1 - e.clientY / innerHeight] : null; };
     const weg = () => { hm = null; };
-    const look = e => { hover(e); if (leise) return; const b = placed(), hx = b.x + b.w * (0.7349 + 0.12045 / 2), hy = b.y + b.h * 0.10106 + b.w * 0.12045 * 0.45, dz = b.w * 0.12045 * 0.55;
+    let mausZeit = -1e9;   // letzte Mausbewegung – Maus hat immer Vorrang vor schau()
+    const look = e => { mausZeit = performance.now(); hover(e); if (leise) return; const b = placed(), hx = b.x + b.w * (0.7349 + 0.12045 / 2), hy = b.y + b.h * 0.10106 + b.w * 0.12045 * 0.45, dz = b.w * 0.12045 * 0.55;
       col = pick(e.clientX - hx, dz); row = pick(e.clientY - hy, dz); layout(); clearTimeout(idle); idle = setTimeout(() => { col = 1; row = 1; layout(); }, 4000); };
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (window.gradient === g) layout(); });   // Webfont da → Text hat seine echte Höhe
     layout(); addEventListener('pointermove', look); addEventListener('resize', layout); document.documentElement.addEventListener('mouseleave', weg); addEventListener('blur', weg);
@@ -140,7 +141,12 @@
       if (hm) { const fh = 1 - Math.exp(-dt / 0.45); ht = ht ? [ht[0] + (hm[0] - ht[0]) * fh, ht[1] + (hm[1] - ht[1]) * fh] : hm.slice(); U.u_x3.value = [hm[0], hm[1], ht[0], ht[1]]; }   // Nachzügler = Leuchtspur
       else { ht = null; U.u_x3.value = [-5, -5, -5, -5]; }
       if (moving && skip === null) { skip = g.frameSkip; g.frameSkip = dtAvg < 11 ? 2 : 1; } else if (!moving && skip !== null) { g.frameSkip = skip; skip = null; } };   // Fahrt: ~60 Shader-Bilder/s (120-Hz-Handy: jedes 2. Bild)
-    g._floss = { zuWelt, proj, korrektur, layout, box, kamera: () => [U.u_p0.value, U.u_p2.value, zielFahrt(), camX] };   // Contao-Vorschau: Korrektur-Werkzeug
+    const schau = (x, y) => {   // Ralph 15.11.: Missi verfolgt den Delfin vorne im Wasser – nur wenn die Maus ruht (4 s); schau(null) = wieder geradeaus
+      if (leise || performance.now() - mausZeit < 4000) return false;
+      if (x == null) { col = 1; row = 1; } else { const b = placed(), hx = b.x + b.w * (0.7349 + 0.12045 / 2), hy = b.y + b.h * 0.10106 + b.w * 0.12045 * 0.45, dz = b.w * 0.12045 * 0.55;
+        col = pick(x - hx, dz * 3); row = pick(y - hy, dz); }   // breitere Mitte: Delfin direkt vor ihr → Blick nach unten-mitte
+      U.u_x1.value = [col, row, 0.006, 0.006]; return true; };   // nur der Blick, kein layout() (das rechnet die Kamera neu)
+    g._floss = { zuWelt, proj, korrektur, layout, box, schau, kamera: () => [U.u_p0.value, U.u_p2.value, zielFahrt(), camX] };   // Contao-Vorschau: Korrektur-Werkzeug
     U.u_x3.value = [-5, -5, -5, -5]; raf = requestAnimationFrame(fahrt);
     return () => { g.el.style.transform = ''; document.documentElement.classList.remove('rct-floss-handy'); if (ruht && g.play) g.play(); platz(0); document.documentElement.classList.remove('rct-floss-leise'); removeEventListener('pointermove', look); removeEventListener('resize', layout); document.documentElement.removeEventListener('mouseleave', weg); removeEventListener('blur', weg);
       clearTimeout(idle); cancelAnimationFrame(raf); if (skip !== null) g.frameSkip = skip; };
