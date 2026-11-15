@@ -12,9 +12,9 @@
   const LAENGE_PX = 236, PLAETZE = 3;   // Delfinlänge im 256er-Bild (v2); Plätze im Shader
   const TEST = /[?&]delfin=1/.test(location.search);
   const CFG = Object.assign({
-    pauseMin: 14, pauseMax: 35,    // s zwischen zwei Auftritten – unabhängig voneinander, dürfen sich überschneiden (Ralph 15.11.: hinten mehr los, nicht überbevölkert)
-    erster: [4, 9],                // s bis zum ersten Auftritt
-    anteilSchwimmen: 0.07,         // Anteil Vorbeischwimmen (Ralph 15.11.: der unten seltener)
+    pauseMin: 3, pauseMax: 6,      // s zwischen zwei Auftritten (Ralph 15.11. live: Takt wie im Testmodus der Vorschau) – unabhängig voneinander, dürfen sich überschneiden (Ralph 15.11.: hinten mehr los, nicht überbevölkert)
+    erster: [1, 1.5],              // s bis zum ersten Auftritt
+    anteilSchwimmen: 0.125,        // Anteil Vorbeischwimmen (wie Testmodus: etwa jeder 8. Auftritt)
     anteilSchule: 0.2,             // Anteil Schule (2–3 zusammen, „Dreierbande“), sonst ein einzelner Springer an eigener Stelle/Richtung
     schule: [0, 0.55, 0.45],       // Schule: Wahrscheinlichkeit für 1 / 2 / 3 Springer
     variation: { hoehe: [0.5, 1.0], weite: [1.05, 1.6], tempo: [0.95, 1.12] },   // Ralph 15.11.: Sprünge variieren; die langen, weiten wirken am besten → eher flach + weit; Dauer folgt Höhe (√) und Weite
