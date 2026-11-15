@@ -2688,6 +2688,14 @@ body[data-theme="datenmeer"]::after { transform: translate3d(0, calc(-1 * var(--
   --grad-4: #000f17;
 }
 [data-theme="floss-meer"] #gradient-canvas { height: 128vh; }
+/* Handy (Ralph 15.11.2026): Bild scrollt mit, bis das Floß oben raus ist, dann bleibt es stehen (JS: pinY) –
+   unten läuft es weich in ein dunkles Meeresblau aus statt mit harter Kante ins Schwarz. */
+html.rct-floss-handy #gradient-canvas {
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent);
+}
+html.rct-floss-handy,
+html.rct-floss-handy body { background: #04121c; }
 body[data-theme="floss-meer"]::after {   /* Mond als Bild nur ohne WebGL (sonst kommt er aus dem Shader) */
   content: ""; position: fixed; right: 4vw; top: calc(var(--rct-header-height, 64px) + 26px);
   width: min(12vw, 200px); aspect-ratio: 1; z-index: 11; pointer-events: none;
