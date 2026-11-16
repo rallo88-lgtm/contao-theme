@@ -1764,6 +1764,45 @@ void main() {
     // ── Floß: Spiegelbild (k = 0, nur Wasser unter der Wasserlinie) und Floß selbst (k = 1) ──
     vec2 cssP = vec2(uv.x * resolution.x * 1.02, (1.0 - uv.y) * u_moon.w);
     float bt = u_time * u_line_speed;
+    if (u_tex5_ready > 0.5 && u_g0.z > 0.0) {   // Geisterschiff (Ralph 16.11., 404-Seite): ganz hinten im Nebel, halb durchsichtig, Fenster/Laternen glühen grün, Spiegelbild – Lage/Bild aus rct-floss-geist.js
+      // u_g0 = Drehpunkt (px, Wasserlinie Schiffsmitte), px je Sheet-px · u_g1 = Spalte, Zeile, Deckkraft, Glühen
+      for (int k = 0; k < 2; k++) {   // k = 0 Spiegelbild, k = 1 Schiff
+        vec2 Q = cssP; float gs = 1.0;
+        if (k == 0) { float below = cssP.y - u_g0.y; gs = below > 0.0 ? 0.28 * (1.0 - smoothstep(0.0, 90.0 * u_g0.z, below)) : 0.0;
+          Q = vec2(cssP.x + sin(cssP.y * 0.08 + bt * 2.1) * 2.5, 2.0 * u_g0.y - cssP.y); }
+        else gs = cssP.y < u_g0.y + 6.0 * u_g0.z ? 1.0 : 0.0;   // Rumpf taucht ein Stück ein
+        if (gs > 0.0) {
+          vec2 gf = ((Q - u_g0.xy) / u_g0.z + vec2(271.0, 326.0)) / vec2(543.0, 362.0);   // Drehpunkt im Einzelbild: Rumpfmitte an der Wasserlinie
+          float inB = step(-0.06, gf.x) * step(gf.x, 1.06) * step(-0.06, gf.y) * step(gf.y, 1.06);   // etwas größer als das Bild: Platz für den Lichthof
+          if (inB > 0.0) {
+            float inG = step(0.0, gf.x) * step(gf.x, 1.0) * step(0.0, gf.y) * step(gf.y, 1.0);
+            vec2 gt = vec2(u_g1.x, u_g1.y);
+            vec4 G = texture2D(u_tex5, vec2((gt.x + clamp(gf.x, 0.0, 1.0)) / 4.0, 1.0 - (gt.y + clamp(gf.y, 0.0, 1.0)) / 2.0)) * inG;
+            float aura = 0.0;   // Ralph 16.11.: das ganze Schiff leuchtet grünlich – weicher Lichthof aus 8 Nachbar-Proben rund um die Silhouette
+            for (int j = 0; j < 8; j++) { float wj = float(j) * 0.7854; vec2 o = gf + vec2(cos(wj), sin(wj) * 1.5) * 0.028;
+              float inO = step(0.0, o.x) * step(o.x, 1.0) * step(0.0, o.y) * step(o.y, 1.0);
+              aura += texture2D(u_tex5, vec2((gt.x + clamp(o.x, 0.0, 1.0)) / 4.0, 1.0 - (gt.y + clamp(o.y, 0.0, 1.0)) / 2.0)).a * inO; }
+            aura = aura / 8.0 * (1.0 - G.a * 0.7);
+            float glow = clamp((G.g - max(G.r, G.b * 0.8)) * 4.0, 0.0, 1.0);   // grün leuchtende Fenster/Laternen
+            vec3 gc = mix(vec3(dot(G.rgb, vec3(0.3, 0.59, 0.11))), G.rgb, 0.4) * vec3(0.55, 0.92, 0.74) * 1.15;   // entsättigt + grünlicher Geisterschimmer
+            gc = mix(cOut, gc, 0.84) + vec3(0.35, 1.0, 0.65) * glow * u_g1.w;   // Ralph 16.11.: weniger durchsichtig
+            if (k == 0) gc = mix(gc * 0.6, cOut, 0.3);
+            cOut = mix(cOut, gc, G.a * u_g1.z * gs);
+            cOut += vec3(0.18, 0.75, 0.45) * (glow * G.a * 0.6 + aura * 0.35) * u_g1.w * u_g1.z * gs;   // Glühen + Lichthof
+          }
+        }
+      }
+    }
+    if (u_tex5_ready > 0.5 && u_g0.z > 0.0) {   // Gischt am Bug des Geisterschiffs (Ralph 16.11.): Bug trifft die Wasserlinie 140 Sheet-px vor der Mitte, Schaum zieht am Rumpf nach hinten
+      vec2 gp = (cssP - u_g0.xy) / u_g0.z, bw = gp - vec2(140.0, 0.0);
+      float ex = bw.x / (bw.x < 0.0 ? 120.0 : 26.0), ey = bw.y / (bw.y < 0.0 ? 24.0 : 9.0);   // nach hinten lang, nach vorn kurz, nach oben spritzend
+      float gm = 1.0 - smoothstep(0.55, 1.0, length(vec2(ex, ey)));
+      if (gm > 0.0) {
+        float n1 = rct_vnoise(gp * vec2(0.09, 0.2) + vec2(-bt * 2.6, bt * 0.8)), n2 = rct_vnoise(gp * 0.28 + vec2(bt * 4.2, -bt * 1.3));
+        float foam = smoothstep(0.42, 0.78, n1 * 0.55 + n2 * 0.45) * gm;
+        cOut = mix(cOut, vec3(0.8, 0.9, 0.92), foam * 0.6 * u_g1.z);
+      }
+    }
     if (u_tex3_ready > 0.5) {   // Delfine (Ralph 15.11.): bis zu 3 gleichzeitig (Schule), zwischen Meer und Floß – das Floß verdeckt sie von selbst
       if (u_d0.z > 0.0) cOut = rct_delfin(cOut, cssP, bt, u_d0, u_d1, u_d2);
       if (u_d3.z > 0.0) cOut = rct_delfin(cOut, cssP, bt, u_d3, u_d4, u_d5);
@@ -2392,6 +2431,8 @@ u_mouse: new this.minigl.Uniform({
           u_tex2: new this.minigl.Uniform({ type: "sampler2D", value: 2, excludeFrom: "vertex" }), u_tex2_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),
           u_tex3: new this.minigl.Uniform({ type: "sampler2D", value: 3, excludeFrom: "vertex" }), u_tex3_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),   // Delfin-Sheet (Floß-Meer, Ralph 15.11.)
           u_tex4: new this.minigl.Uniform({ type: "sampler2D", value: 4, excludeFrom: "vertex" }), u_tex4_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),   // Flaschenpost (Floß-Meer, Ralph 16.11.)
+          u_tex5: new this.minigl.Uniform({ type: "sampler2D", value: 5, excludeFrom: "vertex" }), u_tex5_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),   // Geisterschiff (Floß-Meer 404, Ralph 16.11.)
+          u_g0: new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" }), u_g1: new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" }),   // Geisterschiff: Lage/Bild (u_g0.z = 0 → aus)
           u_f0: new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" }), u_f1: new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" }),   // Flaschenpost: Lage/Größe/Helligkeit (u_f1.z = 0 → aus)
           ...Object.fromEntries([0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => ["u_d" + i, new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" })])),   // Delfin: Lage/Bild/Helligkeit (u_d0.z = 0 → kein Delfin)
           ...Object.fromEntries([0, 1, 2, 3].map(i => ["u_x" + i, new this.minigl.Uniform({ type: "vec4", value: (this.extra || [])[i] || [0, 0, 0, 0], excludeFrom: "vertex" })])),   // freie Datenkanäle für Experimente (JS → Shader, z. B. Lage/Blick einer Figur)

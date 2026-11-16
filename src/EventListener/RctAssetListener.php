@@ -53,6 +53,7 @@ class RctAssetListener
             $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-floss-meer.js||static';
             $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-floss-delfin.js||static';   // Delfine im Floß-Meer (ab 1800 px, Sheet lädt erst bei Bedarf)
             $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-floss-flasche.js||static';   // Flaschenpost im leisen Floß-Meer (nur mit Element .rct-flasche, Bild lädt erst bei Bedarf)
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct-floss-geist.js||static';   // Geisterschiff im leisen Floß-Meer (nur mit Element .rct-geisterschiff, z. B. 404; Sheet lädt erst bei Bedarf)
         }
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/rct/js/rct.js||static';
 
