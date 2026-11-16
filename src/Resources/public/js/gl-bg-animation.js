@@ -1769,6 +1769,36 @@ void main() {
       if (u_d3.z > 0.0) cOut = rct_delfin(cOut, cssP, bt, u_d3, u_d4, u_d5);
       if (u_d6.z > 0.0) cOut = rct_delfin(cOut, cssP, bt, u_d6, u_d7, u_d8);
     }
+    if (u_tex4_ready > 0.5 && u_f1.z > 0.0) {   // Flaschenpost (Ralph 16.11.): treibt auf den echten Wellen, unter der Wasserlinie bläulich eingetaucht – Lage/Größe aus rct-floss-flasche.js
+      vec2 flp = u_f0.xy; float flL = max(u_f0.z, 0.01), flH = flL * u_f1.w;   // u_f0 = Welt x, Welt z, Länge, Grund-Neigung · u_f1 = Helligkeit, Deckkraft, an (1), Bild-Seitenverhältnis h/b
+      float flC = (rct_dm_wave(flp, t) - 0.5) * wh;
+      float flA = (rct_dm_wave(flp - vec2(flL * 0.5, 0.0), t) - 0.5) * wh, flB = (rct_dm_wave(flp + vec2(flL * 0.5, 0.0), t) - 0.5) * wh;
+      vec3 flv = vec3(flp.x, flC, flp.y) - ro;
+      vec3 flq = vec3(flv.x, flv.y * cos(pitch) + flv.z * sin(pitch), -flv.y * sin(pitch) + flv.z * cos(pitch));
+      if (flq.z > 0.1) {
+        float flcw = resolution.x * 1.02, flmw = max(u_moon.w, 1.0);
+        vec2 flS = vec2((0.5 + flq.x / flq.z * 1.1 / aspect) * flcw, (1.0 - (0.5 + flq.y / flq.z * 1.1)) * flmw);   // Wasserpunkt unter der Flaschenmitte (px)
+        vec2 flk = vec2(1.1 / aspect * flcw, 1.1 * flmw) / flq.z;   // px je Welt-Einheit (x, y)
+        float flW = -atan((flB - flA) / flL) * 0.8, flG = u_f0.w + flW;   // Wellenneigung → Kippen (träge)
+        float flLift = flH * 0.02;   // Ralph 16.11.: Mitte etwa auf der Wasserlinie (0,12 zu hoch, −0,08 zu tief)
+        for (int k = 0; k < 2; k++) {   // k = 0 unter Wasser (verzerrt, bläulich), k = 1 über Wasser
+          vec2 flP = cssP;
+          if (k == 0) flP += vec2(sin(cssP.y * 0.07 + bt * 1.9) * 2.0, sin(cssP.x * 0.05 + bt * 1.5) * 1.5);
+          vec2 l = vec2((flP.x - flS.x) / flk.x, (flP.y - flS.y) / flk.y + flLift);   // Welt-Einheiten relativ zur Flaschenmitte (y nach unten)
+          vec2 o = vec2(l.x * cos(flG) - l.y * sin(flG), l.x * sin(flG) + l.y * cos(flG));
+          vec2 fu = vec2(o.x / flL + 0.5, o.y / flH + 0.5);
+          float inF = step(0.0, fu.x) * step(fu.x, 1.0) * step(0.0, fu.y) * step(fu.y, 1.0);
+          float wly = flLift - l.x * tan(flW);   // Wasserlinie an dieser Stelle (Welt, y nach unten)
+          float unter = step(wly, l.y);
+          if (float(k) != 1.0 - unter) continue;
+          vec4 F = texture2D(u_tex4, vec2(clamp(fu.x, 0.0, 1.0), 1.0 - clamp(fu.y, 0.0, 1.0))) * inF;
+          vec3 fc = F.rgb * u_f1.x;
+          if (k == 0) fc = mix(cOut, F.rgb * vec3(0.32, 0.52, 0.64) * u_f1.x, 0.5);
+          cOut = mix(cOut, fc, F.a * u_f1.y);
+          if (k == 1) cOut += vec3(0.55, 0.75, 0.85) * 0.22 * F.a * u_f1.y * (1.0 - smoothstep(0.0, flH * 0.035, abs(l.y - wly)));   // heller Saum an der Wasserlinie
+        }
+      }
+    }
     // Floß in der Welt verankert (Ralph 12.11.): u_x0 = Lage bei Standard-Kamera (Höhe 2.6, Horizont 0.72) → Wasserpunkt in der Welt → mit der aktuellen Kamera neu projiziert
     vec4 bx = u_x0; float wHub = 0.0, wAng = 0.0; bool onWave = false;   // onWave: Floß sitzt auf den echten Wellen (Hub/Kippen aus der Wellenhöhe statt Sinus-Takt)
     if (u_x0.z > 0.0) {
@@ -2361,6 +2391,8 @@ u_mouse: new this.minigl.Uniform({
           u_tex1: new this.minigl.Uniform({ type: "sampler2D", value: 1, excludeFrom: "vertex" }), u_tex1_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),   // weitere Bild-Plätze (Shader-Labor): Einheit 1 und 2, geladen per loadTextureUnit()
           u_tex2: new this.minigl.Uniform({ type: "sampler2D", value: 2, excludeFrom: "vertex" }), u_tex2_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),
           u_tex3: new this.minigl.Uniform({ type: "sampler2D", value: 3, excludeFrom: "vertex" }), u_tex3_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),   // Delfin-Sheet (Floß-Meer, Ralph 15.11.)
+          u_tex4: new this.minigl.Uniform({ type: "sampler2D", value: 4, excludeFrom: "vertex" }), u_tex4_ready: new this.minigl.Uniform({ value: 0.0, excludeFrom: "vertex" }),   // Flaschenpost (Floß-Meer, Ralph 16.11.)
+          u_f0: new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" }), u_f1: new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" }),   // Flaschenpost: Lage/Größe/Helligkeit (u_f1.z = 0 → aus)
           ...Object.fromEntries([0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => ["u_d" + i, new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" })])),   // Delfin: Lage/Bild/Helligkeit (u_d0.z = 0 → kein Delfin)
           ...Object.fromEntries([0, 1, 2, 3].map(i => ["u_x" + i, new this.minigl.Uniform({ type: "vec4", value: (this.extra || [])[i] || [0, 0, 0, 0], excludeFrom: "vertex" })])),   // freie Datenkanäle für Experimente (JS → Shader, z. B. Lage/Blick einer Figur)
           u_moon: new this.minigl.Uniform({ type: "vec4", value: [0, 0, 0, 0], excludeFrom: "vertex" }), // Datenmeer-Mond in CSS-px: Mitte x, Mitte y von oben, Durchmesser, Fensterhöhe (wie der alte CSS-Mond)
