@@ -13,6 +13,23 @@
 (function () {
   'use strict';
 
+  // Speicher mit Rückfall: Sperrt der Browser localStorage (privates Fenster, strenge Datenschutz-Einstellungen),
+  // merkt sich RCT die Werte nur bis zum Neuladen, statt abzustürzen
+  const store = (function () {
+    try {
+      const s = window.localStorage, k = '__rct_test';
+      s.setItem(k, '1'); s.removeItem(k);
+      return s;
+    } catch (e) {
+      const m = {};
+      return {
+        getItem: function (k) { return Object.prototype.hasOwnProperty.call(m, k) ? m[k] : null; },
+        setItem: function (k, v) { m[k] = String(v); },
+        removeItem: function (k) { delete m[k]; }
+      };
+    }
+  })();
+
   /* Hilfsfunktionen */
   function isMobile() {
     return window.innerWidth <= 1024;
@@ -97,8 +114,8 @@
           setRightState(defaults.right);
         } else {
           // Sidebar-Layouts: localStorage hat Vorrang, sonst layout-default
-          const leftSaved  = localStorage.getItem('rct-sidebar-state');
-          const rightSaved = localStorage.getItem('rct-sidebar-right-state');
+          const leftSaved  = store.getItem('rct-sidebar-state');
+          const rightSaved = store.getItem('rct-sidebar-right-state');
           const leftOpen  = leftSaved  ? leftSaved  === 'open' : defaults.left;
           const rightOpen = rightSaved ? rightSaved === 'open' : defaults.right;
           setLeftState(leftOpen);
@@ -120,7 +137,7 @@
         setLeftState(willOpen);
         // Persistenz: nur Desktop in nicht-topnav
         if (!isMobile() && currentLayout() !== 'topnav') {
-          localStorage.setItem('rct-sidebar-state', willOpen ? 'open' : 'closed');
+          store.setItem('rct-sidebar-state', willOpen ? 'open' : 'closed');
         }
         document.dispatchEvent(new Event('rct:layout-change'));
       });
@@ -131,7 +148,7 @@
       closeBtnLeft.addEventListener('click', function () {
         setLeftState(false);
         if (!isMobile() && currentLayout() !== 'topnav') {
-          localStorage.setItem('rct-sidebar-state', 'closed');
+          store.setItem('rct-sidebar-state', 'closed');
         }
         document.dispatchEvent(new Event('rct:layout-change'));
       });
@@ -156,7 +173,7 @@
       setRightState(willOpen);
       // Persistenz: nicht in topnav (temporaer)
       if (currentLayout() !== 'topnav') {
-        localStorage.setItem('rct-sidebar-right-state', willOpen ? 'open' : 'closed');
+        store.setItem('rct-sidebar-right-state', willOpen ? 'open' : 'closed');
       }
       document.dispatchEvent(new Event('rct:layout-change'));
     }
@@ -309,7 +326,7 @@
     if (popupArticle && overlayContainer) {
       const popupId = 'rct_popup_' + (popupArticle.id || 'general');
     
-      if (!localStorage.getItem(popupId)) {
+      if (!store.getItem(popupId)) {
         overlayContainer.innerHTML = '';
         const clonedArticle = popupArticle.cloneNode(true);
         clonedArticle.classList.remove('rct-popup-content');
@@ -396,7 +413,7 @@
           if (dontShowCheckbox && dontShowCheckbox.checked) {
               const activeArticle = overlay.querySelector('.mod_article');
               const pId = 'rct_popup_' + (activeArticle?.id || 'general');
-              localStorage.setItem(pId, 'true');
+              store.setItem(pId, 'true');
           }
           overlay.classList.remove('is-active');
           return; // Abbruch hier
@@ -719,7 +736,7 @@
 
     const isFixed      = document.documentElement.hasAttribute('data-fixed');
     const allowedThemes = (window.rctAllowedThemes && window.rctAllowedThemes.length) ? window.rctAllowedThemes : null;
-    const savedTheme   = localStorage.getItem('user-theme');
+    const savedTheme   = store.getItem('user-theme');
 
     if (allowedThemes && allowedThemes.length === 1) {
       applyTheme(allowedThemes[0], false);
@@ -747,7 +764,7 @@
         const saveCheck    = document.getElementById('save-theme-pref');
 
         if (saveCheck) {
-          const isPersistent = localStorage.getItem('theme-persistence');
+          const isPersistent = store.getItem('theme-persistence');
           saveCheck.checked = (isPersistent === 'true' || isPersistent === null);
         }
 
@@ -773,11 +790,11 @@
             applyTheme(newTheme, true);
 
             if (saveCheck && saveCheck.checked) {
-              localStorage.setItem('user-theme', newTheme);
-              localStorage.setItem('theme-persistence', 'true');
+              store.setItem('user-theme', newTheme);
+              store.setItem('theme-persistence', 'true');
             } else {
-              localStorage.removeItem('user-theme');
-              localStorage.setItem('theme-persistence', 'false');
+              store.removeItem('user-theme');
+              store.setItem('theme-persistence', 'false');
             }
             switcher.classList.remove('is-open');
           });
@@ -851,12 +868,12 @@ window.applyLayout = function (layout) {
   // topnav: keine Persistenz (Sidebars sind temporaer-toggelbar).
   // classic: per-Seite Template, kein User-Preference.
   if (layout !== 'topnav' && layout !== 'classic') {
-    localStorage.setItem('rct-sidebar-state',       defaults.left  ? 'open' : 'closed');
-    localStorage.setItem('rct-sidebar-right-state', defaults.right ? 'open' : 'closed');
+    store.setItem('rct-sidebar-state',       defaults.left  ? 'open' : 'closed');
+    store.setItem('rct-sidebar-right-state', defaults.right ? 'open' : 'closed');
   }
 
   if (layout !== 'classic') {
-    localStorage.setItem('rct-layout', layout || 'sidebar');
+    store.setItem('rct-layout', layout || 'sidebar');
   }
   const nameEl = document.querySelector('.current-layout-name');
   if (nameEl) nameEl.textContent = layoutLabels[layout] || 'Sidebar';
@@ -889,7 +906,7 @@ window.applyLayout = function (layout) {
     // Beim Laden wiederherstellen – bei fixed-Layout-Seiten den fest gesetzten Wert nehmen
     const savedLayout = isFixed
       ? (document.documentElement.getAttribute('data-layout') || 'sidebar')
-      : localStorage.getItem('rct-layout');
+      : store.getItem('rct-layout');
     if (savedLayout) window.applyLayout(savedLayout);
 
     if (layoutSwitcher) {

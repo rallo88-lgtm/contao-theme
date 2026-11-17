@@ -20,9 +20,11 @@
   (function() {
     document.documentElement.setAttribute('data-fixed', '1');
     document.documentElement.setAttribute('data-layout', 'sidebar-right');
-    if (window.innerWidth > 1024 && localStorage.getItem('rct-sidebar-state') === 'closed') {
-      document.documentElement.classList.add('rct-left-initial-closed');
-    }
+    try {   // gesperrter Speicher (privates Fenster) darf die Seite nicht stoppen
+      if (window.innerWidth > 1024 && localStorage.getItem('rct-sidebar-state') === 'closed') {
+        document.documentElement.classList.add('rct-left-initial-closed');
+      }
+    } catch (e) {}
   })();
 </script>
 {% endblock %}

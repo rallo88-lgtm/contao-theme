@@ -10,6 +10,7 @@
   {# FOUC-Guard: sofort, inline, kein defer — muss vor CSS laufen #}
   <script>
     (function() {
+      try {   // gesperrter Speicher (privates Fenster) darf die Seite nicht stoppen
       if (window.innerWidth > 1024 && localStorage.getItem('rct-sidebar-state') === 'closed') {
         document.documentElement.classList.add('rct-left-initial-closed');
       }
@@ -26,6 +27,7 @@
       if (l && l !== 'sidebar' && l !== 'classic') {
         document.documentElement.setAttribute('data-layout', l);
       }
+      } catch (e) {}
     })();
   </script>
   {% endblock %}
