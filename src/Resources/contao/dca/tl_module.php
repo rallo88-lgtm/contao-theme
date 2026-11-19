@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_fullscreen_toggle'] =
     '{title_legend},name,headline,type;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_language_switcher'] =
-    '{title_legend},name,headline,type;{languages_legend},rct_languages;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
+    '{title_legend},name,headline,type;{languages_legend},rct_languages,rct_lang_no_globe;{visibility_legend},rct_visibility;{expert_legend:hide},cssID';
 
 // RCT News Pager — Vorgänger/Nachfolger im aktuellen News-Archive
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_news_pager'] =
@@ -85,6 +85,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['rct_languages'] = [
     'label'     => ['Sprachen', "Eine Zeile pro Sprache: CODE|Bezeichnung|/url\nBeispiel: DE|Deutsch|/"],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:80px; font-family: monospace', 'tl_class' => 'clr'],
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['rct_lang_no_globe'] = [
+    'label'     => ['Globus ausblenden', 'Standard: Globus-Symbol vor dem Sprachcode im Knopf, damit man den Umschalter leichter findet.'],
+    'inputType' => 'checkbox',
+    'eval'      => ['tl_class' => 'clr m12'],
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['rct_logo'] =

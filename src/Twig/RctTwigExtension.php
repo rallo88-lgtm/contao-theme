@@ -33,6 +33,7 @@ class RctTwigExtension extends AbstractExtension implements GlobalsInterface
         'to_top' => ['de' => 'Zurück nach oben', 'en' => 'Back to top'],
         'archive_pager' => ['de' => 'Seitennavigation innerhalb des Archivs', 'en' => 'Pagination within the archive'],
         'all' => ['de' => 'Alle', 'en' => 'All'],
+        'language' => ['de' => 'Sprache', 'en' => 'Language'],
     ];
 
     public function __construct(private readonly Connection $db, private readonly RequestStack $requestStack) {}

@@ -2026,6 +2026,11 @@
   color: var(--rct-accent, #8bc34a);
 }
 
+.lang-globe {
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
 .lang-trigger .chevron {
   transition: transform 0.2s ease;
   opacity: 0.6;

@@ -28,6 +28,7 @@ class RctLanguageSwitcherController extends AbstractFrontendModuleController
 
         $template->languages      = $languages ?: [];
         $template->rct_visibility = (string) $model->rct_visibility;
+        $template->globe          = !$model->rct_lang_no_globe;   // Globus vor dem Sprachcode (Standard an)
 
         return $template->getResponse();
     }
