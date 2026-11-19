@@ -2028,7 +2028,7 @@
 
 .lang-globe {
   flex-shrink: 0;
-  opacity: 0.85;
+  color: var(--rct-accent, #8bc34a);   /* Themefarbe wie der Sprachcode */
 }
 
 .lang-trigger .chevron {
