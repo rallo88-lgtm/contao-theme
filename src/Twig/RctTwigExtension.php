@@ -48,6 +48,7 @@ class RctTwigExtension extends AbstractExtension implements GlobalsInterface
         return [
             new TwigFunction('rct_themes', [$this, 'getAllowedThemes']),
             new TwigFunction('rct_t', [$this, 'translate']),
+            new TwigFunction('rct_search_url', [$this, 'searchUrl']),
         ];
     }
 
@@ -71,6 +72,57 @@ class RctTwigExtension extends AbstractExtension implements GlobalsInterface
         }
 
         return str_starts_with($this->language(), 'de') ? $entry['de'] : $entry['en'];
+    }
+
+    /** Suchseiten-Aliase, nach denen in der aktuellen Sprache gesucht wird (erste Treffer gewinnt) */
+    private const SEARCH_ALIASES = ['suche', 'search', 'suchergebnisse', 'search-results', 'recherche'];
+
+    /**
+     * rct_search_url(): Adresse der Suchseite im Seitenbaum der aktuellen Seite (z. B. /en/search auf
+     * englischen Seiten). Ohne Treffer wie bisher /suche.
+     */
+    public function searchUrl(): string
+    {
+        $page = $this->currentPage();
+        if ($page === null) {
+            return '/suche';
+        }
+        try {
+            $page->loadDetails();
+            $rows = $this->db->fetchAllAssociative(
+                "SELECT id, alias FROM tl_page WHERE alias IN (?) AND published = '1' AND type = 'regular'",
+                [self::SEARCH_ALIASES],
+                [\Doctrine\DBAL\ArrayParameterType::STRING]
+            );
+            usort($rows, static fn ($a, $b) => array_search($a['alias'], self::SEARCH_ALIASES, true) <=> array_search($b['alias'], self::SEARCH_ALIASES, true));
+            $generator = \Contao\System::getContainer()->get('contao.routing.content_url_generator');
+            foreach ($rows as $row) {
+                $candidate = PageModel::findById((int) $row['id']);
+                if ($candidate === null) {
+                    continue;
+                }
+                $candidate->loadDetails();
+                if ((int) $candidate->rootId === (int) $page->rootId) {
+                    return $generator->generate($candidate);
+                }
+            }
+        } catch (\Throwable) {
+            // im Zweifel wie bisher
+        }
+
+        return '/suche';
+    }
+
+    private function currentPage(): ?PageModel
+    {
+        $page = $GLOBALS['objPage'] ?? null;
+        if ($page instanceof PageModel) {
+            return $page;
+        }
+        $request = $this->requestStack->getMainRequest();
+        $page = $request?->attributes->get('pageModel');
+
+        return $page instanceof PageModel ? $page : null;
     }
 
     private function language(): string
