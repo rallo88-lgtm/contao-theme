@@ -7,6 +7,7 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\FilesModel;
 use Contao\ModuleModel;
+use Contao\PageModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,7 +16,7 @@ class RctLogoController extends AbstractFrontendModuleController
 {
     protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
     {
-        $template->logoUrl         = $model->rct_logo_url ?: '/';
+        $template->logoUrl         = $this->logoUrl((string) $model->rct_logo_url, $request);
         $template->altText         = $model->rct_logo_alt ?: (string) $model->name;
         $template->hideMobile      = (bool) $model->rct_logo_hide_mobile;
         $template->logoStyle       = $model->rct_logo_style ?: 'sidebar';
@@ -38,5 +39,28 @@ class RctLogoController extends AbstractFrontendModuleController
         }
 
         return $template->getResponse();
+    }
+
+    /**
+     * Leer oder „/“ = Startseite der aktuellen Sprache (Ralph 19.11.2026): auf /en/… führt das Logo nach /en/,
+     * nicht zur deutschen Startseite. Eine andere eingetragene URL bleibt wie sie ist.
+     */
+    private function logoUrl(string $url, Request $request): string
+    {
+        $url = trim($url);
+        if ($url !== '' && $url !== '/') {
+            return $url;
+        }
+        $page = $request->attributes->get('pageModel');
+        $page = $page instanceof PageModel ? $page : ($GLOBALS['objPage'] ?? null);
+        if ($page instanceof PageModel) {
+            $page->loadDetails();
+            $prefix = trim((string) $page->urlPrefix, '/');
+            if ($prefix !== '') {
+                return '/' . $prefix . '/';
+            }
+        }
+
+        return '/';
     }
 }
