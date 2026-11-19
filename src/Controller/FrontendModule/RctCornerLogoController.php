@@ -44,11 +44,17 @@ class RctCornerLogoController extends AbstractFrontendModuleController
         $template->image     = $image;
         $template->url       = $this->url((string) $model->rct_logo_url);
         $template->newTab    = (bool) $model->rct_corner_blank;
-        $template->altText   = (string) ($model->rct_logo_alt ?: $model->name);
-        $template->menuTitle = trim((string) $model->rct_corner_menu_title);
-        $template->menu      = $this->menu((string) $model->rct_corner_menu);
+        $template->altText   = $this->tags((string) ($model->rct_logo_alt ?: $model->name));
+        $template->menuTitle = trim($this->tags((string) $model->rct_corner_menu_title));
+        $template->menu      = $this->menu($this->tags((string) $model->rct_corner_menu));
 
         return $template->getResponse();
+    }
+
+    /** Inserttags auflösen (z. B. {{iflng::en}}…{{iflng}} für zweisprachige Seiten mit einem Modul) */
+    private function tags(string $text): string
+    {
+        return str_contains($text, '{{') ? System::getContainer()->get('contao.insert_tag.parser')->replaceInline($text) : $text;
     }
 
     /** Eine Zeile pro Ziel: Titel | Beschreibung | URL  (Beschreibung optional) */
