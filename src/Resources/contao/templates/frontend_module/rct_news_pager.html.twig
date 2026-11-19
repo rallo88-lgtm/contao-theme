@@ -1,5 +1,5 @@
 <nav class="rct-news-pager rct-news-pager--{{ positionClass }} rct-news-pager--style-{{ style }}"
-     aria-label="Seitennavigation innerhalb des Archivs"
+     aria-label="{{ rct_t('archive_pager') }}"
      {% if rctVisibility and rctVisibility != 'both' %}data-rct-visibility="{{ rctVisibility }}"{% endif %}
      {% if keyboard %}data-pager-keyboard="1"{% endif %}
      {% if swipe %}data-pager-swipe="1"{% endif %}>

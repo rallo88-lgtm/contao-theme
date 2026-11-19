@@ -2,7 +2,9 @@
 
 namespace Rallo\ContaoTheme\Twig;
 
+use Contao\PageModel;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Rallo\ContaoTheme\Controller\Backend\RctConfigController;
 use Rallo\ContaoTheme\RctBundle;
 use Twig\Extension\AbstractExtension;
@@ -12,7 +14,28 @@ use Twig\TwigFunction;
 
 class RctTwigExtension extends AbstractExtension implements GlobalsInterface
 {
-    public function __construct(private readonly Connection $db) {}
+    /** Bedien-Texte des Themes (Tooltips, Screenreader) – Deutsch auf deutschen Seiten, sonst Englisch */
+    public const I18N = [
+        'fullscreen' => ['de' => 'Vollbild umschalten', 'en' => 'Toggle fullscreen'],
+        'login' => ['de' => 'Anmelden', 'en' => 'Log in'],
+        'nav_open' => ['de' => 'Navigation öffnen', 'en' => 'Open navigation'],
+        'menu_toggle' => ['de' => 'Menü umschalten', 'en' => 'Toggle menu'],
+        'info_panel' => ['de' => 'Info-Panel', 'en' => 'Info panel'],
+        'search_open' => ['de' => 'Suche öffnen', 'en' => 'Open search'],
+        'close' => ['de' => 'Schließen', 'en' => 'Close'],
+        'img_next' => ['de' => 'Nächstes Bild', 'en' => 'Next image'],
+        'img_prev' => ['de' => 'Vorheriges Bild', 'en' => 'Previous image'],
+        'gallery_filter' => ['de' => 'Galerie-Filter', 'en' => 'Gallery filter'],
+        'nav_main' => ['de' => 'Hauptnavigation', 'en' => 'Main navigation'],
+        'menu_close' => ['de' => 'Menü schließen', 'en' => 'Close menu'],
+        'nav_side' => ['de' => 'Nebennavigation', 'en' => 'Secondary navigation'],
+        'privacy' => ['de' => 'Datenschutzeinstellungen', 'en' => 'Privacy settings'],
+        'to_top' => ['de' => 'Zurück nach oben', 'en' => 'Back to top'],
+        'archive_pager' => ['de' => 'Seitennavigation innerhalb des Archivs', 'en' => 'Pagination within the archive'],
+        'all' => ['de' => 'Alle', 'en' => 'All'],
+    ];
+
+    public function __construct(private readonly Connection $db, private readonly RequestStack $requestStack) {}
 
     public function getGlobals(): array
     {
@@ -23,6 +46,7 @@ class RctTwigExtension extends AbstractExtension implements GlobalsInterface
     {
         return [
             new TwigFunction('rct_themes', [$this, 'getAllowedThemes']),
+            new TwigFunction('rct_t', [$this, 'translate']),
         ];
     }
 
@@ -35,6 +59,31 @@ class RctTwigExtension extends AbstractExtension implements GlobalsInterface
                 $s === null || $s === '' ? '' : html_entity_decode($s, ENT_QUOTES | ENT_HTML5, 'UTF-8')
             ),
         ];
+    }
+
+    /** rct_t('key'): Text in der Sprache der aktuellen Seite (de* → Deutsch, alles andere → Englisch) */
+    public function translate(string $key): string
+    {
+        $entry = self::I18N[$key] ?? null;
+        if ($entry === null) {
+            return $key;
+        }
+
+        return str_starts_with($this->language(), 'de') ? $entry['de'] : $entry['en'];
+    }
+
+    private function language(): string
+    {
+        $page = $GLOBALS['objPage'] ?? null;
+        if ($page instanceof PageModel && $page->language) {
+            return strtolower((string) $page->language);
+        }
+        $request = $this->requestStack->getMainRequest();
+        if ($request !== null && $request->attributes->get('pageModel') instanceof PageModel) {
+            return strtolower((string) $request->attributes->get('pageModel')->language);
+        }
+
+        return 'de';   // ohne Seitenkontext (Backend-Vorschau u. Ä.) wie bisher Deutsch
     }
 
     /**

@@ -349,12 +349,14 @@
         searchTriggers.forEach(trigger => {
             trigger.addEventListener('click', (e) => {
                 e.preventDefault();
+                // Texte nach Seitensprache; Ziel absolut /suche (relativ landete es auf /en/suche = 404)
+                const de = (document.documentElement.lang || 'de').toLowerCase().startsWith('de');
                 overlayContainer.innerHTML = `
                     <div class="rct-search-box">
-                        <h2>Suche</h2>
-                        <form action="suche" method="get">
-                            <input type="text" name="keywords" class="rct-input" placeholder="Suchbegriff..." autofocus>
-                            <button type="submit" class="rct-btn">Suchen</button>
+                        <h2>${de ? 'Suche' : 'Search'}</h2>
+                        <form action="/suche" method="get">
+                            <input type="text" name="keywords" class="rct-input" placeholder="${de ? 'Suchbegriff...' : 'Search term...'}" autofocus>
+                            <button type="submit" class="rct-btn">${de ? 'Suchen' : 'Search'}</button>
                         </form>
                     </div>
                 `;

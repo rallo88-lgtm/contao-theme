@@ -50,7 +50,7 @@
         </header>
       {% endblock %}
 
-      <nav id="navbar" class="rct-navbar" role="navigation" aria-label="Hauptnavigation">
+      <nav id="navbar" class="rct-navbar" role="navigation" aria-label="{{ rct_t('nav_main') }}">
         <div class="rct-navbar-menu">
           {{ left|raw }}
         </div>
@@ -59,9 +59,9 @@
       <div id="mainContainer">
 
         {% block left_sidebar %}
-        <aside id="left" aria-label="Hauptnavigation">
+        <aside id="left" aria-label="{{ rct_t('nav_main') }}">
           {% block left_sidebar_close %}
-          <button class="rct-sidebar-close-btn js-close-sidebar" aria-label="Menü schließen">
+          <button class="rct-sidebar-close-btn js-close-sidebar" aria-label="{{ rct_t('menu_close') }}">
             <svg class="rct-icon-shove" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="arrow-1" d="M18 6L12 12L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
               <path class="arrow-2" d="M12 6L6 12L12 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -89,7 +89,7 @@
         </main>
 
         {% block right_sidebar %}
-        <aside id="right" aria-label="Nebennavigation">
+        <aside id="right" aria-label="{{ rct_t('nav_side') }}">
           <button id="rct-menu-right-toggle" class="rct-sidebar-close-btn right" title="Layer-Management">
             <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
               <path class="arrow-1" d="M6 6L12 12L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>

@@ -8,8 +8,8 @@
 
   {# ── Filter-Buttons ── #}
   {% if showFilter %}
-  <div class="rct-gallery-filters" role="tablist" aria-label="Galerie-Filter">
-    <button class="rct-gallery-filter-btn is-active" data-filter="*" type="button">Alle</button>
+  <div class="rct-gallery-filters" role="tablist" aria-label="{{ rct_t('gallery_filter') }}">
+    <button class="rct-gallery-filter-btn is-active" data-filter="*" type="button">{{ rct_t('all') }}</button>
     {% for cat in categories %}
     <button class="rct-gallery-filter-btn" data-filter=".cat-{{ cat.slug }}" type="button">{{ cat.name }}</button>
     {% endfor %}
@@ -95,9 +95,9 @@
 
       overlayContent.innerHTML =
         '<div class="rct-gallery-lb">' +
-          (total > 1 ? '<button class="rct-gallery-lb-prev" aria-label="Vorheriges Bild">&#8592;</button>' : '') +
+          (total > 1 ? '<button class="rct-gallery-lb-prev" aria-label="{{ rct_t('img_prev') }}">&#8592;</button>' : '') +
           '<div class="rct-gallery-lb-img-wrap"><img src="' + src + '" alt="' + alt + '" class="rct-gallery-lb-img"></div>' +
-          (total > 1 ? '<button class="rct-gallery-lb-next" aria-label="N&auml;chstes Bild">&#8594;</button>' : '') +
+          (total > 1 ? '<button class="rct-gallery-lb-next" aria-label="{{ rct_t('img_next') }}">&#8594;</button>' : '') +
           '<p class="rct-gallery-lb-counter">' + (idx + 1) + ' / ' + total + '</p>' +
         '</div>';
 

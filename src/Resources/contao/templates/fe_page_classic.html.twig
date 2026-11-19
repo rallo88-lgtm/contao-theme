@@ -27,7 +27,7 @@
     </header>
 
     {# Edge-to-edge Navbar (Logo links + Menü rechts) #}
-    <nav id="navbar" class="rct-classic-navbar" role="navigation" aria-label="Hauptnavigation">
+    <nav id="navbar" class="rct-classic-navbar" role="navigation" aria-label="{{ rct_t('nav_main') }}">
       <div class="rct-classic-navbar-inner">
         <div class="rct-classic-navbar-left">
           {{ contao_section('classic_navbar_left') }}
@@ -40,8 +40,8 @@
 
     {# Mobile-Drawer #left — auf Desktop versteckt, auf Mobile via
        rct_nav_toggle (Hamburger im classic_navbar_right) togglebar #}
-    <aside id="left" aria-label="Hauptnavigation">
-      <button class="rct-sidebar-close-btn js-close-sidebar" aria-label="Menü schließen">
+    <aside id="left" aria-label="{{ rct_t('nav_main') }}">
+      <button class="rct-sidebar-close-btn js-close-sidebar" aria-label="{{ rct_t('menu_close') }}">
         <svg class="rct-icon-shove" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path class="arrow-1" d="M18 6L12 12L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
           <path class="arrow-2" d="M12 6L6 12L12 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
