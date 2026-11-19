@@ -2396,6 +2396,7 @@ body.rct-right-open #right {
   transition: opacity 0.25s ease, color 0.25s ease;
 }
 #rct-privacy-btn svg { width: 18px; height: 18px; }
+#rct-privacy-btn[hidden] { display: none; }   /* ohne Klaro versteckt rct.js den Knopf – display:flex oben würde hidden sonst überstimmen */
 #rct-scroll-top:hover,
 #rct-privacy-btn:hover { opacity: 1; }
 #rct-privacy-btn:hover { color: var(--rct-accent); }
