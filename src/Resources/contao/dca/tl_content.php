@@ -513,7 +513,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_image_alt'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_itb_icon'] = [
-    'label'     => ['Icon / Emoji', 'Emoji (🚀 ⭐), Unicode-Symbol oder tabler:<slug>. Picker-Button öffnet die Icon-Auswahl.'],
+    'label'     => ['Icon / Emoji', 'Emoji (🚀 ⭐), Unicode-Symbol oder tabler:&lt;slug&gt;. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],
@@ -596,7 +596,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_image_alt'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_fb_icon'] = [
-    'label'     => ['Icon / Emoji', 'Emoji, Unicode-Symbol oder tabler:<slug>. Picker-Button öffnet die Icon-Auswahl.'],
+    'label'     => ['Icon / Emoji', 'Emoji, Unicode-Symbol oder tabler:&lt;slug&gt;. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],
@@ -724,7 +724,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_sublabel'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_stat_icon'] = [
-    'label'     => ['Icon / Emoji', 'Emoji (🏆 ✓), Unicode-Symbol oder tabler:<slug>. Picker-Button öffnet die Icon-Auswahl.'],
+    'label'     => ['Icon / Emoji', 'Emoji (🏆 ✓), Unicode-Symbol oder tabler:&lt;slug&gt;. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],
@@ -775,7 +775,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_text'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_cta_icon'] = [
-    'label'     => ['Icon / Emoji', 'Emoji (🚀), Unicode-Symbol oder tabler:<slug>. Picker-Button öffnet die Icon-Auswahl.'],
+    'label'     => ['Icon / Emoji', 'Emoji (🚀), Unicode-Symbol oder tabler:&lt;slug&gt;. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],
@@ -1053,7 +1053,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_icon_box'] =
 // rct_icon_box_* ohne 'sql' → jsonData. link_page bleibt als int-Spalte
 // (foreignKey/relation für Lazy-Load via tl_page).
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_icon_box_icon'] = [
-    'label'     => ['Icon / Emoji', 'Emoji (🚀 ⭐), Unicode-Symbol oder tabler:<slug>. Picker-Button öffnet die Icon-Auswahl.'],
+    'label'     => ['Icon / Emoji', 'Emoji (🚀 ⭐), Unicode-Symbol oder tabler:&lt;slug&gt;. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],
@@ -1377,14 +1377,14 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_overline'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_headline'] = [
-    'label'     => ['Überschrift', 'Hauptüberschrift. Tipp: <em>Wort</em> umschließen → das Wort erscheint in der Akzentfarbe'],
+    'label'     => ['Überschrift', 'Hauptüberschrift. Tipp: &lt;em&gt;Wort&lt;/em&gt; umschließen → das Wort erscheint in der Akzentfarbe'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 512, 'tl_class' => 'clr long'],
 ];
 
 // Überschrift 2 (optional): zweite Zeile in derselben <h1>, eigene Schrift + Farbe
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_headline2'] = [
-    'label'     => ['Überschrift 2', 'Optionale zweite Zeile der Überschrift (gleiche <h1>, eigene Schrift/Farbe). <em>Wort</em> = Akzentfarbe'],
+    'label'     => ['Überschrift 2', 'Optionale zweite Zeile der Überschrift (gleiche &lt;h1&gt;, eigene Schrift/Farbe). &lt;em&gt;Wort&lt;/em&gt; = Akzentfarbe'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 512, 'tl_class' => 'clr long'],
 ];
@@ -1403,7 +1403,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_hl2_color'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_body'] = [
-    'label'     => ['Begleittext', 'Text unter der Überschrift (optional). Enter = Zeilenumbruch; erlaubt: <br>, <strong>, <em>'],
+    'label'     => ['Begleittext', 'Text unter der Überschrift (optional). Enter = Zeilenumbruch; erlaubt: &lt;br&gt;, &lt;strong&gt;, &lt;em&gt;'],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:120px', 'tl_class' => 'clr', 'allowHtml' => true],
 ];
@@ -1678,7 +1678,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_ruler_max'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_divider_icon'] = [
-    'label'     => ['Icon (Marker)', 'Marker (06): Emoji oder tabler:<slug>. Leer = klassische Diamond-Raute. Picker-Button öffnet die Icon-Auswahl.'],
+    'label'     => ['Icon (Marker)', 'Marker (06): Emoji oder tabler:&lt;slug&gt;. Leer = klassische Diamond-Raute. Picker-Button öffnet die Icon-Auswahl.'],
     'inputType' => 'text',
     'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 wizard'],
     'wizard'    => [[IconPickerWizard::class, 'generate']],
@@ -1786,7 +1786,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_subheadline'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_productbox_text'] = [
-    'label'     => ['Beschreibungstext', 'Kurze Beschreibung. Erlaubte Tags: <strong>, <em>, <b>, <i>, <u>, <small>, <br>. Attribute werden entfernt.'],
+    'label'     => ['Beschreibungstext', 'Kurze Beschreibung. Erlaubte Tags: &lt;strong&gt;, &lt;em&gt;, &lt;b&gt;, &lt;i&gt;, &lt;u&gt;, &lt;small&gt;, &lt;br&gt;. Attribute werden entfernt.'],
     'inputType' => 'textarea',
     'eval'      => ['style' => 'height:100px', 'tl_class' => 'clr'],
 ];
