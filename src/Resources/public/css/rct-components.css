@@ -5794,6 +5794,34 @@ html[data-theme="sparta"] .rct-pricing.style-light .rct-pricing-btn.btn-highligh
 .rct-hero.layout-centered .rct-hero-actions   { justify-content: center; }
 .rct-hero.layout-centered .rct-hero-stats     { justify-content: center; }
 
+/* ── Überschrift 2 (optional, zweite Zeile in derselben <h1>) ── */
+.rct-hero-headline2 {
+  display: block;
+}
+.rct-hero-headline2 em {
+  font-style: normal;
+  color: var(--rct-accent);
+}
+
+/* ── Links / Rechts (ohne Bild) ── */
+.rct-hero.layout-left .rct-hero-inner,
+.rct-hero.layout-right .rct-hero-inner {
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 760px;
+}
+.rct-hero.layout-left  .rct-hero-inner { margin-right: auto; }
+.rct-hero.layout-right .rct-hero-inner { margin-left: auto; align-items: flex-end; }
+.rct-hero.layout-left  .rct-hero-text,
+.rct-hero.layout-right .rct-hero-text  { width: 100%; }
+.rct-hero.layout-right                        { text-align: right; }
+.rct-hero.layout-right .rct-hero-overline     { flex-direction: row-reverse; }
+.rct-hero.layout-right .rct-hero-body         { margin-left: auto; }
+.rct-hero.layout-right .rct-hero-actions,
+.rct-hero.layout-right .rct-hero-stats        { justify-content: flex-end; }
+.rct-hero.layout-left  .rct-hero-glow         { left: 30%; }
+.rct-hero.layout-right .rct-hero-glow         { left: 70%; }
+
 /* ── Split layout ── */
 .rct-hero.layout-split .rct-hero-inner {
   display: grid;

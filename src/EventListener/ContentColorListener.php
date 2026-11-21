@@ -65,6 +65,14 @@ class ContentColorListener
             $this->ensureFontFace($font);
         }
 
+        // rct_hero: Schrift der optionalen Überschrift 2 ebenfalls laden
+        if ($model->type === 'rct_hero') {
+            $font2 = trim((string) $model->rct_hero_hl2_font);
+            if ($font2 !== '') {
+                $this->ensureFontFace($font2);
+            }
+        }
+
         if (\in_array($model->type, self::SUPPORTED_ALIGN, true)) {
             $align = trim((string) $model->rct_text_align);
             if (\in_array($align, ['left', 'center', 'right'], true)) {

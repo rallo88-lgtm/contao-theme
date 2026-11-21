@@ -16,7 +16,10 @@
         <div class="rct-hero-overline">{{ overline }}</div>
       {% endif %}
 
-      <h1 class="rct-hero-headline"{% if hlColor or hlFont %} style="{% if hlColor %}color:{{ hlColor }};{% endif %}{% if hlFont %}font-family:'{{ hlFont }}';{% endif %}"{% endif %}>{{ headline|raw }}</h1>
+      <h1 class="rct-hero-headline{{ headline2 ? ' has-line2' }}"{% if hlColor or hlFont %} style="{% if hlColor %}color:{{ hlColor }};{% endif %}{% if hlFont %}font-family:'{{ hlFont }}';{% endif %}"{% endif %}>
+        {{- headline|raw -}}
+        {%- if headline2 %}<span class="rct-hero-headline2"{% if hl2Color or hl2Font %} style="{% if hl2Color %}color:{{ hl2Color }};{% endif %}{% if hl2Font %}font-family:'{{ hl2Font }}';{% endif %}"{% endif %}>{{ headline2|raw }}</span>{% endif -%}
+      </h1>
 
       {% if body %}
         <div class="rct-hero-body"{% if hlColor %} style="color:{{ hlColor }}"{% endif %}>{{ body|raw }}</div>

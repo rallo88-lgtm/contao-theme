@@ -18,9 +18,11 @@ class RctHeroController extends AbstractContentElementController
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $template->overline = htmlspecialchars((string) $model->rct_hero_overline, ENT_QUOTES, 'UTF-8');
-        $template->headline = strip_tags((string) $model->rct_hero_headline, '<em>');
-        $template->body     = $model->rct_hero_body ? nl2br(htmlspecialchars((string) $model->rct_hero_body, ENT_QUOTES, 'UTF-8')) : '';
-        $template->layout   = $model->rct_hero_layout ?: 'centered';
+        $template->headline  = strip_tags((string) $model->rct_hero_headline, '<em>');
+        $template->headline2 = strip_tags((string) $model->rct_hero_headline2, '<em>');
+        $template->body      = $this->formatBody((string) $model->rct_hero_body);
+        $layout              = (string) $model->rct_hero_layout;
+        $template->layout    = \in_array($layout, ['centered', 'left', 'right', 'split'], true) ? $layout : 'centered';
         $template->maxWidth = (string) $model->rct_hero_max_width;
 
         // BG-Override (analog CTA)
@@ -45,6 +47,14 @@ class RctHeroController extends AbstractContentElementController
         }
         $template->hlColor = $hlColor;
         $template->hlFont  = trim((string) $model->rct_hl_font);
+
+        // Überschrift 2: eigene Farbe/Schrift (leer = erbt von Überschrift 1)
+        $hl2Color = trim((string) $model->rct_hero_hl2_color);
+        if ($hl2Color !== '' && !str_starts_with($hl2Color, 'var(')) {
+            $hl2Color = preg_match('/^#?[0-9a-fA-F]{3,8}$/', $hl2Color) ? '#' . ltrim($hl2Color, '#') : '';
+        }
+        $template->hl2Color = $hl2Color;
+        $template->hl2Font  = trim((string) $model->rct_hero_hl2_font);
 
         // Bilder (multi-select, serialisiert)
         $images = [];
@@ -113,6 +123,32 @@ class RctHeroController extends AbstractContentElementController
         $template->cssClass = $cssId[1] ?? '';
 
         return $template->getResponse();
+    }
+
+    /**
+     * Begleittext: Zeilenumbrüche → <br>, erlaubt nur <br>, <strong>, <em>, <b>, <i>.
+     * Alles andere wird als Text ausgegeben (Entities bleiben erhalten).
+     */
+    private function formatBody(string $raw): string
+    {
+        // Entities zuerst auflösen (Contao speichert ohne allowHtml "&lt;br&gt;")
+        $raw = trim(str_replace(["\r\n", "\r"], "\n", html_entity_decode($raw, ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+        if ($raw === '') {
+            return '';
+        }
+        // Erlaubte Tags vor dem Escapen sichern, Rest escapen, Tags zurück
+        $allowed = '#<(/?)(br|strong|em|b|i)\s*/?>#i';
+        $marks   = [];
+        $raw = preg_replace_callback($allowed, static function (array $m) use (&$marks): string {
+            $key = "\x01" . \count($marks) . "\x02";
+            $tag = strtolower($m[2]);
+            $marks[$key] = $tag === 'br' ? '<br>' : '<' . $m[1] . $tag . '>';
+            return $key;
+        }, $raw);
+        $html = htmlspecialchars($raw, ENT_QUOTES, 'UTF-8');
+        $html = strtr($html, $marks);
+
+        return nl2br($html, false);
     }
 
     private function resolveUrl(int $pageId, string $manualUrl): string

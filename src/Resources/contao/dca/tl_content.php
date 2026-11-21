@@ -1365,7 +1365,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_pricing_style'] = [
 // ============================================================
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['rct_hero'] =
-    '{type_legend},type;{hero_legend},rct_hero_overline,rct_hero_headline,rct_hl_font,rct_content_color,rct_hero_body,rct_hero_layout,rct_hero_max_width;{hero_bg_legend:hide},rct_hero_bg_color,rct_hero_bg_alpha,rct_hero_blur;{hero_btn1_legend},rct_hero_btn1_label,rct_hero_btn1_page,rct_hero_btn1_url,rct_hero_btn1_style,rct_hero_btn1_target;{hero_btn2_legend:hide},rct_hero_btn2_label,rct_hero_btn2_page,rct_hero_btn2_url,rct_hero_btn2_style,rct_hero_btn2_target;{hero_image_legend:hide},rct_hero_image,rct_hero_image_alt,rct_hero_slide_speed;{hero_stats_legend:hide},rct_hero_stats;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+    '{type_legend},type;{hero_legend},rct_hero_overline,rct_hero_headline,rct_hl_font,rct_content_color,rct_hero_headline2,rct_hero_hl2_font,rct_hero_hl2_color,rct_hero_body,rct_hero_layout,rct_hero_max_width;{hero_bg_legend:hide},rct_hero_bg_color,rct_hero_bg_alpha,rct_hero_blur;{hero_btn1_legend},rct_hero_btn1_label,rct_hero_btn1_page,rct_hero_btn1_url,rct_hero_btn1_style,rct_hero_btn1_target;{hero_btn2_legend:hide},rct_hero_btn2_label,rct_hero_btn2_page,rct_hero_btn2_url,rct_hero_btn2_style,rct_hero_btn2_target;{hero_image_legend:hide},rct_hero_image,rct_hero_image_alt,rct_hero_slide_speed;{hero_stats_legend:hide},rct_hero_stats;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 
 // rct_hero_* ohne 'sql' → jsonData (RctHeroJsonStorageMigration).
 // rct_hero_image (fileTree) + image_order (orderField) +
@@ -1382,16 +1382,36 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_headline'] = [
     'eval'      => ['maxlength' => 512, 'tl_class' => 'clr long'],
 ];
 
+// Überschrift 2 (optional): zweite Zeile in derselben <h1>, eigene Schrift + Farbe
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_headline2'] = [
+    'label'     => ['Überschrift 2', 'Optionale zweite Zeile der Überschrift (gleiche <h1>, eigene Schrift/Farbe). <em>Wort</em> = Akzentfarbe'],
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 512, 'tl_class' => 'clr long'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_hl2_font'] = [
+    'label'            => ['Schriftart Überschrift 2', 'Leer = wie Überschrift 1'],
+    'inputType'        => 'select',
+    'options_callback' => [RctFontOptionsCallback::class, 'getHeadlineFonts'],
+    'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => false],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_hl2_color'] = [
+    'label'     => ['Textfarbe Überschrift 2', 'Hex (#27c4f4). Leer = wie Überschrift 1'],
+    'inputType' => 'text',
+    'eval'      => ['colorpicker' => true, 'isHexColor' => true, 'tl_class' => 'w50 wizard', 'maxlength' => 64],
+];
+
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_body'] = [
-    'label'     => ['Begleittext', 'Kurzer beschreibender Text unter der Überschrift (optional)'],
+    'label'     => ['Begleittext', 'Text unter der Überschrift (optional). Enter = Zeilenumbruch; erlaubt: <br>, <strong>, <em>'],
     'inputType' => 'textarea',
-    'eval'      => ['style' => 'height:80px', 'tl_class' => 'clr'],
+    'eval'      => ['style' => 'height:120px', 'tl_class' => 'clr', 'allowHtml' => true],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['rct_hero_layout'] = [
-    'label'     => ['Layout', 'Zentriert (kein Bild) oder zweispaltig mit Bild rechts'],
+    'label'     => ['Layout', 'Zentriert, linksbündig, rechtsbündig (ohne Bild) oder zweispaltig mit Bild rechts'],
     'inputType' => 'select',
-    'options'   => ['centered' => 'Zentriert', 'split' => 'Zweispaltig (Bild rechts)'],
+    'options'   => ['centered' => 'Zentriert', 'left' => 'Links (ohne Bild)', 'right' => 'Rechts (ohne Bild)', 'split' => 'Zweispaltig (Bild rechts)'],
     'eval'      => ['tl_class' => 'w50'],
 ];
 
